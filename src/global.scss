@@ -1,0 +1,30 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/display.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+ion-button{
+    text-transform: none;
+}
+
+ion-item{
+    --highlight-color-invalid: var(--ion-color-warning);
+}
+
+//input label when focused
+.item-has-focus .label-floating.sc-ion-label-md-h{
+    color: var(--ion-color-medium);
+}
+
+.hr{
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0;
+    width: 100%;
+}

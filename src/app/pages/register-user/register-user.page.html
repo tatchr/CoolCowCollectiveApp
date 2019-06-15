@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>New account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()">
+          <p style="font-size: 14px;margin:0 auto;">
+            Please provide your details in order to register a new <b>Cool Cow Collective</b> account.
+          </p>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">First Name*</ion-label>
+            <ion-input type="text" formControlName="firstname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Last Name*</ion-label>
+            <ion-input type="text" formControlName="lastname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label color="medium">Gender*</ion-label>
+            <ion-button style="margin-left: 5px;" size="default" fill="outline"
+              [color]="gen == 'M' ? 'success' : 'medium'" (click)="gen='M'">Male</ion-button>
+            <ion-button size="default" fill="outline" [color]="gen == 'F' ? 'success' : 'medium'" (click)="gen='F'">
+              Female</ion-button>
+            <ion-input type="hidden" formControlName="gender" [value]="gen"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Phone Number</ion-label>
+            <ion-input type="tel" formControlName="phonenumber"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Email*</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Password*</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Repeat Password*</ion-label>
+            <ion-input type="password" formControlName="repeatedPassword"></ion-input>
+          </ion-item>
+
+          <div style="margin-top: 20px;"></div>
+
+          <ion-button color="success" expand="block" type="submit" [disabled]="!newUserForm.valid">Register</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "CoolCowCollectiveApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

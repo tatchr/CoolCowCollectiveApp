@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Verifying it's you</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p style="font-size: 14px;margin:0 auto;">
+          For your security, we need to verify your identity. We've sent a code to the email address <b>{{email}}</b>. Please enter it below.
+        </p>
+        <form [formGroup]="verifyEmailForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-input type="tel" formControlName="passwordResetCode" placeholder="Enter Code"></ion-input>
+          </ion-item>
+
+          <ion-button color="success" expand="block" type="submit" [disabled]="!verifyEmailForm.valid">Continue</ion-button>
+          <ion-button expand="full" fill="clear" color="success" (click)="resendPasswordResetCode()">Resend Code</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

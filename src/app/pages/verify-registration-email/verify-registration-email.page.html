@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Confirm your email</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p style="font-size: 14px;margin:0 auto;">
+          We have sent you an activation code. Please enter it below.
+        </p>
+        <form [formGroup]="confirmEmailForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-input type="tel" formControlName="emailConfirmationCode" placeholder="Enter Code"></ion-input>
+          </ion-item>
+
+          <ion-button color="success" expand="block" type="submit" [disabled]="!confirmEmailForm.valid">Continue</ion-button>
+          <ion-button expand="full" fill="clear" color="success" (click)="resendConfirmationCode()">Resend Code</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
