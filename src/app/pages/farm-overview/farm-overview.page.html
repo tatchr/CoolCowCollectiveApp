@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Farm Overview</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" type="button" routerLink="/register-farm" color="success">Add New Farm
+        </ion-button>
+
+        <ion-card button="true" (click)="clicked()">
+          <ion-card-header>
+            <ion-card-title>Sirikwa dairy</ion-card-title>
+            <ion-card-subtitle>Mombasa-Balaba road, Leseru, Kenya</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            Description of my farm.
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card button="true" (click)="clicked()">
+            <ion-card-header>
+              <ion-card-title>Lataka farm</ion-card-title>
+              <ion-card-subtitle>Eldoret-Kitale Rd., Eldoret, Kenya</ion-card-subtitle>
+            </ion-card-header>
+  
+            <ion-card-content>
+              Description of my farm.
+            </ion-card-content>
+          </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

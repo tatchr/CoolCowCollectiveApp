@@ -6,7 +6,7 @@
 
         <div style="height: 33px;"></div>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <ion-item class="login-screen">
             <ion-label position="floating" color="medium">Email*</ion-label>
             <ion-input type="email" formControlName="email"></ion-input>

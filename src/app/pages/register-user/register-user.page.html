@@ -8,7 +8,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <p style="font-size: 14px;margin:0 auto;">
             Please provide your details in order to register a new <b>Cool Cow Collective</b> account.
           </p>
