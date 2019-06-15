@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
   selector: 'app-verify-recovery-email',
@@ -36,6 +36,6 @@ export class VerifyRecoveryEmailPage implements OnInit {
   resendPasswordResetCode(){
     var body = {'Email': this.email};
     this.authService.resendPasswordResetCode(body).subscribe();
-  }
+  } 
 
 }

@@ -7,7 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/authService/auth.service';
 
 import { AppComponent } from './app.component';
 

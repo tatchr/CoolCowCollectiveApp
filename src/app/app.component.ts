@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/authService/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,7 +23,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString('#63b65b');
       this.splashScreen.hide();
 
       this.authService.authenticationState.subscribe(state => {
