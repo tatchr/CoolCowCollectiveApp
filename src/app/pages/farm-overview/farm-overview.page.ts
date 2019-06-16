@@ -25,19 +25,25 @@ export class FarmOverviewPage implements OnInit {
     this.getAllFarms().subscribe();
   }
 
+  ionViewDidEnter(){
+    this.userId = this.activatedRoute.snapshot.paramMap.get('userId');    
+    this.getAllFarms().subscribe();
+  }
+
   getAllFarms(){
     return this.http.get(environment.url + '/api/farm/getAll/' + this.userId).pipe(
-      tap(res => console.log(res)),
       map(res => {
-        console.log(res);
         this.farmsList = res['farms'];
-        console.log(this.farmsList);
       }),
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
+  }
+
+  registerFarm(){
+    this.router.navigateByUrl('/register-farm/' + this.userId);
   }
 
   showAlert(msg) {
@@ -60,7 +66,8 @@ export class FarmOverviewPage implements OnInit {
   clearToken() {
     // ONLY FOR TESTING!
     this.storage.remove('access_token');
- 
+    this.storage.remove('userId');
+
     let toast = this.toastController.create({
       message: 'JWT removed',
       duration: 3000

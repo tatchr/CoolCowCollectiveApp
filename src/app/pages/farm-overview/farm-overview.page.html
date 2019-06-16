@@ -10,13 +10,13 @@
       <ion-col>
           <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
         <ion-button expand="full" (click)="logout()">Logout</ion-button>
-        <ion-button expand="block" type="button" routerLink="/register-farm" color="success">Add New Farm
+        <ion-button expand="block" type="button" (click)="registerFarm()" color="success">Add New Farm
         </ion-button>
 
         <ion-card button="true" *ngFor="let farm of farmsList" (click)="clicked()">
           <ion-card-header>
             <ion-card-title>{{farm.name}}</ion-card-title>
-            <ion-card-subtitle>{{farm.address}}, {{farm.county}}, {{farm.country}}</ion-card-subtitle>
+            <ion-card-subtitle>{{farm.address}} {{farm.county}} {{farm.country}}</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content>

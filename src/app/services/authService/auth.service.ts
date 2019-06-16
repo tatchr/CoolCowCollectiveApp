@@ -54,10 +54,11 @@ export class AuthService {
   confirmEmail(credentials) {
     return this.http.post(this.url + '/api/user/confirmEmail', credentials).pipe(
       tap(res => {
-        this.storage.set(USER_ID, res['userId']);
-        this.storage.set(TOKEN_KEY, res['token']);
-        this.user = this.helper.decodeToken(res['token']);
-        this.authenticationState.next(true);
+        this.storage.set(USER_ID, res['userId']).then(() => {
+          this.storage.set(TOKEN_KEY, res['token']);
+          this.user = this.helper.decodeToken(res['token']);
+          this.authenticationState.next(true);
+        });        
       }),
       catchError(e => {
         this.showAlert(e.error.errMessage);
@@ -79,10 +80,11 @@ export class AuthService {
     return this.http.post(this.url + '/api/user/login', credentials)
       .pipe(
         tap(res => {
-          this.storage.set(USER_ID, res['userId']);
-          this.storage.set(TOKEN_KEY, res['token']);
-          this.user = this.helper.decodeToken(res['token']);
-          this.authenticationState.next(true);
+          this.storage.set(USER_ID, res['userId']).then(() => {
+            this.storage.set(TOKEN_KEY, res['token']);
+            this.user = this.helper.decodeToken(res['token']);
+            this.authenticationState.next(true);
+          });          
         }),
         catchError(e => {
           console.log(e);
@@ -129,6 +131,7 @@ export class AuthService {
   }
 
   logout() {
+    this.storage.remove(USER_ID);
     this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
     });
