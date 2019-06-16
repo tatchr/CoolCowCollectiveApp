@@ -18,7 +18,7 @@ export function jwtOptionsFactory(storage) {
     tokenGetter: () => {
       return storage.get('access_token');
     },
-    whitelistedDomains: ['localhost:44395']
+    whitelistedDomains: ['localhost:44395', 'coolcowcollective.azurewebsites.net']
   }
 }
 
