@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'forgot-password', loadChildren: './pages/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
   { path: 'verify-recovery-email/:email', loadChildren: './pages/verify-recovery-email/verify-recovery-email.module#VerifyRecoveryEmailPageModule' },
   { path: 'reset-password/:email/:passwordResetCode', loadChildren: './pages/reset-password/reset-password.module#ResetPasswordPageModule' },
-  { path: 'farm-overview', loadChildren: './pages/farm-overview/farm-overview.module#FarmOverviewPageModule' },
+  { path: 'farm-overview/:userId', loadChildren: './pages/farm-overview/farm-overview.module#FarmOverviewPageModule' },
   { path: 'register-farm', loadChildren: './pages/register-farm/register-farm.module#RegisterFarmPageModule' },
  
 ];

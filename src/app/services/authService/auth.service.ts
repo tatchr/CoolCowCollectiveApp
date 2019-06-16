@@ -8,6 +8,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 const TOKEN_KEY = 'access_token';
+const USER_ID = 'userId';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthService {
   constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage, private plt: Platform, private alertController: AlertController) {
     this.plt.ready().then(() => {
       this.checkToken();
-    });  
+    });
   }
 
   checkToken() {
@@ -29,19 +30,20 @@ export class AuthService {
       if (token) {
         let decoded = this.helper.decodeToken(token);
         let isExpired = this.helper.isTokenExpired(token);
- 
+
         if (!isExpired) {
           this.user = decoded;
           this.authenticationState.next(true);
         } else {
           this.storage.remove(TOKEN_KEY);
+          this.storage.remove(USER_ID);
         }
       }
     });
   }
 
   registerUser(credentials) {
-    return this.http.post(this.url + '/api/users/register', credentials).pipe(
+    return this.http.post(this.url + '/api/user/register', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -50,11 +52,12 @@ export class AuthService {
   }
 
   confirmEmail(credentials) {
-    return this.http.post(this.url + '/api/users/confirmEmail', credentials).pipe(
+    return this.http.post(this.url + '/api/user/confirmEmail', credentials).pipe(
       tap(res => {
+        this.storage.set(USER_ID, res['userId']);
         this.storage.set(TOKEN_KEY, res['token']);
-          this.user = this.helper.decodeToken(res['token']);
-          this.authenticationState.next(true);
+        this.user = this.helper.decodeToken(res['token']);
+        this.authenticationState.next(true);
       }),
       catchError(e => {
         this.showAlert(e.error.errMessage);
@@ -64,7 +67,7 @@ export class AuthService {
   }
 
   resendConfirmationCode(credentials) {
-    return this.http.post(this.url + '/api/users/resendConfirmationCode', credentials).pipe(
+    return this.http.post(this.url + '/api/user/resendConfirmationCode', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -73,9 +76,10 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.http.post(this.url + '/api/users/login', credentials)
+    return this.http.post(this.url + '/api/user/login', credentials)
       .pipe(
         tap(res => {
+          this.storage.set(USER_ID, res['userId']);
           this.storage.set(TOKEN_KEY, res['token']);
           this.user = this.helper.decodeToken(res['token']);
           this.authenticationState.next(true);
@@ -89,7 +93,7 @@ export class AuthService {
   }
 
   forgotPassword(credentials) {
-    return this.http.post(this.url + '/api/users/forgotPassword', credentials).pipe(
+    return this.http.post(this.url + '/api/user/forgotPassword', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -98,7 +102,7 @@ export class AuthService {
   }
 
   verifyPasswordResetCode(credentials) {
-    return this.http.post(this.url + '/api/users/verifyPasswordResetCode', credentials).pipe(      
+    return this.http.post(this.url + '/api/user/verifyPasswordResetCode', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -107,7 +111,7 @@ export class AuthService {
   }
 
   resendPasswordResetCode(credentials) {
-    return this.http.post(this.url + '/api/users/resendPasswordResetCode', credentials).pipe(
+    return this.http.post(this.url + '/api/user/resendPasswordResetCode', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -116,7 +120,7 @@ export class AuthService {
   }
 
   resetPassword(credentials) {
-    return this.http.post(this.url + '/api/users/resetPassword', credentials).pipe(
+    return this.http.post(this.url + '/api/user/resetPassword', credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.errMessage);
         throw new Error(e);
@@ -131,7 +135,7 @@ export class AuthService {
   }
 
   getSpecialData() {
-    return this.http.get(this.url + '/api/users/getSpecialInfo').pipe(
+    return this.http.get(this.url + '/api/user/getSpecialInfo').pipe(
       catchError(e => {
         let status = e.status;
         if (status === 401) {

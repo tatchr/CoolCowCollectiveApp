@@ -8,30 +8,21 @@
   <ion-grid>
     <ion-row>
       <ion-col>
+          <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
+        <ion-button expand="full" (click)="logout()">Logout</ion-button>
         <ion-button expand="block" type="button" routerLink="/register-farm" color="success">Add New Farm
         </ion-button>
 
-        <ion-card button="true" (click)="clicked()">
+        <ion-card button="true" *ngFor="let farm of farmsList" (click)="clicked()">
           <ion-card-header>
-            <ion-card-title>Sirikwa dairy</ion-card-title>
-            <ion-card-subtitle>Mombasa-Balaba road, Leseru, Kenya</ion-card-subtitle>
+            <ion-card-title>{{farm.name}}</ion-card-title>
+            <ion-card-subtitle>{{farm.address}}, {{farm.county}}, {{farm.country}}</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content>
-            Description of my farm.
+            {{farm.description}}
           </ion-card-content>
         </ion-card>
-
-        <ion-card button="true" (click)="clicked()">
-            <ion-card-header>
-              <ion-card-title>Lataka farm</ion-card-title>
-              <ion-card-subtitle>Eldoret-Kitale Rd., Eldoret, Kenya</ion-card-subtitle>
-            </ion-card-header>
-  
-            <ion-card-content>
-              Description of my farm.
-            </ion-card-content>
-          </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

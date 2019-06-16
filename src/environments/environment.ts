@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  url: 'https://coolcowcollective.azurewebsites.net'
-  //url: 'https://localhost:44395'
+  //url: 'https://coolcowcollective.azurewebsites.net'
+  url: 'https://localhost:44395'
 };
 
 /*

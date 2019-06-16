@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/authService/auth.service';
+import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,6 +16,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private storage: Storage,
     private authService: AuthService,
     private router: Router
   ) {
@@ -29,9 +31,11 @@ export class AppComponent {
 
       this.authService.authenticationState.subscribe(state => {
         if(state){
-          this.router.navigate(['inside']);
+          this.storage.get('userId').then(userId => {
+            this.router.navigate(['farm-overview/' + userId]);
+          });          
         } else{
-          this.router.navigate(['farm-overview']);
+          this.router.navigate(['login']);
         }
       });
     });
