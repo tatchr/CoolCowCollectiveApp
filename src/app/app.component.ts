@@ -32,7 +32,7 @@ export class AppComponent {
       this.authService.authenticationState.subscribe(state => {
         if(state){
           this.storage.get('userId').then(userId => {
-            this.router.navigate(['farm-overview/' + userId]);
+            this.router.navigate(['farm-overview/' + userId], {replaceUrl: true});
           });          
         } else{
           this.router.navigate(['login']);
