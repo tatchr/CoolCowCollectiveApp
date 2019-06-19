@@ -17,7 +17,7 @@ export class AuthService {
 
   url = environment.url;
   user = null;
-  authenticationState = new BehaviorSubject(false);
+  authenticationState = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage, private plt: Platform, private alertController: AlertController) {
     this.plt.ready().then(() => {
@@ -37,7 +37,10 @@ export class AuthService {
         } else {
           this.storage.remove(TOKEN_KEY);
           this.storage.remove(USER_ID);
+          this.authenticationState.next(false);
         }
+      } else {
+        this.authenticationState.next(false);
       }
     });
   }

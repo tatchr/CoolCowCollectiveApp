@@ -7,10 +7,10 @@ import { AuthService } from '../../services/authService/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {  
+export class LoginPage implements OnInit {    
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -20,7 +20,7 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    this.authService.login(this.loginForm.value).subscribe();
+    this.authService.login(this.loginForm.value).subscribe();    
   }
 
   register() {
