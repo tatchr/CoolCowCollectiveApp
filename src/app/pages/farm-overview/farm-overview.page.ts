@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { tap, map, catchError } from 'rxjs/operators';
 import { ToastController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-farm-overview',
@@ -17,43 +15,31 @@ export class FarmOverviewPage implements OnInit {
   userId:string;
   farmsList:Array<Object>;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute,
-    private storage: Storage, private toastController: ToastController, private alertController: AlertController) { }
+  constructor(private authService: AuthService, private farmService: FarmService, private router: Router, 
+    private activatedRoute: ActivatedRoute, private storage: Storage, private toastController: ToastController) { }
 
-  ngOnInit() {    
-    this.userId = this.activatedRoute.snapshot.paramMap.get('userId');    
-    this.getAllFarms().subscribe();
+  ngOnInit() {
+    this.initiate();
   }
 
   ionViewDidEnter(){
+    this.initiate();
+  }
+
+  initiate(){
     this.userId = this.activatedRoute.snapshot.paramMap.get('userId');    
-    this.getAllFarms().subscribe();
+    this.getAllFarms();
   }
 
   getAllFarms(){
-    return this.http.get(environment.url + '/api/farm/getAll/' + this.userId).pipe(
-      map(res => {
-        this.farmsList = res['farms'];
-      }),
-      catchError(e => {
-        this.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    this.farmService.getAllFarms(this.userId).subscribe(res => {
+      this.farmsList = res['farms'];
+    });
   }
 
   registerFarm(){
     this.router.navigateByUrl('/register-farm/' + this.userId);
-  }
-
-  showAlert(msg) {
-    let alert = this.alertController.create({
-      message: msg,
-      header: 'Error',
-      buttons: ['OK']
-    });
-    alert.then(alert => alert.present());
-  }
+  }  
 
   clicked(){
     console.log('rr');

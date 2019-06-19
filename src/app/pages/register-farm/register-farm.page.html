@@ -11,7 +11,7 @@
         <form [formGroup]="newFarmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <ion-item>
             <ion-label position="floating" color="medium">Farm Name*</ion-label>
-            <ion-input type="text" formControlName="name"></ion-input>
+            <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>
           </ion-item>
 
           <ion-item>
@@ -26,22 +26,22 @@
 
           <ion-item>
             <ion-label position="floating" color="medium">Farm Location/Address</ion-label>
-            <ion-input type="text" formControlName="address"></ion-input>
+            <ion-input autocapitalize="on" type="text" formControlName="address"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating" color="medium">County</ion-label>
-            <ion-input type="text" formControlName="county"></ion-input>
+            <ion-input autocapitalize="on" type="text" formControlName="county"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating" color="medium">Country</ion-label>
-            <ion-input type="text" formControlName="country"></ion-input>
+            <ion-input autocapitalize="on" type="text" formControlName="country"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating" color="medium">Farm Description</ion-label>
-            <ion-input type="text" formControlName="description"></ion-input>
+            <ion-input autocapitalize="on" type="text" formControlName="description"></ion-input>
           </ion-item>
 
           <ion-button color="success" expand="block" type="submit" [disabled]="!newFarmForm.valid">Save Farm</ion-button>

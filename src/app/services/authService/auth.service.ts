@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 const TOKEN_KEY = 'access_token';
 const USER_ID = 'userId';
@@ -19,7 +20,7 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage, private plt: Platform, private alertController: AlertController) {
+  constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage, private plt: Platform, private alertService: AlertService) {
     this.plt.ready().then(() => {
       this.checkToken();
     });
@@ -48,7 +49,7 @@ export class AuthService {
   registerUser(credentials) {
     return this.http.post(this.url + '/api/user/register', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -64,7 +65,7 @@ export class AuthService {
         });        
       }),
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -73,7 +74,7 @@ export class AuthService {
   resendConfirmationCode(credentials) {
     return this.http.post(this.url + '/api/user/resendConfirmationCode', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -91,7 +92,7 @@ export class AuthService {
         }),
         catchError(e => {
           console.log(e);
-          this.showAlert(e.error.errMessage);
+          this.alertService.showAlert(e.error.errMessage);
           throw new Error(e);
         })
       );
@@ -100,7 +101,7 @@ export class AuthService {
   forgotPassword(credentials) {
     return this.http.post(this.url + '/api/user/forgotPassword', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -109,7 +110,7 @@ export class AuthService {
   verifyPasswordResetCode(credentials) {
     return this.http.post(this.url + '/api/user/verifyPasswordResetCode', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -118,7 +119,7 @@ export class AuthService {
   resendPasswordResetCode(credentials) {
     return this.http.post(this.url + '/api/user/resendPasswordResetCode', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -127,7 +128,7 @@ export class AuthService {
   resetPassword(credentials) {
     return this.http.post(this.url + '/api/user/resetPassword', credentials).pipe(
       catchError(e => {
-        this.showAlert(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);
       })
     );
@@ -145,7 +146,7 @@ export class AuthService {
       catchError(e => {
         let status = e.status;
         if (status === 401) {
-          this.showAlert('You are not authorized for this!');
+          this.alertService.showAlert('You are not authorized for this!');
           this.logout();
         }
         throw new Error(e);
@@ -155,14 +156,5 @@ export class AuthService {
 
   isAuthenticated() {
     return this.authenticationState.value;
-  }
-
-  showAlert(msg) {
-    let alert = this.alertController.create({
-      message: msg,
-      header: 'Error',
-      buttons: ['OK']
-    });
-    alert.then(alert => alert.present());
-  }
+  }  
 }
