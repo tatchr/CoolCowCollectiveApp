@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import {map, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Injectable({
@@ -21,5 +21,14 @@ export class FarmService {
         throw new Error(e);
       })
     );
-  }  
+  }
+  
+  registerFarm(credentials) {
+    return this.http.post(environment.url + '/api/farm/register', credentials).pipe(
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  } 
 }

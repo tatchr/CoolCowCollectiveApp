@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 

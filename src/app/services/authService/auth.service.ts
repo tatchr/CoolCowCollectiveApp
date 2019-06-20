@@ -1,4 +1,4 @@
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
