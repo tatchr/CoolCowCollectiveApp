@@ -18,27 +18,42 @@ export class VerifyRegistrationEmailPage implements OnInit {
   ngOnInit() {
     this.email = this.activatedRoute.snapshot.paramMap.get('email');
     this.confirmEmailForm = this.formBuilder.group({
-      email: [this.email],
-      emailConfirmationCode: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
-    });  
-
-    
-    console.log(this.email);
+      n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
+    });
   }
 
   onSubmit() {
-    this.authService.confirmEmail(this.confirmEmailForm.value).subscribe(val => {
-      if(val){
-        console.log(val);
-        //this.router.navigateByUrl('/verify-registration-email/' + this.newUserForm.controls.email.value);
-      }
-      
-    });
+    let emailConfirmationCode = this.confirmEmailForm.controls.n1.value + '' + this.confirmEmailForm.controls.n2.value + '' 
+      + this.confirmEmailForm.controls.n3.value + '' + this.confirmEmailForm.controls.n4.value + ''
+      + this.confirmEmailForm.controls.n5.value + '' + this.confirmEmailForm.controls.n6.value;
+
+    let resetData = {
+      email: this.email,
+      emailConfirmationCode: emailConfirmationCode
+    };
+
+    this.authService.confirmEmail(resetData).subscribe();
   }
 
   resendConfirmationCode(){
     var body = {'Email': this.email};
     this.authService.resendConfirmationCode(body).subscribe();
+  }
+
+  gotoNextField(nextElement) {
+    nextElement.setFocus();
+  }
+
+  checkInput(element){
+    let input = element.value;
+    if(input != null){
+      element.value = input.length > 1 ? null : input;
+    }    
   }
 
 }

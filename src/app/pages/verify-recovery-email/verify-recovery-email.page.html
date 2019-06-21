@@ -23,8 +23,7 @@
         <div style="margin-top: 20px;"></div>
 
         <form [formGroup]="verifyEmailForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-
-          <div style="text-align: center;">            
+          <div class="ion-text-center">            
               <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="checkInput(n1)" (keyup)="gotoNextField(n2)"></ion-input>              
               <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="checkInput(n2)" (keyup)="gotoNextField(n3)"></ion-input>
               <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="checkInput(n3)" (keyup)="gotoNextField(n4)"></ion-input>

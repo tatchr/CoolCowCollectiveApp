@@ -8,17 +8,23 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <p class="description-text-center">
+        <p class="ion-text-start">
           We have sent you an activation code. Please enter it below.
         </p>
 
         <div style="margin-top: 20px;"></div>
 
-        <form [formGroup]="confirmEmailForm" (ngSubmit)="onSubmit()">
-          <ion-item>
-            <ion-label position="floating" color="medium">Enter code*</ion-label>
-            <ion-input type="number" formControlName="emailConfirmationCode"></ion-input>
-          </ion-item>
+        <form [formGroup]="confirmEmailForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+          <div class="ion-text-center">            
+            <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="checkInput(n1)" (keyup)="gotoNextField(n2)"></ion-input>              
+            <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="checkInput(n2)" (keyup)="gotoNextField(n3)"></ion-input>
+            <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="checkInput(n3)" (keyup)="gotoNextField(n4)"></ion-input>
+            <ion-input #n4 formControlName="n4" class="input-box" type="number" (keyup)="checkInput(n4)" (keyup)="gotoNextField(n5)"></ion-input>
+            <ion-input #n5 formControlName="n5" class="input-box" type="number" (keyup)="checkInput(n5)" (keyup)="gotoNextField(n6)"></ion-input>
+            <ion-input #n6 formControlName="n6" class="input-box" type="number" (keyup)="checkInput(n6)"></ion-input>
+          </div>
+
+          <div style="margin-top: 20px;"></div>
 
           <ion-button color="success" expand="block" type="submit" [disabled]="!confirmEmailForm.valid">Continue
           </ion-button>

@@ -54,10 +54,6 @@ export class VerifyRecoveryEmailPage implements OnInit {
     nextElement.setFocus();
   }
 
-  blur(element){
-    element.ionBlur();
-  }
-
   checkInput(element){
     let input = element.value;
     if(input != null){
