@@ -44,15 +44,18 @@ export class VerifyRegistrationEmailPage implements OnInit {
     var body = {'Email': this.email};
     this.authService.resendConfirmationCode(body).subscribe();
   }
-
-  gotoNextField(nextElement) {
-    nextElement.setFocus();
-  }
-
-  checkInput(element){
+   
+  checkInput(element, nextElement){
     let input = element.value;
-    if(input != null){
-      element.value = input.length > 1 ? null : input;
+    if(input != null && input != ""){
+      if(input.length > 1){
+        element.value = null;
+      }
+      else{        
+        if(nextElement != null){
+          nextElement.setFocus();
+        }
+      }
     }    
   }
 
