@@ -18,24 +18,50 @@ export class VerifyRecoveryEmailPage implements OnInit {
   ngOnInit() {
     this.email = this.activatedRoute.snapshot.paramMap.get('email');
     this.verifyEmailForm = this.formBuilder.group({
-      email: [this.email],
-      passwordResetCode: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
+      n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+      n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
     });
   }
 
   onSubmit() {
-    this.authService.verifyPasswordResetCode(this.verifyEmailForm.value).subscribe(val => {
-      if(val){
-        console.log(val);
-        this.router.navigateByUrl('/reset-password/' + this.email + '/' + this.verifyEmailForm.controls.passwordResetCode.value);
+    let passwordResetCode = this.verifyEmailForm.controls.n1.value + '' + this.verifyEmailForm.controls.n2.value + '' 
+      + this.verifyEmailForm.controls.n3.value + '' + this.verifyEmailForm.controls.n4.value + ''
+      + this.verifyEmailForm.controls.n5.value + '' + this.verifyEmailForm.controls.n6.value;
+
+    let resetData = {
+      email: this.email,
+      passwordResetCode: passwordResetCode
+    };
+
+    this.authService.verifyPasswordResetCode(resetData).subscribe(val => {
+      if (val) {
+        this.router.navigateByUrl('/reset-password/' + this.email + '/' + passwordResetCode);
       }
-      
+
     });
   }
 
-  resendPasswordResetCode(){
-    var body = {'Email': this.email};
+  resendPasswordResetCode() {
+    var body = { 'Email': this.email };
     this.authService.resendPasswordResetCode(body).subscribe();
-  } 
+  }
 
+  gotoNextField(nextElement) {
+    nextElement.setFocus();
+  }
+
+  blur(element){
+    element.ionBlur();
+  }
+
+  checkInput(element){
+    let input = element.value;
+    if(input != null){
+      element.value = input.length > 1 ? null : input;
+    }    
+  }
 }

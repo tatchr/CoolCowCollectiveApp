@@ -4,20 +4,41 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <p style="font-size: 14px;margin:0 auto;">
-          For your security, we need to verify your identity. We've sent a code to the email address <b>{{email}}</b>. Please enter it below.
+        <p class="ion-text-start">
+          For your security, we need to verify your identity. We have sent a code to the following email address:
         </p>
-        <form [formGroup]="verifyEmailForm" (ngSubmit)="onSubmit()">
-          <ion-item>
-            <ion-input type="tel" formControlName="passwordResetCode" placeholder="Enter Code"></ion-input>
-          </ion-item>
+        
+        <div class="ion-text-center ion-padding">
+            <b>{{email}}</b>
+        </div>
+        
+        <p class="ion-text-center">          
+          Please enter it below:
+        </p>
 
-          <ion-button color="success" expand="block" type="submit" [disabled]="!verifyEmailForm.valid">Continue</ion-button>
-          <ion-button expand="full" fill="clear" color="success" (click)="resendPasswordResetCode()">Resend Code</ion-button>
+        <div style="margin-top: 20px;"></div>
+
+        <form [formGroup]="verifyEmailForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+
+          <div style="text-align: center;">            
+              <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="checkInput(n1)" (keyup)="gotoNextField(n2)"></ion-input>              
+              <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="checkInput(n2)" (keyup)="gotoNextField(n3)"></ion-input>
+              <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="checkInput(n3)" (keyup)="gotoNextField(n4)"></ion-input>
+              <ion-input #n4 formControlName="n4" class="input-box" type="number" (keyup)="checkInput(n4)" (keyup)="gotoNextField(n5)"></ion-input>
+              <ion-input #n5 formControlName="n5" class="input-box" type="number" (keyup)="checkInput(n5)" (keyup)="gotoNextField(n6)"></ion-input>
+              <ion-input #n6 formControlName="n6" class="input-box" type="number" (keyup)="checkInput(n6)"></ion-input>
+          </div>
+
+          <div style="margin-top: 20px;"></div>
+
+          <ion-button color="success" expand="block" type="submit" [disabled]="!verifyEmailForm.valid">Continue
+          </ion-button>
+          <ion-button expand="full" fill="clear" color="success" (click)="resendPasswordResetCode()">Resend Code
+          </ion-button>
         </form>
       </ion-col>
     </ion-row>

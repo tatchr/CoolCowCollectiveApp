@@ -4,20 +4,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <p style="font-size: 14px;margin:0 auto;">
+        <p class="description-text-center">
           We have sent you an activation code. Please enter it below.
         </p>
+
+        <div style="margin-top: 20px;"></div>
+
         <form [formGroup]="confirmEmailForm" (ngSubmit)="onSubmit()">
           <ion-item>
-            <ion-input type="tel" formControlName="emailConfirmationCode" placeholder="Enter Code"></ion-input>
+            <ion-label position="floating" color="medium">Enter code*</ion-label>
+            <ion-input type="number" formControlName="emailConfirmationCode"></ion-input>
           </ion-item>
 
-          <ion-button color="success" expand="block" type="submit" [disabled]="!confirmEmailForm.valid">Continue</ion-button>
-          <ion-button expand="full" fill="clear" color="success" (click)="resendConfirmationCode()">Resend Code</ion-button>
+          <ion-button color="success" expand="block" type="submit" [disabled]="!confirmEmailForm.valid">Continue
+          </ion-button>
+          <ion-button expand="full" fill="clear" color="success" (click)="resendConfirmationCode()">Resend Code
+          </ion-button>
         </form>
       </ion-col>
     </ion-row>

@@ -14,6 +14,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
+      email1: ['', [Validators.required, Validators.maxLength(1)]],
       email: ['', [Validators.required, Validators.minLength(1)]],
       password: ['', [Validators.required, Validators.minLength(1)]]
     });
@@ -28,5 +29,5 @@ export class LoginPage implements OnInit {
       // Call Login to automatically login the new user
       this.authService.login(this.loginForm.value).subscribe();
     });
-  }
+  }  
 }

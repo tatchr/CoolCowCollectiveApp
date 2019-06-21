@@ -1,0 +1,24 @@
+.description-text-center{
+    font-size: 17px;
+    margin:0 auto;
+}
+
+.email-description{
+    font-size: 17px;
+}
+
+.input-box{
+    border: 1.5px solid;
+    border-color: var(--ion-color-medium);
+    width: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+ion-input.input-box {
+    --padding-start: 8;  
+    --inner-padding-end: 8;
+}
