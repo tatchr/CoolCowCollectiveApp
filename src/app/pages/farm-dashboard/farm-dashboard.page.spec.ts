@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FarmOverviewPage } from './farm-overview.page';
+import { FarmDashboardPage } from './farm-dashboard.page';
 
-describe('FarmOverviewPage', () => {
-  let component: FarmOverviewPage;
-  let fixture: ComponentFixture<FarmOverviewPage>;
+describe('FarmDashboardPage', () => {
+  let component: FarmDashboardPage;
+  let fixture: ComponentFixture<FarmDashboardPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FarmOverviewPage ],
+      declarations: [ FarmDashboardPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FarmOverviewPage);
+    fixture = TestBed.createComponent(FarmDashboardPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
