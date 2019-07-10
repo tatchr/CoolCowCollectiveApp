@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/authService/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 
@@ -15,8 +13,7 @@ export class FarmDashboardPage implements OnInit {
   userId:string;
   farmsList:Array<Object> = [];
 
-  constructor(private authService: AuthService, private farmService: FarmService, private router: Router, 
-    private activatedRoute: ActivatedRoute, private storage: Storage, private toastController: ToastController) { }
+  constructor(private farmService: FarmService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
     this.initiate();
@@ -27,8 +24,10 @@ export class FarmDashboardPage implements OnInit {
   }
 
   initiate(){
-    this.userId = this.activatedRoute.snapshot.paramMap.get('userId');    
-    this.getAllFarms();
+    this.storage.get('userId').then(userId => {
+      this.userId = userId;
+      this.getAllFarms();
+    });    
   }
 
   getAllFarms(){
@@ -38,23 +37,7 @@ export class FarmDashboardPage implements OnInit {
   }
 
   registerFarm(){
-    this.router.navigateByUrl('/register-farm/' + this.userId);
-  }  
-
-  logout() {
-    this.authService.logout();
-  }
-
-  clearToken() {
-    // ONLY FOR TESTING!
-    this.storage.remove('access_token');
-    this.storage.remove('userId');
-
-    let toast = this.toastController.create({
-      message: 'JWT removed',
-      duration: 3000
-    });
-    toast.then(toast => toast.present());
+    this.router.navigateByUrl('/register-farm');
   }
 
 }

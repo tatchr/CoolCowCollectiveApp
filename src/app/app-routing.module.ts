@@ -16,8 +16,9 @@ const routes: Routes = [
   { path: 'forgot-password', loadChildren: './pages/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
   { path: 'verify-recovery-email/:email', loadChildren: './pages/verify-recovery-email/verify-recovery-email.module#VerifyRecoveryEmailPageModule' },
   { path: 'reset-password/:email/:passwordResetCode', loadChildren: './pages/reset-password/reset-password.module#ResetPasswordPageModule' },
-  { path: 'farm-dashboard/:userId', loadChildren: './pages/farm-dashboard/farm-dashboard.module#FarmDashboardPageModule', canActivate: [AuthGuardService] },
-  { path: 'register-farm/:userId', loadChildren: './pages/register-farm/register-farm.module#RegisterFarmPageModule', canActivate: [AuthGuardService] },
+  { path: 'farm-dashboard', loadChildren: './pages/farm-dashboard/farm-dashboard.module#FarmDashboardPageModule', canActivate: [AuthGuardService] },
+  { path: 'register-farm', loadChildren: './pages/register-farm/register-farm.module#RegisterFarmPageModule', canActivate: [AuthGuardService] },
+  { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },  
  
 ];
 

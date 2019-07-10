@@ -8,7 +8,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form [formGroup]="newFarmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <form *ngIf="newFarmForm" [formGroup]="newFarmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <ion-item>
             <ion-label position="floating" color="medium">Farm Name*</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>

@@ -8,10 +8,6 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-          <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
-        <ion-button expand="full" (click)="logout()">Logout</ion-button>
-
-
         <div *ngIf="farmsList.length > 0; then farmBlock else newFarmBlock"></div>
 
         <ng-template #farmBlock>

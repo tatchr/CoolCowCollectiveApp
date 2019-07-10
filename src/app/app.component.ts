@@ -37,8 +37,8 @@ export class AppComponent {
         if (state != null) {
           if (state) {
             this.storage.get('userId').then(userId => {
-              this.subscribeBackButton('/farm-dashboard/' + userId);
-              this.router.navigate(['farm-dashboard/' + userId], { replaceUrl: true });
+              this.subscribeBackButton('/farm-dashboard');
+              this.router.navigate(['tabs'], { replaceUrl: true });
             });
           } else {
             this.subscribeBackButton('/login');
