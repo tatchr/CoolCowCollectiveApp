@@ -44,6 +44,29 @@ ion-item{
     background: #fff;
 }
 
+.li-ionic4-datePicker {
+  .modal-wrapper {
+    height: 75%;
+    width: 300px;
+    border-radius: 0px;
+
+    --ion-color-primary: var(--ion-color-success); // This Variable used for the change of colour ion-datepicker only.
+        --ion-color-primary-tint: var(--ion-color-success-tint); // This Variable changes the tint colour of background when click button.
+ 
+        ion-button {
+            //--ion-color-primary: var(--ion-color-success); // This Variable used for the change colour of buttons only.
+            // --ion-color-primary-tint: lightgreen; // This Variable changes the tint color of background when click buttons.
+            // --border-radious: 0px; // This Variable changes the border radious of buttons.
+            // button customization css write here...
+        }
+
+    @media (min-width: 768px) {
+       width: 340px;
+       height: 65%;
+    }
+  }
+}
+
 .sk-cube-grid {
     width: 40px;
     height: 40px;

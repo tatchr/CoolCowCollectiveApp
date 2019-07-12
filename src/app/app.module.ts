@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
+import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
+
 export function jwtOptionsFactory(storage) {
   return {
     tokenGetter: () => {
@@ -27,6 +29,7 @@ export function jwtOptionsFactory(storage) {
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
     HttpClientModule,
+    Ionic4DatepickerModule,
     IonicStorageModule.forRoot(),
     JwtModule.forRoot({
       jwtOptionsProvider: {

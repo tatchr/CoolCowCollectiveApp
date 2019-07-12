@@ -13,13 +13,20 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
-      { 
-        path: 'farm-dashboard', 
-        loadChildren: '../farm-dashboard/farm-dashboard.module#FarmDashboardPageModule', 
-        canActivate: [AuthGuardService] },
-      { path: 'menu', 
+      {
+        path: 'farm-dashboard',
+        loadChildren: '../farm-dashboard/farm-dashboard.module#FarmDashboardPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'milk-entry',
+        loadChildren: '../milk-entry/milk-entry.module#MilkEntryPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'menu',
         loadChildren: '../menu/menu.module#MenuPageModule',
-        canActivate: [AuthGuardService] 
+        canActivate: [AuthGuardService]
       },
     ]
   },
@@ -39,4 +46,4 @@ const routes: Routes = [
   ],
   declarations: [TabsPage]
 })
-export class TabsPageModule {}
+export class TabsPageModule { }
