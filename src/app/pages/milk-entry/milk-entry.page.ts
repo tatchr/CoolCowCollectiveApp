@@ -11,7 +11,8 @@ import * as moment from 'moment';
 export class MilkEntryPage implements OnInit {
 
   datePickerObj: any;
-  selectedDateString: string;
+  selectedDateString: String;
+  timeOfDay: String;
 
   constructor(public datePicker: DatepickerService) { }
 
