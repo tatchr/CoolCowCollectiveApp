@@ -20,6 +20,7 @@ ion-button{
 
 ion-item{
     --highlight-color-invalid: var(--ion-color-warning);
+    --highlight-color-focused: var(--ion-color-success);
 }
 
 //input label when focused
