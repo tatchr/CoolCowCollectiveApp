@@ -30,10 +30,8 @@ export class RegisterUserPage implements OnInit {
   onSubmit() {
     this.authService.registerUser(this.newUserForm.value).subscribe(val => {
       if(val){
-        console.log(val);
         this.router.navigateByUrl('/verify-registration-email/' + this.newUserForm.controls.email.value);
-      }
-      
+      }      
     });
   }
 

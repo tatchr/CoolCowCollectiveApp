@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 
+const FARM_ID = 'farmId';
+
 @Component({
   selector: 'app-farm-dashboard',
   templateUrl: './farm-dashboard.page.html',
@@ -33,6 +35,7 @@ export class FarmDashboardPage implements OnInit {
   getAllFarms(){
     this.farmService.getAllFarms(this.userId).subscribe(res => {
       this.farmsList = res['farms'];
+      this.storage.set(FARM_ID, res['farms'][0]['id'])
     });
   }
 

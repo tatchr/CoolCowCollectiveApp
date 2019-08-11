@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>My herd</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-item>
+  <ion-icon position="fixed" name="search"></ion-icon>
+  <ion-input placeholder="Filter..."></ion-input>
+</ion-item>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+
+        <ion-button color="success" expand="full" routerLink="/register-cow/{{farmId}}">Add cow</ion-button>
+
+        <ion-card *ngFor='let cow of cowsList'>
+          <ion-item>
+            <ion-avatar>
+              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+
+            <ion-card-header style="max-width: 150px;" text-wrap>
+              <ion-card-subtitle *ngIf="cow.tagNumber != null">#{{cow.tagNumber}}</ion-card-subtitle>
+              <ion-card-title>{{cow.name}}</ion-card-title>
+              <ion-card-subtitle>{{cow.cowStatus}}</ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              
+            </ion-card-content>
+          </ion-item>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+</ion-content>

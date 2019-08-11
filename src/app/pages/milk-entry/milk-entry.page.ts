@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DatepickerService } from 'src/app/services/datepicker.service';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import * as moment from 'moment';
 
 @Component({
@@ -17,7 +17,9 @@ export class MilkEntryPage implements OnInit {
   constructor(public datePicker: DatepickerService) { }
 
   ngOnInit() {
-    this.datePickerObj = this.datePicker.getDatepickerObj(this.selectedDateString);
+    let fromDate = new Date('2016-01-01');
+    let toDate = new Date('2025-12-31');
+    this.datePickerObj = this.datePicker.getDatepickerObj(this.selectedDateString, fromDate, toDate);
     this.selectedDateString = this.formatDate(new Date());
   }
 

@@ -9,11 +9,11 @@ export class DatepickerService {
 
   constructor(public modalCtrl: ModalController) { }
 
-  getDatepickerObj(userInputDate){
+  getDatepickerObj(userInputDate, fromDate, toDate){
     return {
       inputDate: userInputDate, // default new Date()
-      fromDate: new Date('2016-01-01'), // default null
-      toDate: new Date('2025-12-31'), // default null
+      fromDate: fromDate, // default null
+      toDate: toDate, // default null
       showTodayButton: true, // default true
       closeOnSelect: false, // default false
       disableWeekDays: [], // default []

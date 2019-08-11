@@ -24,6 +24,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'herd',
+        loadChildren: '../cows/herd/herd.module#HerdPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'menu',
         loadChildren: '../menu/menu.module#MenuPageModule',
         canActivate: [AuthGuardService]
