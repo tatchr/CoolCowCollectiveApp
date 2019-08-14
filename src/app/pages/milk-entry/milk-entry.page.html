@@ -26,10 +26,13 @@
   <ion-input type="hidden" [value]="timeOfDay"></ion-input>
 </ion-item>
 
-<ion-item>
+<!-- <ion-item>
   <ion-icon position="fixed" name="search"></ion-icon>
   <ion-input placeholder="Filter..."></ion-input>
-</ion-item>
+</ion-item> -->
+
+<ion-searchbar placeholder="Search..." 
+  [(ngModel)]="searchTerm" (ionChange)="setFilteredItems()"></ion-searchbar>
 
 <ion-content>
   <ion-grid>

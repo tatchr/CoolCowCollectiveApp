@@ -6,17 +6,22 @@
 
 <ion-item>
   <ion-icon position="fixed" name="search"></ion-icon>
-  <ion-input placeholder="Filter..."></ion-input>
+  <ion-input placeholder="Search..." [formControl]="searchControl" (ionChange)="onSearchInput()"></ion-input>
 </ion-item>
+
+
+
+<ion-button color="success" expand="full" routerLink="/register-cow/{{farmId}}">Add cow</ion-button>
 
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
+        <!-- <div *ngIf="searching" class="spinner-container">
+          <ion-spinner></ion-spinner>
+        </div> -->
 
-        <ion-button color="success" expand="full" routerLink="/register-cow/{{farmId}}">Add cow</ion-button>
-
-        <ion-card *ngFor='let cow of cowsList'>
+        <ion-card button="true" *ngFor='let cow of filteredCowsList' routerLink="/cow-passport/{{cow.id}}">
           <ion-item>
             <ion-avatar>
               <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
@@ -29,7 +34,7 @@
             </ion-card-header>
 
             <ion-card-content>
-              
+
             </ion-card-content>
           </ion-item>
         </ion-card>

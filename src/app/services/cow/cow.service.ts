@@ -11,8 +11,44 @@ export class CowService {
 
   constructor(private http: HttpClient, private alertService: AlertService) { }
 
+  getCow(cowId){
+    return this.http.get(environment.url + '/api/cow/get/' + cowId).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
   getAllCows(farmId){
     return this.http.get(environment.url + '/api/cow/getAll/' + farmId).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
+  updateCow(cowdetails){
+    return this.http.put(environment.url + '/api/cow/update', cowdetails).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
+  deleteCow(cowId){
+    return this.http.delete(environment.url + '/api/cow/delete/' + cowId).pipe(
       map(res => {
         return res;
       }),

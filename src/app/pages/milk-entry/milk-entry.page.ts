@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import * as moment from 'moment';
+import { FilterService } from 'src/app/services/filter/filter.service';
 
 @Component({
   selector: 'app-milk-entry',
@@ -10,11 +11,12 @@ import * as moment from 'moment';
 
 export class MilkEntryPage implements OnInit {
 
+  searchTerm:string = "";
   datePickerObj: any;
   selectedDateString: String;
   timeOfDay: String;
 
-  constructor(public datePicker: DatepickerService) { }
+  constructor(private filterService: FilterService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
     let fromDate = new Date('2016-01-01');
@@ -39,4 +41,7 @@ export class MilkEntryPage implements OnInit {
     return moment(date).format('YYYY-MM-DD');
   }
 
+  setFilteredItems() {
+    //this.filteredCowsList = this.filterService.filterItems(this.cowsList, this.searchTerm, ['name', 'tagNumber']);
+  }
 }

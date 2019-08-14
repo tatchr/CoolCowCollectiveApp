@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Cow passport</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form *ngIf="cowForm != null" [formGroup]="cowForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">  
+          <h3>
+            Basic information
+          </h3>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Name*</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Ear tag number</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="tagnumber"></ion-input>
+          </ion-item>
+
+          <ion-item (click)="openDatePicker('birthdate')">
+            <ion-label position="fixed" color="medium">Birth date</ion-label>
+            <ion-input formControlName="birthdate" readonly></ion-input>
+            <ion-icon position="fixed" name="calendar"></ion-icon>
+          </ion-item>           
+
+          <h3>
+            Additional information
+          </h3>
+
+          <h5>
+            Health data
+          </h5>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Weight (kg)</ion-label>
+            <ion-input type="number" formControlName="weight"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label color="medium">Gender</ion-label>
+            <ion-select formControlName="gender" placeholder="Select One">
+              <ion-select-option value="F">Female</ion-select-option>
+              <ion-select-option value="M">Male</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Veterinarian</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="veterinarian"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label color="medium">Status</ion-label>
+            <ion-select formControlName="cowstatus" placeholder="Select One">
+              <ion-select-option value="Lactating">Lactating</ion-select-option>
+              <ion-select-option value="InActive">Inactive</ion-select-option>
+              <ion-select-option value="Calving">Calving</ion-select-option>
+              <ion-select-option value="InHeat">In Heat</ion-select-option>
+              <ion-select-option value="Other">Other</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <h5>
+            Vaccinations
+          </h5>
+
+          <h5>
+            Reproduction data
+          </h5>
+
+          <!-- <ion-item (click)="openDatePicker('inseminationdate')">
+            <ion-label position="fixed" color="medium">Insemination date</ion-label>
+            <ion-input formControlName="inseminationdate" readonly></ion-input>
+            <ion-icon position="fixed" name="calendar"></ion-icon>
+          </ion-item> -->
+
+          <div style="margin-top: 20px;"></div>
+
+          <!-- <ion-button color="success" expand="block" type="submit" [disabled]="!newCowForm.valid">Register</ion-button> -->
+
+          <ion-item>
+            <ion-button size="default" color="success" (click)="updateCow()" [disabled]="!cowForm.valid">
+              Save and return</ion-button>
+          
+            <ion-button size="default" color="danger" (click)="deleteCow()">
+              Delete</ion-button>
+
+            <ion-input type="hidden" [value]="timeOfDay"></ion-input>
+          </ion-item>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
