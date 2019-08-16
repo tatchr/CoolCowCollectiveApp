@@ -5,6 +5,8 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
 
+
+
 @Component({
   selector: 'app-herd',
   templateUrl: './herd.page.html',
@@ -14,44 +16,71 @@ export class HerdPage implements OnInit {
 
   searchControl: FormControl;
   searching: Boolean = false;
-  farmId:string;
-  cowsList:Array<CowDetails> = [];
-  filteredCowsList:Array<CowDetails> = [];
+  farmId: string;
+  cowsList: Array<CowDetails> = [];
+  filteredCowsList: Array<CowDetails> = [];
+  filters: Array<string> = [];
+
+  cowStatuses: Array<CowStatus> = [
+    {value: 'Lactating',  name: 'Lactating'},
+    {value: 'Calving',  name: 'Calving'},
+    {value: 'InHeat',  name: 'In Heat'},
+    {value: 'Inactive',  name: 'Inactive'},
+    {value: 'Other',  name: 'Other'}    
+  ];
 
   constructor(private filterService: FilterService, private cowService: CowService, private storage: Storage) {
     this.searchControl = new FormControl();
-   }
+  }
 
   ngOnInit() {
     this.initiate();
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.initiate();
   }
 
-  initiate(){
+  initiate() {
     this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;      
+      this.farmId = farmId;
       this.cowService.getAllCows(farmId).subscribe(res => {
         this.cowsList = res['cows'];
         this.filteredCowsList = res['cows'];
       });
     });
-    
+
     this.searchControl.valueChanges
       .pipe(debounceTime(500))
       .subscribe(search => {
         this.searching = false;
         this.setFilteredItems(search);
       });
-  }  
-
-  setFilteredItems(searchTerm) {
-    this.filteredCowsList = this.filterService.filterItems(this.cowsList, searchTerm, ['name', 'tagNumber']);
   }
 
-  onSearchInput(){
+  setFilteredItems(searchTerm) {
+    this.filtersSelected();
+    this.filteredCowsList = this.filterService.filterItems(this.filteredCowsList, searchTerm, ['name', 'tagNumber']);
+  }
+
+  onSearchInput() {
     this.searching = true;
+  }
+
+  filtersSelected() {
+    if (this.filters.length === 0) {
+      this.filteredCowsList = this.cowsList;
+    }
+    else {
+      this.filteredCowsList = this.filterService.filterOutItems(this.cowsList, this.filters, 'cowStatus');
+    }
+  }
+
+  removeFilter(filter) {
+    var index = this.filters.indexOf(filter);
+    if (index > -1) {
+      this.filters.splice(index, 1);  
+      this.filtersSelected();    
+    }
   }
 }
