@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Delete cow</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-radio-group>
+            <ion-list-header>
+              <ion-label>Keep cow in herd?</ion-label>
+            </ion-list-header>
+
+            <ion-item>
+              <ion-label>Yes</ion-label>
+              <ion-radio slot="start" value="Yes" color="success" checked></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>No</ion-label>
+              <ion-radio slot="start" value="No" color="danger"></ion-radio>
+            </ion-item>
+            
+          </ion-radio-group>
+        </ion-list>
+
+
+        <ion-button size="default" color="danger" (click)="deleteCow()">
+          Delete</ion-button>
+
+        <ion-button size="default" routerLink="/cow-passport/{{cowId}}" routerDirection="back">
+          Cancel</ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

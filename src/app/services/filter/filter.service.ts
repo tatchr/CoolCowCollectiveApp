@@ -22,7 +22,8 @@ export class FilterService {
   filterOutItems(list, filters, field){
     return list.filter(item => {
       for(var i in filters){
-        if(item[field].toLowerCase().indexOf(filters[i].toLowerCase()) > -1){
+        if(item[field] !== null 
+          && item[field].toLowerCase().indexOf(filters[i].toLowerCase()) > -1){
           return true;
         }
       }

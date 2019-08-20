@@ -63,15 +63,8 @@ export class CowPassportPage implements OnInit {
   updateCow() {
     this.cowService.updateCow(this.cowForm.value).subscribe(val => {
       if(val){
-        this.router.navigateByUrl('/herd');
-      }
-    });
-  }
-
-  deleteCow() {
-    this.cowService.deleteCow(this.cowId).subscribe(val => {
-      if(val){
-        this.router.navigateByUrl('/herd');
+        this.cowService.cowListState.next(true);
+        this.router.navigateByUrl('tabs/herd');
       }
     });
   }

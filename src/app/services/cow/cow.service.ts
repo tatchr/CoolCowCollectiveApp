@@ -3,11 +3,14 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map, catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CowService {
+export class CowService {  
+
+  cowListState = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, private alertService: AlertService) { }
 

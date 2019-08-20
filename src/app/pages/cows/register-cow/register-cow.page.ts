@@ -44,8 +44,10 @@ export class RegisterCowPage implements OnInit {
 
   onSubmit() {
     this.cowService.registerCow(this.newCowForm.value).subscribe(val => {
+      console.log('val: ' + val);
       if(val){
-        this.router.navigateByUrl('/herd');
+        this.cowService.cowListState.next(true);
+        this.router.navigateByUrl('/tabs/herd');
       }
     });
   }

@@ -5,8 +5,6 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
 
-
-
 @Component({
   selector: 'app-herd',
   templateUrl: './herd.page.html',
@@ -22,11 +20,11 @@ export class HerdPage implements OnInit {
   filters: Array<string> = [];
 
   cowStatuses: Array<CowStatus> = [
-    {value: 'Lactating',  name: 'Lactating'},
-    {value: 'Calving',  name: 'Calving'},
-    {value: 'InHeat',  name: 'In Heat'},
-    {value: 'Inactive',  name: 'Inactive'},
-    {value: 'Other',  name: 'Other'}    
+    { value: 'Lactating', name: 'Lactating' },
+    { value: 'Calving', name: 'Calving' },
+    { value: 'InHeat', name: 'In Heat' },
+    { value: 'Inactive', name: 'Inactive' },
+    { value: 'Other', name: 'Other' }
   ];
 
   constructor(private filterService: FilterService, private cowService: CowService, private storage: Storage) {
@@ -38,16 +36,17 @@ export class HerdPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.initiate();
+    this.cowService.cowListState.subscribe(mustUpdate => {
+      if (mustUpdate) {
+        this.loadCowsList();
+      }
+    });
   }
 
   initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
-      this.cowService.getAllCows(farmId).subscribe(res => {
-        this.cowsList = res['cows'];
-        this.filteredCowsList = res['cows'];
-      });
+      this.loadCowsList();
     });
 
     this.searchControl.valueChanges
@@ -56,6 +55,14 @@ export class HerdPage implements OnInit {
         this.searching = false;
         this.setFilteredItems(search);
       });
+  }
+
+  loadCowsList() {
+    this.cowService.getAllCows(this.farmId).subscribe(res => {
+      this.cowsList = res['cows'];
+      this.filteredCowsList = res['cows'];
+      this.cowService.cowListState.next(false);
+    });
   }
 
   setFilteredItems(searchTerm) {
@@ -79,8 +86,8 @@ export class HerdPage implements OnInit {
   removeFilter(filter) {
     var index = this.filters.indexOf(filter);
     if (index > -1) {
-      this.filters.splice(index, 1);  
-      this.filtersSelected();    
+      this.filters.splice(index, 1);
+      this.filtersSelected();
     }
   }
 }
