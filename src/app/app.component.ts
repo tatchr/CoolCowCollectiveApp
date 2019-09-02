@@ -37,7 +37,10 @@ export class AppComponent {
         if (state != null) {
           if (state) {
             this.storage.get('userId').then(userId => {
-              this.subscribeBackButton('/farm-dashboard');
+              this.subscribeBackButton('/tabs/farm-dashboard');
+              this.subscribeBackButton('/tabs/milk-entry');
+              this.subscribeBackButton('/tabs/herd');
+              this.subscribeBackButton('/tabs/menu');
               this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
             });
           } else {

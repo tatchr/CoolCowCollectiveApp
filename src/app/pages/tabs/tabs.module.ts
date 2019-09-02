@@ -38,7 +38,8 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'tabs/farm-dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [AuthGuardService]
   }
 ];
 
