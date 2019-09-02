@@ -5,7 +5,10 @@ import * as moment from 'moment';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { MilkService } from 'src/app/services/milk/milk.service';
 import { CowService } from 'src/app/services/cow/cow.service';
-import { IonContent, IonList } from '@ionic/angular';
+import { IonList } from '@ionic/angular';
+import { FormControl } from "@angular/forms";
+import { debounceTime } from 'rxjs/operators';
+import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 
 @Component({
   selector: 'app-milk-entry',
@@ -15,11 +18,15 @@ import { IonContent, IonList } from '@ionic/angular';
 
 export class MilkEntryPage implements OnInit {
 
+  searchControl: FormControl;
+  searching: Boolean = false;
+
   farmId: string;
   milkRecordsList: Array<MilkProductionDetails> = [];
-  searchTerm: String = "";
+  filteredMilkRecordsList: Array<MilkProductionDetails> = [];
+
   datePickerObj: any;
-  selectedDateString: String = this.formatDate(new Date());
+  selectedDateString: string = this.formatDate(new Date());
   timeOfDay: string = "Morning";
   inputProduction: number = 0.00;
   currentlySelected: MilkProductionDetails = null;
@@ -28,7 +35,9 @@ export class MilkEntryPage implements OnInit {
 
   scrollTo = null;
 
-  constructor(private milkService: MilkService, private cowService: CowService, private datePicker: DatepickerService, private storage: Storage) { }
+  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService, private datePicker: DatepickerService, private storage: Storage) {
+    this.searchControl = new FormControl();
+  }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
 
   ngOnInit() {
@@ -52,23 +61,40 @@ export class MilkEntryPage implements OnInit {
       this.farmId = farmId;
       this.loadMilkRecordsList();
     });
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(search => {
+        this.searching = false;
+        this.setFilteredItems(search);
+      });
+  }
+
+  setFilteredItems(searchTerm) {
+    this.filteredMilkRecordsList = this.filterService.filterItems(this.milkRecordsList, searchTerm, ['cowName', 'tagNumber']);
   }
 
   loadMilkRecordsList() {
     this.milkService.getAllMilkRecords(this.farmId, this.selectedDateString, this.timeOfDay).subscribe(res => {
       this.milkRecordsList = res['milkProductionDetails'];
-      if (this.milkRecordsList.length > 0) {
-        this.currentlySelected = this.milkRecordsList[0];
+      this.filteredMilkRecordsList = res['milkProductionDetails'];
+      if (this.filteredMilkRecordsList.length > 0) {
+        this.currentlySelected = this.filteredMilkRecordsList[0];
+        this.inputProduction = this.currentlySelected.amount;
       }
     });
   }
 
   submit() {
-    for (var i in this.milkRecordsList) {
-      this.milkRecordsList[i].timeOfDay = this.timeOfDay;
+    if (this.filteredMilkRecordsList.length <= 0) {
+      return;
     }
 
-    this.milkService.registerMilkRecords(this.milkRecordsList).subscribe(res => {
+    for (var i in this.filteredMilkRecordsList) {
+      this.filteredMilkRecordsList[i].timeOfDay = this.timeOfDay;
+    }
+
+    this.milkService.registerMilkRecords(this.filteredMilkRecordsList).subscribe(res => {
       this.loadMilkRecordsList();
     });
   }
@@ -87,12 +113,12 @@ export class MilkEntryPage implements OnInit {
 
   toNextCow() {
     this.selectedIndex += 1;
-    if (this.selectedIndex >= this.milkRecordsList.length) {
+    if (this.selectedIndex >= this.filteredMilkRecordsList.length) {
       this.selectedIndex = 0;
     }
 
-    this.currentlySelected = this.milkRecordsList[this.selectedIndex];
     this.currentlySelected.amount = this.inputProduction;
+    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];
 
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[this.selectedIndex];
@@ -102,11 +128,14 @@ export class MilkEntryPage implements OnInit {
   toPreviousCow() {
     this.selectedIndex -= 1;
     if (this.selectedIndex < 0) {
-      this.selectedIndex = this.milkRecordsList.length != 0 ? this.milkRecordsList.length - 1 : 0;
+      this.selectedIndex = this.filteredMilkRecordsList.length != 0
+        ? this.filteredMilkRecordsList.length - 1
+        : 0;
     }
 
-    this.currentlySelected = this.milkRecordsList[this.selectedIndex];
     this.currentlySelected.amount = this.inputProduction;
+    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];
+    
 
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[this.selectedIndex];
@@ -140,10 +169,6 @@ export class MilkEntryPage implements OnInit {
     this.showInputPanel = false;
   }
 
-  setFilteredItems() {
-    //this.filteredCowsList = this.filterService.filterItems(this.cowsList, this.searchTerm, ['name', 'tagNumber']);
-  }
-
   subtractOne() {
     if (this.inputProduction >= 1) {
       this.currentlySelected.amount -= 1;
@@ -171,8 +196,15 @@ export class MilkEntryPage implements OnInit {
 
   inputProductionChanged(input) {
     console.log(input.target.value);
-    let val = input.target.value;
+    console.log(this.inputProduction);
+    let val = input.target.value == null || input.target.value == ',' || input.target.value == '.' || input.target.value == ''
+      ? 0.0
+      : parseFloat(input.target.value);
     this.currentlySelected.amount = val;
     this.inputProduction = val;
+  }
+
+  onSearchInput() {
+    this.searching = true;
   }
 }
