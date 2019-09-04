@@ -32,11 +32,9 @@ export class CowPassportPage implements OnInit {
       farmId: [null],
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
-      weight: [null],
-      gender: [null, [Validators.minLength(1), Validators.maxLength(1)]],
-      veterinarian: [null, [Validators.maxLength(50)]],
-      //inseminationdate: [''],
-      cowstatus: [null],
+      cowtype: [null],
+      breed: [null],
+      cowstatus: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       registrationdate: [null]
     }); 
   }
@@ -52,10 +50,9 @@ export class CowPassportPage implements OnInit {
     this.cowForm.controls['name'].setValue(cowDetails['name']);      
     this.cowForm.controls['farmId'].setValue(cowDetails['farmId']);      
     this.cowForm.controls['tagnumber'].setValue(cowDetails['tagNumber']);      
-    this.cowForm.controls['birthdate'].setValue(this.formatDate(cowDetails['birthDate']));
-    this.cowForm.controls['weight'].setValue(cowDetails['weight']);      
-    this.cowForm.controls['gender'].setValue(cowDetails['gender']);      
-    this.cowForm.controls['veterinarian'].setValue(cowDetails['veterinarian']);      
+    this.cowForm.controls['birthdate'].setValue(this.formatDate(cowDetails['birthDate']));   
+    this.cowForm.controls['cowtype'].setValue(cowDetails['cowType']); 
+    this.cowForm.controls['breed'].setValue(cowDetails['breed']); 
     this.cowForm.controls['cowstatus'].setValue(cowDetails['cowStatus']);      
     this.cowForm.controls['registrationdate'].setValue(cowDetails['registrationDate']);      
   }

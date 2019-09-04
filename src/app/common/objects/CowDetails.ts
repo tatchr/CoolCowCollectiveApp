@@ -5,9 +5,7 @@ class CowDetails{
     name: string;
     birthDate: Date;
     breed: string;
-    weight: number;
-    gender: string;
+    cowType: string;
     cowStatus: string;
-    veterinarian: string;
     registrationDate: Date;
 }

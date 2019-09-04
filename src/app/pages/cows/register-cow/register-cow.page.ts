@@ -34,11 +34,9 @@ export class RegisterCowPage implements OnInit {
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
-      weight: [null],
-      gender: [null, [Validators.minLength(1), Validators.maxLength(1)]],
-      veterinarian: [null, [Validators.maxLength(50)]],
-      //inseminationdate: [''],
-      cowstatus: ['']
+      cowtype: [null],
+      breed: [null],
+      cowstatus: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
     }); 
   }
 

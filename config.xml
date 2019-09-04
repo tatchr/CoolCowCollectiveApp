@@ -3,7 +3,7 @@
     <name>Cool Cow Collective</name>
     <description>An awesome financial planning app for dairy farmers!</description>
     <author email="coolcowcollective@gmail.com" href="http://coolcowcollective.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.178.10:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
