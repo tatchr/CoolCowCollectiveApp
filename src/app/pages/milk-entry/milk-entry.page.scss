@@ -31,3 +31,14 @@ ion-item.selected {
     --border-width: var(--border-top-width) var(--border-end-width) var(--border-bottom-width) var(--border-start-width);
     --border-color: var(--ion-color-success);
   }
+
+  .addOrSubBtn{
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      --border-radius: 0px;
+  }
+
+  .test{
+      width: 20%;
+  }

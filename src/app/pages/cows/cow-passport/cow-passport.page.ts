@@ -4,11 +4,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import * as moment from 'moment';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-cow-passport',
   templateUrl: './cow-passport.page.html',
   styleUrls: ['./cow-passport.page.scss'],
+  providers: [Keyboard]
 })
 export class CowPassportPage implements OnInit {
 
@@ -16,7 +18,8 @@ export class CowPassportPage implements OnInit {
   datePickerObj: any;
   cowId: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private cowService: CowService, private datePicker: DatepickerService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
+    private cowService: CowService, private datePicker: DatepickerService, private keyboard: Keyboard) { }
 
   ngOnInit() {
     this.initiate();
@@ -58,17 +61,19 @@ export class CowPassportPage implements OnInit {
   }
 
   updateCow() {
-    this.cowService.updateCow(this.cowForm.value).subscribe(val => {
-      if(val){
-        this.cowService.cowListState.next(true);
-        this.router.navigateByUrl('tabs/herd');
-      }
-    });
+    if(this.cowForm.valid){
+      this.cowService.updateCow(this.cowForm.value).subscribe(val => {
+        if(val){
+          this.cowService.cowListState.next(true);
+          this.router.navigateByUrl('tabs/herd');
+        }
+      });
+    }    
   }
 
   async openDatePicker(formControl) {    
     let fromDate = new Date('1970-01-01');
-    let toDate = new Date('2025-12-31');
+    let toDate = this.formatDate(new Date());
     this.datePickerObj = this.datePicker.getDatepickerObj('', fromDate, toDate);
     const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);
 

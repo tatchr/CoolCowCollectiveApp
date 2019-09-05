@@ -5,13 +5,13 @@
 </ion-header>
 
 
-<ion-item (click)="openDatePicker()">
+<ion-item (click)="openDatePicker()" [hidden]="keyboard.isVisible">
   <ion-label position="fixed" color="medium">Date</ion-label>
   <ion-input [(ngModel)]="selectedDateString" readonly></ion-input>
   <ion-icon position="fixed" name="calendar"></ion-icon>
 </ion-item>
 
-<ion-item>
+<ion-item [hidden]="keyboard.isVisible">
   <ion-button size="default" fill="outline" [color]="timeOfDay == 'Morning' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Morning')">
     Morning</ion-button>
@@ -39,19 +39,20 @@
     <ion-row>
       <ion-col>
         <ion-list style="width: 100%;">
-            <ion-item button="true" *ngFor='let record of filteredMilkRecordsList; let i = index;' (click)="cowSelected(record, i)"
-            [class.focus]="scrollTo === i"  [class.selected]="record === currentlySelected">
-                <ion-avatar slot="start">
-                  <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
-                </ion-avatar>
-                <ion-label>
-                  <p>{{record.tagNumber}}</p>
-                  <h3>{{record.cowName}}</h3>
-                </ion-label>
-                <ion-label style="text-align: right;">
-                  <h3>{{record.amount | number : '1.1-1'}} L</h3>
-                </ion-label>           
-            </ion-item>
+          <ion-item button="true" *ngFor='let record of filteredMilkRecordsList; let i = index;'
+            (click)="cowSelected(record, i)" [class.focus]="scrollTo === i"
+            [class.selected]="record === currentlySelected">
+            <ion-avatar slot="start">
+              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+            <ion-label>
+              <p>{{record.tagNumber}}</p>
+              <h3>{{record.cowName}}</h3>
+            </ion-label>
+            <ion-label style="text-align: right;">
+              <h3>{{record.amount | number : '1.1-1'}} L</h3>
+            </ion-label>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -59,39 +60,40 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row>    
+  <ion-row>
 
-    <ion-col col-1>
-      <ion-button expand="full" color="danger" size="small" (click)="subtractOne()">-1</ion-button>
+    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="subtractOne()" fill="clear">-1</ion-button>
     </ion-col>
-    <ion-col col-1>
-      <ion-button expand="full" color="danger" size="small" (click)="subtractOneDecimal()">-0.1</ion-button>
+    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="subtractOneDecimal()" fill="clear">-0.1</ion-button>
     </ion-col>
 
-    <ion-col col-2>
-      <!-- <ion-input class="input-box" type="number" value="{{inputProduction | number : '1.1-1'}}" (input)="inputProductionChanged($event)"></ion-input> -->
-
-      <ion-item>          
-          <ion-input autocapitalize="on" type="number" value="{{inputProduction | number : '1.1-1'}}" (input)="inputProductionChanged($event)"></ion-input> L
+    <ion-col col-4 no-padding>     
+      <form (submit)="inputProductionSubmitted()">
+        <ion-item>
+          <ion-input autocapitalize="on" name="test" type="number" [(ngModel)]="inputProduction" (click)="inputProductionClicked()">
+          </ion-input>
         </ion-item>
-    </ion-col>    
-
-    <ion-col col-1>
-      <ion-button expand="full" color="success" size="small" (click)="addOneDecimal()">+0.1</ion-button>
+      </form>
     </ion-col>
-    <ion-col col-1>
-      <ion-button expand="full"color="success" size="small" (click)="addOne()">+1</ion-button>
+
+    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+      <ion-button class="addOrSubBtn" color="success" size="small" (click)="addOneDecimal()" fill="clear">+0.1</ion-button>
+    </ion-col>
+    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+      <ion-button class="addOrSubBtn" color="success" size="small" (click)="addOne()" fill="clear">+1</ion-button>
     </ion-col>
   </ion-row>
 
-  <ion-row>
-    <ion-col col-2>
+  <ion-row [hidden]="keyboard.isVisible">
+    <ion-col col-2 no-padding>
       <ion-button expand="full" color="danger" size="small" (click)="toPreviousCow()">
-          <ion-icon name="arrow-back"></ion-icon> Prev
+        <ion-icon name="arrow-back"></ion-icon> Prev
       </ion-button>
     </ion-col>
 
-    <ion-col col-2>
+    <ion-col col-2 no-padding>
       <ion-button expand="full" color="success" size="small" (click)="toNextCow()">
         Next <ion-icon name="arrow-forward"></ion-icon>
       </ion-button>

@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form [formGroup]="newCowForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <form [formGroup]="cowForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <h3>
             Basic information
           </h3>
@@ -43,17 +43,17 @@
           </ion-item>
 
           <ion-item>
-            <ion-label position="floating" color="medium">Breed</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="breed"></ion-input>
-          </ion-item>
-
-          <ion-item>
             <ion-label color="medium">Status*</ion-label>
             <ion-select formControlName="cowstatus" placeholder="Select One">
               <ion-select-option value="Lactating">Lactating</ion-select-option>
               <ion-select-option value="NonLactating">Non-lactating</ion-select-option>
               <ion-select-option value="N/A">N/A</ion-select-option>
             </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Breed</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="breed"></ion-input>
           </ion-item>
           
         </form>
@@ -63,9 +63,10 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row>
+  <ion-row [hidden]="keyboard.isVisible">
     <ion-col>
-      <ion-button color="success" expand="full" type="submit" [disabled]="!newCowForm.valid">Register</ion-button>
+      <ion-button color="success" expand="full" type="submit" [disabled]="!cowForm.valid" (click)="onSubmit()">Register</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>
+

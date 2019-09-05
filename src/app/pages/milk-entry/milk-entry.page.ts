@@ -8,12 +8,13 @@ import { CowService } from 'src/app/services/cow/cow.service';
 import { IonList } from '@ionic/angular';
 import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
-import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-milk-entry',
   templateUrl: './milk-entry.page.html',
   styleUrls: ['./milk-entry.page.scss'],
+  providers: [Keyboard]
 })
 
 export class MilkEntryPage implements OnInit {
@@ -35,7 +36,8 @@ export class MilkEntryPage implements OnInit {
 
   scrollTo = null;
 
-  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService, private datePicker: DatepickerService, private storage: Storage) {
+  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService, 
+    private datePicker: DatepickerService, private storage: Storage, private keyboard: Keyboard) {
     this.searchControl = new FormControl();
   }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
@@ -108,7 +110,7 @@ export class MilkEntryPage implements OnInit {
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[index];
 
-    selectedItem.scrollIntoView();
+    selectedItem.scrollIntoView({ behavior: 'auto', block: 'center' });
   }
 
   toNextCow() {
@@ -171,40 +173,60 @@ export class MilkEntryPage implements OnInit {
 
   subtractOne() {
     if (this.inputProduction >= 1) {
+      this.currentlySelected.amount = this.inputProduction;
       this.currentlySelected.amount -= 1;
       this.inputProduction -= 1;
+      this.roundAmounts();
     }
   }
 
   subtractOneDecimal() {
     console.log(this.inputProduction);
     if (this.inputProduction >= 0.1) {
+      this.currentlySelected.amount = this.inputProduction;
       this.currentlySelected.amount -= 0.1;
       this.inputProduction -= 0.1;
+      this.roundAmounts();
     }
   }
 
   addOne() {
+    this.currentlySelected.amount = this.inputProduction;
     this.currentlySelected.amount += 1;
     this.inputProduction += 1;
+    this.roundAmounts();
   }
 
   addOneDecimal() {
+    this.currentlySelected.amount = this.inputProduction;
     this.currentlySelected.amount += 0.1;
     this.inputProduction += 0.1;
+    this.roundAmounts();
   }
 
-  inputProductionChanged(input) {
-    console.log(input.target.value);
-    console.log(this.inputProduction);
-    let val = input.target.value == null || input.target.value == ',' || input.target.value == '.' || input.target.value == ''
-      ? 0.0
-      : parseFloat(input.target.value);
-    this.currentlySelected.amount = val;
-    this.inputProduction = val;
+  roundAmounts(){
+    this.currentlySelected.amount = Math.round(this.currentlySelected.amount * 10) / 10;
+    this.inputProduction = Math.round(this.inputProduction * 10) / 10;
   }
 
   onSearchInput() {
     this.searching = true;
   }
+
+  inputProductionClicked(){
+    this.inputProduction = null;
+  }
+
+  inputProductionSubmitted(){
+    if(this.inputProduction == null){
+      this.currentlySelected.amount = 0.0;
+      this.inputProduction = 0.0;
+    }
+    else{
+      this.currentlySelected.amount = this.inputProduction;
+    }
+    
+    this.toNextCow();
+  }
+ 
 }

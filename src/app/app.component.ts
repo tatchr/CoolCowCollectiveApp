@@ -52,7 +52,7 @@ export class AppComponent {
     });
   }
 
-  subscribeBackButton(routeName) {
+  subscribeBackButton(routeName) { 
     this.platform.backButton.subscribe(async () => {
       if (this.router.isActive(routeName, true) && this.router.url === routeName) {
         navigator['app'].exitApp();
