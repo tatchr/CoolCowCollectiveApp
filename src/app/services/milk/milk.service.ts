@@ -13,7 +13,7 @@ export class MilkService {
   constructor(private http: HttpClient, private alertService: AlertService) { }
 
   getAllMilkRecords(farmId, date, timeOfDay){
-    return this.http.get(environment.url + '/api/milk/getAll/' + farmId + "/" + date + "/" + timeOfDay).pipe(
+    return this.http.get(environment.url + '/api/milkproduction/getAll/' + farmId + "/" + date + "/" + timeOfDay).pipe(
       map(res => {
         return res;
       }),
@@ -25,7 +25,7 @@ export class MilkService {
   }
 
   registerMilkRecords(records) {
-    return this.http.post(environment.url + '/api/milk/register', records).pipe(
+    return this.http.post(environment.url + '/api/milkproduction/register', records).pipe(
       catchError(e => {
         console.log(e.error.errMessage);
         this.alertService.showAlert(e.error.errMessage);

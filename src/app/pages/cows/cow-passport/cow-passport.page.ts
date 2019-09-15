@@ -19,7 +19,7 @@ export class CowPassportPage implements OnInit {
   cowId: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
-    private cowService: CowService, private datePicker: DatepickerService, private keyboard: Keyboard) { }
+    private cowService: CowService, private datePicker: DatepickerService, public keyboard: Keyboard) { }
 
   ngOnInit() {
     this.initiate();

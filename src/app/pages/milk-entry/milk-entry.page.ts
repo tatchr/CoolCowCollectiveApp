@@ -37,7 +37,7 @@ export class MilkEntryPage implements OnInit {
   scrollTo = null;
 
   constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService, 
-    private datePicker: DatepickerService, private storage: Storage, private keyboard: Keyboard) {
+    private datePicker: DatepickerService, private storage: Storage, public keyboard: Keyboard) {
     this.searchControl = new FormControl();
   }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
