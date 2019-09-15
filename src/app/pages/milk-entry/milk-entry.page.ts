@@ -27,7 +27,7 @@ export class MilkEntryPage implements OnInit {
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
   datePickerObj: any;
-  selectedDateString: string = this.formatDate(new Date());
+  selectedDateString: string = this.datePicker.formatDate(new Date());
   timeOfDay: string = "Morning";
   inputProduction: number = 0.00;
   currentlySelected: MilkProductionDetails = null;
@@ -157,15 +157,11 @@ export class MilkEntryPage implements OnInit {
     await datePickerModal.present();
     datePickerModal.onDidDismiss().then((data) => {
       if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.selectedDateString = this.formatDate(data.data.date);
+        this.selectedDateString = this.datePicker.formatDate(data.data.date);
         this.loadMilkRecordsList();
       }
     });
-  }
-
-  formatDate(date) {
-    return moment(date).format('YYYY-MM-DD');
-  }
+  } 
 
   closeInputPanel() {
     this.showInputPanel = false;

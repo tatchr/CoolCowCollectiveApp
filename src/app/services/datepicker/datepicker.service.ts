@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Ionic4DatepickerModalComponent } from '@logisticinfotech/ionic4-datepicker';
 import { ModalController } from '@ionic/angular';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class DatepickerService {
       weeksList: ["S", "M", "T", "W", "T", "F", "S"],
       dateFormat: 'YYYY-MM-DD', // default DD MMM YYYY
       clearButton: true, // default true
-      momentLocale: 'pt-BR', // Default 'en-US'
+      momentLocale: 'en-US', // Default 'en-US'
       yearInAscending: true, // Default false
       btnCloseSetInReverse: true, // Default false
       btnProperties: {
@@ -47,5 +48,21 @@ export class DatepickerService {
       cssClass: 'li-ionic4-datePicker',
       componentProps: { 'objConfig': datePickerObj }
     });    
+  }
+
+  formatDate(date) {
+    return moment(date).format('YYYY-MM-DD');
+  }
+
+  formatDateYYYYMMMDD(date) {
+    return moment(date).format('YYYY-MMM-DD');
+  }
+
+  formatDateMMMDD(date) {
+    return moment(date).format('MMM-DD');
+  }
+
+  subtract(date, amount, type){
+    return moment(date).subtract(amount , type).format('YYYY-MM-DD');
   }
 }

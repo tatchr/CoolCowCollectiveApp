@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Milk sales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-item (click)="openDatePicker()">
+  <ion-label position="fixed" color="medium">Date</ion-label>
+  <ion-input [(ngModel)]="selectedDateString" readonly></ion-input>
+  <ion-icon position="fixed" name="calendar"></ion-icon>
+</ion-item> -->
+
+<ion-item>
+  <ion-label color="medium">Period</ion-label>
+  <ion-select [(ngModel)]="period" placeholder="Select One" (ionChange)="periodSelected()">
+    <ion-select-option value="lastweek">Last week</ion-select-option>
+    <ion-select-option value="lastmonth">Last month</ion-select-option>
+    <ion-select-option value="lastquarter">Last Quarter</ion-select-option>
+    <ion-select-option value="lastyear">Last year</ion-select-option>
+  </ion-select>
+</ion-item>
+
+<ion-button color="success" expand="full" routerLink="/milk-sales-input/" routerDirection="forward">Input</ion-button>
+<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="success" size="small">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->
+
+<ion-content padding>
+  <ion-grid>    
+    <ion-row>
+      <ion-col size="10">
+        Sale details
+      </ion-col>
+      <ion-col size="2">
+        Paid
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor='let record of milkSalesList; let i = index;'>
+      <ion-col size="10">
+        <ion-item button="true">
+          <ion-label>
+            <p>{{record.date}}</p>
+            <p>{{record.litersSold}} L - {{record.offtaker}} - {{record.pricePerLiter}} KSH</p>
+          </ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>
+          <ion-checkbox style="margin-top: 3px;"></ion-checkbox>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+  </ion-grid>
+
+
+
+
+  <!-- <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list style="width: 100%;">
+          <ion-item button="true" *ngFor='let record of milkSalesList; let i = index;'>
+            <ion-label>
+              <p>{{record.date}}</p>
+              <h3>{{record.litersSold}} L - {{record.offtaker}} - {{record.pricePerLiter}} KSH</h3>
+            </ion-label>
+            <ion-label style="text-align: right;">
+              <h3>{{record.amount | number : '1.1-1'}} L</h3>
+            </ion-label> 
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>

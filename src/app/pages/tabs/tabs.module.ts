@@ -29,6 +29,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'milk-sales-overview',
+        loadChildren: '../sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'menu',
         loadChildren: '../menu/menu.module#MenuPageModule',
         canActivate: [AuthGuardService]
