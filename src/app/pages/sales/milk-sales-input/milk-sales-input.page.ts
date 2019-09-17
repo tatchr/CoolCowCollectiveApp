@@ -40,8 +40,8 @@ export class MilkSalesInputPage implements OnInit {
     this.milksalesForm = this.formBuilder.group({
       farmId: this.farmId,
       date: this.selectedDateString,
-      literssold: [0.0, [Validators.required, Validators.min(0.0)]],
-      priceperliter: [0.0, [Validators.required, Validators.min(0.0)]],
+      literssold: [null, [Validators.required, Validators.min(0.0)]],
+      priceperliter: [null, [Validators.required, Validators.min(0.0)]],
       offtaker: [null, [Validators.required, Validators.minLength(1)]],
       offtakername: [null],
       fullamountpaid: [false]

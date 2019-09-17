@@ -26,6 +26,7 @@ const routes: Routes = [
   { path: 'delete-cow/:cowId', loadChildren: './pages/cows/delete-cow/delete-cow.module#DeleteCowPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-input', loadChildren: './pages/sales/milk-sales-input/milk-sales-input.module#MilkSalesInputPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-overview', loadChildren: './pages/sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule', canActivate: [AuthGuardService] },
+  { path: 'milk-sales-edit/:milkSaleId', loadChildren: './pages/sales/milk-sales-edit/milk-sales-edit.module#MilkSalesEditPageModule' },
  
  
 ];
