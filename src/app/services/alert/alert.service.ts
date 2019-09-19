@@ -17,4 +17,24 @@ export class AlertService {
     });
     alert.then(alert => alert.present());
   }
+
+  async presentAlertConfirm(header, message, confirmHandler) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => { }
+        }, {
+          text: 'Yes',
+          handler: confirmHandler
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 }

@@ -38,6 +38,11 @@ const routes: Routes = [
         loadChildren: '../menu/menu.module#MenuPageModule',
         canActivate: [AuthGuardService]
       },
+      {
+        path: 'other-sales-overview',
+        loadChildren: '../sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule',
+        canActivate: [AuthGuardService]
+      },
     ]
   },
   {

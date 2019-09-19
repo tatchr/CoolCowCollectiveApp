@@ -41,6 +41,7 @@ export class AppComponent {
               this.subscribeBackButton('/tabs/milk-entry');
               this.subscribeBackButton('/tabs/herd');
               this.subscribeBackButton('/tabs/menu');
+              this.subscribeBackButton('/tabs/other-sales-overview');
               this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
             });
           } else {

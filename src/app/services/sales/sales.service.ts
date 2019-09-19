@@ -57,4 +57,14 @@ export class SalesService {
       })
     );
   }
+
+  deleteMilkSalesRecord(id) {
+    return this.http.delete(environment.url + '/api/milksales/delete/' +  id).pipe(
+      catchError(e => {
+        console.log(e.error.errMessage);
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
 }

@@ -4,11 +4,11 @@ import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
 @Component({
-  selector: 'app-milk-sales-overview',
-  templateUrl: './milk-sales-overview.page.html',
-  styleUrls: ['./milk-sales-overview.page.scss'],
+  selector: 'app-other-sales-overview',
+  templateUrl: './other-sales-overview.page.html',
+  styleUrls: ['./other-sales-overview.page.scss'],
 })
-export class MilkSalesOverviewPage implements OnInit {
+export class OtherSalesOverviewPage implements OnInit {
 
   farmId: string;
   fromDatePickerObj: any;
@@ -32,7 +32,7 @@ export class MilkSalesOverviewPage implements OnInit {
   ionViewDidEnter() {
     this.salesService.milkSalesListState.subscribe(mustUpdate => {
       if (mustUpdate) {
-        this.loadMilkSalesList();
+        this.loadOtherSalesList();
       }
     });
   }
@@ -40,17 +40,17 @@ export class MilkSalesOverviewPage implements OnInit {
   initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
-      this.loadMilkSalesList();
+      this.loadOtherSalesList();
     });    
   }
 
-  loadMilkSalesList(){
-    this.salesService.getAllMilkSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
-      this.milkSalesList = res['milkSalesDetails'];
-      this.milkSalesList.forEach(item => {
-        item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
-      });
-    });
+  loadOtherSalesList(){
+    // this.salesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
+    //   this.milkSalesList = res['milkSalesDetails'];
+    //   this.milkSalesList.forEach(item => {
+    //     item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
+    //   });
+    // });
   }
 
   periodSelected(period){
@@ -71,7 +71,7 @@ export class MilkSalesOverviewPage implements OnInit {
     if(this.period == 'lastyear'){
       this.selectedFromDateString = this.datePicker.subtract(new Date(), 1, 'years');
     }
-    this.loadMilkSalesList();  
+    this.loadOtherSalesList();  
   }
 
   async openFromDatePicker() {
@@ -83,7 +83,7 @@ export class MilkSalesOverviewPage implements OnInit {
       if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
         this.period = '';
         this.selectedFromDateString = this.datePicker.formatDate(data.data.date);
-        this.loadMilkSalesList();
+        this.loadOtherSalesList();
       }
     });
   }
@@ -96,8 +96,9 @@ export class MilkSalesOverviewPage implements OnInit {
       if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
         this.period = '';
         this.selectedToDateString = this.datePicker.formatDate(data.data.date);
-        this.loadMilkSalesList();
+        this.loadOtherSalesList();
       }
     });
   }
+
 }
