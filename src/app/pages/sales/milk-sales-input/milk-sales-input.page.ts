@@ -31,6 +31,7 @@ export class MilkSalesInputPage implements OnInit {
   initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
+      
     });
 
     this.initiateForm();
@@ -38,8 +39,8 @@ export class MilkSalesInputPage implements OnInit {
 
   initiateForm(){
     this.milksalesForm = this.formBuilder.group({
-      farmId: this.farmId,
-      date: this.selectedDateString,
+      farmId: [this.farmId],
+      date: [this.selectedDateString],
       literssold: [null, [Validators.required, Validators.min(0.0)]],
       priceperliter: [null, [Validators.required, Validators.min(0.0)]],
       totalPrice: [{value: 0.0, disabled : true}],
@@ -60,6 +61,7 @@ export class MilkSalesInputPage implements OnInit {
 
   onSubmit() {
     if(this.milksalesForm.valid){
+      this.milksalesForm.controls['farmId'].setValue(this.farmId);
       this.milksalesForm.controls['date'].setValue(this.selectedDateString);
       this.salesService.registerMilkSalesRecord(this.milksalesForm.value).subscribe(val => {
         if(val){

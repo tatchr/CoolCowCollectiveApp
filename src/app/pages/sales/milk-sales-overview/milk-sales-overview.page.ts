@@ -53,6 +53,16 @@ export class MilkSalesOverviewPage implements OnInit {
     });
   }
 
+  moneyReceived(item){
+    item.fullAmountPaid = true;
+    this.salesService.updateMilkSalesRecord(item).subscribe();
+  }
+
+  moneyNotReceived(item){
+    item.fullAmountPaid = false;
+    this.salesService.updateMilkSalesRecord(item).subscribe();   
+  }
+
   periodSelected(period){
     this.period = period;
     this.selectedToDateString = this.datePicker.formatDate(new Date());

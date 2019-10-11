@@ -34,8 +34,10 @@ export class FarmDashboardPage implements OnInit {
 
   getAllFarms(){
     this.farmService.getAllFarms(this.userId).subscribe(res => {
-      this.farmsList = res['farms'];
-      this.storage.set(FARM_ID, res['farms'][0]['id'])
+        this.farmsList = res['farms'];
+        if(this.farmsList.length > 0){
+          this.storage.set(FARM_ID, res['farms'][0]['farmId'])
+        } 
     });
   }
 

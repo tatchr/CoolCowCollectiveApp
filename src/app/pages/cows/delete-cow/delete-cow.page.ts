@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class DeleteCowPage implements OnInit {
 
   cowId: string;
+  keepRecords: boolean;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private cowService: CowService) { }
 
