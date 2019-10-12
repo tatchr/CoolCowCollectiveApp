@@ -1,12 +1,64 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-        </ion-buttons>
-    <ion-title>other-sales-input</ion-title>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Other sales input</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-item (click)="openDatePicker()">
+  <ion-label position="fixed" color="medium">Date</ion-label>
+  <ion-input [(ngModel)]="selectedDateString" readonly></ion-input>
+  <ion-icon position="fixed" name="calendar"></ion-icon>
+</ion-item>
 
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="othersalesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+          <h3>
+            Other sale details
+          </h3>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Item sold*</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="itemsold"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Price*</ion-label>
+            <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label color="medium">Off-taker*</ion-label>
+            <ion-select formControlName="offtaker" placeholder="Select One">
+              <ion-select-option value="Cooperative">Cooperative</ion-select-option>
+              <ion-select-option value="Middleman">Middleman</ion-select-option>
+              <ion-select-option value="Processor">Processor</ion-select-option>
+              <ion-select-option value="Informal">Informal</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Off-taker name</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="offtakername"></ion-input>
+          </ion-item>
+
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="success" expand="full" type="submit" [disabled]="!othersalesForm.valid" (click)="onSubmit()">
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

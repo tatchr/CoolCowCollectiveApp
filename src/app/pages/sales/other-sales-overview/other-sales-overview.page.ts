@@ -15,7 +15,7 @@ export class OtherSalesOverviewPage implements OnInit {
   toDatePickerObj: any;
   selectedFromDateString: string = this.datePicker.formatDate(new Date());
   selectedToDateString: string = this.datePicker.formatDate(new Date());
-  milkSalesList: Array<MilkSalesDetails> = [];
+  otherSalesList: Array<OtherSalesDetails> = [];
   period: string = '';
 
   constructor(private salesService: SalesService, private storage: Storage, private datePicker: DatepickerService) { }
@@ -30,7 +30,7 @@ export class OtherSalesOverviewPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.salesService.milkSalesListState.subscribe(mustUpdate => {
+    this.salesService.otherSalesListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadOtherSalesList();
       }
@@ -45,12 +45,22 @@ export class OtherSalesOverviewPage implements OnInit {
   }
 
   loadOtherSalesList(){
-    // this.salesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
-    //   this.milkSalesList = res['milkSalesDetails'];
-    //   this.milkSalesList.forEach(item => {
-    //     item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
-    //   });
-    // });
+    this.salesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
+      this.otherSalesList = res['otherSalesDetails'];
+      this.otherSalesList.forEach(item => {
+        item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
+      });
+    });
+  }
+
+  moneyReceived(item){
+    item.fullAmountPaid = true;
+    this.salesService.updateOtherSalesRecord(item).subscribe();
+  }
+
+  moneyNotReceived(item){
+    item.fullAmountPaid = false;
+    this.salesService.updateOtherSalesRecord(item).subscribe();   
   }
 
   periodSelected(period){

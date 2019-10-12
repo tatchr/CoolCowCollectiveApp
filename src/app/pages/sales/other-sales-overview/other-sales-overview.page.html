@@ -54,7 +54,6 @@
   </ion-col>
 </ion-row>
 
-
 <ion-content padding>
   <ion-grid>
     <ion-row>
@@ -66,41 +65,25 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col size="10">
-        <ion-item button="true" routerLink="/other-sales-edit/1" routerDirection="forward">
+    <ion-row *ngFor='let record of otherSalesList; let i = index;'>
+      <ion-col size="9">
+        <ion-item button="true" routerLink="/other-sales-edit/{{record.id}}" routerDirection="forward" [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
-            <p>2019-Sep-18</p>
-            <p>Calve - Bertha - 100k KSH</p>
+            <p>{{record.date}}</p>
+            <p>{{record.itemSold}} - {{record.price}} KSH</p>
           </ion-label>
         </ion-item>
       </ion-col>
-      <ion-col size="2">
-        <ion-label>
-          <ion-checkbox style="margin-top: 3px;"></ion-checkbox>
+      <ion-col size="3" *ngIf="!record.fullAmountPaid">
+        <ion-label>          
+          <ion-button size="small" fill="outline" color="success" (click)="moneyReceived(this.otherSalesList[i])">
+            <ion-icon name="checkmark"></ion-icon>
+          </ion-button>
+          <ion-button size="small" fill="outline" color="danger" (click)="moneyNotReceived(this.otherSalesList[i])">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
         </ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-
-
-
-  <!-- <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-list style="width: 100%;">
-          <ion-item button="true" *ngFor='let record of milkSalesList; let i = index;'>
-            <ion-label>
-              <p>{{record.date}}</p>
-              <h3>{{record.litersSold}} L - {{record.offtaker}} - {{record.pricePerLiter}} KSH</h3>
-            </ion-label>
-            <ion-label style="text-align: right;">
-              <h3>{{record.amount | number : '1.1-1'}} L</h3>
-            </ion-label> 
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
 </ion-content>
