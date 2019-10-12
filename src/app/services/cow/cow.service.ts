@@ -50,8 +50,8 @@ export class CowService {
     );
   }
 
-  deleteCow(cowId){
-    return this.http.delete(environment.url + '/api/cow/delete/' + cowId).pipe(
+  deleteCow(cowId, keepRecords){
+    return this.http.delete(environment.url + '/api/cow/delete/' + cowId + '/' + keepRecords).pipe(
       map(res => {
         return res;
       }),

@@ -7,7 +7,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <ion-grid>
     <ion-row>
@@ -20,12 +19,12 @@
 
             <ion-item>
               <ion-label>Yes</ion-label>
-              <ion-radio slot="start" value="Yes" color="success" checked></ion-radio>
+              <ion-radio slot="start" value="True" color="success" (click)="keepRecords=true" checked></ion-radio>
             </ion-item>
 
             <ion-item>
               <ion-label>No</ion-label>
-              <ion-radio slot="start" value="No" color="danger"></ion-radio>
+              <ion-radio slot="start" value="False" color="danger" (click)="keepRecords=false"></ion-radio>
             </ion-item>
             
           </ion-radio-group>
