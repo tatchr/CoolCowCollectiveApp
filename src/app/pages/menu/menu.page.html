@@ -1,24 +1,26 @@
 <ion-header>
-    <ion-toolbar color="success">
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Menu</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-content padding>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
 
-              <ion-button expand="full" routerLink="/tabs/other-sales-overview" routerDirection="forward">Other sales</ion-button>
-              <ion-button expand="full">Reports</ion-button>
-              <ion-button expand="full">Account</ion-button>
-              <ion-button expand="full">Feedback</ion-button>
-              <ion-button expand="full">Help</ion-button>
+        <ion-button expand="full" routerLink="/tabs/other-sales-overview" routerDirection="forward">Other sales
+        </ion-button>
+        <ion-button expand="full">Reports</ion-button>
+        <ion-button expand="full" routerLink="/account" routerDirection="forward">Account</ion-button>
+        <ion-button expand="full">Farm</ion-button>
+        <ion-button expand="full">Feedback</ion-button>
+        <ion-button expand="full">Help</ion-button>
 
-            <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
+        <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
 
-            <ion-button expand="full" (click)="logout()">Logout</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+        <ion-button expand="full" (click)="logout()">Logout</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

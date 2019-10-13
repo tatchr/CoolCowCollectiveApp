@@ -29,7 +29,10 @@ const routes: Routes = [
   { path: 'milk-sales-edit/:milkSaleId', loadChildren: './pages/sales/milk-sales-edit/milk-sales-edit.module#MilkSalesEditPageModule', canActivate: [AuthGuardService] },
   { path: 'other-sales-edit/:otherSaleId', loadChildren: './pages/sales/other-sales-edit/other-sales-edit.module#OtherSalesEditPageModule', canActivate: [AuthGuardService] },
   { path: 'other-sales-input', loadChildren: './pages/sales/other-sales-input/other-sales-input.module#OtherSalesInputPageModule', canActivate: [AuthGuardService] },
-  { path: 'other-sales-overview', loadChildren: './pages/sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule', canActivate: [AuthGuardService] }, 
+  { path: 'other-sales-overview', loadChildren: './pages/sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule', canActivate: [AuthGuardService] },   
+  { path: 'account', loadChildren: './pages/account/account/account.module#AccountPageModule', canActivate: [AuthGuardService] },
+  { path: 'change-password', loadChildren: './pages/account/change-password/change-password.module#ChangePasswordPageModule' },
+  { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule' },
  
 ];
 

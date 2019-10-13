@@ -30,8 +30,7 @@ export class MilkSalesInputPage implements OnInit {
 
   initiate() {
     this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      
+      this.farmId = farmId;      
     });
 
     this.initiateForm();
