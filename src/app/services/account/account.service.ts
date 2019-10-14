@@ -21,4 +21,28 @@ export class AccountService {
       })
     );
   }
+
+  getUserDetails(userId){
+    return this.http.get(environment.url + '/api/user/getUser/' + userId).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
+  updateUserDetails(userdetails){
+    return this.http.put(environment.url + '/api/user/update', userdetails).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
 }

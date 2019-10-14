@@ -1,18 +1,55 @@
 <ion-header>
-    <ion-toolbar color="success">
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
-      <ion-title>Edit account details</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content padding>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit account details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+          <p style="font-size: 14px;margin:0 auto;">
+            Edit <b>Cool Cow Collective</b> account details here.
+          </p>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Email*</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
           
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+          <ion-item>
+            <ion-label position="floating" color="medium">First Name*</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="firstname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Last Name*</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="lastname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label color="medium">Gender*</ion-label>
+            <ion-button style="margin-left: 5px;" size="default" fill="outline"
+              [color]="gen == 'M' ? 'success' : 'medium'" (click)="gen='M'">Male</ion-button>
+            <ion-button size="default" fill="outline" [color]="gen == 'F' ? 'success' : 'medium'" (click)="gen='F'">
+              Female</ion-button>
+            <ion-input type="hidden" formControlName="gender" [value]="gen"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Phone Number</ion-label>
+            <ion-input type="tel" formControlName="phonenumber"></ion-input>
+          </ion-item>
+
+          <div style="margin-top: 20px;"></div>
+
+          <ion-button color="success" expand="block" type="submit" [disabled]="!userForm.valid">Save</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

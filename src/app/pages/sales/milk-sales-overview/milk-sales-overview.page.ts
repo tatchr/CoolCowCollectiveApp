@@ -13,10 +13,10 @@ export class MilkSalesOverviewPage implements OnInit {
   farmId: string;
   fromDatePickerObj: any;
   toDatePickerObj: any;
-  selectedFromDateString: string = this.datePicker.formatDate(new Date());
+  selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDateString: string = this.datePicker.formatDate(new Date());
   milkSalesList: Array<MilkSalesDetails> = [];
-  period: string = '';
+  period: string = 'lastweek';
 
   constructor(private salesService: SalesService, private storage: Storage, private datePicker: DatepickerService) { }
 
