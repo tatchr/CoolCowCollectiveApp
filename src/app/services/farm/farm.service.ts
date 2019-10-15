@@ -11,6 +11,18 @@ export class FarmService {
 
   constructor(private http: HttpClient, private alertService: AlertService) { }
 
+  getFarm(farmId){
+    return this.http.get(environment.url + '/api/farm/get/' + farmId).pipe(
+      map(res => {
+        return res;
+      }),
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
   getAllFarms(userId){
     return this.http.get(environment.url + '/api/farm/getAll/' + userId).pipe(
       map(res => {
@@ -25,6 +37,18 @@ export class FarmService {
   
   registerFarm(credentials) {
     return this.http.post(environment.url + '/api/farm/register', credentials).pipe(
+      catchError(e => {
+        this.alertService.showAlert(e.error.errMessage);
+        throw new Error(e);
+      })
+    );
+  }
+
+  updateFarm(farmDetails){
+    return this.http.put(environment.url + '/api/farm/update', farmDetails).pipe(
+      map(res => {
+        return res;
+      }),
       catchError(e => {
         this.alertService.showAlert(e.error.errMessage);
         throw new Error(e);

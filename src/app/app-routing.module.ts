@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'account', loadChildren: './pages/account/account/account.module#AccountPageModule', canActivate: [AuthGuardService] },
   { path: 'change-password', loadChildren: './pages/account/change-password/change-password.module#ChangePasswordPageModule' },
   { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule' },
+  { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule' },
  
 ];
 
