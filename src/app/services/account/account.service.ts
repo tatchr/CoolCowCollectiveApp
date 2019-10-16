@@ -1,48 +1,23 @@
 import { Injectable } from '@angular/core';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { map, catchError } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { HttpService } from 'src/app/services/http/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  constructor(private http: HttpClient, private alertService: AlertService) { }
+  constructor(private httpService: HttpService) { }
 
   changePassword(form) {
-    return this.http.post(environment.url + '/api/user/changepassword', form).pipe(
-      catchError(e => {
-        console.log(e.error.errMessage);
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(environment.url + '/api/user/changepassword', form);
   }
 
   getUserDetails(userId){
-    return this.http.get(environment.url + '/api/user/getUser/' + userId).pipe(
-      map(res => {
-        return res;
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.get(environment.url + '/api/user/getUser/' + userId);
   }
 
   updateUserDetails(userdetails){
-    return this.http.put(environment.url + '/api/user/update', userdetails).pipe(
-      map(res => {
-        return res;
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.put(environment.url + '/api/user/update', userdetails);
   }
 }

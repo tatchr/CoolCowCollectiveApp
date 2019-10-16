@@ -6,12 +6,7 @@ const routes: Routes = [
   //{ path: '', redirectTo: 'login', pathMatch: 'full' },
   //{ path: 'home', loadChildren: './home/home.module#HomePageModule' },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
-  { path: 'register-user', loadChildren: './pages/register-user/register-user.module#RegisterUserPageModule' },
-  { 
-    path: 'inside', 
-    loadChildren: './pages/inside/inside.module#InsidePageModule',
-    canActivate: [AuthGuardService]
-  },   
+  { path: 'register-user', loadChildren: './pages/register-user/register-user.module#RegisterUserPageModule' },  
   { path: 'verify-registration-email/:email', loadChildren: './pages/verify-registration-email/verify-registration-email.module#VerifyRegistrationEmailPageModule' },
   { path: 'forgot-password', loadChildren: './pages/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
   { path: 'verify-recovery-email/:email', loadChildren: './pages/verify-recovery-email/verify-recovery-email.module#VerifyRecoveryEmailPageModule' },
@@ -31,9 +26,9 @@ const routes: Routes = [
   { path: 'other-sales-input', loadChildren: './pages/sales/other-sales-input/other-sales-input.module#OtherSalesInputPageModule', canActivate: [AuthGuardService] },
   { path: 'other-sales-overview', loadChildren: './pages/sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule', canActivate: [AuthGuardService] },   
   { path: 'account', loadChildren: './pages/account/account/account.module#AccountPageModule', canActivate: [AuthGuardService] },
-  { path: 'change-password', loadChildren: './pages/account/change-password/change-password.module#ChangePasswordPageModule' },
-  { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule' },
-  { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule' },
+  { path: 'change-password', loadChildren: './pages/account/change-password/change-password.module#ChangePasswordPageModule', canActivate: [AuthGuardService] },
+  { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule', canActivate: [AuthGuardService] },
+  { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
  
 ];
 

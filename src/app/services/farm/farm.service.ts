@@ -1,58 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { map, catchError } from 'rxjs/operators';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { HttpService } from 'src/app/services/http/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FarmService {
 
-  constructor(private http: HttpClient, private alertService: AlertService) { }
+  constructor(private httpService: HttpService) { }
 
   getFarm(farmId){
-    return this.http.get(environment.url + '/api/farm/get/' + farmId).pipe(
-      map(res => {
-        return res;
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.get(environment.url + '/api/farm/get/' + farmId);
   }
 
   getAllFarms(userId){
-    return this.http.get(environment.url + '/api/farm/getAll/' + userId).pipe(
-      map(res => {
-        return res;
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.get(environment.url + '/api/farm/getAll/' + userId);
   }
   
   registerFarm(credentials) {
-    return this.http.post(environment.url + '/api/farm/register', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(environment.url + '/api/farm/register', credentials);
   }
 
   updateFarm(farmDetails){
-    return this.http.put(environment.url + '/api/farm/update', farmDetails).pipe(
-      map(res => {
-        return res;
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
-  }
+    return this.httpService.put(environment.url + '/api/farm/update', farmDetails);
+  }  
 }

@@ -1,12 +1,10 @@
 import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
-import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { HttpService } from 'src/app/services/http/http.service';
 
 const TOKEN_KEY = 'access_token';
 const USER_ID = 'userId';
@@ -20,7 +18,7 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage, private plt: Platform, private alertService: AlertService) {
+  constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService) {
     this.plt.ready().then(() => {
       this.checkToken();
     });
@@ -47,91 +45,35 @@ export class AuthService {
   }
 
   registerUser(credentials) {
-    return this.http.post(this.url + '/api/user/register', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/register', credentials);
   }
 
   confirmEmail(credentials) {
-    return this.http.post(this.url + '/api/user/confirmEmail', credentials).pipe(
-      tap(res => {
-        this.storage.set(USER_ID, res['userId']).then(() => {
-          this.storage.set(TOKEN_KEY, res['token']);
-          this.user = this.helper.decodeToken(res['token']);
-          this.authenticationState.next(true);
-        });        
-      }),
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
-  }
+    return this.httpService.postWithTap(this.url + '/api/user/confirmEmail', credentials, (res) => this.setUserIdAndJwtToken(res));
+  }  
 
   resendConfirmationCode(credentials) {
-    return this.http.post(this.url + '/api/user/resendConfirmationCode', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/resendConfirmationCode', credentials);
   }
 
   login(credentials) {
-    return this.http.post(this.url + '/api/user/login', credentials)
-      .pipe(
-        tap(res => {
-          this.storage.set(USER_ID, res['userId']).then(() => {
-            this.storage.set(TOKEN_KEY, res['token']);
-            this.user = this.helper.decodeToken(res['token']);
-            this.authenticationState.next(true);
-          });          
-        }),
-        catchError(e => {
-          console.log(e);
-          this.alertService.showAlert(e.error.errMessage);
-          throw new Error(e);
-        })
-      );
+    return this.httpService.postWithTap(this.url + '/api/user/login', credentials, (res) => this.setUserIdAndJwtToken(res));
   }
 
   forgotPassword(credentials) {
-    return this.http.post(this.url + '/api/user/forgotPassword', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/forgotPassword', credentials);
   }
 
   verifyPasswordResetCode(credentials) {
-    return this.http.post(this.url + '/api/user/verifyPasswordResetCode', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/verifyPasswordResetCode', credentials);
   }
 
   resendPasswordResetCode(credentials) {
-    return this.http.post(this.url + '/api/user/resendPasswordResetCode', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/resendPasswordResetCode', credentials);
   }
 
   resetPassword(credentials) {
-    return this.http.post(this.url + '/api/user/resetPassword', credentials).pipe(
-      catchError(e => {
-        this.alertService.showAlert(e.error.errMessage);
-        throw new Error(e);
-      })
-    );
+    return this.httpService.post(this.url + '/api/user/resetPassword', credentials);
   }
 
   logout() {
@@ -141,20 +83,15 @@ export class AuthService {
     });
   }
 
-  getSpecialData() {
-    return this.http.get(this.url + '/api/user/getSpecialInfo').pipe(
-      catchError(e => {
-        let status = e.status;
-        if (status === 401) {
-          this.alertService.showAlert('You are not authorized for this!');
-          this.logout();
-        }
-        throw new Error(e);
-      })
-    )
+  setUserIdAndJwtToken(source){
+    this.storage.set(USER_ID, source['userId']).then(() => {
+      this.storage.set(TOKEN_KEY, source['token']);
+      this.user = this.helper.decodeToken(source['token']);
+      this.authenticationState.next(true);
+    });
   }
 
   isAuthenticated() {
     return this.authenticationState.value;
-  }  
+  }
 }

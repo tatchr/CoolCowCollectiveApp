@@ -27,7 +27,8 @@ export class MenuPage implements OnInit {
 
     let toast = this.toastController.create({
       message: 'JWT removed',
-      duration: 3000
+      showCloseButton: true,
+      duration: 2000
     });
     toast.then(toast => toast.present());
   }
