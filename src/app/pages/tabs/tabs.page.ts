@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tabs',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsPage implements OnInit {
 
-  constructor() { }
+  disableTab: boolean;
 
-  ngOnInit() {
+  constructor(private storage: Storage) { }
+
+  ngOnInit() { }
+
+  ionViewDidEnter(){
+    this.storage.get('farmId').then(farmId => {
+      this.disableTab = farmId == null;
+    });
   }
 
 }

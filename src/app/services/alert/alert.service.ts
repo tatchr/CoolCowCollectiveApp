@@ -8,23 +8,14 @@ export class AlertService {
 
   constructor(private alertController: AlertController) { }
 
-  showAlert1(header, msg, buttons) {
+  showAlert(header, msg, buttons) {
     let alert = this.alertController.create({
       header: header,
       message: msg,      
       buttons: buttons
     });
     alert.then(alert => alert.present());
-  }
-
-  showAlert(msg) {
-    let alert = this.alertController.create({
-      header: "header",
-      message: msg,      
-      buttons: ['OK']
-    });
-    alert.then(alert => alert.present());
-  }
+  }  
  
   async presentAlertConfirm(header, message, confirmHandler) {
     const alert = await this.alertController.create({

@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'verify-recovery-email/:email', loadChildren: './pages/verify-recovery-email/verify-recovery-email.module#VerifyRecoveryEmailPageModule' },
   { path: 'reset-password/:email/:passwordResetCode', loadChildren: './pages/reset-password/reset-password.module#ResetPasswordPageModule' },
   { path: 'farm-dashboard', loadChildren: './pages/farm-dashboard/farm-dashboard.module#FarmDashboardPageModule', canActivate: [AuthGuardService] },
-  { path: 'register-farm', loadChildren: './pages/register-farm/register-farm.module#RegisterFarmPageModule', canActivate: [AuthGuardService] },
+  { path: 'register-farm', loadChildren: './pages/farm/register-farm/register-farm.module#RegisterFarmPageModule', canActivate: [AuthGuardService] },
+  { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },   
   { path: 'milk-entry', loadChildren: './pages/milk-entry/milk-entry.module#MilkEntryPageModule', canActivate: [AuthGuardService] },
   { path: 'tabs/herd', loadChildren: './pages/cows/herd/herd.module#HerdPageModule', canActivate: [AuthGuardService] },
@@ -28,7 +29,6 @@ const routes: Routes = [
   { path: 'account', loadChildren: './pages/account/account/account.module#AccountPageModule', canActivate: [AuthGuardService] },
   { path: 'change-password', loadChildren: './pages/account/change-password/change-password.module#ChangePasswordPageModule', canActivate: [AuthGuardService] },
   { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule', canActivate: [AuthGuardService] },
-  { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
  
 ];
 

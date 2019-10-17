@@ -9,16 +9,18 @@
     <ion-row>
       <ion-col>
 
-        <ion-button expand="full" routerLink="/tabs/other-sales-overview" routerDirection="forward">Other sales
+        <ion-button expand="full" [disabled]="disableTab" routerLink="/tabs/other-sales-overview"
+          routerDirection="forward">Other sales
         </ion-button>
-        <ion-button expand="full">Reports</ion-button>
+        <ion-button expand="full" [disabled]="disableTab">Reports</ion-button>
         <ion-button expand="full" routerLink="/account" routerDirection="forward">Account</ion-button>
-        <ion-button expand="full" routerLink="/edit-farm" routerDirection="forward">Farm</ion-button>
+        <ion-button expand="full" [disabled]="disableTab" routerLink="/edit-farm" routerDirection="forward">Farm
+        </ion-button>
         <ion-button expand="full">Feedback</ion-button>
         <ion-button expand="full">Help</ion-button>
 
         <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
-
+        <ion-button expand="full" (click)="clearFarmId()">Clear FarmId</ion-button>
         <ion-button expand="full" (click)="logout()">Logout</ion-button>
       </ion-col>
     </ion-row>

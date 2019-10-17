@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 
@@ -12,10 +11,9 @@ const FARM_ID = 'farmId';
 })
 export class FarmDashboardPage implements OnInit {
 
-  userId:string;
   farmsList:Array<Object> = [];
 
-  constructor(private farmService: FarmService, private router: Router, private storage: Storage) { }
+  constructor(private farmService: FarmService, private storage: Storage) { }
 
   ngOnInit() {
     this.initiate();
@@ -27,22 +25,16 @@ export class FarmDashboardPage implements OnInit {
 
   initiate(){
     this.storage.get('userId').then(userId => {
-      this.userId = userId;
-      this.getAllFarms();
+      this.getAllFarms(userId);
     });    
   }
 
-  getAllFarms(){
-    this.farmService.getAllFarms(this.userId).subscribe(res => {
-        this.farmsList = res['farms'];
+  getAllFarms(userId){
+    this.farmService.getAllFarms(userId).subscribe(res => {
+        this.farmsList = res['farms'];        
         if(this.farmsList.length > 0){
           this.storage.set(FARM_ID, res['farms'][0]['farmId'])
-        } 
+        }
     });
   }
-
-  registerFarm(){
-    this.router.navigateByUrl('/register-farm');
-  }
-
 }

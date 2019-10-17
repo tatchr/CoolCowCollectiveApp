@@ -15,7 +15,7 @@ export class HttpErrorService {
         this.unprocessableEntity422Alert(err.error.errMessage);
         break;
       case 400:
-        this.badRequest400Alert(err.error.errMessage);
+        this.badRequest400Alert(err.message);
         break;
       case 401:
         this.unauthorized401Alert();
@@ -35,26 +35,26 @@ export class HttpErrorService {
   };
 
   unprocessableEntity422Alert(message){
-    this.alertService.showAlert1('', message, ['OKAY']);    
+    this.alertService.showAlert('', message, ['OKAY']);    
   }
 
   badRequest400Alert(message){
-    this.alertService.showAlert1('Bad request', message, ['OKAY']);
+    this.alertService.showAlert('Bad request', message, ['OKAY']);
   }
 
   unauthorized401Alert(){
-    this.alertService.showAlert1('Unauthorized', 'Please log in to your Cool Cow Collective account.', ['OKAY']);
+    this.alertService.showAlert('Unauthorized', 'Please log in to your Cool Cow Collective account.', ['OKAY']);
   }
 
   internalServerError500Alert(message){
-    this.alertService.showAlert1('Internal server error', message, ['OKAY']);
+    this.alertService.showAlert('Internal server error', message, ['OKAY']);
   }
 
   cantConnectToServerAlert(){
-    this.alertService.showAlert1('Error connecting to server', 'Could not reach server, please try again later.', ['OKAY']);
+    this.alertService.showAlert('Error connecting to server', 'Could not reach server, please try again later.', ['OKAY']);
   }
 
   unknownErrorAlert(err){
-    this.alertService.showAlert1('Unknown error', 'Error status code: ' + err.status + ' ' + err.message, ['OKAY']);
+    this.alertService.showAlert('Unknown error', 'Error status code: ' + err.status + ' ' + err.message, ['OKAY']);
   }
 }

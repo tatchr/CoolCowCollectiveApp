@@ -10,11 +10,17 @@ import { Storage } from '@ionic/storage';
 })
 export class MenuPage implements OnInit {
 
+  disableTab: boolean;
+
   constructor(private authService: AuthService, private storage: Storage, private toastController: ToastController) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {  }
 
+  ionViewDidEnter(){
+    this.storage.get('farmId').then(farmId => {
+      this.disableTab = farmId == null;
+    });
+  }
 
   logout() {
     this.authService.logout();
@@ -27,6 +33,18 @@ export class MenuPage implements OnInit {
 
     let toast = this.toastController.create({
       message: 'JWT removed',
+      showCloseButton: true,
+      duration: 2000
+    });
+    toast.then(toast => toast.present());
+  }
+
+  clearFarmId() {
+    // ONLY FOR TESTING!
+    this.storage.remove('farmId');
+
+    let toast = this.toastController.create({
+      message: 'farmId removed',
       showCloseButton: true,
       duration: 2000
     });
