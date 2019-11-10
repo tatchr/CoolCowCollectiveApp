@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class RegisterUserPage implements OnInit {
 
   newUserForm: FormGroup;
-  gen: String;
+  gen: string;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) { }
 

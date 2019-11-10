@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { CowService } from 'src/app/services/cow/cow.service';
 
 @Component({
   selector: 'app-other-sales-edit',
@@ -17,10 +18,16 @@ export class OtherSalesEditPage implements OnInit {
   othersalesForm: FormGroup;
   farmId: string;
   datePickerObj: any;
-  selectedDateString: string = this.datePicker.formatDate(new Date());  
+  selectedDateString: string = this.datePicker.formatDate(new Date());
+  cowsList: Array<CowDetails> = [];
+  showCowList: boolean;
+  showOtherInput: boolean;
+  showSpermInput: boolean;
+  animalTypes: Array<string> = ['Calf', 'Cow', 'Bull', 'Heifer'];
+  otherItemDescription: string = "";
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
-    private salesService: SalesService, private datePicker: DatepickerService, private storage: Storage, private alertService: AlertService) { }
+    private salesService: SalesService, private cowService: CowService, private datePicker: DatepickerService, private storage: Storage, private alertService: AlertService) { }
 
   ngOnInit() {
     this.initiate();
@@ -41,7 +48,8 @@ export class OtherSalesEditPage implements OnInit {
 
   getMilkSale(){
     this.salesService.getOtherSaleRecord(this.otherSaleId).subscribe(res => {
-      this.populateForm(res['otherSale']);
+      console.log(res['otherSale']);
+      this.populateForm(res['otherSale']);      
     });
   }
 
@@ -52,12 +60,48 @@ export class OtherSalesEditPage implements OnInit {
       id: this.otherSaleId,
       farmId: this.farmId,
       date: this.selectedDateString,
-      itemsold: [otherSalesDetails.itemSold, [Validators.required, Validators.minLength(1)]],
+      itemsold: [{value: this.getItemSold(otherSalesDetails.itemSold), disabled: true}],
+      cowidsold: [{value: otherSalesDetails.cowIdSold, disabled: true}],
       price: [otherSalesDetails.price, [Validators.required, Validators.min(0.0)]],
-      offtaker: [otherSalesDetails.offtaker, [Validators.required, Validators.minLength(1)]],
+      quantity: [otherSalesDetails.quantity, [Validators.min(0.0), Validators.max(100000.00)]],
       offtakername: [otherSalesDetails.offtakerName],
-      fullamountpaid: [otherSalesDetails.fullAmountPaid]
-    });    
+      offtakercompany: [otherSalesDetails.offtakerCompany],
+    });
+  }
+
+  getItemSold(itemSold){
+    console.log(itemSold);
+    this.showSpermInput = itemSold == 'Sperm';
+    this.showCowList = this.animalTypes.includes(itemSold); 
+
+    if(this.showCowList){
+      this.loadCowsList(itemSold);
+      return itemSold
+    }
+
+    if(!this.animalTypes.includes(itemSold) && !this.showSpermInput){
+      this.showOtherInput = true;
+      this.otherItemDescription = itemSold;
+      return 'Other';
+    }    
+
+    return itemSold;
+  }
+
+  itemSelected(event) {
+    this.showOtherInput = event.detail.value == 'Other';
+    this.showSpermInput = event.detail.value == 'Sperm';
+    this.showCowList = this.animalTypes.includes(event.detail.value);
+    if (this.showCowList) {
+      this.loadCowsList(event.detail.value);
+    }
+  }
+
+  loadCowsList(cowType) {
+    this.cowService.getAllCowsOfType(this.farmId, cowType).subscribe(res => {
+      this.cowsList = res['cows'];
+      //this.cowService.cowListState.next(false);
+    });
   }
   
   round(number, decimals){
@@ -67,6 +111,12 @@ export class OtherSalesEditPage implements OnInit {
   onSubmit() {
     if(this.othersalesForm.valid){
       this.othersalesForm.controls['date'].setValue(this.selectedDateString);
+      
+      let itemsold = this.othersalesForm.controls['itemsold'].value;
+      if(itemsold == 'Other'){
+        this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
+      }
+
       this.salesService.updateOtherSalesRecord(this.othersalesForm.value).subscribe(val => {
         if(val){
           this.returnToOverview();
@@ -77,7 +127,7 @@ export class OtherSalesEditPage implements OnInit {
 
   onDelete(){
     let header = 'Delete this record?';
-    let message = 'Are you sure that you want to permanently delete this other sales record?';
+    let message = 'Are you sure that you want to permanently delete this sales record?';
     let confirmAction = () => { 
       this.salesService.deleteOtherSalesRecord(this.otherSaleId).subscribe(val => {
         if(val){

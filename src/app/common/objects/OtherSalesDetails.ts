@@ -3,9 +3,10 @@ class OtherSalesDetails{
     farmId: number;
     date: string;
     itemSold: string;
+    cowIdSold: number;
     price: number;
-    offtaker: string;
+    quantity: number;
     offtakerName: string;
-    fullAmountPaid: boolean;
+    offtakerCompany: string;    
     timestamp: Date;
 }

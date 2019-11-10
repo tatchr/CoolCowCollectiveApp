@@ -47,16 +47,14 @@ export class MilkEntryPage implements OnInit {
     let toDate = new Date('2025-12-31');
     this.datePickerObj = this.datePicker.getDatepickerObj(this.selectedDateString, fromDate, toDate);
 
-    this.initiate();
-  }
-
-  ionViewDidEnter() {
     this.cowService.cowListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadMilkRecordsList();
       }
     });
-  }
+
+    this.initiate();
+  }  
 
   initiate() {
     this.storage.get('farmId').then(farmId => {

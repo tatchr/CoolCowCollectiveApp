@@ -35,9 +35,10 @@ export class CowPassportPage implements OnInit {
       farmId: [null],
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
-      cowtype: [null],
+      cowtype: [null, [Validators.required]],
       breed: [null],
       cowstatus: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      cowstate: [null],
       registrationdate: [null]
     }); 
   }
@@ -57,6 +58,7 @@ export class CowPassportPage implements OnInit {
     this.cowForm.controls['cowtype'].setValue(cowDetails['cowType']); 
     this.cowForm.controls['breed'].setValue(cowDetails['breed']); 
     this.cowForm.controls['cowstatus'].setValue(cowDetails['cowStatus']);      
+    this.cowForm.controls['cowstate'].setValue(cowDetails['cowState']);      
     this.cowForm.controls['registrationdate'].setValue(cowDetails['registrationDate']);      
   }
 

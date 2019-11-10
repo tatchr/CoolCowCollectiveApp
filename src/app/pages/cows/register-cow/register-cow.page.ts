@@ -24,29 +24,24 @@ export class RegisterCowPage implements OnInit {
 
   ngOnInit() {
     this.initiate();
-  }
-
-  ionViewDidEnter(){
-    this.initiate();
-  }
+  }  
 
   initiate(){
     this.farmId = this.activatedRoute.snapshot.paramMap.get('farmId');
     this.cowForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
-      cowtype: [null],
+      cowtype: [null, [Validators.required]],
       breed: [null],
-      cowstatus: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
+      cowstatus: [null, [Validators.required]]
     }); 
   }
 
   onSubmit() {
     if(this.cowForm.valid){
       this.cowService.registerCow(this.cowForm.value).subscribe(val => {
-        console.log('val: ' + val);
         if(val){
           this.cowService.cowListState.next(true);
           this.router.navigateByUrl('/tabs/herd');

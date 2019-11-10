@@ -7,5 +7,6 @@ class CowDetails{
     breed: string;
     cowType: string;
     cowStatus: string;
+    cowState: string;
     registrationDate: Date;
 }

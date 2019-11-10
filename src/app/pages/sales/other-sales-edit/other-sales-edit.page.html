@@ -23,33 +23,50 @@
           </h3>
 
           <ion-item>
-            <ion-label position="floating" color="medium">Item sold*</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="itemsold"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Price*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label color="medium">Off-taker*</ion-label>
-            <ion-select formControlName="offtaker" placeholder="Select One">
-              <ion-select-option value="Cooperative">Cooperative</ion-select-option>
-              <ion-select-option value="Middleman">Middleman</ion-select-option>
-              <ion-select-option value="Processor">Processor</ion-select-option>
-              <ion-select-option value="Informal">Informal</ion-select-option>
+            <ion-label color="medium">Item sold*</ion-label>
+            <ion-select formControlName="itemsold" placeholder="Select One" (ionChange)="itemSelected($event)">
+              <ion-select-option value="Cow">Cow</ion-select-option>
+              <ion-select-option value="Heifer">Heifer</ion-select-option>
+              <ion-select-option value="Calf">Calf</ion-select-option>
+              <ion-select-option value="Bull">Bull</ion-select-option>
+              <ion-select-option value="Sperm">Sperm</ion-select-option>
+              <ion-select-option value="Other">Other</ion-select-option>
             </ion-select>
           </ion-item>
 
+          <ion-item *ngIf="showCowList">
+            <ion-label color="medium">Select from herd*</ion-label>
+            <ion-select formControlName="cowidsold" placeholder="Select One">
+              <ion-select-option *ngFor="let cow of cowsList" [value]="cow.id">{{cow.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="showOtherInput">
+            <ion-label position="floating" color="medium">Item description*</ion-label>
+            <ion-input autocapitalize="on" type="text" [(ngModel)]="otherItemDescription"
+              [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+
           <ion-item>
-            <ion-label position="floating" color="medium">Off-taker name</ion-label>
+            <ion-label position="floating" color="medium" *ngIf="showCowList">Price*</ion-label>
+            <ion-label position="floating" color="medium" *ngIf="showOtherInput || showSpermInput">Price per unit*
+            </ion-label>
+            <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
+          </ion-item>
+
+          <ion-item *ngIf="showOtherInput || showSpermInput">
+            <ion-label position="floating" color="medium">Quantity*</ion-label>
+            <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Off-taker name*</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="offtakername"></ion-input>
           </ion-item>
 
           <ion-item>
-            <ion-label position="fixed" color="medium" class="lblWidth">Money received</ion-label>
-            <ion-toggle slot="end" formControlName="fullamountpaid" color="success"></ion-toggle>
+            <ion-label position="floating" color="medium">Off-taker company</ion-label>
+            <ion-input autocapitalize="on" type="text" formControlName="offtakercompany"></ion-input>
           </ion-item>
         </form>
       </ion-col>

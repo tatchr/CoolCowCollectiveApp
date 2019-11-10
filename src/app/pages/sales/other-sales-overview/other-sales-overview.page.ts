@@ -26,16 +26,14 @@ export class OtherSalesOverviewPage implements OnInit {
     this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString, fromDate, toDate);
     this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString, fromDate, toDate);
 
-    this.initiate();
-  }
-
-  ionViewDidEnter() {
     this.salesService.otherSalesListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadOtherSalesList();
       }
     });
-  }
+
+    this.initiate();
+  }  
 
   initiate() {
     this.storage.get('farmId').then(farmId => {

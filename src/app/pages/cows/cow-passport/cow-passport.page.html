@@ -33,7 +33,7 @@
           </ion-item>
 
           <ion-item>
-            <ion-label color="medium">Type</ion-label>
+            <ion-label color="medium">Type*</ion-label>
             <ion-select formControlName="cowtype" placeholder="Select One">
               <ion-select-option value="Cow">Cow</ion-select-option>
               <ion-select-option value="Heifer">Heifer</ion-select-option>
@@ -55,6 +55,16 @@
               <ion-select-option value="N/A">N/A</ion-select-option>
             </ion-select>
           </ion-item>
+
+          <ion-item>
+              <ion-label color="medium">State</ion-label>
+              <ion-select formControlName="cowstate" placeholder="Select One">
+                <ion-select-option value="InHerd">In Herd</ion-select-option>
+                <ion-select-option value="Deleted">Deleted</ion-select-option>
+                <ion-select-option value="Sold">Sold</ion-select-option>
+                <ion-select-option value="Deceased">Deceased</ion-select-option>
+              </ion-select>
+            </ion-item>
         </form>
       </ion-col>
     </ion-row>

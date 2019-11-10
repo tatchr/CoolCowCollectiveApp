@@ -20,6 +20,10 @@ export class CowService {
     return this.httpService.get(environment.url + '/api/cow/getAll/' + farmId);
   }
 
+  getAllCowsOfType(farmId, type){
+    return this.httpService.get(environment.url + '/api/cow/getAll/' + farmId + '/' + type);
+  }
+
   updateCow(cowdetails){
     return this.httpService.put(environment.url + '/api/cow/update', cowdetails);
   }

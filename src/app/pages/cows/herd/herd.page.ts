@@ -33,15 +33,12 @@ export class HerdPage implements OnInit {
 
   ngOnInit() {
     this.initiate();
-  }
-
-  ionViewDidEnter() {
     this.cowService.cowListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadCowsList();
       }
     });
-  }
+  }  
 
   initiate() {
     this.storage.get('farmId').then(farmId => {
