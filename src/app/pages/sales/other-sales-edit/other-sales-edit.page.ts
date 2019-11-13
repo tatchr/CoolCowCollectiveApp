@@ -48,7 +48,6 @@ export class OtherSalesEditPage implements OnInit {
 
   getMilkSale(){
     this.salesService.getOtherSaleRecord(this.otherSaleId).subscribe(res => {
-      console.log(res['otherSale']);
       this.populateForm(res['otherSale']);      
     });
   }

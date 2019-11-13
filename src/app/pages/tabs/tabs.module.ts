@@ -43,6 +43,11 @@ const routes: Routes = [
         loadChildren: '../sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule',
         canActivate: [AuthGuardService]
       },
+      {
+        path: 'expenses-overview',
+        loadChildren: '../expenses/expenses-overview/expenses-overview.module#ExpensesOverviewPageModule',
+        canActivate: [AuthGuardService]
+      },
     ]
   },
   {

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Milk sales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-row>
+  <ion-col>
+    <ion-item (click)="openFromDatePicker()">
+      <ion-label position="floating" color="medium">From</ion-label>
+      <ion-input [(ngModel)]="selectedFromDateString" readonly></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item (click)="openToDatePicker()">
+      <ion-label position="floating" color="medium">To</ion-label>
+      <ion-input [(ngModel)]="selectedToDateString" readonly item-center></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item>
+      <div class="scroll-container">
+        <div class="scroll" scrollX="true">
+          <ion-button size="default" fill="outline" [color]="period == 'lastweek' ? 'success' : 'medium'"
+            (click)="periodSelected('lastweek')">
+            1 week</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'last2weeks' ? 'success' : 'medium'"
+            (click)="periodSelected('last2weeks')">
+            2 weeks</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'lastmonth' ? 'success' : 'medium'"
+            (click)="periodSelected('lastmonth')">
+            1 month</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'lastquarter' ? 'success' : 'medium'"
+            (click)="periodSelected('lastquarter')">
+            3 months</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'lastyear' ? 'success' : 'medium'"
+            (click)="periodSelected('lastyear')">
+            1 year</ion-button>
+        </div>
+      </div>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-button color="success" expand="full" routerLink="/expenses-input/" routerDirection="forward">New expense
+    </ion-button>
+  </ion-col>
+</ion-row>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        Expense details
+      </ion-col>      
+    </ion-row>
+
+    <ion-row *ngFor='let record of expensesList; let i = index;'>
+      <ion-col>
+        <ion-item button="true" routerLink="/expenses-edit/{{record.id}}" routerDirection="forward">
+           <ion-label>
+            <p>{{record.date}}</p>
+            <p>{{record.itemBought}} - {{record.sellerName}} - {{record.price}} KSH</p>
+          </ion-label> 
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
