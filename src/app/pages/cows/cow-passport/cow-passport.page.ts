@@ -17,6 +17,9 @@ export class CowPassportPage implements OnInit {
   cowForm: FormGroup;
   datePickerObj: any;
   cowId: string;
+  fromDate = new Date('1970-01-01');
+  toDate = this.datePicker.formatDate(new Date());
+  selectedDateString: string = this.datePicker.formatDate(new Date());
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
     private cowService: CowService, private datePicker: DatepickerService, public keyboard: Keyboard) { }
@@ -54,7 +57,7 @@ export class CowPassportPage implements OnInit {
     this.cowForm.controls['name'].setValue(cowDetails['name']);      
     this.cowForm.controls['farmId'].setValue(cowDetails['farmId']);      
     this.cowForm.controls['tagnumber'].setValue(cowDetails['tagNumber']);      
-    this.cowForm.controls['birthdate'].setValue(this.formatDate(cowDetails['birthDate']));   
+    this.cowForm.controls['birthdate'].setValue(this.datePicker.formatDate(cowDetails['birthDate']));   
     this.cowForm.controls['cowtype'].setValue(cowDetails['cowType']); 
     this.cowForm.controls['breed'].setValue(cowDetails['breed']); 
     this.cowForm.controls['cowstatus'].setValue(cowDetails['cowStatus']);      
@@ -73,23 +76,9 @@ export class CowPassportPage implements OnInit {
     }    
   }
 
-  async openDatePicker(formControl) {    
-    let fromDate = new Date('1970-01-01');
-    let toDate = this.formatDate(new Date());
-    this.datePickerObj = this.datePicker.getDatepickerObj('', fromDate, toDate);
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if(typeof data.data !== 'undefined' && data.data.date !== 'Invalid date'){
-        this.cowForm.controls[formControl].setValue(this.formatDate(data.data.date));
-      }
-    });
-  }
-
-  formatDate(date){
-    return date != null 
-    ? moment(date).format('YYYY-MM-DD') 
-    : null;
+  async openDatePicker(){
+    let birthDate = this.cowForm.controls['birthdate'].value;
+    birthDate = await this.datePicker.openDatePicker(this.fromDate, this.toDate, birthDate);
+    this.cowForm.controls['birthdate'].setValue(birthDate);    
   }
 }
