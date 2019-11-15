@@ -50,6 +50,20 @@ export class DatepickerService {
     });    
   }
 
+  async openDatePicker(fromDate, toDate, inputDate : string) : Promise<string> {
+    let datePickerObj = this.getDatepickerObj(inputDate, fromDate, toDate);
+    let datePickerModal = await this.getDatePickerModal(datePickerObj);
+    await datePickerModal.present();
+
+    return await datePickerModal.onDidDismiss().then((data) => {      
+      if (typeof data.data === 'undefined' || data.data.date === 'Invalid date') {
+        return inputDate;
+      }
+      
+      return this.formatDate(data.data.date);
+    });
+  }
+
   formatDate(date) {
     return moment(date).format('YYYY-MM-DD');
   }

@@ -26,16 +26,14 @@ export class MilkSalesOverviewPage implements OnInit {
     this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString, fromDate, toDate);
     this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString, fromDate, toDate);
 
-    this.initiate();
-  }
-
-  ionViewDidEnter() {
     this.salesService.milkSalesListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadMilkSalesList();
       }
     });
-  }
+
+    this.initiate();
+  }  
 
   initiate() {
     this.storage.get('farmId').then(farmId => {
