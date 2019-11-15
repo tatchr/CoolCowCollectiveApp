@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './milk-sales-base.component.html',
   styleUrls: ['./milk-sales-base.component.scss'],
 })
-export abstract class MilkSalesBaseComponent {
+export class MilkSalesBaseComponent {
 
   milksalesForm: FormGroup;
   farmId: string;

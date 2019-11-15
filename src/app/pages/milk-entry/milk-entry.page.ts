@@ -26,7 +26,8 @@ export class MilkEntryPage implements OnInit {
   milkRecordsList: Array<MilkProductionDetails> = [];
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
-  datePickerObj: any;
+  fromDate = new Date('2016-01-01');
+  toDate = new Date('2025-12-31');
   selectedDateString: string = this.datePicker.formatDate(new Date());
   timeOfDay: string = "Morning";
   inputProduction: number = 0.00;
@@ -42,11 +43,7 @@ export class MilkEntryPage implements OnInit {
   }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
 
-  ngOnInit() {
-    let fromDate = new Date('2016-01-01');
-    let toDate = new Date('2025-12-31');
-    this.datePickerObj = this.datePicker.getDatepickerObj(this.selectedDateString, fromDate, toDate);
-
+  ngOnInit() { 
     this.cowService.cowListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadMilkRecordsList();
@@ -134,32 +131,22 @@ export class MilkEntryPage implements OnInit {
     }
 
     this.currentlySelected.amount = this.inputProduction;
-    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];
-    
+    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];    
 
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[this.selectedIndex];
     selectedItem.scrollIntoView();
   }
 
-
   timeOfDaySelected(newTimeOfDay) {
     this.timeOfDay = newTimeOfDay;
     this.loadMilkRecordsList();
   }
 
-  async openDatePicker() {
-    this.datePickerObj.inputDate = this.selectedDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.selectedDateString = this.datePicker.formatDate(data.data.date);
-        this.loadMilkRecordsList();
-      }
-    });
-  } 
+  async openDatePicker(){
+    this.selectedDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedDateString);
+    this.loadMilkRecordsList();    
+  }
 
   closeInputPanel() {
     this.showInputPanel = false;
@@ -175,7 +162,6 @@ export class MilkEntryPage implements OnInit {
   }
 
   subtractOneDecimal() {
-    console.log(this.inputProduction);
     if (this.inputProduction >= 0.1) {
       this.currentlySelected.amount = this.inputProduction;
       this.currentlySelected.amount -= 0.1;

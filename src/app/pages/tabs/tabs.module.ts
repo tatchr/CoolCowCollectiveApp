@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'milk-sales-overview',
-        loadChildren: '../sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule',
+        loadChildren: '../sales/milk-sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule',
         canActivate: [AuthGuardService]
       },
       {
@@ -40,7 +40,7 @@ const routes: Routes = [
       },
       {
         path: 'other-sales-overview',
-        loadChildren: '../sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule',
+        loadChildren: '../sales/other-sales/other-sales-overview/other-sales-overview.module#OtherSalesOverviewPageModule',
         canActivate: [AuthGuardService]
       },
       {

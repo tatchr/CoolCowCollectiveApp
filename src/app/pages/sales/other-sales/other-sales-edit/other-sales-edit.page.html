@@ -37,7 +37,7 @@
           <ion-item *ngIf="showCowList">
             <ion-label color="medium">Select from herd*</ion-label>
             <ion-select formControlName="cowidsold" placeholder="Select One">
-              <ion-select-option *ngFor="let cow of cowsList" [value]="cow.id">{{cow.name}}</ion-select-option>
+              <ion-select-option *ngIf="cowSold" [value]="cowSold.id">{{cowSold.name}}</ion-select-option>
             </ion-select>
           </ion-item>
 

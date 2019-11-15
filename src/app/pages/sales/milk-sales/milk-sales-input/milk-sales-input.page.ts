@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales-base/milk-sales-base.component';
+import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
 
 @Component({
   selector: 'app-milk-sales-input',

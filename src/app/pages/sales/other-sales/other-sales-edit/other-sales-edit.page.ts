@@ -6,47 +6,34 @@ import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CowService } from 'src/app/services/cow/cow.service';
+import { OtherSalesBaseComponent } from '../other-sales-base/other-sales-base.component';
 
 @Component({
   selector: 'app-other-sales-edit',
   templateUrl: './other-sales-edit.page.html',
   styleUrls: ['./other-sales-edit.page.scss'],
 })
-export class OtherSalesEditPage implements OnInit {
+export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnInit {
 
   otherSaleId: string;
-  othersalesForm: FormGroup;
-  farmId: string;
-  datePickerObj: any;
-  selectedDateString: string = this.datePicker.formatDate(new Date());
-  cowsList: Array<CowDetails> = [];
-  showCowList: boolean;
-  showOtherInput: boolean;
-  showSpermInput: boolean;
-  animalTypes: Array<string> = ['Calf', 'Cow', 'Bull', 'Heifer'];
-  otherItemDescription: string = "";
+  cowSold: CowDetails;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
-    private salesService: SalesService, private cowService: CowService, private datePicker: DatepickerService, private storage: Storage, private alertService: AlertService) { }
+  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, 
+    salesService: SalesService, cowService: CowService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
+      super(router, salesService, cowService, formBuilder, storage, datePicker);
+     }
 
   ngOnInit() {
     this.initiate();
   }
   
   initiate() {
-    let fromDate = new Date('2016-01-01');
-    let toDate = new Date();
-    this.datePickerObj = this.datePicker.getDatepickerObj(this.selectedDateString, fromDate, toDate);
-
     this.otherSaleId = this.activatedRoute.snapshot.paramMap.get('otherSaleId');
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-    });
-
-    this.getMilkSale();   
+    this.getFarmId();
+    this.getOtherSale();   
   }  
 
-  getMilkSale(){
+  getOtherSale(){
     this.salesService.getOtherSaleRecord(this.otherSaleId).subscribe(res => {
       this.populateForm(res['otherSale']);      
     });
@@ -59,7 +46,7 @@ export class OtherSalesEditPage implements OnInit {
       id: this.otherSaleId,
       farmId: this.farmId,
       date: this.selectedDateString,
-      itemsold: [{value: this.getItemSold(otherSalesDetails.itemSold), disabled: true}],
+      itemsold: [{value: this.getItemSold(otherSalesDetails), disabled: true}],
       cowidsold: [{value: otherSalesDetails.cowIdSold, disabled: true}],
       price: [otherSalesDetails.price, [Validators.required, Validators.min(0.0)]],
       quantity: [otherSalesDetails.quantity, [Validators.min(0.0), Validators.max(100000.00)]],
@@ -68,44 +55,31 @@ export class OtherSalesEditPage implements OnInit {
     });
   }
 
-  getItemSold(itemSold){
-    console.log(itemSold);
-    this.showSpermInput = itemSold == 'Sperm';
-    this.showCowList = this.animalTypes.includes(itemSold); 
+  getItemSold(otherSalesDetails){
+    this.showSpermInput = otherSalesDetails.itemSold == 'Sperm';
+    this.showCowList = this.animalTypes.includes(otherSalesDetails.itemSold); 
 
     if(this.showCowList){
-      this.loadCowsList(itemSold);
-      return itemSold
+      this.loadCow(otherSalesDetails.cowIdSold);
+      return otherSalesDetails.itemSold
     }
 
-    if(!this.animalTypes.includes(itemSold) && !this.showSpermInput){
+    if(!this.animalTypes.includes(otherSalesDetails.itemSold) && !this.showSpermInput){
       this.showOtherInput = true;
-      this.otherItemDescription = itemSold;
+      this.otherItemDescription = otherSalesDetails.itemSold;
       return 'Other';
     }    
 
-    return itemSold;
-  }
-
-  itemSelected(event) {
-    this.showOtherInput = event.detail.value == 'Other';
-    this.showSpermInput = event.detail.value == 'Sperm';
-    this.showCowList = this.animalTypes.includes(event.detail.value);
-    if (this.showCowList) {
-      this.loadCowsList(event.detail.value);
-    }
-  }
-
-  loadCowsList(cowType) {
-    this.cowService.getAllCowsOfType(this.farmId, cowType).subscribe(res => {
-      this.cowsList = res['cows'];
-      //this.cowService.cowListState.next(false);
-    });
-  }
+    return otherSalesDetails.itemSold;
+  } 
   
-  round(number, decimals){
-    return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
-  }
+  loadCow(cowId){
+    this.cowService.getCow(cowId).subscribe(res => {
+      console.log(res['cow']);
+      this.cowSold = res['cow'];
+      this.cowService.cowListState.next(false);
+    });
+  }  
 
   onSubmit() {
     if(this.othersalesForm.valid){
@@ -116,7 +90,7 @@ export class OtherSalesEditPage implements OnInit {
         this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
       }
 
-      this.salesService.updateOtherSalesRecord(this.othersalesForm.value).subscribe(val => {
+      this.salesService.updateOtherSalesRecord(this.othersalesForm.getRawValue()).subscribe(val => {
         if(val){
           this.returnToOverview();
         }
@@ -141,17 +115,4 @@ export class OtherSalesEditPage implements OnInit {
     this.salesService.otherSalesListState.next(true);
     this.router.navigateByUrl('/tabs/other-sales-overview');
   }
-
-  async openDatePicker() {
-    this.datePickerObj.inputDate = this.selectedDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);    
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.selectedDateString = this.datePicker.formatDate(data.data.date);
-      }
-    });
-  }
-
 }
