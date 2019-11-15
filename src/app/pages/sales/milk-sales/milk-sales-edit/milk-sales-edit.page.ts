@@ -16,20 +16,16 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
 
   milkSaleId: string;
 
-  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder,
-    salesService: SalesService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
+  constructor(router: Router, formBuilder: FormBuilder, salesService: SalesService, 
+    datePicker: DatepickerService, storage: Storage, private activatedRoute: ActivatedRoute, private alertService: AlertService) {
     super(router, salesService, formBuilder, storage, datePicker);
   }
 
   ngOnInit() {
-    this.initiate();
-  }
-
-  initiate() {
     this.milkSaleId = this.activatedRoute.snapshot.paramMap.get('milkSaleId');
     this.getFarmId();
     this.getMilkSale();
-  }
+  }  
 
   getMilkSale() {
     this.salesService.getMilkSaleRecord(this.milkSaleId).subscribe(res => {

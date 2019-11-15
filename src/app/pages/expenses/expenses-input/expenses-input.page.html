@@ -29,6 +29,7 @@
               <ion-select-option value="Medicine">Medicine</ion-select-option>
               <ion-select-option value="AI">AI</ion-select-option>
               <ion-select-option value="Labour">Labour</ion-select-option>
+              <ion-select-option value="Cow">Cow</ion-select-option>
               <ion-select-option value="Other">Other</ion-select-option>
             </ion-select>
           </ion-item>
@@ -36,7 +37,7 @@
           <ion-item>
             <ion-label position="floating" color="medium">Item bought*</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="itembought"></ion-input>
-          </ion-item>         
+          </ion-item>
 
           <ion-item>
             <ion-label position="floating" color="medium">Price per item*
@@ -44,13 +45,27 @@
             <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
           </ion-item>
 
-          <ion-item>
+          <ion-item style="display: inline-block;width: 150px;vertical-align: bottom;">
             <ion-label position="floating" color="medium">Quantity*</ion-label>
             <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
           </ion-item>
 
+          <ion-item no-padding style="display: inline-block;width: 100px;vertical-align: bottom;margin-left: 10px;">
+            <ion-select formControlName="quantityUnit" placeholder="Unit" style="max-width: 100%;padding-left:0;">
+              <ion-select-option value="Units">units</ion-select-option>
+              <ion-select-option value="Kg">Kg</ion-select-option>
+              <ion-select-option value="L">L</ion-select-option>
+            </ion-select>
+          </ion-item>
+
           <ion-item>
-            <ion-label position="floating" color="medium">Seller name*</ion-label>
+            <ion-label position="floating" color="medium">Total price
+            </ion-label>
+            <ion-input autocapitalize="on" type="number" formControlName="totalPrice"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="medium">Seller name</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="sellername"></ion-input>
           </ion-item>
 
@@ -59,12 +74,13 @@
             <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="fixed" color="medium" class="lblWidth">Is recurring*</ion-label>
+          <ion-item no-padding>
+            <ion-label position="fixed" color="medium" class="lblWidth" style="padding-left: 16px;">Is recurring*
+            </ion-label>
             <ion-toggle slot="end" formControlName="isrecurring" color="success"></ion-toggle>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="this.expensesForm.value['isrecurring']">
             <ion-label position="floating" color="medium">Recurring period (days)</ion-label>
             <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
           </ion-item>
