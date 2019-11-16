@@ -6,9 +6,12 @@ class ExpensesDetails{
     ItemBought: string;
     price: number;
     quantity: number;
+    quantityUnit: string;
+    totalPrice: number;
     sellerName: string;
     sellerCompany: string;
     isRecurring: boolean;
-    recurringPeriodInDays: number;    
+    recurringPeriodInDays: number;  
+    recurringId: string;  
     timestamp: Date;
 }

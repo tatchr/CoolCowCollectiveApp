@@ -92,10 +92,16 @@
   
   <ion-footer>
     <ion-row>
-      <ion-col>
+      <ion-col col-6>
         <ion-button color="success" expand="full" type="submit" *ngIf="expensesForm" [disabled]="!expensesForm.valid" (click)="onSubmit()">
           <ion-icon name="save"></ion-icon>
         </ion-button>
       </ion-col>
+
+      <ion-col col-6>
+          <ion-button expand="full" size="default" color="danger" *ngIf="expensesForm" [disabled]="this.expensesForm.value['isrecurring']" (click)="onDelete()">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-col>
     </ion-row>
   </ion-footer>

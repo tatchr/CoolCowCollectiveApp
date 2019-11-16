@@ -47,7 +47,8 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       sellername: [expenseDetails.sellerName],
       sellercompany: [expenseDetails.sellerCompany],
       isrecurring: [expenseDetails.isRecurring],
-      recurringperiodindays: [expenseDetails.recurringPeriodInDays]
+      recurringperiodindays: [expenseDetails.recurringPeriodInDays],
+      recurringId: [expenseDetails.recurringId]
     });
 
     this.expensesForm.valueChanges.subscribe(val => {

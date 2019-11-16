@@ -45,8 +45,6 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
     });
   }
 
-
-
   itemSelected(event) {
     // this.showOtherInput = event.detail.value == 'Other';
     // this.showSpermInput = event.detail.value == 'Sperm';
