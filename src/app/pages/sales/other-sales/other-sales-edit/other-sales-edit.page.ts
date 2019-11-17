@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
@@ -75,7 +75,6 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   
   loadCow(cowId){
     this.cowService.getCow(cowId).subscribe(res => {
-      console.log(res['cow']);
       this.cowSold = res['cow'];
       this.cowService.cowListState.next(false);
     });

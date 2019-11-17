@@ -33,10 +33,23 @@ export class CowBaseComponent implements OnInit {
   } 
 
   cowTypeSelected(event) {
-    this.showFullStatusList = event.detail.value == 'Cow';
+    this.setCowStatusList(event.detail.value);
+    // this.showFullStatusList = event.detail.value == 'Cow';
+
+    // if(!this.showFullStatusList){
+    //   this.cowForm.controls['cowstatus'].setValue('N/A');
+    //   this.cowForm.controls['cowstatus'].disable();
+    // }
+    // else{
+    //   this.cowForm.controls['cowstatus'].enable();
+    // }
+  }
+
+  setCowStatusList(cowType){
+    this.showFullStatusList = cowType == 'Cow';
 
     if(!this.showFullStatusList){
-      this.cowForm.controls['cowstatus'].setValue('NA');
+      this.cowForm.controls['cowstatus'].setValue('N/A');
       this.cowForm.controls['cowstatus'].disable();
     }
     else{

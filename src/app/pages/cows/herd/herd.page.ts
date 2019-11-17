@@ -21,10 +21,8 @@ export class HerdPage implements OnInit {
 
   cowStatuses: Array<CowStatus> = [
     { value: 'Lactating', name: 'Lactating' },
-    { value: 'Calving', name: 'Calving' },
-    { value: 'InHeat', name: 'In Heat' },
-    { value: 'Inactive', name: 'Inactive' },
-    { value: 'Other', name: 'Other' }
+    { value: 'Non-Lactating', name: 'Non-Lactating' },
+    { value: 'N/A', name: 'N/A' }
   ];
 
   constructor(private filterService: FilterService, private cowService: CowService, private storage: Storage) {

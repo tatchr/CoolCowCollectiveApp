@@ -53,12 +53,14 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
       registrationdate: cowDetails.registrationDate     
     });
 
-    this.showFullStatusList = cowDetails.cowType == 'Cow';    
+    this.setCowStatusList(cowDetails.cowType);
 
-    if(!this.showFullStatusList){
-      this.cowForm.controls['cowstatus'].setValue('NA');
-      this.cowForm.controls['cowstatus'].disable();
-    }
+    // this.showFullStatusList = cowDetails.cowType == 'Cow';    
+
+    // if(!this.showFullStatusList){
+    //   this.cowForm.controls['cowstatus'].setValue('N/A');
+    //   this.cowForm.controls['cowstatus'].disable();
+    // }
   }
 
   updateCow() {
