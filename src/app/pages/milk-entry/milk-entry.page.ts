@@ -34,26 +34,23 @@ export class MilkEntryPage implements OnInit {
   currentlySelected: MilkProductionDetails = null;
   selectedIndex: number = -1;
   showInputPanel: boolean = false;
+  totalLiters: number;
 
   scrollTo = null;
 
-  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService, 
+  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService,
     private datePicker: DatepickerService, private storage: Storage, public keyboard: Keyboard) {
     this.searchControl = new FormControl();
   }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
 
-  ngOnInit() { 
+  ngOnInit() {
     this.cowService.cowListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadMilkRecordsList();
       }
     });
 
-    this.initiate();
-  }  
-
-  initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadMilkRecordsList();
@@ -79,6 +76,8 @@ export class MilkEntryPage implements OnInit {
         this.currentlySelected = this.filteredMilkRecordsList[0];
         this.inputProduction = this.currentlySelected.amount;
       }
+
+      this.getTotalLiters();
     });
   }
 
@@ -96,6 +95,18 @@ export class MilkEntryPage implements OnInit {
     });
   }
 
+  inputProductionSubmitted() {
+    if (this.inputProduction == null) {
+      this.currentlySelected.amount = 0.0;
+      this.inputProduction = 0.0;
+    }
+    else {
+      this.currentlySelected.amount = this.inputProduction;
+    }
+
+    this.toNextCow();
+  }
+
   cowSelected(item, index) {
     this.currentlySelected = item;
     this.inputProduction = item.amount;
@@ -106,6 +117,7 @@ export class MilkEntryPage implements OnInit {
     let selectedItem = arr[index];
 
     selectedItem.scrollIntoView({ behavior: 'auto', block: 'center' });
+    this.getTotalLiters();
   }
 
   toNextCow() {
@@ -120,6 +132,7 @@ export class MilkEntryPage implements OnInit {
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[this.selectedIndex];
     selectedItem.scrollIntoView();
+    this.getTotalLiters();
   }
 
   toPreviousCow() {
@@ -131,11 +144,12 @@ export class MilkEntryPage implements OnInit {
     }
 
     this.currentlySelected.amount = this.inputProduction;
-    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];    
+    this.currentlySelected = this.filteredMilkRecordsList[this.selectedIndex];
 
     let arr = this.list.nativeElement.children;
     let selectedItem = arr[this.selectedIndex];
     selectedItem.scrollIntoView();
+    this.getTotalLiters();
   }
 
   timeOfDaySelected(newTimeOfDay) {
@@ -143,9 +157,9 @@ export class MilkEntryPage implements OnInit {
     this.loadMilkRecordsList();
   }
 
-  async openDatePicker(){
+  async openDatePicker() {
     this.selectedDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedDateString);
-    this.loadMilkRecordsList();    
+    this.loadMilkRecordsList();
   }
 
   closeInputPanel() {
@@ -154,59 +168,65 @@ export class MilkEntryPage implements OnInit {
 
   subtractOne() {
     if (this.inputProduction >= 1) {
-      this.currentlySelected.amount = this.inputProduction;
-      this.currentlySelected.amount -= 1;
-      this.inputProduction -= 1;
-      this.roundAmounts();
+      let action = () => {
+        this.currentlySelected.amount -= 1;
+        this.inputProduction -= 1;
+      }
+      this.changeAmount(action);
     }
   }
 
   subtractOneDecimal() {
     if (this.inputProduction >= 0.1) {
-      this.currentlySelected.amount = this.inputProduction;
-      this.currentlySelected.amount -= 0.1;
-      this.inputProduction -= 0.1;
-      this.roundAmounts();
+      let action = () => {
+        this.currentlySelected.amount -= 0.1;
+        this.inputProduction -= 0.1;
+      }
+      this.changeAmount(action);
     }
   }
 
   addOne() {
-    this.currentlySelected.amount = this.inputProduction;
-    this.currentlySelected.amount += 1;
-    this.inputProduction += 1;
-    this.roundAmounts();
+    let action = () => {
+      this.currentlySelected.amount += 1;
+      this.inputProduction += 1;
+    }
+    this.changeAmount(action);
   }
 
   addOneDecimal() {
-    this.currentlySelected.amount = this.inputProduction;
-    this.currentlySelected.amount += 0.1;
-    this.inputProduction += 0.1;
-    this.roundAmounts();
-  }
+    let action = () => {
+      this.currentlySelected.amount += 0.1;
+      this.inputProduction += 0.1;
+    }
+    this.changeAmount(action);
+  }  
 
-  roundAmounts(){
-    this.currentlySelected.amount = Math.round(this.currentlySelected.amount * 10) / 10;
-    this.inputProduction = Math.round(this.inputProduction * 10) / 10;
+  changeAmount(action) {
+    this.currentlySelected.amount = this.inputProduction;
+    action();
+    this.getTotalLiters();
+    this.roundAmounts();
   }
 
   onSearchInput() {
     this.searching = true;
   }
 
-  inputProductionClicked(){
+  inputProductionClicked() {
     this.inputProduction = null;
+  }  
+
+  getTotalLiters() {
+    this.totalLiters = 0;
+    this.milkRecordsList.forEach(item => {
+      this.totalLiters += item.amount;
+    });
   }
 
-  inputProductionSubmitted(){
-    if(this.inputProduction == null){
-      this.currentlySelected.amount = 0.0;
-      this.inputProduction = 0.0;
-    }
-    else{
-      this.currentlySelected.amount = this.inputProduction;
-    }
-    
-    this.toNextCow();
+  roundAmounts() {
+    this.totalLiters = Math.round(this.totalLiters * 10) / 10;
+    this.currentlySelected.amount = Math.round(this.currentlySelected.amount * 10) / 10;
+    this.inputProduction = Math.round(this.inputProduction * 10) / 10;
   }
- 
 }

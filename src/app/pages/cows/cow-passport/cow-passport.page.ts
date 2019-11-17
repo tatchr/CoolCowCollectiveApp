@@ -5,6 +5,8 @@ import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import * as moment from 'moment';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Storage } from '@ionic/storage';
+import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 
 @Component({
   selector: 'app-cow-passport',
@@ -12,17 +14,14 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
   styleUrls: ['./cow-passport.page.scss'],
   providers: [Keyboard]
 })
-export class CowPassportPage implements OnInit {
-
-  cowForm: FormGroup;
-  datePickerObj: any;
+export class CowPassportPage extends CowBaseComponent implements OnInit {
+  
   cowId: string;
-  fromDate = new Date('1970-01-01');
-  toDate = this.datePicker.formatDate(new Date());
-  selectedDateString: string = this.datePicker.formatDate(new Date());
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
-    private cowService: CowService, private datePicker: DatepickerService, public keyboard: Keyboard) { }
+  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage, 
+    cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {
+      super(router, formBuilder, storage, cowService, datePicker, keyboard);
+     }
 
   ngOnInit() {
     this.initiate();
@@ -30,44 +29,41 @@ export class CowPassportPage implements OnInit {
 
   initiate(){
     this.cowId = this.activatedRoute.snapshot.paramMap.get('cowId');
-    this.getCow(this.cowId);
-
-    this.cowForm = this.formBuilder.group({
-      id: [null],
-      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      farmId: [null],
-      tagnumber: [null, [Validators.maxLength(50)]],
-      birthdate: [null],
-      cowtype: [null, [Validators.required]],
-      breed: [null],
-      cowstatus: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      cowstate: [null],
-      registrationdate: [null]
-    }); 
+    this.getFarmId();
+    this.getCow();
   }
 
-  getCow(cowId){
-    this.cowService.getCow(cowId).subscribe(res => {
+  getCow(){
+    this.cowService.getCow(this.cowId).subscribe(res => {
       this.populateForm(res['cow']);
     });
-  }
-
+  }  
+  
   populateForm(cowDetails){
-    this.cowForm.controls['id'].setValue(cowDetails['id']);      
-    this.cowForm.controls['name'].setValue(cowDetails['name']);      
-    this.cowForm.controls['farmId'].setValue(cowDetails['farmId']);      
-    this.cowForm.controls['tagnumber'].setValue(cowDetails['tagNumber']);      
-    this.cowForm.controls['birthdate'].setValue(this.datePicker.formatDate(cowDetails['birthDate']));   
-    this.cowForm.controls['cowtype'].setValue(cowDetails['cowType']); 
-    this.cowForm.controls['breed'].setValue(cowDetails['breed']); 
-    this.cowForm.controls['cowstatus'].setValue(cowDetails['cowStatus']);      
-    this.cowForm.controls['cowstate'].setValue(cowDetails['cowState']);      
-    this.cowForm.controls['registrationdate'].setValue(cowDetails['registrationDate']);      
+    this.cowForm = this.formBuilder.group({
+      id: this.cowId,
+      name: [cowDetails.name, [Validators.required, Validators.maxLength(100)]],
+      farmId: this.farmId,
+      tagnumber: [cowDetails.tagNumber, [Validators.maxLength(50)]],
+      birthdate: this.datePicker.formatDate(cowDetails.birthDate),
+      cowtype: [cowDetails.cowType, [Validators.required]],
+      breed: cowDetails.breed,
+      cowstatus: [cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
+      cowstate: cowDetails.cowState,
+      registrationdate: cowDetails.registrationDate     
+    });
+
+    this.showFullStatusList = cowDetails.cowType == 'Cow';    
+
+    if(!this.showFullStatusList){
+      this.cowForm.controls['cowstatus'].setValue('NA');
+      this.cowForm.controls['cowstatus'].disable();
+    }
   }
 
   updateCow() {
     if(this.cowForm.valid){
-      this.cowService.updateCow(this.cowForm.value).subscribe(val => {
+      this.cowService.updateCow(this.cowForm.getRawValue()).subscribe(val => {
         if(val){
           this.cowService.cowListState.next(true);
           this.router.navigateByUrl('tabs/herd');

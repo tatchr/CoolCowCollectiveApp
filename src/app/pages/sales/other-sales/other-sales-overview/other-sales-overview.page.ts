@@ -46,7 +46,7 @@ export class OtherSalesOverviewPage implements OnInit {
     this.salesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
       this.otherSalesList = res['otherSalesDetails'];
       this.otherSalesList.forEach(item => {
-        item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
+        item.date = this.datePicker.formatDate(item.date);        
       });
     });
   }

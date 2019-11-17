@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Storage } from '@ionic/storage';
+import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 
 @Component({
   selector: 'app-register-cow',
@@ -12,24 +14,17 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
   styleUrls: ['./register-cow.page.scss'],
   providers: [Keyboard]
 })
-export class RegisterCowPage implements OnInit {
+export class RegisterCowPage extends CowBaseComponent implements OnInit {  
 
-  cowForm: FormGroup;
-  gen: String;
-  datePickerObj: any;
-  farmId: string;
-
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
-    private cowService: CowService, private datePicker: DatepickerService, public keyboard: Keyboard) { }
+  constructor(router: Router, formBuilder: FormBuilder, storage: Storage, cowService: CowService, 
+    datePicker: DatepickerService, keyboard: Keyboard) { 
+      super(router, formBuilder, storage, cowService, datePicker, keyboard);
+    }
 
   ngOnInit() {
-    this.initiate();
-  }  
-
-  initiate(){
-    this.farmId = this.activatedRoute.snapshot.paramMap.get('farmId');
+    this.getFarmId();
     this.cowForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
@@ -38,10 +33,12 @@ export class RegisterCowPage implements OnInit {
       cowstatus: [null, [Validators.required]]
     }); 
   }
-
+  
   onSubmit() {
     if(this.cowForm.valid){
-      this.cowService.registerCow(this.cowForm.value).subscribe(val => {
+      this.cowForm.controls['farmId'].setValue(this.farmId);
+
+      this.cowService.registerCow(this.cowForm.getRawValue()).subscribe(val => {
         if(val){
           this.cowService.cowListState.next(true);
           this.router.navigateByUrl('/tabs/herd');
@@ -50,21 +47,8 @@ export class RegisterCowPage implements OnInit {
     }    
   }
 
-  async openDatePicker(formControl) {    
-    let fromDate = new Date('1970-01-01');
-    let toDate = this.formatDate(new Date());
-    this.datePickerObj = this.datePicker.getDatepickerObj('', fromDate, toDate);
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if(typeof data.data !== 'undefined' && data.data.date !== 'Invalid date'){
-        this.cowForm.controls[formControl].setValue(this.formatDate(data.data.date));
-      }
-    });
-  }
-
-  formatDate(date){
-    return moment(date).format('YYYY-MM-DD');
+  async openDatePicker(){    
+    let birthDate = await this.datePicker.openDatePicker(this.fromDate, this.toDate, '');
+    this.cowForm.controls['birthdate'].setValue(birthDate);    
   }
 }

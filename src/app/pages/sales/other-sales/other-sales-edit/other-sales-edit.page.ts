@@ -6,7 +6,7 @@ import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CowService } from 'src/app/services/cow/cow.service';
-import { OtherSalesBaseComponent } from '../other-sales-base/other-sales-base.component';
+import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
 
 @Component({
   selector: 'app-other-sales-edit',

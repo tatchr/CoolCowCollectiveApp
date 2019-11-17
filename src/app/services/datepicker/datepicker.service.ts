@@ -65,15 +65,11 @@ export class DatepickerService {
   }
 
   formatDate(date) {
-    return moment(date).format('YYYY-MM-DD');
-  }
-
-  formatDateYYYYMMMDD(date) {
-    return moment(date).format('YYYY-MMM-DD');
+    return date != null ? moment(date).format('YYYY-MM-DD') : null;
   }
 
   formatDateMMMDD(date) {
-    return moment(date).format('MMM-DD');
+    return date != null ? moment(date).format('MMM-DD') : null;
   }
 
   subtract(date, amount, type){

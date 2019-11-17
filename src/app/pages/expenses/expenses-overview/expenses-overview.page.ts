@@ -47,7 +47,7 @@ export class ExpensesOverviewPage implements OnInit {
     this.expensesService.getExpensesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
       this.expensesList = res['expensesDetails'];
       this.expensesList.forEach(item => {
-        item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
+        item.date = this.datePicker.formatDate(item.date);        
       });
     });
   }

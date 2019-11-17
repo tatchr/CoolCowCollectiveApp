@@ -26,15 +26,15 @@
             <ion-input autocapitalize="on" type="text" formControlName="tagnumber"></ion-input>
           </ion-item>
 
-          <ion-item (click)="openDatePicker('birthdate')">
+          <ion-item (click)="openDatePicker()">
             <ion-label position="fixed" color="medium">Birth date</ion-label>
             <ion-input formControlName="birthdate" readonly></ion-input>
             <ion-icon position="fixed" name="calendar"></ion-icon>
-          </ion-item>         
+          </ion-item>
 
           <ion-item>
             <ion-label color="medium">Type*</ion-label>
-            <ion-select formControlName="cowtype" placeholder="Select One">
+            <ion-select formControlName="cowtype" placeholder="Select One" (ionChange)="cowTypeSelected($event)">
               <ion-select-option value="Cow">Cow</ion-select-option>
               <ion-select-option value="Heifer">Heifer</ion-select-option>
               <ion-select-option value="Calf">Calf</ion-select-option>
@@ -42,12 +42,19 @@
             </ion-select>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="showFullStatusList">
             <ion-label color="medium">Status*</ion-label>
             <ion-select formControlName="cowstatus" placeholder="Select One">
               <ion-select-option value="Lactating">Lactating</ion-select-option>
               <ion-select-option value="NonLactating">Non-lactating</ion-select-option>
-              <ion-select-option value="N/A">N/A</ion-select-option>
+              <ion-select-option value="NA">N/A</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="!showFullStatusList">
+            <ion-label color="medium">Status*</ion-label>
+            <ion-select formControlName="cowstatus" placeholder="Select One">
+              <ion-select-option value="NA">N/A</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -55,7 +62,7 @@
             <ion-label position="floating" color="medium">Breed</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="breed"></ion-input>
           </ion-item>
-          
+
         </form>
       </ion-col>
     </ion-row>
@@ -65,8 +72,8 @@
 <ion-footer>
   <ion-row [hidden]="keyboard.isVisible">
     <ion-col>
-      <ion-button color="success" expand="full" type="submit" [disabled]="!cowForm.valid" (click)="onSubmit()">Register</ion-button>
+      <ion-button color="success" expand="full" type="submit" [disabled]="!cowForm.valid" (click)="onSubmit()">Register
+      </ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>
-

@@ -2,13 +2,16 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
+import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
+import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-milk-sales-overview',
   templateUrl: './milk-sales-overview.page.html',
   styleUrls: ['./milk-sales-overview.page.scss'],
 })
-export class MilkSalesOverviewPage implements OnInit {
+export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {
 
   farmId: string;
   fromDatePickerObj: any;
@@ -18,14 +21,14 @@ export class MilkSalesOverviewPage implements OnInit {
   milkSalesList: Array<MilkSalesDetails> = [];
   period: string = 'lastweek';
 
-  constructor(private salesService: SalesService, private storage: Storage, private datePicker: DatepickerService) { }
+  totalLiters: number;
+  totalMoney: number;
+
+  constructor(router: Router, salesService: SalesService, formBuilder: FormBuilder, storage: Storage, datePicker: DatepickerService) {
+    super(router, salesService, formBuilder, storage, datePicker);
+   }  
 
   ngOnInit() {
-    let fromDate = new Date('2016-01-01');
-    let toDate = new Date();
-    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString, fromDate, toDate);
-    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString, fromDate, toDate);
-
     this.salesService.milkSalesListState.subscribe(mustUpdate => {
       if (mustUpdate) {
         this.loadMilkSalesList();
@@ -43,10 +46,15 @@ export class MilkSalesOverviewPage implements OnInit {
   }
 
   loadMilkSalesList(){
+    this.totalLiters = 0;
+    this.totalMoney = 0;
+
     this.salesService.getAllMilkSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
       this.milkSalesList = res['milkSalesDetails'];
       this.milkSalesList.forEach(item => {
-        item.date = this.datePicker.formatDateYYYYMMMDD(item.date);        
+        item.date = this.datePicker.formatDate(item.date);
+        this.totalLiters += item.litersSold;
+        this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
       });
     });
   }
@@ -82,30 +90,15 @@ export class MilkSalesOverviewPage implements OnInit {
     this.loadMilkSalesList();  
   }
 
-  async openFromDatePicker() {
-    this.fromDatePickerObj.inputDate = this.selectedFromDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.fromDatePickerObj);
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.period = '';
-        this.selectedFromDateString = this.datePicker.formatDate(data.data.date);
-        this.loadMilkSalesList();
-      }
-    });
+  async openFromDatePicker(){
+    this.period = '';
+    this.selectedFromDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedFromDateString);
+    this.loadMilkSalesList();    
   }
 
-  async openToDatePicker() {
-    this.toDatePickerObj.inputDate = this.selectedToDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.toDatePickerObj);
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.period = '';
-        this.selectedToDateString = this.datePicker.formatDate(data.data.date);
-        this.loadMilkSalesList();
-      }
-    });
-  }
+  async openToDatePicker(){
+    this.period = '';
+    this.selectedToDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedToDateString);
+    this.loadMilkSalesList();    
+  }  
 }

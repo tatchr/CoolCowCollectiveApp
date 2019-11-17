@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form *ngIf="cowForm != null" [formGroup]="cowForm" (ngSubmit)="updateCow()" (keyup.enter)="updateCow()">
+        <form *ngIf="cowForm" [formGroup]="cowForm" (ngSubmit)="updateCow()" (keyup.enter)="updateCow()">
           <h3>
             Basic information
           </h3>
@@ -34,7 +34,7 @@
 
           <ion-item>
             <ion-label color="medium">Type*</ion-label>
-            <ion-select formControlName="cowtype" placeholder="Select One">
+            <ion-select formControlName="cowtype" placeholder="Select One" (ionChange)="cowTypeSelected($event)">
               <ion-select-option value="Cow">Cow</ion-select-option>
               <ion-select-option value="Heifer">Heifer</ion-select-option>
               <ion-select-option value="Calf">Calf</ion-select-option>
@@ -45,16 +45,23 @@
           <ion-item>
             <ion-label position="floating" color="medium">Breed</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="breed"></ion-input>
-          </ion-item>
+          </ion-item>          
 
-          <ion-item>
-            <ion-label color="medium">Status*</ion-label>
-            <ion-select formControlName="cowstatus" placeholder="Select One">
-              <ion-select-option value="Lactating">Lactating</ion-select-option>
-              <ion-select-option value="NonLactating">Non-lactating</ion-select-option>
-              <ion-select-option value="N/A">N/A</ion-select-option>
-            </ion-select>
-          </ion-item>
+          <ion-item *ngIf="showFullStatusList">
+              <ion-label color="medium">Status*</ion-label>
+              <ion-select formControlName="cowstatus" placeholder="Select One">
+                <ion-select-option value="Lactating">Lactating</ion-select-option>
+                <ion-select-option value="NonLactating">Non-lactating</ion-select-option>
+                <ion-select-option value="NA">N/A</ion-select-option>
+              </ion-select>
+            </ion-item>
+  
+            <ion-item *ngIf="!showFullStatusList">
+              <ion-label color="medium">Status*</ion-label>
+              <ion-select formControlName="cowstatus" placeholder="Select One">
+                <ion-select-option value="NA">N/A</ion-select-option>
+              </ion-select>
+            </ion-item>
 
           <ion-item>
               <ion-label color="medium">State</ion-label>
@@ -75,7 +82,7 @@
   <ion-row [hidden]="keyboard.isVisible">
     <ion-col col-6>
       <ion-button color="success" expand="full" type="submit" size="default" (click)="updateCow()"
-        [disabled]="!cowForm.valid">
+      *ngIf="cowForm" [disabled]="!cowForm.valid">
         <ion-icon name="save"></ion-icon>
       </ion-button>
     </ion-col>
