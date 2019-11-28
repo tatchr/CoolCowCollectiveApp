@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Feedback</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form *ngIf="feedbackForm" [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+            <h5>We would like your feedback to improve the Cool Cow Collective app.</h5>
+
+            <div style="margin-top: 20px;"></div>
+    
+            <ion-label>What is your opinion of our app:</ion-label>
+            <ion-item lines="none">
+              <ionic4-star-rating #rating activeIcon="star" defaultIcon="star-outline" activeColor="#d4af37"
+                defaultColor="#f4f4f4" readonly="false" fontSize="40px"
+                (ratingChanged)="logRatingChange($event)" formControlName="appRating">
+              </ionic4-star-rating>
+            </ion-item>
+    
+            <div style="margin-top: 20px;"></div>
+    
+            <ion-label>Please select the feedback category below:</ion-label>
+            <div class="scroll-container">
+              <div class="scroll" scrollX="true">
+                  <ion-button size="small" fill="outline" [color]="category == 'compliment' ? 'success' : 'medium'"
+                  (click)="categorySelected('compliment')">
+                  Compliment</ion-button>
+
+                  <ion-button size="small" fill="outline" [color]="category == 'suggestion' ? 'success' : 'medium'"
+                  (click)="categorySelected('suggestion')">
+                  Suggestion</ion-button>
+      
+                <ion-button size="small" fill="outline" [color]="category == 'complaint' ? 'success' : 'medium'"
+                  (click)="categorySelected('complaint')">
+                  Complaint</ion-button>
+      
+                <ion-button size="small" fill="outline" [color]="category == 'other' ? 'success' : 'medium'"
+                  (click)="categorySelected('other')">
+                  Other</ion-button>
+              </div>
+            </div>
+           
+            <div style="margin-top: 20px;"></div>
+    
+            <ion-label>Please leave your feedback below:</ion-label>
+            <ion-item id="feedbackArea" lines="none">
+              <ion-textarea rows="10" cols="20" spellcheck="true" formControlName="feedbackText"></ion-textarea>
+            </ion-item>
+    
+            <ion-button color="success" expand="block" type="submit" [disabled]="!feedbackForm.valid">Submit</ion-button>
+        </form>        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

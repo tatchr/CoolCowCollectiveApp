@@ -31,7 +31,9 @@ const routes: Routes = [
   { path: 'edit-account', loadChildren: './pages/account/edit-account/edit-account.module#EditAccountPageModule', canActivate: [AuthGuardService] },   
   { path: 'expenses-overview', loadChildren: './pages/expenses/expenses-overview/expenses-overview.module#ExpensesOverviewPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-input', loadChildren: './pages/expenses/expenses-input/expenses-input.module#ExpensesInputPageModule', canActivate: [AuthGuardService] },
-  { path: 'expenses-edit/:expenseId', loadChildren: './pages/expenses/expenses-edit/expenses-edit.module#ExpensesEditPageModule', canActivate: [AuthGuardService] }, 
+  { path: 'expenses-edit/:expenseId', loadChildren: './pages/expenses/expenses-edit/expenses-edit.module#ExpensesEditPageModule', canActivate: [AuthGuardService] },   
+  { path: 'feedback', loadChildren: './pages/feedback/feedback.module#FeedbackPageModule', canActivate: [AuthGuardService] },
+
  
 ];
 
