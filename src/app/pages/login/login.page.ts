@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/authService/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,10 @@ import { AuthService } from '../../services/authService/auth.service';
 export class LoginPage implements OnInit {    
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
+  showSpinner: boolean = false;
+  loading;
+
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -20,7 +24,20 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    this.authService.login(this.loginForm.value).subscribe();    
+    this.authService.login(this.loginForm.value).subscribe(res => {
+      //this.loading.dismiss();
+    });
+
+    // this.loadingCtrl.create({
+    //   message: 'Authenticating...'
+    // }).then((overlay) => {
+    //   this.loading = overlay;
+    //   this.loading.present();
+    // }).then(() => {
+      
+    // });
+
+        
   }
 
   register() {

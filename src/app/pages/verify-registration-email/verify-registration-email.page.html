@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>Confirm your email</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,13 +18,19 @@
         <div style="margin-top: 20px;"></div>
 
         <form [formGroup]="confirmEmailForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-          <div class="ion-text-center">            
-            <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="checkInput(n1, n2)"></ion-input>              
-            <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="checkInput(n2, n3)"></ion-input>
-            <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="checkInput(n3, n4)"></ion-input>
-            <ion-input #n4 formControlName="n4" class="input-box" type="number" (keyup)="checkInput(n4, n5)"></ion-input>
-            <ion-input #n5 formControlName="n5" class="input-box" type="number" (keyup)="checkInput(n5, n6)"></ion-input>
-            <ion-input #n6 formControlName="n6" class="input-box" type="number" (keyup)="checkInput(n6, null)"></ion-input>
+          <div class="ion-text-center">
+            <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="checkInput(n1, n2)">
+            </ion-input>
+            <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="checkInput(n2, n3)">
+            </ion-input>
+            <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="checkInput(n3, n4)">
+            </ion-input>
+            <ion-input #n4 formControlName="n4" class="input-box" type="number" (keyup)="checkInput(n4, n5)">
+            </ion-input>
+            <ion-input #n5 formControlName="n5" class="input-box" type="number" (keyup)="checkInput(n5, n6)">
+            </ion-input>
+            <ion-input #n6 formControlName="n6" class="input-box" type="number" (keyup)="checkInput(n6, null)">
+            </ion-input>
           </div>
 
           <div style="margin-top: 20px;"></div>

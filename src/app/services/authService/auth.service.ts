@@ -5,6 +5,8 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
+import { HttpErrorService } from 'src/app/services/http/httperror.service';
+import { OverlayService } from 'src/app/services/overlay/overlay.service';
 
 const TOKEN_KEY = 'access_token';
 const USER_ID = 'userId';
@@ -18,7 +20,8 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(null);
 
-  constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService) {
+  constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService, 
+    private httpErrorService: HttpErrorService, private overlayService: OverlayService) {
     this.plt.ready().then(() => {
       this.checkToken();
     });
@@ -57,7 +60,11 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.httpService.postWithTap(this.url + '/api/user/login', credentials, (res) => this.setUserIdAndJwtToken(res));
+    this.overlayService.showOverlay('Authenticating...');
+
+    return this.httpService.post2(this.url + '/api/user/login', credentials, 
+      res => this.setUserIdAndJwtToken(res), 
+      () => this.overlayService.dismissLoading());  
   }
 
   forgotPassword(credentials) {

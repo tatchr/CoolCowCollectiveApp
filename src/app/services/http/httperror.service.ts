@@ -10,6 +10,7 @@ export class HttpErrorService {
   constructor(private router: Router, private alertService: AlertService) { }
 
   handleError(err: any) {
+    console.log(err.toString());
     switch(err.status){
       case 422:
         this.unprocessableEntity422Alert(err.error.errMessage);
