@@ -70,7 +70,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row [hidden]="keyboard.isVisible">
+  <!-- <ion-row [hidden]="keyboard.isVisible"> -->
+    <ion-row>
     <ion-col>
       <ion-button color="success" expand="full" type="submit" [disabled]="!cowForm.valid" (click)="onSubmit()">Register
       </ion-button>

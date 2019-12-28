@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import * as moment from 'moment';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
@@ -21,7 +20,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
   constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage, 
     cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {
       super(router, formBuilder, storage, cowService, datePicker, keyboard);
-     }
+    }
 
   ngOnInit() {
     this.initiate();
@@ -34,7 +33,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
   }
 
   getCow(){
-    this.cowService.getCow(this.cowId).subscribe(res => {
+    this.cowService.getCow(this.cowId).then(res => {
       this.populateForm(res['cow']);
     });
   }  

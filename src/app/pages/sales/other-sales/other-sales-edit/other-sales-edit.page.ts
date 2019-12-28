@@ -74,7 +74,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   } 
   
   loadCow(cowId){
-    this.cowService.getCow(cowId).subscribe(res => {
+    this.cowService.getCow(cowId).then(res => {
       this.cowSold = res['cow'];
       this.cowService.cowListState.next(false);
     });

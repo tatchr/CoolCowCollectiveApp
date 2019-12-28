@@ -13,15 +13,15 @@ export class CowService {
   constructor(private httpService: HttpService) { }
 
   getCow(cowId){
-    return this.httpService.get(environment.url + '/api/cow/get/' + cowId);
+    return this.httpService.get2('Loading...', environment.url + '/api/cow/get/' + cowId);
   }
 
   getAllCows(farmId){
-    return this.httpService.get(environment.url + '/api/cow/getAll/' + farmId);
+    return this.httpService.get2('Loading...', environment.url + '/api/cow/getAll/' + farmId);
   }
 
   getAllCowsOfType(farmId, type){
-    return this.httpService.get(environment.url + '/api/cow/getAll/' + farmId + '/' + type);
+    return this.httpService.get2('Loading...', environment.url + '/api/cow/getAll/' + farmId + '/' + type);
   }
 
   updateCow(cowdetails){
@@ -33,6 +33,6 @@ export class CowService {
   }
 
   registerCow(cowdetails) {
-    return this.httpService.post(environment.url + '/api/cow/register', cowdetails);
+    return this.httpService.post3('Saving...', environment.url + '/api/cow/register', cowdetails);
   }  
 }

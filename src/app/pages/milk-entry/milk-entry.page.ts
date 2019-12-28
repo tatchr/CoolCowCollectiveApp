@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import * as moment from 'moment';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { MilkService } from 'src/app/services/milk/milk.service';
 import { CowService } from 'src/app/services/cow/cow.service';
@@ -69,16 +68,16 @@ export class MilkEntryPage implements OnInit {
   }
 
   loadMilkRecordsList() {
-    this.milkService.getAllMilkRecords(this.farmId, this.selectedDateString, this.timeOfDay).subscribe(res => {
-      this.milkRecordsList = res['milkProductionDetails'];
-      this.filteredMilkRecordsList = res['milkProductionDetails'];
+    this.milkService.getAllMilkRecords(this.farmId, this.selectedDateString, this.timeOfDay).then(records => {
+      this.milkRecordsList = records['milkProductionDetails'];
+      this.filteredMilkRecordsList = records['milkProductionDetails'];
       if (this.filteredMilkRecordsList.length > 0) {
         this.currentlySelected = this.filteredMilkRecordsList[0];
         this.inputProduction = this.currentlySelected.amount;
       }
 
       this.getTotalLiters();
-    });
+    });    
   }
 
   submit() {
@@ -90,10 +89,8 @@ export class MilkEntryPage implements OnInit {
       this.filteredMilkRecordsList[i].timeOfDay = this.timeOfDay;
     }
 
-    this.milkService.registerMilkRecords(this.filteredMilkRecordsList).subscribe(res => {
-      this.loadMilkRecordsList();
-    });
-  }
+    this.milkService.registerMilkRecords(this.filteredMilkRecordsList);
+  }  
 
   inputProductionSubmitted() {
     if (this.inputProduction == null) {

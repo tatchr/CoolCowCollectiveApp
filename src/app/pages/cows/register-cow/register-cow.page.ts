@@ -38,7 +38,7 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
     if(this.cowForm.valid){
       this.cowForm.controls['farmId'].setValue(this.farmId);
 
-      this.cowService.registerCow(this.cowForm.getRawValue()).subscribe(val => {
+      this.cowService.registerCow(this.cowForm.getRawValue()).then(val => {
         if(val){
           this.cowService.cowListState.next(true);
           this.router.navigateByUrl('/tabs/herd');

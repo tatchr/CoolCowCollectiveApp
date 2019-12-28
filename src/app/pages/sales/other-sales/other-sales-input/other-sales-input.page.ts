@@ -65,7 +65,7 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
   }
 
   loadCowsList(cowType) {
-    this.cowService.getAllCowsOfType(this.farmId, cowType).subscribe(res => {
+    this.cowService.getAllCowsOfType(this.farmId, cowType).then(res => {
       this.cowsList = res['cows'];
       this.cowService.cowListState.next(false);
     });

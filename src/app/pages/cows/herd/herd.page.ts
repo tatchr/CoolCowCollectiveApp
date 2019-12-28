@@ -31,17 +31,25 @@ export class HerdPage implements OnInit {
 
   ngOnInit() {
     this.initiate();
-    this.cowService.cowListState.subscribe(mustUpdate => {
-      if (mustUpdate) {
-        this.loadCowsList();
-      }
-    });
+    // this.cowService.cowListState.subscribe(mustUpdate => {
+    //   if (mustUpdate) {
+    //     this.loadCowsList();
+    //   }
+    // });
   }  
 
   initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadCowsList();
+    });
+
+    this.cowService.cowListState.subscribe(mustUpdate => {
+      console.log('test: ' + mustUpdate);
+      if (mustUpdate) {
+        console.log('test1: ' + mustUpdate);
+        this.loadCowsList();
+      }
     });
 
     this.searchControl.valueChanges
@@ -53,7 +61,7 @@ export class HerdPage implements OnInit {
   }
 
   loadCowsList() {
-    this.cowService.getAllCows(this.farmId).subscribe(res => {
+    this.cowService.getAllCows(this.farmId).then(res => {
       this.cowsList = res['cows'];
       this.filteredCowsList = res['cows'];
       this.cowService.cowListState.next(false);

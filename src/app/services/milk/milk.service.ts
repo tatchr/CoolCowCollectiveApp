@@ -10,10 +10,10 @@ export class MilkService {
   constructor(private httpService: HttpService) { }
 
   getAllMilkRecords(farmId, date, timeOfDay){
-    return this.httpService.get(environment.url + '/api/milkproduction/getAll/' + farmId + "/" + date + "/" + timeOfDay);
+    return this.httpService.get2('Loading...', environment.url + '/api/milkproduction/getAll/' + farmId + "/" + date + "/" + timeOfDay);
   }
 
   registerMilkRecords(records) {
-    return this.httpService.post(environment.url + '/api/milkproduction/register', records);
+    return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records);
   }
 }
