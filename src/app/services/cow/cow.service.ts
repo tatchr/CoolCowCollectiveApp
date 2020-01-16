@@ -9,6 +9,9 @@ import { HttpService } from 'src/app/services/http/http.service';
 export class CowService {  
 
   cowListState = new BehaviorSubject(null);
+  cowRegistered = new BehaviorSubject(null);
+  cowUpdated = new BehaviorSubject(null);
+  cowDeleted = new BehaviorSubject(null);
 
   constructor(private httpService: HttpService) { }
 

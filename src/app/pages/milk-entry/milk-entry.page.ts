@@ -64,7 +64,7 @@ export class MilkEntryPage implements OnInit {
   }
 
   setFilteredItems(searchTerm) {
-    this.filteredMilkRecordsList = this.filterService.filterItems(this.milkRecordsList, searchTerm, ['cowName', 'tagNumber']);
+    this.filteredMilkRecordsList = this.filterService.doSearch(this.milkRecordsList, searchTerm, ['cowName', 'tagNumber']);
   }
 
   loadMilkRecordsList() {

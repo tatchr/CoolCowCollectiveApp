@@ -1,6 +1,6 @@
-class CowDetails{
+interface CowDetails{
     id: number;
-    farmId: number;
+    farmId: string;
     tagNumber: string;
     name: string;
     birthDate: Date;

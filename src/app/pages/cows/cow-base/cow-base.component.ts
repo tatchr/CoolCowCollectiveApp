@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 
@@ -30,19 +29,10 @@ export class CowBaseComponent implements OnInit {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId; 
     });
-  } 
+  }
 
   cowTypeSelected(event) {
     this.setCowStatusList(event.detail.value);
-    // this.showFullStatusList = event.detail.value == 'Cow';
-
-    // if(!this.showFullStatusList){
-    //   this.cowForm.controls['cowstatus'].setValue('N/A');
-    //   this.cowForm.controls['cowstatus'].disable();
-    // }
-    // else{
-    //   this.cowForm.controls['cowstatus'].enable();
-    // }
   }
 
   setCowStatusList(cowType){

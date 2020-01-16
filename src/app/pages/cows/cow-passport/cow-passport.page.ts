@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
@@ -14,68 +14,70 @@ import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component
   providers: [Keyboard]
 })
 export class CowPassportPage extends CowBaseComponent implements OnInit {
-  
-  cowId: string;
 
-  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage, 
+  cowId: number;
+  cowDetails: CowDetails;
+
+  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage,
     cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {
-      super(router, formBuilder, storage, cowService, datePicker, keyboard);
-    }
+    super(router, formBuilder, storage, cowService, datePicker, keyboard);
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.cowDetails = this.router.getCurrentNavigation().extras.state.cowDetails;
+      }
+    });
+  }
 
   ngOnInit() {
-    this.initiate();
+    this.populateForm(this.cowDetails);
+    this.cowId = this.cowDetails.id;
   }
 
-  initiate(){
-    this.cowId = this.activatedRoute.snapshot.paramMap.get('cowId');
-    this.getFarmId();
-    this.getCow();
-  }
-
-  getCow(){
-    this.cowService.getCow(this.cowId).then(res => {
-      this.populateForm(res['cow']);
-    });
-  }  
-  
-  populateForm(cowDetails){
+  populateForm(cowDetails) {
     this.cowForm = this.formBuilder.group({
-      id: this.cowId,
+      id: cowDetails.id,
       name: [cowDetails.name, [Validators.required, Validators.maxLength(100)]],
-      farmId: this.farmId,
+      farmId: cowDetails.farmId,
       tagnumber: [cowDetails.tagNumber, [Validators.maxLength(50)]],
       birthdate: this.datePicker.formatDate(cowDetails.birthDate),
       cowtype: [cowDetails.cowType, [Validators.required]],
       breed: cowDetails.breed,
       cowstatus: [cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
       cowstate: cowDetails.cowState,
-      registrationdate: cowDetails.registrationDate     
+      registrationdate: cowDetails.registrationDate
     });
 
     this.setCowStatusList(cowDetails.cowType);
-
-    // this.showFullStatusList = cowDetails.cowType == 'Cow';    
-
-    // if(!this.showFullStatusList){
-    //   this.cowForm.controls['cowstatus'].setValue('N/A');
-    //   this.cowForm.controls['cowstatus'].disable();
-    // }
   }
 
   updateCow() {
-    if(this.cowForm.valid){
+    if (this.cowForm.valid) {
+      let updatedCow: CowDetails = {
+        id: this.cowForm.value['id'],
+        name: this.cowForm.value['name'],
+        farmId: this.cowForm.value['farmId'],
+        tagNumber: this.cowForm.value['tagnumber'],
+        birthDate: this.cowForm.value['birthdate'],
+        cowType: this.cowForm.value['cowtype'],
+        breed: this.cowForm.value['breed'],
+        cowStatus: this.cowForm.get(['cowstatus']).value,
+        cowState: this.cowForm.value['cowstate'],
+        registrationDate: this.cowForm.value['registrationdate']
+      };
+
       this.cowService.updateCow(this.cowForm.getRawValue()).subscribe(val => {
-        if(val){
-          this.cowService.cowListState.next(true);
+        if (val) {
+          this.cowService.cowUpdated.next(updatedCow);
           this.router.navigateByUrl('tabs/herd');
         }
       });
-    }    
+    }
   }
 
-  async openDatePicker(){
+  async openDatePicker() {
     let birthDate = this.cowForm.controls['birthdate'].value;
     birthDate = await this.datePicker.openDatePicker(this.fromDate, this.toDate, birthDate);
-    this.cowForm.controls['birthdate'].setValue(birthDate);    
+    this.cowForm.controls['birthdate'].setValue(birthDate);
   }
 }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
@@ -24,7 +23,7 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   ngOnInit() {
     this.getFarmId();
     this.cowForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
+      name: [null, [Validators.required, Validators.maxLength(50)]],
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
       birthdate: [null],
@@ -36,11 +35,28 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   
   onSubmit() {
     if(this.cowForm.valid){
+      
       this.cowForm.controls['farmId'].setValue(this.farmId);
 
+      let newCow : CowDetails = {
+        id: null,
+        name: this.cowForm.value['name'],
+        farmId: this.farmId,
+        tagNumber: this.cowForm.value['tagnumber'],
+        birthDate: this.cowForm.value['birthdate'],
+        cowType: this.cowForm.value['cowtype'],
+        breed: this.cowForm.value['breed'],
+        cowStatus: this.cowForm.get(['cowstatus']).value,
+        cowState: null,
+        registrationDate: new Date()        
+      };
+
+      console.log(newCow);
       this.cowService.registerCow(this.cowForm.getRawValue()).then(val => {
         if(val){
-          this.cowService.cowListState.next(true);
+          console.log('val: ');
+          console.log(val);
+          this.cowService.cowRegistered.next(val['cow']);
           this.router.navigateByUrl('/tabs/herd');
         }
       });

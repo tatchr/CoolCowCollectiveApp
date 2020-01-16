@@ -12,7 +12,7 @@
     <ion-icon position="fixed" name="funnel" color="dark">
     </ion-icon>
     <ion-label style="display: none;">Filters</ion-label>
-    <ion-select multiple="true" style="width: 0px;" [(ngModel)]="filters" (ionChange)="filtersSelected()">
+    <ion-select multiple="true" style="width: 0px;" [(ngModel)]="filters" (ionChange)="applyFilters()">
       <ion-select-option *ngFor="let cowStatus of cowStatuses" value="{{cowStatus.value}}" [selected]="true">{{cowStatus.name}}</ion-select-option>
     </ion-select>
   </ion-button>
@@ -36,7 +36,7 @@
         <!-- <div *ngIf="searching" class="spinner-container">
           <ion-spinner></ion-spinner>
         </div> -->
-        <ion-card button="true" *ngFor='let cow of filteredCowsList' routerLink="/cow-passport/{{cow.id}}" routerDirection="forward">
+        <ion-card button="true" *ngFor='let cow of filteredCowsList' (click)="openCowPassport(cow.id)">
           <ion-item>
             <ion-avatar>
               <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
