@@ -34,28 +34,23 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   }
   
   onSubmit() {
-    if(this.cowForm.valid){
-      
+    if(this.cowForm.valid){      
       this.cowForm.controls['farmId'].setValue(this.farmId);
+      // let newCow : CowDetails = {
+      //   id: null,
+      //   name: this.cowForm.value['name'],
+      //   farmId: this.farmId,
+      //   tagNumber: this.cowForm.value['tagnumber'],
+      //   birthDate: this.cowForm.value['birthdate'],
+      //   cowType: this.cowForm.value['cowtype'],
+      //   breed: this.cowForm.value['breed'],
+      //   cowStatus: this.cowForm.get(['cowstatus']).value,
+      //   cowState: null,
+      //   registrationDate: new Date()        
+      // };
 
-      let newCow : CowDetails = {
-        id: null,
-        name: this.cowForm.value['name'],
-        farmId: this.farmId,
-        tagNumber: this.cowForm.value['tagnumber'],
-        birthDate: this.cowForm.value['birthdate'],
-        cowType: this.cowForm.value['cowtype'],
-        breed: this.cowForm.value['breed'],
-        cowStatus: this.cowForm.get(['cowstatus']).value,
-        cowState: null,
-        registrationDate: new Date()        
-      };
-
-      console.log(newCow);
       this.cowService.registerCow(this.cowForm.getRawValue()).then(val => {
         if(val){
-          console.log('val: ');
-          console.log(val);
           this.cowService.cowRegistered.next(val['cow']);
           this.router.navigateByUrl('/tabs/herd');
         }

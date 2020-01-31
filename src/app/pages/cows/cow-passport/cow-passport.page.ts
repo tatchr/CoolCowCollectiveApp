@@ -6,6 +6,7 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
+import { CowDetails } from 'src/app/common/objects/CowDetails';
 
 @Component({
   selector: 'app-cow-passport',
@@ -14,8 +15,7 @@ import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component
   providers: [Keyboard]
 })
 export class CowPassportPage extends CowBaseComponent implements OnInit {
-
-  cowId: number;
+  
   cowDetails: CowDetails;
 
   constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage,
@@ -30,25 +30,20 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.populateForm(this.cowDetails);
-    this.cowId = this.cowDetails.id;
-  }
-
-  populateForm(cowDetails) {
     this.cowForm = this.formBuilder.group({
-      id: cowDetails.id,
-      name: [cowDetails.name, [Validators.required, Validators.maxLength(100)]],
-      farmId: cowDetails.farmId,
-      tagnumber: [cowDetails.tagNumber, [Validators.maxLength(50)]],
-      birthdate: this.datePicker.formatDate(cowDetails.birthDate),
-      cowtype: [cowDetails.cowType, [Validators.required]],
-      breed: cowDetails.breed,
-      cowstatus: [cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
-      cowstate: cowDetails.cowState,
-      registrationdate: cowDetails.registrationDate
+      id: this.cowDetails.id,
+      name: [this.cowDetails.name, [Validators.required, Validators.maxLength(100)]],
+      farmId: this.cowDetails.farmId,
+      tagnumber: [this.cowDetails.tagNumber, [Validators.maxLength(50)]],
+      birthdate: this.datePicker.formatDate(this.cowDetails.birthDate),
+      cowtype: [this.cowDetails.cowType, [Validators.required]],
+      breed: this.cowDetails.breed,
+      cowstatus: [this.cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
+      cowstate: this.cowDetails.cowState,
+      registrationdate: this.cowDetails.registrationDate
     });
 
-    this.setCowStatusList(cowDetails.cowType);
+    this.setCowStatusList(this.cowDetails.cowType); 
   }
 
   updateCow() {

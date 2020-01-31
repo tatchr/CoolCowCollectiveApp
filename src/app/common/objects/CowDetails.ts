@@ -1,4 +1,4 @@
-interface CowDetails{
+export class CowDetails{
     id: number;
     farmId: string;
     tagNumber: string;
@@ -9,4 +9,8 @@ interface CowDetails{
     cowStatus: string;
     cowState: string;
     registrationDate: Date;
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }

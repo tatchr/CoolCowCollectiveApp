@@ -9,6 +9,7 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
+import { CowDetails } from 'src/app/common/objects/CowDetails';
 
 @Component({
   selector: 'app-herd',
@@ -35,13 +36,9 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     storage: Storage, cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {
     super(router, formBuilder, storage, cowService, datePicker, keyboard);
     this.searchControl = new FormControl();
-  }
+  }  
 
   ngOnInit() {
-    this.initiate();
-  }
-
-  initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadCowsList();
@@ -90,7 +87,6 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     let index = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
     let navigationExtras: NavigationExtras = {
       state: {
-        cowList: this.cowsList,
         cowDetails: this.cowsList[index]
       }
     };
@@ -101,8 +97,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     this.applyFilters();
 
     this.filteredCowsList.sort((a, b) => {
-      return a.cowState.localeCompare('InHerd')
-        
+      return a.cowState.localeCompare('InHerd')        
     });
 
     if (this.searchControl.value) {

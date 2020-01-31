@@ -19,15 +19,7 @@ export class MilkSalesInputPage extends MilkSalesBaseComponent implements OnInit
   }
 
   ngOnInit() {
-    this.initiate();
-  }
-
-  initiate() {
     this.getFarmId();
-    this.initiateForm();
-  }
-
-  initiateForm() {
     this.milksalesForm = this.formBuilder.group({
       farmId: [this.farmId],
       date: [this.selectedDateString],
@@ -43,15 +35,16 @@ export class MilkSalesInputPage extends MilkSalesBaseComponent implements OnInit
       let totalPrice = this.round(val['literssold'] * val['priceperliter'], 2);
       this.milksalesForm.get('totalPrice').patchValue(totalPrice, { emitEvent: false });
     });
-  }
+  } 
 
   onSubmit() {
     if(this.milksalesForm.valid){
       this.milksalesForm.controls['date'].setValue(this.selectedDateString);
       this.milksalesForm.controls['farmId'].setValue(this.farmId);
-      this.salesService.registerMilkSalesRecord(this.milksalesForm.value).subscribe(val => {
+      this.salesService.registerMilkSalesRecord(this.milksalesForm.value).then(val => {
         if (val) {
-          this.returnToOverview();
+          this.salesService.milkSaleRegistered.next(val['milkSale']);
+          this.router.navigateByUrl('/tabs/milk-sales-overview');
         }
       });
     }

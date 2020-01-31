@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class DeleteCowPage implements OnInit {
 
-  cowId: string;
+  cowId: number;
   keepRecords: boolean = true;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private cowService: CowService) { }
@@ -19,7 +19,7 @@ export class DeleteCowPage implements OnInit {
   }
 
   initiate(){
-    this.cowId = this.activatedRoute.snapshot.paramMap.get('cowId');    
+    this.cowId = Number(this.activatedRoute.snapshot.paramMap.get('cowId'));    
   }
 
   deleteCow() {

@@ -75,8 +75,7 @@
 
     <ion-row *ngFor='let record of milkSalesList; let i = index;'>
       <ion-col size="9">
-        <ion-item no-padding button="true" routerLink="/milk-sales-edit/{{record.id}}" routerDirection="forward"
-          [color]="record.fullAmountPaid ? 'success' : ''">
+        <ion-item no-padding button="true" (click)="openMilkSaleRecord(record.id)" [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
             <p>{{record.date}}</p>
             <p>{{record.litersSold}} L - {{record.offtaker}} - {{record.litersSold * record.pricePerLiter}} KSH</p>

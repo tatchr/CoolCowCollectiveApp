@@ -37,8 +37,8 @@
           <div *ngIf="showCowList || showSpermInput || showOtherInput">
             <ion-item *ngIf="showCowList">
               <ion-label color="medium">Select from herd*</ion-label>
-              <ion-select formControlName="cowidsold" placeholder="Select One">
-                <ion-select-option *ngFor="let cow of cowsList" [value]="cow.id">{{cow.name}}</ion-select-option>
+              <ion-select formControlName="cowidsold" [placeholder]="filteredCowsList?.length == 0 ? 'None found' : 'Select One'">
+                <ion-select-option *ngFor="let cow of filteredCowsList" [value]="cow.id">{{cow.name}}</ion-select-option>
               </ion-select>
             </ion-item>
 
@@ -79,7 +79,7 @@
 <ion-footer>
   <ion-row>
     <ion-col>
-      <ion-button color="success" expand="full" type="submit" [disabled]="!othersalesForm.valid" (click)="onSubmit()">
+      <ion-button color="success" expand="full" type="submit" [disabled]="!othersalesForm.valid || disableSubmitBtn" (click)="onSubmit()">
         <ion-icon name="save"></ion-icon>
       </ion-button>
     </ion-col>

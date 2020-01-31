@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
 
 @Component({
   selector: 'app-milk-sales-overview',
@@ -29,34 +30,61 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
    }  
 
   ngOnInit() {
-    this.salesService.milkSalesListState.subscribe(mustUpdate => {
-      if (mustUpdate) {
-        this.loadMilkSalesList();
-      }
-    });
-
-    this.initiate();
-  }  
-
-  initiate() {
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadMilkSalesList();
-    });    
+    });
+    
+    this.salesService.milkSaleRegistered.subscribe(newSale => {
+      if (newSale) {
+        this.milkSalesList.push(newSale);
+        this.computeTotals();
+      }
+    });
+
+    this.salesService.milkSaleDeleted.subscribe(milkSaleId => {
+      if (milkSaleId) {
+        let saleToDelete = this.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+        this.milkSalesList.splice(saleToDelete, 1);
+        this.computeTotals();
+      }
+    });
+
+    this.salesService.milkSaleUpdated.subscribe(sale => {
+      if (sale) {
+        let saleToUpdate = this.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
+        this.milkSalesList[saleToUpdate] = sale;
+        this.computeTotals();
+      }
+    });
   }
 
   loadMilkSalesList(){
+    this.salesService.getAllMilkSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).then(res => {      
+      this.milkSalesList = res['milkSalesDetails'];      
+      this.computeTotals();
+    });
+  }
+
+  computeTotals(){
     this.totalLiters = 0;
     this.totalMoney = 0;
 
-    this.salesService.getAllMilkSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
-      this.milkSalesList = res['milkSalesDetails'];
-      this.milkSalesList.forEach(item => {
-        item.date = this.datePicker.formatDate(item.date);
-        this.totalLiters += item.litersSold;
-        this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
-      });
+    this.milkSalesList.forEach(item => {
+      item.date = this.datePicker.formatDate(item.date);
+      this.totalLiters += item.litersSold;
+      this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
     });
+  }
+
+  openMilkSaleRecord(milkSaleId){
+    let index = this.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        milkSaleDetails: this.milkSalesList[index]
+      }
+    };
+    this.router.navigate(['milk-sales-edit'], navigationExtras);
   }
 
   moneyReceived(item){

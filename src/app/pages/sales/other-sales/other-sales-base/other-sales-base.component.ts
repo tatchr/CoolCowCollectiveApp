@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { CowService } from 'src/app/services/cow/cow.service';
+import { CowDetails } from 'src/app/common/objects/CowDetails';
 
 @Component({
   selector: 'app-other-sales-base',

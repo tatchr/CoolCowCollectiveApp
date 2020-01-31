@@ -28,7 +28,6 @@ export class MilkSalesBaseComponent {
   }
 
   returnToOverview(){
-    this.salesService.milkSalesListState.next(true);
     this.router.navigateByUrl('/tabs/milk-sales-overview');
   }
 

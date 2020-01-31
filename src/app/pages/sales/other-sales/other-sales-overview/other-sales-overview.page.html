@@ -49,7 +49,7 @@
 </ion-row>
 <ion-row>
   <ion-col>
-    <ion-button color="success" expand="full" routerLink="/other-sales-input/" routerDirection="forward">New sale
+    <ion-button color="success" expand="full" (click)="openNewOtherSaleRecord()">New sale
     </ion-button>
   </ion-col>
 </ion-row>
@@ -64,9 +64,9 @@
 
     <ion-row *ngFor='let record of otherSalesList; let i = index;'>
       <ion-col>
-        <ion-item button="true" routerLink="/other-sales-edit/{{record.id}}" routerDirection="forward" [color]="record.fullAmountPaid ? 'success' : ''">
+        <ion-item button="true" (click)="openOtherSaleRecord(record.id)" [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
-            <p>{{record.date}}</p>
+            <p>{{record.date | date: 'yyyy-MM-dd'}}</p>
             <p>{{record.itemSold}} - {{record.price}} KSH</p>
           </ion-label>
         </ion-item>

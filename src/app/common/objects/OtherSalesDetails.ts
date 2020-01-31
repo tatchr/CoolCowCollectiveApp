@@ -1,4 +1,4 @@
-class OtherSalesDetails{
+export class OtherSalesDetails {
     id: number;
     farmId: number;
     date: string;
@@ -7,6 +7,10 @@ class OtherSalesDetails{
     price: number;
     quantity: number;
     offtakerName: string;
-    offtakerCompany: string;    
+    offtakerCompany: string;
     timestamp: Date;
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }
