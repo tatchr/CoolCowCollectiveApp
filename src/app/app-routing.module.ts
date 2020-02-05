@@ -33,6 +33,10 @@ const routes: Routes = [
   { path: 'expenses-input', loadChildren: './pages/expenses/expenses-input/expenses-input.module#ExpensesInputPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-edit/:expenseId', loadChildren: './pages/expenses/expenses-edit/expenses-edit.module#ExpensesEditPageModule', canActivate: [AuthGuardService] },   
   { path: 'feedback', loadChildren: './pages/feedback/feedback.module#FeedbackPageModule', canActivate: [AuthGuardService] },
+  { path: 'report-overview', loadChildren: './pages/reports/report-overview/report-overview.module#ReportOverviewPageModule', canActivate: [AuthGuardService] },
+  { path: 'herd-report', loadChildren: './pages/reports/herd-report/herd-report.module#HerdReportPageModule', canActivate: [AuthGuardService] },
+  { path: 'financial-report', loadChildren: './pages/reports/financial-report/financial-report.module#FinancialReportPageModule', canActivate: [AuthGuardService] },
+  { path: 'custom-report', loadChildren: './pages/reports/custom-report/custom-report.module#CustomReportPageModule', canActivate: [AuthGuardService] },
 
  
 ];

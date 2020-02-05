@@ -21,6 +21,8 @@ import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
 import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -50,6 +52,8 @@ export function jwtOptionsFactory(storage) {
   providers: [
     StatusBar,
     SplashScreen,
+    File,
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

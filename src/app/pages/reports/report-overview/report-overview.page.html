@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reports</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" routerLink="/herd-report">Herd performance</ion-button>
+        <ion-button expand="full" routerLink="/financial-report" routerDirection="forward">Financial performance</ion-button>
+        <ion-button expand="full" routerLink="/custom-report" routerDirection="forward">Custom</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
