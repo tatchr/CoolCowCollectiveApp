@@ -23,6 +23,7 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
 
   ngOnInit() {
     this.expenseId = this.activatedRoute.snapshot.paramMap.get('expenseId');
+    console.log('expenseId: ' + this.expenseId)
     this.getFarmId();
     this.getExpense();
   }
@@ -35,7 +36,7 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
     this.selectedDateString = this.datePicker.formatDate(expenseDetails.date);
 
     this.expensesForm = this.formBuilder.group({
-      id: this.expenseId,
+      id: Number(this.expenseId),
       farmId: this.farmId,
       date: this.selectedDateString,
       type: [expenseDetails.type, [Validators.required]],

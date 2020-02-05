@@ -33,6 +33,7 @@ export class ReportService {
     const toast = await this.toastController.create({
       header: 'Report test.xlsx downloaded',
       //message: 'Open report now?' ,
+      duration: 6000,
       position: 'bottom',
       buttons: [
         {
@@ -42,14 +43,15 @@ export class ReportService {
             this.fileOpener.open(this.file.externalRootDirectory + '/Download/test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           }
         }
-        //, 
-        // {
-        //   text: 'No',
-        //   role: 'cancel',
-        //   handler: () => {
-        //     console.log('Cancel clicked');
-        //   }
-        // }
+        , 
+        {
+          side: 'start',
+          text: 'Dismiss',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
       ]
     });
     toast.present();

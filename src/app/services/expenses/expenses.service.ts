@@ -25,6 +25,7 @@ export class ExpensesService {
   }
 
   updateExpensesRecord(record) {
+    console.log(record);
     return this.httpService.put(environment.url + '/api/expenses/update', record);
   }
 
