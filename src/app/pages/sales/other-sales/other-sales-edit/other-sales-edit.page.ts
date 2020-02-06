@@ -9,6 +9,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
+import { ItemSold } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-other-sales-edit',
@@ -20,19 +21,17 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   cowSold: CowDetails;
 
   otherSaleDetails: OtherSalesDetails;
-  cowsList: Array<CowDetails> = [];
 
-  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, 
+  constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder,
     salesService: SalesService, cowService: CowService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
-      super(router, salesService, cowService, formBuilder, storage, datePicker);
+    super(router, salesService, cowService, formBuilder, storage, datePicker);
 
-      this.activatedRoute.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.otherSaleDetails = this.router.getCurrentNavigation().extras.state.otherSaleDetails;
-          this.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
-        }
-      });
-     }
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.otherSaleDetails = this.router.getCurrentNavigation().extras.state.otherSaleDetails;
+      }
+    });
+  }
 
   ngOnInit() {
     this.selectedDateString = this.datePicker.formatDate(this.otherSaleDetails.date);
@@ -41,51 +40,46 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
       id: this.otherSaleDetails.id,
       farmId: this.otherSaleDetails.farmId,
       date: this.otherSaleDetails.date,
-      itemsold: [{value: this.getItemSold(this.otherSaleDetails), disabled: true}],
-      cowidsold: [{value: this.otherSaleDetails.cowIdSold, disabled: true}],
+      itemsold: [{ value: this.getItemSold(this.otherSaleDetails), disabled: true }],
+      cowidsold: [{ value: this.otherSaleDetails.cowIdSold, disabled: true }],
       price: [this.otherSaleDetails.price, [Validators.required, Validators.min(0.0)]],
       quantity: [this.otherSaleDetails.quantity, [Validators.min(0.0), Validators.max(100000.00)]],
       offtakername: [this.otherSaleDetails.offtakerName],
       offtakercompany: [this.otherSaleDetails.offtakerCompany],
     });
-  }  
+  }
 
+  getItemSold(otherSalesDetails: OtherSalesDetails): string {
+    this.showSpermInput = otherSalesDetails.itemSold == ItemSold.Sperm;
+    this.showCowList = this.cowService.animalTypes.includes(otherSalesDetails.itemSold);
 
-  getItemSold(otherSalesDetails){
-    this.showSpermInput = otherSalesDetails.itemSold == 'Sperm';
-    this.showCowList = this.animalTypes.includes(otherSalesDetails.itemSold); 
-
-    if(this.showCowList){
-      this.getCow(otherSalesDetails.cowIdSold);
+    if (this.showCowList) {
+      this.cowSold = this.getCow(otherSalesDetails.cowIdSold);
+      
       return otherSalesDetails.itemSold
     }
 
-    if(!this.animalTypes.includes(otherSalesDetails.itemSold) && !this.showSpermInput){
+    if (!this.cowService.animalTypes.includes(otherSalesDetails.itemSold) && !this.showSpermInput) {
       this.showOtherInput = true;
       this.otherItemDescription = otherSalesDetails.itemSold;
-      return 'Other';
-    }    
+
+      return ItemSold.Other;
+    }
 
     return otherSalesDetails.itemSold;
-  } 
-  
-  getCow(cowId){
-    let index = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
-    this.cowSold = this.cowsList[index];
+  }
 
-
-    //this.cowService.getCow(cowId).then(res => {
-      //this.cowSold = res['cow'];
-      //this.cowService.cowListState.next(false);
-    //});
-  }  
+  getCow(cowId: number): CowDetails {
+    let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
+    return this.cowService.cowsList[index];
+  }
 
   onSubmit() {
-    if(this.othersalesForm.valid){
+    if (this.othersalesForm.valid) {
       this.othersalesForm.controls['date'].setValue(this.selectedDateString);
-      
+
       let itemsold = this.othersalesForm.controls['itemsold'].value;
-      if(itemsold == 'Other'){
+      if (itemsold == ItemSold.Other) {
         this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
       }
 
@@ -102,29 +96,29 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
       });
 
       this.salesService.updateOtherSalesRecord(this.othersalesForm.getRawValue()).subscribe(val => {
-        if(val){
+        if (val) {
           this.salesService.otherSaleUpdated.next(updatedSale);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }
       });
-    }    
+    }
   }
 
-  onDelete(){
+  onDelete() {
     let header = 'Delete this record?';
     let message = 'Are you sure that you want to permanently delete this sales record?';
-    let confirmAction = () => { 
+    let confirmAction = () => {
       this.salesService.deleteOtherSalesRecord(this.otherSaleDetails.id).subscribe(val => {
-        if(val){
+        if (val) {
           this.salesService.otherSaleDeleted.next(this.otherSaleDetails.id);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }
       });
-    };    
+    };
     this.alertService.presentAlertConfirm(header, message, confirmAction);
   }
 
-  returnToOverview(){
+  returnToOverview() {
     this.salesService.otherSalesListState.next(true);
     this.router.navigateByUrl('/tabs/other-sales-overview');
   }

@@ -36,7 +36,7 @@
         <!-- <div *ngIf="searching" class="spinner-container">
           <ion-spinner></ion-spinner>
         </div> -->
-        <ion-card button="true" *ngFor='let cow of filteredCowsList' (click)="openCowPassport(cow.id)">
+        <ion-card button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowPassport(cow.id)">
           <ion-item>
             <ion-avatar>
               <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">

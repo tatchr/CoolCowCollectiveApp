@@ -15,7 +15,6 @@ import { CowDetails } from 'src/app/common/objects/CowDetails';
 export class OtherSalesBaseComponent implements OnInit {
 
   othersalesForm: FormGroup; 
-  cowsList: Array<CowDetails> = [];
   farmId: string;
   fromDate = new Date('2016-01-01');
   toDate = new Date();
@@ -24,7 +23,7 @@ export class OtherSalesBaseComponent implements OnInit {
   showCowList: boolean;
   showOtherInput: boolean;
   showSpermInput: boolean;
-  animalTypes: Array<string> = ['Calf', 'Cow', 'Bull', 'Heifer'];
+  
   otherItemDescription: string = "";
     
   constructor(protected router: Router, protected salesService: SalesService, protected cowService: CowService, protected formBuilder: FormBuilder,

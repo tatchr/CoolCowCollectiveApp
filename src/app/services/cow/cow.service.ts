@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
+import { Animal } from 'src/app/common/objects/Enums';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,11 @@ export class CowService {
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);
   cowDeleted = new BehaviorSubject<number>(null);
+  cowSold = new BehaviorSubject<number>(null);
+
+  cowsList: Array<CowDetails> = [];
+  filteredCowsList: Array<CowDetails> = [];  
+  animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];
 
   constructor(private httpService: HttpService) { }
 

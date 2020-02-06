@@ -10,6 +10,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
+import { CowState } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-herd',
@@ -22,8 +23,6 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   searchControl: FormControl;
   searching: Boolean = false;
   farmId: string;
-  cowsList: Array<CowDetails> = [];
-  filteredCowsList: Array<CowDetails> = [];
   filters: Array<string> = [];
 
   cowStatuses: Array<CowStatus> = [
@@ -46,23 +45,31 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
     this.cowService.cowRegistered.subscribe(newCow => {
       if (newCow) {
-        this.cowsList.push(newCow);
+        this.cowService.cowsList.push(newCow);
         this.applyFiltersAndSort();
       }
     });
 
     this.cowService.cowDeleted.subscribe(cowId => {
       if (cowId) {
-        let cowToDelete = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
-        this.cowsList.splice(cowToDelete, 1);
+        let cowToDelete = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
+        this.cowService.cowsList.splice(cowToDelete, 1);
         this.applyFiltersAndSort();
       }
     });
 
     this.cowService.cowUpdated.subscribe(cow => {
       if (cow) {
-        let cowToUpdate = this.cowsList.map(x => x.id).findIndex(x => x == cow.id);
-        this.cowsList[cowToUpdate] = cow;
+        let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+        this.cowService.cowsList[cowToUpdate] = cow;
+        this.applyFiltersAndSort();
+      }
+    });
+
+    this.cowService.cowSold.subscribe(cowId => {
+      if (cowId) {
+        let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
+        this.cowService.cowsList[index].cowState = CowState.Sold;
         this.applyFiltersAndSort();
       }
     });
@@ -77,17 +84,17 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
   loadCowsList() {
     this.cowService.getAllCows(this.farmId).then(res => {
-      this.cowsList = res['cows'];
-      this.filteredCowsList = this.cowsList;
+      this.cowService.cowsList = res['cows'];
+      this.cowService.filteredCowsList = this.cowService.cowsList;
       this.cowService.cowListState.next(false);
     });
   }
 
   openCowPassport(cowId) {
-    let index = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
+    let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
     let navigationExtras: NavigationExtras = {
       state: {
-        cowDetails: this.cowsList[index]
+        cowDetails: this.cowService.cowsList[index]
       }
     };
     this.router.navigate(['cow-passport'], navigationExtras);
@@ -96,7 +103,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   applyFiltersAndSort() {
     this.applyFilters();
 
-    this.filteredCowsList.sort((a, b) => {
+    this.cowService.filteredCowsList.sort((a, b) => {
       return a.cowState.localeCompare('InHerd')        
     });
 
@@ -107,7 +114,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
   doSearch(searchTerm) {
     this.applyFilters();
-    this.filteredCowsList = this.filterService.doSearch(this.filteredCowsList, searchTerm, ['name', 'tagNumber']);
+    this.cowService.filteredCowsList = this.filterService.doSearch(this.cowService.filteredCowsList, searchTerm, ['name', 'tagNumber']);
   }
 
   onSearchInput() {
@@ -124,10 +131,10 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
   applyFilters() {
     if (this.filters.length === 0) {
-      this.filteredCowsList = this.cowsList;
+      this.cowService.filteredCowsList = this.cowService.cowsList;
     }
     else {
-      this.filteredCowsList = this.filterService.applyFilters(this.cowsList, this.filters, 'cowStatus');
+      this.cowService.filteredCowsList = this.filterService.applyFilters(this.cowService.cowsList, this.filters, 'cowStatus');
     }
   }
 }

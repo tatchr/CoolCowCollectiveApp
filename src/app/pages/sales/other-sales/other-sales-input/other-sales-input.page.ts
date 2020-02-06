@@ -6,8 +6,9 @@ import { SalesService } from 'src/app/services/sales/sales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
-import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { FilterService } from 'src/app/services/filter/filter.service';
+import { CowDetails } from 'src/app/common/objects/CowDetails';
+import { ItemSold, CowState } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-other-sales-input',
@@ -15,10 +16,9 @@ import { FilterService } from 'src/app/services/filter/filter.service';
   styleUrls: ['./other-sales-input.page.scss'],
 })
 export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnInit {
-
-  cowsList: Array<CowDetails> = [];
-  filteredCowsList: Array<CowDetails> = [];
+ 
   disableSubmitBtn: boolean = false;
+  cowSelector: Array<CowDetails> = [];
   
   constructor(router: Router, salesService: SalesService, private activatedRoute: ActivatedRoute, cowService: CowService, formBuilder: FormBuilder,
     storage: Storage, datePicker: DatepickerService, private filterService: FilterService) { 
@@ -26,14 +26,14 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
 
       this.activatedRoute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
-          this.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
+          this.cowService.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
         }
       });
     }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.getFarmId();
-    this.initiateForm();
+    this.initiateForm();    
   }  
 
   initiateForm() {
@@ -55,7 +55,7 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
       this.othersalesForm.controls['date'].setValue(this.selectedDateString);
 
       let itemsold = this.othersalesForm.controls['itemsold'].value;
-      if(itemsold == 'Other'){
+      if(itemsold == ItemSold.Other){
         this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
       }
 
@@ -69,18 +69,19 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
   }
 
   itemSelected(event) {
-    this.showOtherInput = event.detail.value == 'Other';
-    this.showSpermInput = event.detail.value == 'Sperm';
-    this.showCowList = this.animalTypes.includes(event.detail.value);
+    this.showOtherInput = event.detail.value == ItemSold.Other;
+    this.showSpermInput = event.detail.value == ItemSold.Sperm;
+    this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
     if (this.showCowList) {
       this.loadCowsList(event.detail.value);
     }
-  }
+  }  
 
   loadCowsList(cowType) {
-    this.filteredCowsList = this.filterService.applyFilters(this.cowsList, [cowType], 'cowType');
+    let cowsByType = this.filterService.applyFilters(this.cowService.cowsList, [cowType], 'cowType');
+    this.cowSelector = this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
 
-    if(this.filteredCowsList.length == 0){
+    if(this.cowSelector.length == 0){
       this.othersalesForm.disable();
       this.othersalesForm.controls['itemsold'].enable();
       this.othersalesForm.controls['cowidsold'].setValue(null);

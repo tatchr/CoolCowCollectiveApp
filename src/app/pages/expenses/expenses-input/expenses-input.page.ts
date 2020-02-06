@@ -48,7 +48,7 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
   itemSelected(event) {
     // this.showOtherInput = event.detail.value == 'Other';
     // this.showSpermInput = event.detail.value == 'Sperm';
-    // this.showCowList = this.animalTypes.includes(event.detail.value);
+    // this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
     // if (this.showCowList) {
     //   this.loadCowsList(event.detail.value);
     // }
