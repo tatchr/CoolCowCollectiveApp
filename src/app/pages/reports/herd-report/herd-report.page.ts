@@ -37,11 +37,11 @@ export class HerdReportPage implements OnInit {
   }
 
   async openFromDatePicker(){
-    this.selectedFromDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedFromDateString);
+    this.selectedFromDateString = await this.datePicker.openDatePicker(this.selectedFromDateString);
   }
 
   async openToDatePicker(){
-    this.selectedToDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedToDateString);
+    this.selectedToDateString = await this.datePicker.openDatePicker(this.selectedToDateString);
   }
 
 }

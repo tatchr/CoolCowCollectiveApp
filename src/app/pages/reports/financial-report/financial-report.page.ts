@@ -12,8 +12,6 @@ export class FinancialReportPage implements OnInit {
 
   farmId: string;
   userId: string;
-  fromDate = new Date('2016-01-01');
-  toDate = new Date();
   fromDatePickerObj: any;
   toDatePickerObj: any;
   selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
@@ -37,11 +35,11 @@ export class FinancialReportPage implements OnInit {
   }
 
   async openFromDatePicker(){
-    this.selectedFromDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedFromDateString);
+    this.selectedFromDateString = await this.datePicker.openDatePicker(this.selectedFromDateString);
   }
 
   async openToDatePicker(){
-    this.selectedToDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedToDateString);
+    this.selectedToDateString = await this.datePicker.openDatePicker(this.selectedToDateString);
   }
 
 }

@@ -2,7 +2,7 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SalesService } from 'src/app/services/sales/sales.service';
+import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
@@ -26,7 +26,7 @@ export class OtherSalesBaseComponent implements OnInit {
   
   otherItemDescription: string = "";
     
-  constructor(protected router: Router, protected salesService: SalesService, protected cowService: CowService, protected formBuilder: FormBuilder,
+  constructor(protected router: Router, protected otherSalesService: OthersalesService, protected cowService: CowService, protected formBuilder: FormBuilder,
     protected storage: Storage, protected datePicker: DatepickerService) { }
 
   ngOnInit() {}  
@@ -38,7 +38,7 @@ export class OtherSalesBaseComponent implements OnInit {
   }  
 
   async openDatePicker(){
-    this.selectedDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedDateString);    
+    this.selectedDateString = await this.datePicker.openDatePicker(this.selectedDateString);    
   }
 
   round(number, decimals){

@@ -14,9 +14,7 @@ export class ExpensesBaseComponent implements OnInit {
 
   expensesForm: FormGroup;
   farmId: string;
-  selectedDateString: string = this.datePicker.formatDate(new Date());
-  fromDate = new Date('2016-01-01');
-  toDate = new Date();
+  selectedDateString: string = this.datePicker.formatDate(new Date()); 
 
   constructor(protected router: Router, protected expensesService: ExpensesService, protected formBuilder: FormBuilder, 
     protected storage: Storage, protected datePicker: DatepickerService) { }
@@ -39,7 +37,7 @@ export class ExpensesBaseComponent implements OnInit {
   }
 
   async openDatePicker(){
-    this.selectedDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedDateString);    
+    this.selectedDateString = await this.datePicker.openDatePicker(this.selectedDateString);    
   }
 
 }

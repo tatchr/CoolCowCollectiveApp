@@ -1,87 +1,54 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { SalesService } from 'src/app/services/sales/sales.service';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
+import { MilksalesService } from 'src/app/services/sales/milksales/milksales.service';
 import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
+import { Period } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-milk-sales-overview',
   templateUrl: './milk-sales-overview.page.html',
   styleUrls: ['./milk-sales-overview.page.scss'],
 })
-export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {
+export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {  
+  
+  period: string = Period.lastweek;
 
-  farmId: string;
-  fromDatePickerObj: any;
-  toDatePickerObj: any;
-  selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDateString: string = this.datePicker.formatDate(new Date());
-  milkSalesList: Array<MilkSalesDetails> = [];
-  period: string = 'lastweek';
-
-  totalLiters: number;
-  totalMoney: number;
-
-  constructor(router: Router, salesService: SalesService, formBuilder: FormBuilder, storage: Storage, datePicker: DatepickerService) {
-    super(router, salesService, formBuilder, storage, datePicker);
+  constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder, storage: Storage) {
+    super(router, milkSalesService, formBuilder, storage);
    }  
 
-  ngOnInit() {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      this.loadMilkSalesList();
-    });
-    
-    this.salesService.milkSaleRegistered.subscribe(newSale => {
+  ngOnInit() {    
+    this.milkSalesService.milkSaleRegistered.subscribe(newSale => {
       if (newSale) {
-        this.milkSalesList.push(newSale);
-        this.computeTotals();
+        this.milkSalesService.milkSalesList.push(newSale);
+        this.milkSalesService.computeTotals();
       }
     });
 
-    this.salesService.milkSaleDeleted.subscribe(milkSaleId => {
+    this.milkSalesService.milkSaleDeleted.subscribe(milkSaleId => {
       if (milkSaleId) {
-        let saleToDelete = this.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
-        this.milkSalesList.splice(saleToDelete, 1);
-        this.computeTotals();
+        let saleToDelete = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+        this.milkSalesService.milkSalesList.splice(saleToDelete, 1);
+        this.milkSalesService.computeTotals();
       }
     });
 
-    this.salesService.milkSaleUpdated.subscribe(sale => {
+    this.milkSalesService.milkSaleUpdated.subscribe(sale => {
       if (sale) {
-        let saleToUpdate = this.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
-        this.milkSalesList[saleToUpdate] = sale;
-        this.computeTotals();
+        let saleToUpdate = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
+        this.milkSalesService.milkSalesList[saleToUpdate] = sale;
+        this.milkSalesService.computeTotals();
       }
-    });
-  }
-
-  loadMilkSalesList(){
-    this.salesService.getAllMilkSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).then(res => {      
-      this.milkSalesList = res['milkSalesDetails'];      
-      this.computeTotals();
-    });
-  }
-
-  computeTotals(){
-    this.totalLiters = 0;
-    this.totalMoney = 0;
-
-    this.milkSalesList.forEach(item => {
-      item.date = this.datePicker.formatDate(item.date);
-      this.totalLiters += item.litersSold;
-      this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
     });
   }
 
   openMilkSaleRecord(milkSaleId){
-    let index = this.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+    let index = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
     let navigationExtras: NavigationExtras = {
       state: {
-        milkSaleDetails: this.milkSalesList[index]
+        milkSaleDetails: this.milkSalesService.milkSalesList[index]
       }
     };
     this.router.navigate(['milk-sales-edit'], navigationExtras);
@@ -89,44 +56,28 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
 
   moneyReceived(item){
     item.fullAmountPaid = true;
-    this.salesService.updateMilkSalesRecord(item).subscribe();
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe();
   }
 
   moneyNotReceived(item){
     item.fullAmountPaid = false;
-    this.salesService.updateMilkSalesRecord(item).subscribe();   
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe();   
   }
 
   periodSelected(period){
     this.period = period;
-    this.selectedToDateString = this.datePicker.formatDate(new Date());
-    if(this.period == 'lastweek'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 7, 'days');
-    }
-    if(this.period == 'last2weeks'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 14, 'days');
-    }
-    if(this.period == 'lastmonth'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 1, 'months');
-    }
-    if(this.period == 'lastquarter'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 3, 'months');
-    }
-    if(this.period == 'lastyear'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 1, 'years');
-    }
-    this.loadMilkSalesList();  
+    this.milkSalesService.periodSelected(period);
   }
 
   async openFromDatePicker(){
     this.period = '';
-    this.selectedFromDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedFromDateString);
-    this.loadMilkSalesList();    
+    this.milkSalesService.selectedFromDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedFromDate);
+    this.milkSalesService.loadMilkSalesList();    
   }
 
   async openToDatePicker(){
     this.period = '';
-    this.selectedToDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedToDateString);
-    this.loadMilkSalesList();    
+    this.milkSalesService.selectedToDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedToDate);
+    this.milkSalesService.loadMilkSalesList();    
   }  
 }

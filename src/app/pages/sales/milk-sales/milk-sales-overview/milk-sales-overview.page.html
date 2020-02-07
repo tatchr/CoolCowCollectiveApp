@@ -9,13 +9,13 @@
   <ion-col>
     <ion-item (click)="openFromDatePicker()">
       <ion-label position="floating" color="medium">From</ion-label>
-      <ion-input [(ngModel)]="selectedFromDateString" readonly></ion-input>
+      <ion-input [(ngModel)]="this.milkSalesService.selectedFromDate" readonly></ion-input>
     </ion-item>
   </ion-col>
   <ion-col>
     <ion-item (click)="openToDatePicker()">
       <ion-label position="floating" color="medium">To</ion-label>
-      <ion-input [(ngModel)]="selectedToDateString" readonly item-center></ion-input>
+      <ion-input [(ngModel)]="this.milkSalesService.selectedToDate" readonly item-center></ion-input>
     </ion-item>
   </ion-col>
 </ion-row>
@@ -43,6 +43,10 @@
           <ion-button size="default" fill="outline" [color]="period == 'lastyear' ? 'success' : 'medium'"
             (click)="periodSelected('lastyear')">
             1 year</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'alltime' ? 'success' : 'medium'"
+            (click)="periodSelected('alltime')">
+            All time</ion-button>
         </div>
       </div>
     </ion-item>
@@ -73,27 +77,30 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor='let record of milkSalesList; let i = index;'>
+    <ion-row *ngFor='let record of this.milkSalesService.milkSalesList; let i = index;'>
       <ion-col size="9">
-        <ion-item no-padding button="true" (click)="openMilkSaleRecord(record.id)" [color]="record.fullAmountPaid ? 'success' : ''">
+        <ion-item no-padding button="true" (click)="openMilkSaleRecord(record.id)"
+          [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
-            <p>{{record.date}}</p>
+            <p>{{this.milkSalesService.datePicker.formatDate(record.date)}}</p>
             <p>{{record.litersSold}} L - {{record.offtaker}} - {{record.litersSold * record.pricePerLiter}} KSH</p>
           </ion-label>
         </ion-item>
       </ion-col>
       <ion-col size="3" *ngIf="!record.fullAmountPaid">
         <ion-label>
-          <ion-button size="small" fill="outline" color="success" (click)="moneyReceived(this.milkSalesList[i])">
+          <ion-button size="small" fill="outline" color="success"
+            (click)="moneyReceived(this.milkSalesService.milkSalesList[i])">
             <ion-icon name="checkmark"></ion-icon>
           </ion-button>
-          <ion-button size="small" fill="outline" color="danger" (click)="moneyNotReceived(this.milkSalesList[i])">
+          <ion-button size="small" fill="outline" color="danger"
+            (click)="moneyNotReceived(this.milkSalesService.milkSalesList[i])">
             <ion-icon name="close"></ion-icon>
           </ion-button>
         </ion-label>
       </ion-col>
     </ion-row>
-  </ion-grid>  
+  </ion-grid>
 
 
   <!-- <ion-grid>
@@ -116,22 +123,22 @@
 </ion-content>
 
 <ion-footer>
-    <ion-row>
-      <ion-col col-4>
-        <ion-label>
-          Total sales: {{milkSalesList.length}}
-        </ion-label>
-      </ion-col>
-      <ion-col col-4>
-        <ion-label>
-          Total milk: {{totalLiters}}L
-        </ion-label>
-      </ion-col>
-      <ion-col col-4>
-        <ion-label>
-          Total money: {{totalMoney}} KSH
-        </ion-label>
-      </ion-col>
+  <ion-row>
+    <ion-col col-4>
+      <ion-label>
+        Total sales: {{this.milkSalesService.milkSalesList.length}}
+      </ion-label>
+    </ion-col>
+    <ion-col col-4>
+      <ion-label>
+        Total milk: {{this.milkSalesService.totalLiters}}L
+      </ion-label>
+    </ion-col>
+    <ion-col col-4>
+      <ion-label>
+        Total money: {{this.milkSalesService.totalMoney}} KSH
+      </ion-label>
+    </ion-col>
 
-    </ion-row>
-  </ion-footer>
+  </ion-row>
+</ion-footer>

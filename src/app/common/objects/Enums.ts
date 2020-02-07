@@ -20,3 +20,12 @@ export enum ItemSold {
     Sperm = 'Sperm',
     Other = 'Other'
 };
+
+export enum Period {
+    lastweek = 'lastweek',
+    last2weeks = 'last2weeks',
+    lastmonth = 'lastmonth',
+    lastquarter = 'lastquarter',
+    lastyear = 'lastyear',
+    alltime = 'alltime'
+};

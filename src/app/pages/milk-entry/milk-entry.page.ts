@@ -25,8 +25,8 @@ export class MilkEntryPage implements OnInit {
   milkRecordsList: Array<MilkProductionDetails> = [];
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
-  fromDate = new Date('2016-01-01');
-  toDate = new Date('2025-12-31');
+  //fromDate = new Date('2016-01-01');
+  //toDate = new Date('2025-12-31');
   selectedDateString: string = this.datePicker.formatDate(new Date());
   timeOfDay: string = "Morning";
   inputProduction: number = 0.00;
@@ -155,7 +155,7 @@ export class MilkEntryPage implements OnInit {
   }
 
   async openDatePicker() {
-    this.selectedDateString = await this.datePicker.openDatePicker(this.fromDate, this.toDate, this.selectedDateString);
+    this.selectedDateString = await this.datePicker.openDatePicker(this.selectedDateString);
     this.loadMilkRecordsList();
   }
 

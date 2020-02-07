@@ -2,7 +2,7 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SalesService } from 'src/app/services/sales/sales.service';
+import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
@@ -20,13 +20,13 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
   disableSubmitBtn: boolean = false;
   cowSelector: Array<CowDetails> = [];
   
-  constructor(router: Router, salesService: SalesService, private activatedRoute: ActivatedRoute, cowService: CowService, formBuilder: FormBuilder,
+  constructor(router: Router, otherSalesService: OthersalesService, private activatedRoute: ActivatedRoute, cowService: CowService, formBuilder: FormBuilder,
     storage: Storage, datePicker: DatepickerService, private filterService: FilterService) { 
-      super(router, salesService, cowService, formBuilder, storage, datePicker);
+      super(router, otherSalesService, cowService, formBuilder, storage, datePicker);
 
       this.activatedRoute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
-          this.cowService.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
+          //this.cowService.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
         }
       });
     }
@@ -59,9 +59,9 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
         this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
       }
 
-      this.salesService.registerOtherSalesRecord(this.othersalesForm.value).then(val => {
+      this.otherSalesService.registerOtherSalesRecord(this.othersalesForm.value).then(val => {
         if (val['otherSale']) {
-          this.salesService.otherSaleRegistered.next(val['otherSale']);
+          this.otherSalesService.otherSaleRegistered.next(val['otherSale']);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }
       });
@@ -97,7 +97,7 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
   }
 
   returnToOverview() {
-    this.salesService.otherSalesListState.next(true);
+    this.otherSalesService.otherSalesListState.next(true);
     this.cowService.cowListState.next(true);
     this.router.navigateByUrl('/tabs/other-sales-overview');
   }

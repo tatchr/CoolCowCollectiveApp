@@ -2,42 +2,46 @@ import { Injectable } from '@angular/core';
 import { Ionic4DatepickerModalComponent } from '@logisticinfotech/ionic4-datepicker';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
+import { Period } from 'src/app/common/objects/Enums';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatepickerService {
 
+  fromDate = new Date('2016-01-01');
+  toDate = new Date();
+
   constructor(public modalCtrl: ModalController) { }
 
-  getDatepickerObj(userInputDate, fromDate, toDate){
+  getDatepickerObj(userInputDate){
     return {
-      inputDate: userInputDate, // default new Date()
-      fromDate: fromDate, // default null
-      toDate: toDate, // default null
-      showTodayButton: true, // default true
-      closeOnSelect: false, // default false
-      disableWeekDays: [], // default []
-      mondayFirst: true, // default false
-      setLabel: 'Select',  // default 'Set'
-      todayLabel: 'Today', // default 'Today'
-      closeLabel: 'Close', // default 'Close'
-      disabledDates: [], // default []
-      titleLabel: 'Select a Date', // default null
+      inputDate: userInputDate,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
+      showTodayButton: true,
+      closeOnSelect: false,
+      disableWeekDays: [],
+      mondayFirst: true,
+      setLabel: 'Select',
+      todayLabel: 'Today',
+      closeLabel: 'Close',
+      disabledDates: [],
+      titleLabel: 'Select a Date',
       monthsList: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
       weeksList: ["S", "M", "T", "W", "T", "F", "S"],
-      dateFormat: 'YYYY-MM-DD', // default DD MMM YYYY
-      clearButton: true, // default true
-      momentLocale: 'en-US', // Default 'en-US'
-      yearInAscending: true, // Default false
-      btnCloseSetInReverse: true, // Default false
+      dateFormat: 'YYYY-MM-DD',
+      clearButton: true,
+      momentLocale: 'en-US',
+      yearInAscending: true,
+      btnCloseSetInReverse: true,
       btnProperties: {
-        expand: 'block', // Default 'block'
-        fill: '', // Default 'solid'
-        size: '', // Default 'default'
-        disabled: '', // Default false
-        strong: '', // Default false
-        color: '' // Default ''
+        expand: 'block',
+        fill: '',
+        size: '',
+        disabled: '',
+        strong: '',
+        color: ''
       }
     }
   }
@@ -50,8 +54,8 @@ export class DatepickerService {
     });    
   }
 
-  async openDatePicker(fromDate, toDate, inputDate : string) : Promise<string> {
-    let datePickerObj = this.getDatepickerObj(inputDate, fromDate, toDate);
+  async openDatePicker(inputDate : string) : Promise<string> {
+    let datePickerObj = this.getDatepickerObj(inputDate);
     let datePickerModal = await this.getDatePickerModal(datePickerObj);
     await datePickerModal.present();
 
@@ -74,5 +78,31 @@ export class DatepickerService {
 
   subtract(date, amount, type){
     return moment(date).subtract(amount , type).format('YYYY-MM-DD');
+  }
+
+  periodSelected(period){    
+    let selectedToDate = this.formatDate(new Date());
+    let selectedFromDate = '';
+
+    if(period == Period.lastweek){
+      selectedFromDate = this.subtract(new Date(), 7, 'days');
+    }
+    if(period == Period.last2weeks){
+      selectedFromDate = this.subtract(new Date(), 14, 'days');
+    }
+    if(period == Period.lastmonth){
+      selectedFromDate = this.subtract(new Date(), 1, 'months');
+    }
+    if(period == Period.lastquarter){
+      selectedFromDate = this.subtract(new Date(), 3, 'months');
+    }
+    if(period == Period.lastyear){
+      selectedFromDate = this.subtract(new Date(), 1, 'years');
+    }
+    if(period == Period.alltime){
+      selectedFromDate = this.formatDate(new Date('2016-01-01'));
+    }
+
+    return {"fromDate": selectedFromDate, "toDate": selectedToDate}
   }
 }

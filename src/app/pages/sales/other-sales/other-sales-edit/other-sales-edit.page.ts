@@ -2,7 +2,7 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SalesService } from 'src/app/services/sales/sales.service';
+import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CowService } from 'src/app/services/cow/cow.service';
@@ -23,8 +23,8 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   otherSaleDetails: OtherSalesDetails;
 
   constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder,
-    salesService: SalesService, cowService: CowService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
-    super(router, salesService, cowService, formBuilder, storage, datePicker);
+    otherSalesService: OthersalesService, cowService: CowService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
+    super(router, otherSalesService, cowService, formBuilder, storage, datePicker);
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -95,9 +95,9 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
         offtakerCompany: this.othersalesForm.value['offtakercompany']
       });
 
-      this.salesService.updateOtherSalesRecord(this.othersalesForm.getRawValue()).subscribe(val => {
+      this.otherSalesService.updateOtherSalesRecord(this.othersalesForm.getRawValue()).subscribe(val => {
         if (val) {
-          this.salesService.otherSaleUpdated.next(updatedSale);
+          this.otherSalesService.otherSaleUpdated.next(updatedSale);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }
       });
@@ -108,9 +108,9 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
     let header = 'Delete this record?';
     let message = 'Are you sure that you want to permanently delete this sales record?';
     let confirmAction = () => {
-      this.salesService.deleteOtherSalesRecord(this.otherSaleDetails.id).subscribe(val => {
+      this.otherSalesService.deleteOtherSalesRecord(this.otherSaleDetails.id).subscribe(val => {
         if (val) {
-          this.salesService.otherSaleDeleted.next(this.otherSaleDetails.id);
+          this.otherSalesService.otherSaleDeleted.next(this.otherSaleDetails.id);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }
       });
@@ -119,7 +119,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   }
 
   returnToOverview() {
-    this.salesService.otherSalesListState.next(true);
+    this.otherSalesService.otherSalesListState.next(true);
     this.router.navigateByUrl('/tabs/other-sales-overview');
   }
 }

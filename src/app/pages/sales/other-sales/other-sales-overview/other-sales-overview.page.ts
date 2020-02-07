@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { SalesService } from 'src/app/services/sales/sales.service';
+import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 import { Router, NavigationExtras } from '@angular/router';
@@ -21,21 +21,19 @@ export class OtherSalesOverviewPage implements OnInit {
   otherSalesList: Array<OtherSalesDetails> = [];
   period: string = 'lastweek';
 
-  constructor(private router: Router, private salesService: SalesService, private cowService: CowService, 
+  constructor(private router: Router, private OtherSalesService: OthersalesService, private cowService: CowService, 
     private storage: Storage, private datePicker: DatepickerService) { }
 
   ngOnInit() {
-    let fromDate = new Date('2016-01-01');
-    let toDate = new Date();
-    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString, fromDate, toDate);
-    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString, fromDate, toDate);
+    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString);
+    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString);
 
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadOtherSalesList();
     });
 
-    this.salesService.otherSaleRegistered.subscribe(newSale => {
+    this.OtherSalesService.otherSaleRegistered.subscribe(newSale => {
       if (newSale) {
         this.otherSalesList.push(newSale);
 
@@ -46,14 +44,14 @@ export class OtherSalesOverviewPage implements OnInit {
       }
     });
 
-    this.salesService.otherSaleDeleted.subscribe(milkSaleId => {
+    this.OtherSalesService.otherSaleDeleted.subscribe(milkSaleId => {
       if (milkSaleId) {
         let saleToDelete = this.otherSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
         this.otherSalesList.splice(saleToDelete, 1);
       }
     });
 
-    this.salesService.otherSaleUpdated.subscribe(sale => {
+    this.OtherSalesService.otherSaleUpdated.subscribe(sale => {
       if (sale) {
         let saleToUpdate = this.otherSalesList.map(x => x.id).findIndex(x => x == sale.id);
         this.otherSalesList[saleToUpdate] = sale;
@@ -62,28 +60,19 @@ export class OtherSalesOverviewPage implements OnInit {
   }
 
   loadOtherSalesList() {
-    this.salesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString)
+    this.OtherSalesService.getAllOtherSalesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString)
       .then(res => {
         this.otherSalesList = res['otherSalesDetails'];
         this.otherSalesList.forEach(item => {
           item.date = this.datePicker.formatDate(item.date);
         });
       })
-      .then(() => this.loadCowsList());
-
-      
-  }
-
-  loadCowsList() {
-    this.cowService.getAllCows(this.farmId).then(res => {
-      this.cowService.cowsList = res['cows'];
-    });
   }
 
   openNewOtherSaleRecord() {
     let navigationExtras: NavigationExtras = {
       state: {
-        cowsList: this.cowService.cowsList
+        //cowsList: this.cowService.cowsList
       }
     };
     this.router.navigate(['other-sales-input'], navigationExtras);
@@ -101,12 +90,12 @@ export class OtherSalesOverviewPage implements OnInit {
 
   moneyReceived(item) {
     item.fullAmountPaid = true;
-    this.salesService.updateOtherSalesRecord(item).subscribe();
+    this.OtherSalesService.updateOtherSalesRecord(item).subscribe();
   }
 
   moneyNotReceived(item) {
     item.fullAmountPaid = false;
-    this.salesService.updateOtherSalesRecord(item).subscribe();
+    this.OtherSalesService.updateOtherSalesRecord(item).subscribe();
   }
 
   periodSelected(period) {

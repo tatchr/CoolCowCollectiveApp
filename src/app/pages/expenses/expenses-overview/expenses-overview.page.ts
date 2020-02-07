@@ -23,8 +23,8 @@ export class ExpensesOverviewPage implements OnInit {
   ngOnInit() {
     let fromDate = new Date('2016-01-01');
     let toDate = new Date();
-    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString, fromDate, toDate);
-    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString, fromDate, toDate);
+    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString);
+    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString);
 
     this.expensesService.expensesListState.subscribe(mustUpdate => {
       if (mustUpdate) {

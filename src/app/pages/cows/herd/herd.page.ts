@@ -22,7 +22,6 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
   searchControl: FormControl;
   searching: Boolean = false;
-  farmId: string;
   filters: Array<string> = [];
 
   cowStatuses: Array<CowStatus> = [
@@ -37,12 +36,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     this.searchControl = new FormControl();
   }  
 
-  ngOnInit() {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      this.loadCowsList();
-    });
-
+  ngOnInit() {  
     this.cowService.cowRegistered.subscribe(newCow => {
       if (newCow) {
         this.cowService.cowsList.push(newCow);
@@ -80,14 +74,6 @@ export class HerdPage extends CowBaseComponent implements OnInit {
         this.searching = false;
         this.doSearch(searchTerm);
       });
-  }
-
-  loadCowsList() {
-    this.cowService.getAllCows(this.farmId).then(res => {
-      this.cowService.cowsList = res['cows'];
-      this.cowService.filteredCowsList = this.cowService.cowsList;
-      this.cowService.cowListState.next(false);
-    });
   }
 
   openCowPassport(cowId) {
