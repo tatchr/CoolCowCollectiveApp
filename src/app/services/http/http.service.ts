@@ -20,21 +20,25 @@ export class HttpService {
   }
 
   get2(overlayMessage, url) {
-    return this.overlayService.showOverlay(overlayMessage)
+    let id = Math.random().toString(36).substring(7);
+
+    return this.overlayService.presentLoader(id, overlayMessage)
       .then(() => {
         return this.http.get(url).toPromise();
       })
       .catch(error => throwError(this.httpErrorService.handleError(error)))
-      .finally(() => this.overlayService.dismissLoading());
+      .finally(() => this.overlayService.dismissLoader(id));
   }
 
   post3(overlayMessage, url, body) {
-    return this.overlayService.showOverlay(overlayMessage)
+    let id = Math.random().toString(36).substring(7);
+
+    return this.overlayService.presentLoader(id, overlayMessage)
       .then(() => {
         return this.http.post(url, body).toPromise();
       })
       .catch(error => throwError(this.httpErrorService.handleError(error)))
-      .finally(() => this.overlayService.dismissLoading());
+      .finally(() => this.overlayService.dismissLoader(id));
   }
 
   post2(url, body, next?: (x: Object) => void, final?: () => void) {

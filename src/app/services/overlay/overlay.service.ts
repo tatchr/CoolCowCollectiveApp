@@ -4,22 +4,21 @@ import { LoadingController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
-export class OverlayService {
+export class OverlayService {  
 
-  loading;
+  constructor(public loadingCtrl: LoadingController) { }
 
-  constructor(private loadingCtrl: LoadingController) { }
+  async presentLoader(loadingId: string, message: string) {
+    const loading = await this.loadingCtrl.create({
+      id: loadingId,
+      message: message,
+      spinner: 'circles',
+      cssClass: 'custom-loading'
+    });
+    return await loading.present();
+}
 
-  dismissLoading(){
-    this.loading.dismiss();
-  }
-
-  showOverlay(message){
-    return this.loadingCtrl.create({
-      message: message
-    }).then((overlay) => {
-      this.loading = overlay;
-      return this.loading.present();
-    })
+  async dismissLoader(loadingId: string) {
+      return await this.loadingCtrl.dismiss(null, null, loadingId);
   }
 }

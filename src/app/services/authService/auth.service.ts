@@ -60,11 +60,13 @@ export class AuthService {
   }
 
   login(credentials) {
-    this.overlayService.showOverlay('Authenticating...');
+    let id = Math.random().toString(36).substring(7);
+
+    this.overlayService.presentLoader(id, 'Authenticating...');
 
     return this.httpService.post2(this.url + '/api/user/login', credentials, 
       res => this.setUserIdAndJwtToken(res), 
-      () => this.overlayService.dismissLoading());  
+      () => this.overlayService.dismissLoader(id));  
   }
 
   forgotPassword(credentials) {

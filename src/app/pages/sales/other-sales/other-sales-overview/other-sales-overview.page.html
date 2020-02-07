@@ -8,13 +8,13 @@
   <ion-col>
     <ion-item (click)="openFromDatePicker()">
       <ion-label position="floating" color="medium">From</ion-label>
-      <ion-input [(ngModel)]="selectedFromDateString" readonly></ion-input>
+      <ion-input [(ngModel)]="this.otherSalesService.selectedFromDate" readonly></ion-input>
     </ion-item>
   </ion-col>
   <ion-col>
     <ion-item (click)="openToDatePicker()">
       <ion-label position="floating" color="medium">To</ion-label>
-      <ion-input [(ngModel)]="selectedToDateString" readonly item-center></ion-input>
+      <ion-input [(ngModel)]="this.otherSalesService.selectedToDate" readonly item-center></ion-input>
     </ion-item>
   </ion-col>
 </ion-row>
@@ -27,7 +27,7 @@
             (click)="periodSelected('lastweek')">
             1 week</ion-button>
 
-            <ion-button size="default" fill="outline" [color]="period == 'last2weeks' ? 'success' : 'medium'"
+          <ion-button size="default" fill="outline" [color]="period == 'last2weeks' ? 'success' : 'medium'"
             (click)="periodSelected('last2weeks')">
             2 weeks</ion-button>
 
@@ -41,7 +41,11 @@
 
           <ion-button size="default" fill="outline" [color]="period == 'lastyear' ? 'success' : 'medium'"
             (click)="periodSelected('lastyear')">
-            1 year</ion-button>          
+            1 year</ion-button>
+
+          <ion-button size="default" fill="outline" [color]="period == 'alltime' ? 'success' : 'medium'"
+            (click)="periodSelected('lastyear')">
+            All time</ion-button>
         </div>
       </div>
     </ion-item>
@@ -59,18 +63,19 @@
     <ion-row>
       <ion-col>
         Sale details
-      </ion-col>      
+      </ion-col>
     </ion-row>
 
-    <ion-row *ngFor='let record of otherSalesList; let i = index;'>
+    <ion-row *ngFor='let record of this.otherSalesService.otherSalesList; let i = index;'>
       <ion-col>
-        <ion-item button="true" (click)="openOtherSaleRecord(record.id)" [color]="record.fullAmountPaid ? 'success' : ''">
+        <ion-item button="true" (click)="openOtherSaleRecord(record.id)"
+          [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
             <p>{{record.date | date: 'yyyy-MM-dd'}}</p>
             <p>{{record.itemSold}} - {{record.price}} KSH</p>
           </ion-label>
         </ion-item>
-      </ion-col>     
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

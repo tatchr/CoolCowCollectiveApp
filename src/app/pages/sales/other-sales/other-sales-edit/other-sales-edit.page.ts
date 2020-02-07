@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
@@ -19,12 +18,11 @@ import { ItemSold } from 'src/app/common/objects/Enums';
 export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnInit {
 
   cowSold: CowDetails;
-
   otherSaleDetails: OtherSalesDetails;
 
   constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder,
-    otherSalesService: OthersalesService, cowService: CowService, datePicker: DatepickerService, storage: Storage, private alertService: AlertService) {
-    super(router, otherSalesService, cowService, formBuilder, storage, datePicker);
+    otherSalesService: OthersalesService, cowService: CowService, storage: Storage, private alertService: AlertService) {
+    super(router, otherSalesService, cowService, formBuilder, storage);
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -34,7 +32,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
   }
 
   ngOnInit() {
-    this.selectedDateString = this.datePicker.formatDate(this.otherSaleDetails.date);
+    this.selectedDate = this.otherSalesService.datePicker.formatDate(this.otherSaleDetails.date);
 
     this.othersalesForm = this.formBuilder.group({
       id: this.otherSaleDetails.id,
@@ -42,7 +40,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
       date: this.otherSaleDetails.date,
       itemsold: [{ value: this.getItemSold(this.otherSaleDetails), disabled: true }],
       cowidsold: [{ value: this.otherSaleDetails.cowIdSold, disabled: true }],
-      price: [this.otherSaleDetails.price, [Validators.required, Validators.min(0.0)]],
+      price: [this.otherSaleDetails.price, [Validators.required, Validators.min(0.0), Validators.max(999999.99)]],
       quantity: [this.otherSaleDetails.quantity, [Validators.min(0.0), Validators.max(100000.00)]],
       offtakername: [this.otherSaleDetails.offtakerName],
       offtakercompany: [this.otherSaleDetails.offtakerCompany],
@@ -55,7 +53,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
 
     if (this.showCowList) {
       this.cowSold = this.getCow(otherSalesDetails.cowIdSold);
-      
+
       return otherSalesDetails.itemSold
     }
 
@@ -76,7 +74,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
 
   onSubmit() {
     if (this.othersalesForm.valid) {
-      this.othersalesForm.controls['date'].setValue(this.selectedDateString);
+      this.othersalesForm.controls['date'].setValue(this.selectedDate);
 
       let itemsold = this.othersalesForm.controls['itemsold'].value;
       if (itemsold == ItemSold.Other) {
@@ -98,7 +96,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
       this.otherSalesService.updateOtherSalesRecord(this.othersalesForm.getRawValue()).subscribe(val => {
         if (val) {
           this.otherSalesService.otherSaleUpdated.next(updatedSale);
-          this.router.navigateByUrl('/tabs/other-sales-overview');
+          this.returnToOverview();
         }
       });
     }
@@ -111,15 +109,10 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
       this.otherSalesService.deleteOtherSalesRecord(this.otherSaleDetails.id).subscribe(val => {
         if (val) {
           this.otherSalesService.otherSaleDeleted.next(this.otherSaleDetails.id);
-          this.router.navigateByUrl('/tabs/other-sales-overview');
+          this.returnToOverview();
         }
       });
     };
     this.alertService.presentAlertConfirm(header, message, confirmAction);
-  }
-
-  returnToOverview() {
-    this.otherSalesService.otherSalesListState.next(true);
-    this.router.navigateByUrl('/tabs/other-sales-overview');
   }
 }

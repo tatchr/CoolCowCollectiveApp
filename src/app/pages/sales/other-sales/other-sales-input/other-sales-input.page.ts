@@ -1,7 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { CowService } from 'src/app/services/cow/cow.service';
@@ -16,30 +16,23 @@ import { ItemSold, CowState } from 'src/app/common/objects/Enums';
   styleUrls: ['./other-sales-input.page.scss'],
 })
 export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnInit {
- 
+
   disableSubmitBtn: boolean = false;
   cowSelector: Array<CowDetails> = [];
-  
-  constructor(router: Router, otherSalesService: OthersalesService, private activatedRoute: ActivatedRoute, cowService: CowService, formBuilder: FormBuilder,
-    storage: Storage, datePicker: DatepickerService, private filterService: FilterService) { 
-      super(router, otherSalesService, cowService, formBuilder, storage, datePicker);
 
-      this.activatedRoute.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          //this.cowService.cowsList = this.router.getCurrentNavigation().extras.state.cowsList;
-        }
-      });
-    }
+  constructor(router: Router, otherSalesService: OthersalesService, cowService: CowService, formBuilder: FormBuilder,
+    storage: Storage, private filterService: FilterService) {
+    super(router, otherSalesService, cowService, formBuilder, storage);
+  }
 
-  ngOnInit() {    
-    this.getFarmId();
-    this.initiateForm();    
-  }  
+  ngOnInit() {
+    this.initiateForm();
+  }
 
   initiateForm() {
     this.othersalesForm = this.formBuilder.group({
-      farmId: [this.farmId],
-      date: [this.selectedDateString],
+      farmId: [this.otherSalesService.farmId],
+      date: [this.selectedDate],
       itemsold: [null, [Validators.required]],
       cowidsold: [null],
       price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.00)]],
@@ -51,18 +44,18 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
 
   onSubmit() {
     if (this.othersalesForm.valid) {
-      this.othersalesForm.controls['farmId'].setValue(this.farmId);
-      this.othersalesForm.controls['date'].setValue(this.selectedDateString);
+      this.othersalesForm.controls['farmId'].setValue(this.otherSalesService.farmId);
+      this.othersalesForm.controls['date'].setValue(this.selectedDate);
 
       let itemsold = this.othersalesForm.controls['itemsold'].value;
-      if(itemsold == ItemSold.Other){
+      if (itemsold == ItemSold.Other) {
         this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
       }
 
       this.otherSalesService.registerOtherSalesRecord(this.othersalesForm.value).then(val => {
         if (val['otherSale']) {
           this.otherSalesService.otherSaleRegistered.next(val['otherSale']);
-          this.router.navigateByUrl('/tabs/other-sales-overview');
+          this.returnToOverview();
         }
       });
     }
@@ -75,13 +68,13 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
     if (this.showCowList) {
       this.loadCowsList(event.detail.value);
     }
-  }  
+  }
 
   loadCowsList(cowType) {
     let cowsByType = this.filterService.applyFilters(this.cowService.cowsList, [cowType], 'cowType');
     this.cowSelector = this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
 
-    if(this.cowSelector.length == 0){
+    if (this.cowSelector.length == 0) {
       this.othersalesForm.disable();
       this.othersalesForm.controls['itemsold'].enable();
       this.othersalesForm.controls['cowidsold'].setValue(null);
@@ -90,15 +83,9 @@ export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnIn
       this.othersalesForm.controls['offtakercompany'].setValue(null);
       this.disableSubmitBtn = true;
     }
-    else{
+    else {
       this.othersalesForm.enable();
       this.disableSubmitBtn = false;
     }
-  }
-
-  returnToOverview() {
-    this.otherSalesService.otherSalesListState.next(true);
-    this.cowService.cowListState.next(true);
-    this.router.navigateByUrl('/tabs/other-sales-overview');
   }
 }

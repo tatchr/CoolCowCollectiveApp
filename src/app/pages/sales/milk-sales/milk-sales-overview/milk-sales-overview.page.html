@@ -82,7 +82,7 @@
         <ion-item no-padding button="true" (click)="openMilkSaleRecord(record.id)"
           [color]="record.fullAmountPaid ? 'success' : ''">
           <ion-label>
-            <p>{{this.milkSalesService.datePicker.formatDate(record.date)}}</p>
+            <p>{{record.date | date: 'yyyy-MM-dd'}}</p>
             <p>{{record.litersSold}} L - {{record.offtaker}} - {{record.litersSold * record.pricePerLiter}} KSH</p>
           </ion-label>
         </ion-item>
