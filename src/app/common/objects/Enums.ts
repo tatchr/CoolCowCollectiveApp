@@ -29,3 +29,9 @@ export enum Period {
     lastyear = 'lastyear',
     alltime = 'alltime'
 };
+
+export enum TimeOfDay {
+    Morning = 'Morning',
+    Afternoon = 'Afternoon',
+    Evening = 'Evening'
+};

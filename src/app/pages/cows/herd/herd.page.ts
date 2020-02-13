@@ -41,6 +41,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
       if (newCow) {
         this.cowService.cowsList.push(newCow);
         this.applyFiltersAndSort();
+        this.cowService.cowListState.next(true);
       }
     });
 
@@ -49,6 +50,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
         let cowToDelete = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
         this.cowService.cowsList.splice(cowToDelete, 1);
         this.applyFiltersAndSort();
+        this.cowService.cowListState.next(true);
       }
     });
 
@@ -57,6 +59,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
         let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
         this.cowService.cowsList[cowToUpdate] = cow;
         this.applyFiltersAndSort();
+        this.cowService.cowListState.next(true);
       }
     });
 
@@ -65,6 +68,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
         let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
         this.cowService.cowsList[index].cowState = CowState.Sold;
         this.applyFiltersAndSort();
+        this.cowService.cowListState.next(true);
       }
     });
 

@@ -6,23 +6,23 @@
 
 <ion-item (click)="openDatePicker()" [hidden]="keyboard.isVisible">
   <ion-label position="fixed" color="medium">Date</ion-label>
-  <ion-input [(ngModel)]="selectedDateString" readonly></ion-input>
+  <ion-input [(ngModel)]="this.milkService.selectedDate" readonly></ion-input>
   <ion-icon position="fixed" name="calendar"></ion-icon>
 </ion-item>
 
 <ion-item [hidden]="keyboard.isVisible">
-  <ion-button size="default" fill="outline" [color]="timeOfDay == 'Morning' ? 'success' : 'medium'"
+  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Morning' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Morning')">
     Morning</ion-button>
 
-  <ion-button size="default" fill="outline" [color]="timeOfDay == 'Afternoon' ? 'success' : 'medium'"
+  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Afternoon' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Afternoon')">
     Afternoon</ion-button>
 
-  <ion-button size="default" fill="outline" [color]="timeOfDay == 'Evening' ? 'success' : 'medium'"
+  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Evening' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Evening')">
     Evening</ion-button>
-  <ion-input type="hidden" [value]="timeOfDay"></ion-input>
+  <ion-input type="hidden" [value]="this.milkService.timeOfDay"></ion-input>
 </ion-item>
 
 <ion-item>
@@ -31,16 +31,17 @@
 </ion-item>
 
 
-<ion-button color="success" size="small" (click)="submit()">Submit records ({{totalLiters | number : '1.1-1'}} L)</ion-button>
+<ion-button color="success" size="small" (click)="submit()">Submit records
+  ({{this.milkService.totalLiters | number : '1.1-1'}} L)</ion-button>
 
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list style="width: 100%;">
-          <ion-item button="true" *ngFor='let record of filteredMilkRecordsList; let i = index;'
+          <ion-item button="true" *ngFor='let record of this.milkService.filteredMilkRecordsList; let i = index;'
             (click)="cowSelected(record, i)" [class.focus]="scrollTo === i"
-            [class.selected]="record === currentlySelected">
+            [class.selected]="record === this.milkService.currentlySelected">
             <ion-avatar slot="start">
               <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
             </ion-avatar>
@@ -62,26 +63,31 @@
   <ion-row>
 
     <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
-      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="subtractOne()" fill="clear">-1</ion-button>
+      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOne()" fill="clear">
+        -1</ion-button>
     </ion-col>
     <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
-      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="subtractOneDecimal()" fill="clear">-0.1</ion-button>
+      <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOneDecimal()"
+        fill="clear">-0.1</ion-button>
     </ion-col>
 
-    <ion-col col-4 no-padding>     
+    <ion-col col-4 no-padding>
       <form (submit)="inputProductionSubmitted()">
         <ion-item>
-          <ion-input autocapitalize="on" name="test" type="number" [(ngModel)]="inputProduction" (click)="inputProductionClicked()">
+          <ion-input autocapitalize="on" name="test" type="number" [(ngModel)]="this.milkService.inputProduction"
+            (click)="inputProductionClicked()">
           </ion-input>
         </ion-item>
       </form>
     </ion-col>
 
     <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
-      <ion-button class="addOrSubBtn" color="success" size="small" (click)="addOneDecimal()" fill="clear">+0.1</ion-button>
+      <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOneDecimal()"
+        fill="clear">+0.1</ion-button>
     </ion-col>
     <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
-      <ion-button class="addOrSubBtn" color="success" size="small" (click)="addOne()" fill="clear">+1</ion-button>
+      <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOne()" fill="clear">+1
+      </ion-button>
     </ion-col>
   </ion-row>
 
