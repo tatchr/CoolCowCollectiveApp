@@ -14,7 +14,7 @@ export class FinancialReportPage implements OnInit {
   userId: string;
   
 
-  constructor(private datePicker: DatepickerService, private reportService: ReportService, private storage: Storage) { }
+  constructor(private datePicker: DatepickerService, public reportService: ReportService, private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get('farmId').then(farmId => {

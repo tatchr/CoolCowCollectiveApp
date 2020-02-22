@@ -25,7 +25,7 @@ export class MilkEntryPage implements OnInit {
   showInputPanel: boolean = false;
   scrollTo: number = null;
 
-  constructor(private filterService: FilterService, private milkService: MilkService, private cowService: CowService,
+  constructor(private filterService: FilterService, public milkService: MilkService, private cowService: CowService,
     private datePicker: DatepickerService, private storage: Storage, public keyboard: Keyboard) {
     this.searchControl = new FormControl();
   }

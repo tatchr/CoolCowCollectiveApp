@@ -19,7 +19,7 @@ export class HerdReportPage implements OnInit {
   //selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
   //selectedToDateString: string = this.datePicker.formatDate(new Date());
 
-  constructor(private datePicker: DatepickerService, private reportService: ReportService, private storage: Storage) { }
+  constructor(private datePicker: DatepickerService, public reportService: ReportService, private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get('farmId').then(farmId => {

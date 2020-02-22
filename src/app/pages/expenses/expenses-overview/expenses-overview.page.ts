@@ -10,7 +10,7 @@ import { Router, NavigationExtras } from '@angular/router';
 })
 export class ExpensesOverviewPage implements OnInit {  
 
-  constructor(private router: Router, private expensesService: ExpensesService) { }
+  constructor(private router: Router, public expensesService: ExpensesService) { }
 
   ngOnInit() {
     this.expensesService.expenseRegistered.subscribe(newExpense => {

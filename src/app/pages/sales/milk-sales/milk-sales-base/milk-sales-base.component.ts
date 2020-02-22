@@ -14,7 +14,7 @@ export class MilkSalesBaseComponent {
   milksalesForm: FormGroup;
   selectedDate: string = this.milkSalesService.datePicker.formatDate(new Date());
 
-  constructor(protected router: Router, protected milkSalesService: MilksalesService, protected formBuilder: FormBuilder, 
+  constructor(protected router: Router, public milkSalesService: MilksalesService, protected formBuilder: FormBuilder, 
     protected storage: Storage) { }   
 
   returnToOverview(){

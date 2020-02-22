@@ -10,7 +10,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
 })
 export class OtherSalesOverviewPage implements OnInit {  
 
-  constructor(private router: Router, private otherSalesService: OthersalesService, private cowService: CowService) { }
+  constructor(private router: Router, public otherSalesService: OthersalesService, private cowService: CowService) { }
 
   ngOnInit() {
     this.otherSalesService.otherSaleRegistered.subscribe(newSale => {
