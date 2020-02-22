@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { CowService } from 'src/app/services/cow/cow.service';
-import { Period } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-other-sales-overview',
   templateUrl: './other-sales-overview.page.html',
   styleUrls: ['./other-sales-overview.page.scss'],
 })
-export class OtherSalesOverviewPage implements OnInit {
-  period: string = Period.lastweek;
+export class OtherSalesOverviewPage implements OnInit {  
 
   constructor(private router: Router, private otherSalesService: OthersalesService, private cowService: CowService) { }
 
@@ -71,18 +69,18 @@ export class OtherSalesOverviewPage implements OnInit {
   }
 
   periodSelected(period){
-    this.period = period;
+    this.otherSalesService.selectedPeriod = period;
     this.otherSalesService.periodSelected(period);
   }
 
   async openFromDatePicker(){
-    this.period = '';
+    this.otherSalesService.selectedPeriod = '';
     this.otherSalesService.selectedFromDate = await this.otherSalesService.datePicker.openDatePicker(this.otherSalesService.selectedFromDate);
     this.otherSalesService.loadOtherSalesList();    
   }
 
   async openToDatePicker(){
-    this.period = '';
+    this.otherSalesService.selectedPeriod = '';
     this.otherSalesService.selectedToDate = await this.otherSalesService.datePicker.openDatePicker(this.otherSalesService.selectedToDate);
     this.otherSalesService.loadOtherSalesList();    
   }

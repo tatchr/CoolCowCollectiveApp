@@ -11,13 +11,27 @@
   <ion-col>
     <ion-item (click)="openFromDatePicker()">
       <ion-label position="floating" color="medium">From</ion-label>
-      <ion-input [(ngModel)]="selectedFromDateString" readonly></ion-input>
+      <ion-input [(ngModel)]="this.reportService.selectedFromDate" readonly></ion-input>
     </ion-item>
   </ion-col>
   <ion-col>
     <ion-item (click)="openToDatePicker()">
       <ion-label position="floating" color="medium">To</ion-label>
-      <ion-input [(ngModel)]="selectedToDateString" readonly item-center></ion-input>
+      <ion-input [(ngModel)]="this.reportService.selectedToDate" readonly item-center></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item>
+      <div class="scroll-container">
+        <div class="scroll" scrollX="true">
+          <ion-button *ngFor='let period of this.reportService.datePicker.periods;' size="default" fill="outline"
+            [color]="period.value == this.reportService.selectedPeriod ? 'success' : 'medium'"
+            (click)="this.reportService.periodSelected(period.value)">
+            {{period.label}}</ion-button>
+        </div>
+      </div>
     </ion-item>
   </ion-col>
 </ion-row>

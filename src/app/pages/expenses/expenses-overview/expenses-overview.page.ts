@@ -1,103 +1,78 @@
-import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
+import { Router, NavigationExtras } from '@angular/router';
+
 
 @Component({
   selector: 'app-expenses-overview',
   templateUrl: './expenses-overview.page.html',
   styleUrls: ['./expenses-overview.page.scss'],
 })
-export class ExpensesOverviewPage implements OnInit {
+export class ExpensesOverviewPage implements OnInit {  
 
-  farmId: string;
-  fromDatePickerObj: any;
-  toDatePickerObj: any;
-  selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDateString: string = this.datePicker.formatDate(new Date());
-  expensesList: Array<ExpensesDetails> = [];
-  period: string = 'lastweek';
-
-  constructor(private expensesService: ExpensesService, private storage: Storage, private datePicker: DatepickerService) { }
+  constructor(private router: Router, private expensesService: ExpensesService) { }
 
   ngOnInit() {
-    let fromDate = new Date('2016-01-01');
-    let toDate = new Date();
-    this.fromDatePickerObj = this.datePicker.getDatepickerObj(this.selectedFromDateString);
-    this.toDatePickerObj = this.datePicker.getDatepickerObj(this.selectedToDateString);
+    this.expensesService.expenseRegistered.subscribe(newExpense => {
+      if (newExpense) {
+        if(newExpense.isRecurring){
+          this.expensesService.loadExpensesList();
+        }
+        else{
+          this.expensesService.expensesList.push(newExpense);
+        }        
 
-    this.expensesService.expensesListState.subscribe(mustUpdate => {
-      if (mustUpdate) {
-        this.loadExpensesList();
+        //this.expensesService.computeTotals();
       }
     });
 
-    this.initiate();
+    this.expensesService.expenseDeleted.subscribe(expenseId => {
+      if (expenseId) {
+        let expenseToDelete = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == expenseId);
+        this.expensesService.loadExpensesList();
+        //this.expensesService.expensesList.splice(expenseToDelete, 1);
+        //this.expensesService.computeTotals();
+      }
+    });
+
+    this.expensesService.expenseUpdated.subscribe(sale => {
+      if (sale) {
+        let expenseToUpdate = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == sale.id);
+        this.expensesService.expensesList[expenseToUpdate] = sale;
+        if(sale.isRecurring){          
+          this.expensesService.loadExpensesList();
+          // this.expensesService.expensesList.forEach(x => {
+          //   if(x.id != sale.id && x.isRecurring && x.recurringId == sale.recurringId){
+          //     x.isRecurring = false;
+          //   }
+          // });
+        }
+        
+        //this.expensesService.computeTotals();
+      }
+    });  
+  }
+
+  openExpenseRecord(expenseId){
+    let index = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == expenseId);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        expenseDetails: this.expensesService.expensesList[index]
+      }
+    };
+    this.router.navigate(['expenses-edit'], navigationExtras);
   }
   
-
-  initiate() {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      this.loadExpensesList();
-    });    
+  async openFromDatePicker(){
+    this.expensesService.selectedPeriod = '';
+    this.expensesService.selectedFromDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedFromDate);
+    this.expensesService.loadExpensesList();    
   }
 
-  loadExpensesList(){
-    this.expensesService.getExpensesRecords(this.farmId, this.selectedFromDateString, this.selectedToDateString).subscribe(res => {
-      this.expensesList = res['expensesDetails'];
-      this.expensesList.forEach(item => {
-        item.date = this.datePicker.formatDate(item.date);        
-      });
-    });
-  }
-
-  periodSelected(period){
-    this.period = period;
-    this.selectedToDateString = this.datePicker.formatDate(new Date());
-    if(this.period == 'lastweek'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 7, 'days');
-    }
-    if(this.period == 'last2weeks'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 14, 'days');
-    }
-    if(this.period == 'lastmonth'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 1, 'months');
-    }
-    if(this.period == 'lastquarter'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 3, 'months');
-    }
-    if(this.period == 'lastyear'){
-      this.selectedFromDateString = this.datePicker.subtract(new Date(), 1, 'years');
-    }
-    this.loadExpensesList();  
-  }
-
-  async openFromDatePicker() {
-    this.fromDatePickerObj.inputDate = this.selectedFromDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.fromDatePickerObj);
-
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.period = '';
-        this.selectedFromDateString = this.datePicker.formatDate(data.data.date);
-        this.loadExpensesList();
-      }
-    });
-  }
-
-  async openToDatePicker() {
-    this.toDatePickerObj.inputDate = this.selectedToDateString;
-    const datePickerModal = await this.datePicker.getDatePickerModal(this.toDatePickerObj);
-    await datePickerModal.present();
-    datePickerModal.onDidDismiss().then((data) => {
-      if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-        this.period = '';
-        this.selectedToDateString = this.datePicker.formatDate(data.data.date);
-        this.loadExpensesList();
-      }
-    });
+  async openToDatePicker(){
+    this.expensesService.selectedPeriod = '';
+    this.expensesService.selectedToDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedToDate);
+    this.expensesService.loadExpensesList();    
   }
 
 }

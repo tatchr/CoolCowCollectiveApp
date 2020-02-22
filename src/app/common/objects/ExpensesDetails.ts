@@ -1,9 +1,9 @@
-class ExpensesDetails{
+export class ExpensesDetails{
     id: number;
     farmId: number;
     date: string;
     type: string;
-    ItemBought: string;
+    itemBought: string;
     price: number;
     quantity: number;
     quantityUnit: string;
@@ -14,4 +14,8 @@ class ExpensesDetails{
     recurringPeriodInDays: number;  
     recurringId: string;  
     timestamp: Date;
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }

@@ -3,6 +3,7 @@ import { Ionic4DatepickerModalComponent } from '@logisticinfotech/ionic4-datepic
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { Period } from 'src/app/common/objects/Enums';
+import { PeriodDetails } from 'src/app/common/objects/PeriodDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,14 @@ export class DatepickerService {
   fromDate = new Date('2016-01-01');
   toDate = new Date();
 
+  public periods: Array<PeriodDetails> = [
+    new PeriodDetails({value: Period.lastweek, label: '1 week'}),
+    new PeriodDetails({value: Period.last2weeks, label: '2 weeks'}),
+    new PeriodDetails({value: Period.lastmonth, label: '1 month'}),
+    new PeriodDetails({value: Period.lastquarter, label: '3 months'}),
+    new PeriodDetails({value: Period.lastyear, label: '1 year'}),
+    new PeriodDetails({value: Period.alltime, label: 'All time'})];
+    
   constructor(public modalCtrl: ModalController) { }
 
   getDatepickerObj(userInputDate){

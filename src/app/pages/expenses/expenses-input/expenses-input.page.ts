@@ -1,8 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
 
@@ -14,8 +13,8 @@ import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expe
 export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
 
   constructor(router: Router, expensesService: ExpensesService, formBuilder: FormBuilder,
-    storage: Storage, datePicker: DatepickerService) {
-    super(router, expensesService, formBuilder, storage, datePicker);
+    storage: Storage) {
+    super(router, expensesService, formBuilder, storage);
   }
 
   ngOnInit() {
@@ -26,7 +25,7 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
   initiateForm() {
     this.expensesForm = this.formBuilder.group({
       farmId: [this.farmId],
-      date: [this.selectedDateString],
+      date: [this.selectedDate],
       type: [null, [Validators.required]],
       itembought: [null, [Validators.required]],
       price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
@@ -57,30 +56,13 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
   onSubmit() {
     if (this.expensesForm.valid) {
       this.expensesForm.controls['farmId'].setValue(this.farmId);
-      this.expensesForm.controls['date'].setValue(this.selectedDateString);
-      this.expensesService.registerExpensesRecord(this.expensesForm.getRawValue()).subscribe(val => {
+      this.expensesForm.controls['date'].setValue(this.selectedDate);
+      this.expensesService.registerExpensesRecord(this.expensesForm.getRawValue()).then(val => {
         if (val) {
+          this.expensesService.expenseRegistered.next(val['expense']);
           this.returnToOverview();
         }
       });
     }
   }
-
-  // returnToOverview(){
-  //   this.expensesService.expensesListState.next(true);
-  //   this.router.navigateByUrl('/tabs/expenses-overview');
-  // }
-
-  // async openDatePicker() {
-  //   this.datePickerObj.inputDate = this.selectedDateString;
-  //   const datePickerModal = await this.datePicker.getDatePickerModal(this.datePickerObj);
-
-  //   await datePickerModal.present();
-  //   datePickerModal.onDidDismiss().then((data) => {
-  //     if (typeof data.data !== 'undefined' && data.data.date !== 'Invalid date') {
-  //       this.selectedDateString = this.datePicker.formatDate(data.data.date);
-  //     }
-  //   });
-  // }
-
 }

@@ -14,7 +14,6 @@ import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
 })
 export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit {
 
-  milkSaleId: string;
   milkSaleDetails: MilkSalesDetails;
 
   constructor(router: Router, formBuilder: FormBuilder, milkSalesService: MilksalesService, 

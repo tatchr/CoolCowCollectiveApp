@@ -1,8 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 
 @Component({
@@ -14,10 +13,10 @@ export class ExpensesBaseComponent implements OnInit {
 
   expensesForm: FormGroup;
   farmId: string;
-  selectedDateString: string = this.datePicker.formatDate(new Date()); 
+  selectedDate: string = this.expensesService.datePicker.formatDate(new Date()); 
 
   constructor(protected router: Router, protected expensesService: ExpensesService, protected formBuilder: FormBuilder, 
-    protected storage: Storage, protected datePicker: DatepickerService) { }
+    protected storage: Storage) { }
 
   ngOnInit() {}
 
@@ -37,7 +36,7 @@ export class ExpensesBaseComponent implements OnInit {
   }
 
   async openDatePicker(){
-    this.selectedDateString = await this.datePicker.openDatePicker(this.selectedDateString);    
+    this.selectedDate = await this.expensesService.datePicker.openDatePicker(this.selectedDate);    
   }
 
 }

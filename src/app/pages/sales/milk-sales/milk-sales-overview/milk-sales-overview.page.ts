@@ -12,8 +12,6 @@ import { Period } from 'src/app/common/objects/Enums';
   styleUrls: ['./milk-sales-overview.page.scss'],
 })
 export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {  
-  
-  period: string = Period.lastweek;
 
   constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder, storage: Storage) {
     super(router, milkSalesService, formBuilder, storage);
@@ -65,18 +63,18 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
   }
 
   periodSelected(period){
-    this.period = period;
+    this.milkSalesService.selectedPeriod = period;
     this.milkSalesService.periodSelected(period);
   }
 
   async openFromDatePicker(){
-    this.period = '';
+    this.milkSalesService.selectedPeriod = '';
     this.milkSalesService.selectedFromDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedFromDate);
     this.milkSalesService.loadMilkSalesList();    
   }
 
   async openToDatePicker(){
-    this.period = '';
+    this.milkSalesService.selectedPeriod = '';
     this.milkSalesService.selectedToDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedToDate);
     this.milkSalesService.loadMilkSalesList();    
   }  

@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/services/http/http.service';
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 import { Storage } from '@ionic/storage';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
+import { Period } from 'src/app/common/objects/Enums';
 
 
 @Injectable({
@@ -15,6 +16,7 @@ export class OthersalesService {
   farmId: string;
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
+  selectedPeriod: string = Period.lastweek;
 
   otherSaleRegistered = new BehaviorSubject<OtherSalesDetails>(null);
   otherSaleUpdated = new BehaviorSubject<OtherSalesDetails>(null);
@@ -23,8 +25,6 @@ export class OthersalesService {
   otherSalesList: Array<OtherSalesDetails> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) {
-    console.log('Sales service created!');
-
     this.storage.get('farmId').then(farmId => {
       this.farmId = farmId;
       this.loadOtherSalesList();
@@ -38,6 +38,7 @@ export class OthersalesService {
   }
 
   periodSelected(period) {
+    this.selectedPeriod = period;
     let result = this.datePicker.periodSelected(period);
 
     this.selectedToDate = result.toDate;

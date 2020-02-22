@@ -9,7 +9,7 @@
   
   <ion-item (click)="openDatePicker()">
     <ion-label position="fixed" color="medium">Date</ion-label>
-    <ion-input [(ngModel)]="selectedDateString" readonly></ion-input>
+    <ion-input [(ngModel)]="selectedDate" readonly></ion-input>
     <ion-icon position="fixed" name="calendar"></ion-icon>
   </ion-item>
   
@@ -61,7 +61,7 @@
             <ion-item>
               <ion-label position="floating" color="medium">Total price
               </ion-label>
-              <ion-input autocapitalize="on" type="number" formControlName="totalPrice"></ion-input>
+              <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
             </ion-item>
   
             <ion-item>

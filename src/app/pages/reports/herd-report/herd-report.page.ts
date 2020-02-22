@@ -12,12 +12,12 @@ export class HerdReportPage implements OnInit {
 
   farmId: string;
   userId: string;
-  fromDate = new Date('2016-01-01');
-  toDate = new Date();
-  fromDatePickerObj: any;
-  toDatePickerObj: any;
-  selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDateString: string = this.datePicker.formatDate(new Date());
+  //fromDate = new Date('2016-01-01');
+  //toDate = new Date();
+  //fromDatePickerObj: any;
+  //toDatePickerObj: any;
+  //selectedFromDateString: string = this.datePicker.subtract(new Date(), 7, 'days');
+  //selectedToDateString: string = this.datePicker.formatDate(new Date());
 
   constructor(private datePicker: DatepickerService, private reportService: ReportService, private storage: Storage) { }
 
@@ -32,16 +32,15 @@ export class HerdReportPage implements OnInit {
   }
 
   downloadReport(fileType){
-    console.log(fileType);
-    this.reportService.getReport(this.userId, this.farmId, 'Herd', fileType, this.selectedFromDateString, this.selectedToDateString);
+    this.reportService.getReport(this.userId, this.farmId, 'Herd', fileType, this.reportService.selectedFromDate, this.reportService.selectedToDate);
   }
 
   async openFromDatePicker(){
-    this.selectedFromDateString = await this.datePicker.openDatePicker(this.selectedFromDateString);
+    this.reportService.selectedFromDate = await this.datePicker.openDatePicker(this.reportService.selectedFromDate);
   }
 
   async openToDatePicker(){
-    this.selectedToDateString = await this.datePicker.openDatePicker(this.selectedToDateString);
+    this.reportService.selectedToDate = await this.datePicker.openDatePicker(this.reportService.selectedToDate);
   }
 
 }

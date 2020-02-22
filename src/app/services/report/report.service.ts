@@ -6,6 +6,8 @@ import { map, catchError, tap, finalize, timeout } from 'rxjs/operators';
 import { File } from '@ionic-native/file/ngx';
 import { ToastController } from '@ionic/angular';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
+import { Period } from 'src/app/common/objects/Enums';
 
 
 @Injectable({
@@ -13,20 +15,32 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 })
 export class ReportService {
 
-  constructor(private httpService: HttpService, private http: HttpClient, private file: File, 
-    private toastController: ToastController, private fileOpener: FileOpener) { }
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.formatDate(new Date());
+  selectedPeriod: string = Period.lastweek;
 
-  getReport(userId, farmId, type, fileType, fromDate, toDate){
+  constructor(private httpService: HttpService, private http: HttpClient, private file: File,
+    private toastController: ToastController, private fileOpener: FileOpener, public datePicker: DatepickerService) { }
+
+  periodSelected(period) {
+    this.selectedPeriod = period;
+    let result = this.datePicker.periodSelected(period);
+
+    this.selectedToDate = result.toDate;
+    this.selectedFromDate = result.fromDate;
+  }
+
+  getReport(userId, farmId, type, fileType, fromDate, toDate) {
     let url = environment.url + '/api/report/' + userId + '/' + farmId + '/' + type + '/' + fileType + '/' + fromDate + '/' + toDate;
 
-    return this.http.get(url, {responseType: 'blob'})
-    .subscribe((res: Blob) => {
-      this.file.writeFile(this.file.externalRootDirectory + '/Download', "test.xlsx", res, {replace: true})
-      .then(() => {
-        this.presentToastWithOptions();
-      }      
-      );
-    })
+    return this.http.get(url, { responseType: 'blob' })
+      .subscribe((res: Blob) => {
+        this.file.writeFile(this.file.externalRootDirectory + '/Download', "test.xlsx", res, { replace: true })
+          .then(() => {
+            this.presentToastWithOptions();
+          }
+          );
+      })
   }
 
   async presentToastWithOptions() {
@@ -43,7 +57,7 @@ export class ReportService {
             this.fileOpener.open(this.file.externalRootDirectory + '/Download/test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           }
         }
-        , 
+        ,
         {
           side: 'start',
           text: 'Dismiss',
