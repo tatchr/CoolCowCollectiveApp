@@ -6,23 +6,24 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Storage } from '@ionic/storage';
 import { Period } from 'src/app/common/objects/Enums';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
+import { ExpensesGroup } from 'src/app/common/objects/ExpensesGroup';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
-
-  expensesListState = new BehaviorSubject(null);
+ 
   expenseRegistered = new BehaviorSubject<ExpensesDetails>(null);
-  expenseUpdated = new BehaviorSubject<ExpensesDetails>(null);
+  public expenseUpdated = new BehaviorSubject<ExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<number>(null);
 
   farmId: string;
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
-
-  expensesList: Array<ExpensesDetails> = [];
   selectedPeriod: string = Period.lastweek;
+
+  nonRecurringExpensesList: Array<ExpensesDetails> = [];
+  recurringExpensesList: Array<ExpensesGroup> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) { 
     this.storage.get('farmId').then(farmId => {
@@ -33,7 +34,8 @@ export class ExpensesService {
 
   loadExpensesList(){
     this.getExpensesRecords(this.farmId, this.selectedFromDate, this.selectedToDate).then(res => {
-      this.expensesList = res['expensesDetails'];      
+      this.nonRecurringExpensesList = res['expensesResult']['nonRecurringExpensesList'];
+      this.recurringExpensesList = res['expensesResult']['recurringExpensesList'];
     });
   }
 

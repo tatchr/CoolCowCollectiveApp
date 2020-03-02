@@ -35,7 +35,7 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
       sellername: [null],
       sellercompany: [null],
       isrecurring: [false],
-      recurringperiodindays: [null]
+      recurringperiodindays: [null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]]
     });
 
     this.expensesForm.valueChanges.subscribe(val => {

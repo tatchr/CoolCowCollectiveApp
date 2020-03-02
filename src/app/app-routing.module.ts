@@ -36,6 +36,7 @@ const routes: Routes = [
   { path: 'herd-report', loadChildren: './pages/reports/herd-report/herd-report.module#HerdReportPageModule', canActivate: [AuthGuardService] },
   { path: 'financial-report', loadChildren: './pages/reports/financial-report/financial-report.module#FinancialReportPageModule', canActivate: [AuthGuardService] },
   { path: 'custom-report', loadChildren: './pages/reports/custom-report/custom-report.module#CustomReportPageModule', canActivate: [AuthGuardService] },
+  { path: 'expenses-recurring-edit', loadChildren: './pages/expenses/expenses-recurring-edit/expenses-recurring-edit.module#ExpensesRecurringEditPageModule', canActivate: [AuthGuardService] },
 
  
 ];

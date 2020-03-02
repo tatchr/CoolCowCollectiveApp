@@ -20,8 +20,17 @@ export class ExpensesBaseComponent implements OnInit {
 
   ngOnInit() {}
 
+  shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
+    let containsValue = group.value != null;
+
+    if(this.expensesForm && this.expensesForm.controls.isrecurring.value){
+      return containsValue ? null : { isInvalid: true }
+    }
+
+    return null;
+  }
+
   returnToOverview(){
-    this.expensesService.expensesListState.next(true);
     this.router.navigateByUrl('/tabs/expenses-overview');
   }
 

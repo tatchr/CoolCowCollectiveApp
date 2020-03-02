@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
@@ -42,7 +42,7 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       sellername: [this.expenseDetails.sellerName],
       sellercompany: [this.expenseDetails.sellerCompany],
       isrecurring: [this.expenseDetails.isRecurring],
-      recurringperiodindays: [this.expenseDetails.recurringPeriodInDays],
+      recurringperiodindays: [this.expenseDetails.recurringPeriodInDays, [this.shouldContainValueIfIsRecurringToggled.bind(this)]],
       recurringId: [this.expenseDetails.recurringId]
     });
 
@@ -50,7 +50,7 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       let totalPrice = this.round(val['price'] * val['quantity'], 2);
       this.expensesForm.get('totalprice').patchValue(totalPrice, { emitEvent: false });
     });
-  }
+  }  
 
   onSubmit() {
     if(this.expensesForm.valid){

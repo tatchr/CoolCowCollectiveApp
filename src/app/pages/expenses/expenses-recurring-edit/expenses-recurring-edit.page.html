@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Expenses input</ion-title>
+    <ion-title>Recurring expense root edit</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,11 +17,15 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form [formGroup]="expensesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <form *ngIf="expensesForm" [formGroup]="expensesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+          <h3>
+            Expenses details
+          </h3>
+
           <ion-item>
             <ion-label color="medium">Item category*</ion-label>
             <ion-select formControlName="type" placeholder="Select One" (ionChange)="itemSelected($event)">
-              <ion-select-option style="font-size: 10px;" value="Feed">Feed</ion-select-option>
+              <ion-select-option value="Feed">Feed</ion-select-option>
               <ion-select-option value="Medicine">Medicine</ion-select-option>
               <ion-select-option value="AI">AI</ion-select-option>
               <ion-select-option value="Labour">Labour</ion-select-option>
@@ -48,8 +52,8 @@
 
           <ion-item no-padding style="display: inline-block;width: 100px;vertical-align: bottom;margin-left: 10px;">
             <ion-select formControlName="quantityUnit" placeholder="Unit" style="max-width: 100%;padding-left:0;">
-              <ion-select-option value="Units">units</ion-select-option>
-              <ion-select-option value="Kg">Kg</ion-select-option>
+              <ion-select-option value="units">units</ion-select-option>
+              <ion-select-option value="kg">kg</ion-select-option>
               <ion-select-option value="L">L</ion-select-option>
             </ion-select>
           </ion-item>
@@ -57,7 +61,7 @@
           <ion-item>
             <ion-label position="floating" color="medium">Total price
             </ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="totalPrice"></ion-input>
+            <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
           </ion-item>
 
           <ion-item>
@@ -70,14 +74,15 @@
             <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
           </ion-item>
 
-          <ion-item *ngIf="this.expensesForm.value['isrecurring']">
-            <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
+          <ion-item no-padding>
+            <ion-label position="fixed" color="medium" class="lblWidth" style="padding-left: 16px;">Is recurring*
+            </ion-label>
+            <ion-toggle slot="end" formControlName="isrecurring" color="success"></ion-toggle>
           </ion-item>
 
-          <ion-item no-padding>
-            <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
-            <ion-toggle slot="end" formControlName="isrecurring" color="success"></ion-toggle>
+          <ion-item *ngIf="this.expensesForm.value['isrecurring']">
+            <ion-label position="floating" color="medium">Recurring period (days)</ion-label>
+            <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
           </ion-item>
         </form>
       </ion-col>
@@ -87,9 +92,17 @@
 
 <ion-footer>
   <ion-row>
-    <ion-col>
-      <ion-button color="success" expand="full" type="submit" [disabled]="!expensesForm.valid" (click)="onSubmit()">
+    <ion-col col-6>
+      <ion-button color="success" expand="full" type="submit" *ngIf="expensesForm" [disabled]="!expensesForm.valid"
+        (click)="onSubmit()">
         <ion-icon name="save"></ion-icon>
+      </ion-button>
+    </ion-col>
+
+    <ion-col col-6>
+      <ion-button expand="full" size="default" color="danger" *ngIf="expensesForm"
+        [disabled]="this.expensesForm.value['isrecurring']" (click)="onDelete()">
+        <ion-icon name="trash"></ion-icon>
       </ion-button>
     </ion-col>
   </ion-row>

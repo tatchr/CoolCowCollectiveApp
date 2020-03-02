@@ -10,3 +10,73 @@
 .scroll {
     overflow: auto;
 }
+
+ion-item {
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+  // here other custom CSS from documentation
+}
+
+.accordion-list {
+  margin-bottom: 4px;
+  --ion-item-background: #fff;
+
+  .section, .section-active {
+    --min-height: 58px;
+  }
+}
+
+.section {
+  --ion-item-background: #fff;
+  --ion-item-color: #000;
+
+  ion-icon {
+    color: #000;
+  }
+}
+.section-active {
+  --ion-item-background: #f0c742;
+  --ion-item-color: #fff;
+  font-weight: 500;
+
+  ion-icon {
+    color: #fff;
+  }
+}
+
+.child-list {
+  padding: 0;
+  margin: 0;
+  .child, .child-active {
+    margin-bottom: 2px;
+  }
+}
+
+.child {
+  --ion-item-background: #e8e7e6;
+  --ion-item-color: #000;
+}
+
+.child-active {
+  --ion-item-background: #fad86b;
+  --ion-item-color: #fff;
+
+  ion-icon {
+    color: #fff;
+  }
+}
+
+.product-list {
+  padding: 0;
+  margin: 0;
+}
+
+
+.toggle-btn{
+  --background: none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+}

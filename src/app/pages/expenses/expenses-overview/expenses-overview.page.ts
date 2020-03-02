@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { Router, NavigationExtras } from '@angular/router';
-
+import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 
 @Component({
   selector: 'app-expenses-overview',
@@ -10,57 +10,58 @@ import { Router, NavigationExtras } from '@angular/router';
 })
 export class ExpensesOverviewPage implements OnInit {  
 
+  panelOpenState = false;
+
   constructor(private router: Router, public expensesService: ExpensesService) { }
 
   ngOnInit() {
     this.expensesService.expenseRegistered.subscribe(newExpense => {
       if (newExpense) {
-        if(newExpense.isRecurring){
-          this.expensesService.loadExpensesList();
-        }
-        else{
-          this.expensesService.expensesList.push(newExpense);
-        }        
-
-        //this.expensesService.computeTotals();
+        this.expensesService.loadExpensesList(); 
       }
     });
 
     this.expensesService.expenseDeleted.subscribe(expenseId => {
       if (expenseId) {
-        let expenseToDelete = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == expenseId);
         this.expensesService.loadExpensesList();
-        //this.expensesService.expensesList.splice(expenseToDelete, 1);
-        //this.expensesService.computeTotals();
       }
     });
 
     this.expensesService.expenseUpdated.subscribe(sale => {
       if (sale) {
-        let expenseToUpdate = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == sale.id);
-        this.expensesService.expensesList[expenseToUpdate] = sale;
-        if(sale.isRecurring){          
-          this.expensesService.loadExpensesList();
-          // this.expensesService.expensesList.forEach(x => {
-          //   if(x.id != sale.id && x.isRecurring && x.recurringId == sale.recurringId){
-          //     x.isRecurring = false;
-          //   }
-          // });
-        }
-        
-        //this.expensesService.computeTotals();
+        this.expensesService.loadExpensesList();
       }
     });  
   }
 
-  openExpenseRecord(expenseId){
-    let index = this.expensesService.expensesList.map(x => x.id).findIndex(x => x == expenseId);
+  automaticClose = false;
+
+  toggleSection(index) {
+    this.expensesService.recurringExpensesList[index].open = !this.expensesService.recurringExpensesList[index].open;
+
+    if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
+      this.expensesService.recurringExpensesList
+      .filter((item, itemIndex) => itemIndex != index)
+      .map(item => item.open = false);
+    }
+  }  
+
+  openExpenseRecord(expense: ExpensesDetails){
     let navigationExtras: NavigationExtras = {
       state: {
-        expenseDetails: this.expensesService.expensesList[index]
+        expenseDetails: expense
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);
+  }
+
+  openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
+    let navigationExtras: NavigationExtras = {
+      state: {
+        expenseDetails: rootExpense
+      }
+    };
+    this.router.navigate(['expenses-recurring-edit'], navigationExtras);
   }
   
   async openFromDatePicker(){
