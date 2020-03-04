@@ -24,6 +24,7 @@ export class MilksalesService {
   milkSalesList: Array<MilkSalesDetails> = [];
   totalLiters: number = 0;
   totalMoney: number = 0;
+  totalMoneyReceived: number = 0;
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) {
     this.storage.get('farmId').then(farmId => {
@@ -52,11 +53,15 @@ export class MilksalesService {
   computeTotals(){
     this.totalLiters = 0;
     this.totalMoney = 0;    
+    this.totalMoneyReceived = 0;    
 
     this.milkSalesList.forEach(item => {
       item.date = this.datePicker.formatDate(item.date);
       this.totalLiters += item.litersSold;
       this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
+      if(item.fullAmountPaid){
+        this.totalMoneyReceived += this.round(item.litersSold * item.pricePerLiter, 2);
+      }
     });
   }
 

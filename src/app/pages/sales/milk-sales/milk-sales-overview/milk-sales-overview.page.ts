@@ -42,11 +42,10 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     });
   }
 
-  openMilkSaleRecord(milkSaleId){
-    let index = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+  openMilkSaleRecord(milkSale){
     let navigationExtras: NavigationExtras = {
       state: {
-        milkSaleDetails: this.milkSalesService.milkSalesList[index]
+        milkSaleDetails: milkSale
       }
     };
     this.router.navigate(['milk-sales-edit'], navigationExtras);
@@ -54,12 +53,16 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
 
   moneyReceived(item){
     item.fullAmountPaid = true;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe();
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe(val => {
+      this.milkSalesService.computeTotals();   
+    });
   }
 
   moneyNotReceived(item){
     item.fullAmountPaid = false;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe();   
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe(val => {
+      this.milkSalesService.computeTotals();   
+    });    
   }
 
   periodSelected(period){
