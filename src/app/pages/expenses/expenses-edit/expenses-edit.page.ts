@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
@@ -41,16 +41,24 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       totalprice: [{ value: this.expenseDetails.totalPrice, disabled: true }],
       sellername: [this.expenseDetails.sellerName],
       sellercompany: [this.expenseDetails.sellerCompany],
-      isrecurring: [this.expenseDetails.isRecurring],
-      recurringperiodindays: [this.expenseDetails.recurringPeriodInDays, [this.shouldContainValueIfIsRecurringToggled.bind(this)]],
+      isrootrecord: [this.expenseDetails.isRootRecord],
       recurringId: [this.expenseDetails.recurringId]
-    });
+    });    
 
-    this.expensesForm.valueChanges.subscribe(val => {
+    this.expensesForm.valueChanges.subscribe(val => {      
       let totalPrice = this.round(val['price'] * val['quantity'], 2);
       this.expensesForm.get('totalprice').patchValue(totalPrice, { emitEvent: false });
     });
   }  
+
+  isRecurringToggled(event){
+    if(event.detail.checked){
+      this.expensesForm.addControl('recurringperiodindays', new FormControl(this.expenseDetails.recurringPeriodInDays, [this.shouldContainValueIfIsRecurringToggled.bind(this)]));
+    }
+    else{
+      this.expensesForm.removeControl('recurringperiodindays');
+    }
+  }
 
   onSubmit() {
     if(this.expensesForm.valid){
@@ -66,7 +74,7 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
         totalPrice: this.expensesForm.value['price'] * this.expensesForm.value['quantity'],
         sellerName: this.expensesForm.value['sellername'],
         sellerCompany: this.expensesForm.value['sellercompany'],
-        isRecurring: this.expensesForm.value['isrecurring'],
+        isRootRecord: this.expensesForm.value['isrootrecord'],
         recurringPeriodInDays: this.expensesForm.value['recurringperiodindays'],
         recurringId: this.expensesForm.value['recurringId']
       });
@@ -93,15 +101,6 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       });
     };
     this.alertService.presentAlertConfirm(header, message, confirmAction);
-  }
-
-  itemSelected(event) {
-    // this.showOtherInput = event.detail.value == 'Other';
-    // this.showSpermInput = event.detail.value == 'Sperm';
-    // this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
-    // if (this.showCowList) {
-    //   this.loadCowsList(event.detail.value);
-    // }
   }
 
 }

@@ -34,15 +34,15 @@ export class ExpensesRecurringEditPage extends ExpensesBaseComponent implements 
         id: this.expenseDetails.id,
         farmId: this.expenseDetails.farmId,
         date: this.selectedDate,
-        type: [this.expenseDetails.type, [Validators.required]],
-        itembought: [this.expenseDetails.itemBought, [Validators.required]],
+        type: [{value: this.expenseDetails.type, disabled: true}, [Validators.required]],
+        itembought: [{value: this.expenseDetails.itemBought, disabled: true}, [Validators.required]],
         price: [this.expenseDetails.price, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
         quantity: [this.expenseDetails.quantity, [Validators.required, Validators.min(1), Validators.max(10000)]],
         quantityUnit: [this.expenseDetails.quantityUnit],
         totalprice: [{ value: this.expenseDetails.totalPrice, disabled: true }],
         sellername: [this.expenseDetails.sellerName],
         sellercompany: [this.expenseDetails.sellerCompany],
-        isrecurring: [this.expenseDetails.isRecurring],
+        isrootrecord: [this.expenseDetails.isRootRecord],
         recurringperiodindays: [this.expenseDetails.recurringPeriodInDays],
         recurringId: [this.expenseDetails.recurringId]
       });
@@ -67,7 +67,7 @@ export class ExpensesRecurringEditPage extends ExpensesBaseComponent implements 
           totalPrice: this.expensesForm.value['price'] * this.expensesForm.value['quantity'],
           sellerName: this.expensesForm.value['sellername'],
           sellerCompany: this.expensesForm.value['sellercompany'],
-          isRecurring: this.expensesForm.value['isrecurring'],
+          isRootRecord: this.expensesForm.value['isrootrecord'],
           recurringPeriodInDays: this.expensesForm.value['recurringperiodindays'],
           recurringId: this.expensesForm.value['recurringId']
         });
@@ -83,10 +83,10 @@ export class ExpensesRecurringEditPage extends ExpensesBaseComponent implements 
     }
   
     onDelete() {
-      let header = 'Delete this record?';
-      let message = 'Are you sure that you want to permanently delete this expense record?';
+      let header = 'Delete recurring records?';
+      let message = 'Deleting this root record will also delete all of its corresponding historical child records. Are you sure?';
       let confirmAction = () => {
-        this.expensesService.deleteExpensesRecord(this.expenseDetails.id).subscribe(val => {
+        this.expensesService.deleteExpensesRecurringRecords(this.expenseDetails.recurringId).subscribe(val => {
           if (val) {
             this.expensesService.expenseDeleted.next(this.expenseDetails.id);
             this.returnToOverview();
@@ -95,14 +95,4 @@ export class ExpensesRecurringEditPage extends ExpensesBaseComponent implements 
       };
       this.alertService.presentAlertConfirm(header, message, confirmAction);
     }
-  
-    itemSelected(event) {
-      // this.showOtherInput = event.detail.value == 'Other';
-      // this.showSpermInput = event.detail.value == 'Sperm';
-      // this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
-      // if (this.showCowList) {
-      //   this.loadCowsList(event.detail.value);
-      // }
-    }
-
 }

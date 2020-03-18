@@ -10,7 +10,7 @@ export class ExpensesDetails{
     totalPrice: number;
     sellerName: string;
     sellerCompany: string;
-    isRecurring: boolean;
+    isRootRecord: boolean;
     recurringPeriodInDays: number;  
     recurringId: string;  
     timestamp: Date;

@@ -34,7 +34,7 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
       totalPrice: [{ value: 0.0, disabled: true }],
       sellername: [null],
       sellercompany: [null],
-      isrecurring: [false],
+      isrootrecord: [false],
       recurringperiodindays: [null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]]
     });
 

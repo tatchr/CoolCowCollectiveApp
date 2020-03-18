@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { MilkSalesOverviewPage } from './milk-sales-overview.page';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+
 
 const routes: Routes = [
   {
@@ -19,6 +21,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],

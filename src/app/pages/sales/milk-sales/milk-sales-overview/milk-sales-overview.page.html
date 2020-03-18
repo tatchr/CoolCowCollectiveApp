@@ -40,17 +40,45 @@
   </ion-col>
 </ion-row>
 
-<ion-row>
+<!-- <ion-row>
   <ion-col size="9" no-padding></ion-col>
   <ion-col size="3" no-padding>
     <ion-label style="font-size: 12px;">
       Money received
     </ion-label>
   </ion-col>
-</ion-row>
+</ion-row> -->
 
-<ion-content padding>
-    <ion-row *ngFor='let sale of this.milkSalesService.milkSalesList' class="product-list">
+<ion-content no-padding>
+  <div *ngFor='let result of this.milkSalesService.milkSalesList | groupmilksalesbydate:this.milkSalesService.changeCounter'>
+    <ion-item-divider class="dateLbl" sticky="true">
+      <ion-label>
+        {{result.date | date: 'yyyy-MM-dd'}}
+      </ion-label>
+    </ion-item-divider>
+    <ion-row *ngFor='let sale of result.milkSalesList' class="product-list">
+      <ion-col [size]="!sale.fullAmountPaid ? '9' : '12'" no-padding>
+        <ion-item button="true" (click)="openMilkSaleRecord(sale)" 
+            [color]="sale.fullAmountPaid ? 'success' : ''">
+          <ion-label>
+            <p style="font-size: 12px;">{{sale.offtaker}}</p>
+            <p>
+              <b>{{ sale.pricePerLiter * sale.litersSold}} Ksh</b> ({{sale.litersSold}}L @ {{sale.pricePerLiter}} Ksh)
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col *ngIf="!sale.fullAmountPaid" size="3" no-padding align-self-stretch>
+        <ion-button size="small" fill="outline" class="toggle-btn" color="success" (click)="moneyReceived(sale)">          
+            <ion-icon name="logo-usd" style="font-size:20px;"></ion-icon>               
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+  <!-- <ion-row *ngFor='let sale of this.milkSalesService.milkSalesList' class="product-list">
       <ion-col [size]="!sale.fullAmountPaid ? '9' : '12'" no-padding>
         <ion-item button="true" (click)="openMilkSaleRecord(sale)" 
             [color]="sale.fullAmountPaid ? 'success' : ''">
@@ -68,12 +96,12 @@
             <ion-icon name="checkmark" style="font-size:20px;"></ion-icon>               
         </ion-button>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 </ion-content>
 
 <ion-footer>
-  <ion-row style="padding-left: 10px;">    
-    <ion-col size="2" class="ion-text-center"  no-padding>
+  <ion-row style="padding-left: 10px;">
+    <ion-col size="2" class="ion-text-center" no-padding>
       <ion-label>
         <p>Sales</p>
         <p>{{this.milkSalesService.milkSalesList.length}}</p>
@@ -82,7 +110,7 @@
     <ion-col size="2" class="ion-text-center" no-padding>
       <ion-label>
         <p>Milk</p>
-        <p>{{this.milkSalesService.totalLiters}}L</p>         
+        <p>{{this.milkSalesService.totalLiters}}L</p>
       </ion-label>
     </ion-col>
     <ion-col size="3" class="ion-text-center" no-padding>
@@ -95,7 +123,7 @@
       <ion-label>
         <p>Money received</p>
         <p>{{this.milkSalesService.totalMoneyReceived}} Ksh</p>
-      </ion-label>      
+      </ion-label>
     </ion-col>
   </ion-row>
 </ion-footer>

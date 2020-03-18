@@ -12,6 +12,7 @@ import { Period } from 'src/app/common/objects/Enums';
 })
 export class MilksalesService {
 
+  changeCounter: number = 0;
   farmId: string;
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());

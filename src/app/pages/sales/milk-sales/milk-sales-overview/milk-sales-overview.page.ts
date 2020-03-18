@@ -4,12 +4,11 @@ import { MilksalesService } from 'src/app/services/sales/milksales/milksales.ser
 import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { Period } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-milk-sales-overview',
   templateUrl: './milk-sales-overview.page.html',
-  styleUrls: ['./milk-sales-overview.page.scss'],
+  styleUrls: ['./milk-sales-overview.page.scss']
 })
 export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {  
 
@@ -21,6 +20,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     this.milkSalesService.milkSaleRegistered.subscribe(newSale => {
       if (newSale) {
         this.milkSalesService.milkSalesList.push(newSale);
+        this.milkSalesService.changeCounter += 1;        
         this.milkSalesService.computeTotals();
       }
     });
@@ -29,6 +29,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
       if (milkSaleId) {
         let saleToDelete = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
         this.milkSalesService.milkSalesList.splice(saleToDelete, 1);
+        this.milkSalesService.changeCounter += 1;
         this.milkSalesService.computeTotals();
       }
     });
@@ -37,6 +38,8 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
       if (sale) {
         let saleToUpdate = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
         this.milkSalesService.milkSalesList[saleToUpdate] = sale;
+        this.milkSalesService.changeCounter += 1;
+        console.log(sale);
         this.milkSalesService.computeTotals();
       }
     });

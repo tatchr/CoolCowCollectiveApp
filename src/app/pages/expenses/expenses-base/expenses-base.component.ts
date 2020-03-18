@@ -23,7 +23,7 @@ export class ExpensesBaseComponent implements OnInit {
   shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
     let containsValue = group.value != null;
 
-    if(this.expensesForm && this.expensesForm.controls.isrecurring.value){
+    if(this.expensesForm && this.expensesForm.controls.isrootrecord.value){
       return containsValue ? null : { isInvalid: true }
     }
 

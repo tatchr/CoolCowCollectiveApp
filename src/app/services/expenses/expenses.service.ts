@@ -11,7 +11,7 @@ import { ExpensesGroup } from 'src/app/common/objects/ExpensesGroup';
 @Injectable({
   providedIn: 'root'
 })
-export class ExpensesService {
+export class ExpensesService {  
  
   expenseRegistered = new BehaviorSubject<ExpensesDetails>(null);
   public expenseUpdated = new BehaviorSubject<ExpensesDetails>(null);
@@ -67,5 +67,9 @@ export class ExpensesService {
 
   deleteExpensesRecord(id) {
     return this.httpService.delete(environment.url + '/api/expenses/delete/' +  id);
+  }
+
+  deleteExpensesRecurringRecords(recurringId: string) {
+    return this.httpService.delete(environment.url + '/api/expenses/deleteRecurringRecords/' +  recurringId);
   }
 }

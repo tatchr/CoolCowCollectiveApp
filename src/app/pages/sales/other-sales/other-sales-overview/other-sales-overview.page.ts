@@ -21,6 +21,7 @@ export class OtherSalesOverviewPage implements OnInit {
         if (isCowSold) {
           this.cowService.cowSold.next(newSale.cowIdSold);
         }
+        this.otherSalesService.changeCounter += 1;
       }
     });
 
@@ -28,6 +29,7 @@ export class OtherSalesOverviewPage implements OnInit {
       if (milkSaleId) {
         let saleToDelete = this.otherSalesService.otherSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
         this.otherSalesService.otherSalesList.splice(saleToDelete, 1);
+        this.otherSalesService.changeCounter += 1;
       }
     });
 
@@ -35,6 +37,7 @@ export class OtherSalesOverviewPage implements OnInit {
       if (sale) {
         let saleToUpdate = this.otherSalesService.otherSalesList.map(x => x.id).findIndex(x => x == sale.id);
         this.otherSalesService.otherSalesList[saleToUpdate] = sale;
+        this.otherSalesService.changeCounter += 1;
       }
     });
   }

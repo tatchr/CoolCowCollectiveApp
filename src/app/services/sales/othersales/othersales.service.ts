@@ -22,6 +22,7 @@ export class OthersalesService {
   otherSaleUpdated = new BehaviorSubject<OtherSalesDetails>(null);
   otherSaleDeleted = new BehaviorSubject<number>(null);
 
+  changeCounter: number = 0;
   otherSalesList: Array<OtherSalesDetails> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) {
