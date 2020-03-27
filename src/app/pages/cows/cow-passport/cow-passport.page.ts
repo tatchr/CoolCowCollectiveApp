@@ -39,11 +39,13 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
       cowtype: [this.cowDetails.cowType, [Validators.required]],
       breed: this.cowDetails.breed,
       cowstatus: [this.cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
+      lactatingsincedate: [this.cowDetails.lactatingSinceDate],
       cowstate: this.cowDetails.cowState,
       registrationdate: this.cowDetails.registrationDate
     });
 
-    this.setCowStatusList(this.cowDetails.cowType); 
+    this.setCowStatusList(this.cowDetails.cowType);
+    this.setLactatingSinceDate(this.cowDetails.cowStatus);
   }
 
   updateCow() {
@@ -58,6 +60,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
         breed: this.cowForm.value['breed'],
         cowStatus: this.cowForm.get(['cowstatus']).value,
         cowState: this.cowForm.value['cowstate'],
+        lactatingSinceDate: this.cowForm.value['lactatingsincedate'],
         registrationDate: this.cowForm.value['registrationdate']
       };
 
@@ -70,9 +73,14 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
     }
   }
 
-  async openDatePicker() {
-    let birthDate = this.cowForm.controls['birthdate'].value;
-    birthDate = await this.datePicker.openDatePicker(birthDate);
-    this.cowForm.controls['birthdate'].setValue(birthDate);
-  }
+  // async openDatePicker() {
+  //   let birthDate = this.cowForm.controls['birthdate'].value;
+  //   birthDate = await this.datePicker.openDatePicker(birthDate);
+  //   this.cowForm.controls['birthdate'].setValue(birthDate);
+  // }
+
+  async openDatePicker(field){
+    let date = await this.datePicker.openDatePicker('');
+    this.cowForm.controls[field].setValue(date);    
+  } 
 }

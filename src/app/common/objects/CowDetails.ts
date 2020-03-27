@@ -8,6 +8,7 @@ export class CowDetails{
     cowType: string;
     cowStatus: string;
     cowState: string;
+    lactatingSinceDate: Date;
     registrationDate: Date;
 
     constructor(values: Object = {}) {

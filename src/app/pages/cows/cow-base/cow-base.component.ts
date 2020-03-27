@@ -15,6 +15,7 @@ export class CowBaseComponent implements OnInit {
 
   cowForm: FormGroup;
   showFullStatusList: boolean;
+  showLactatingSinceDate: boolean;
   farmId: string;
 
   fromDate = new Date('1970-01-01');
@@ -44,6 +45,18 @@ export class CowBaseComponent implements OnInit {
     }
     else{
       this.cowForm.controls['cowstatus'].enable();
+    }
+  }
+
+  cowStatusSelected(event){
+    this.setLactatingSinceDate(event.detail.value);
+  }
+
+  setLactatingSinceDate(cowStatus){
+    this.showLactatingSinceDate = cowStatus == 'Lactating';
+
+    if(!this.showLactatingSinceDate){
+      this.cowForm.controls['lactatingsincedate'].setValue(null);
     }
   }
 }

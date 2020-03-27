@@ -13,7 +13,7 @@ import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component
   styleUrls: ['./register-cow.page.scss'],
   providers: [Keyboard]
 })
-export class RegisterCowPage extends CowBaseComponent implements OnInit {  
+export class RegisterCowPage extends CowBaseComponent implements OnInit {   
 
   constructor(router: Router, formBuilder: FormBuilder, storage: Storage, cowService: CowService, 
     datePicker: DatepickerService, keyboard: Keyboard) { 
@@ -29,7 +29,8 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
       birthdate: [null],
       cowtype: [null, [Validators.required]],
       breed: [null],
-      cowstatus: [null, [Validators.required]]
+      cowstatus: [null, [Validators.required]],
+      lactatingsincedate: [null]
     }); 
   }
   
@@ -58,8 +59,21 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
     }    
   }
 
-  async openDatePicker(){    
-    let birthDate = await this.datePicker.openDatePicker('');
-    this.cowForm.controls['birthdate'].setValue(birthDate);    
-  }
+  // async openDatePicker(){    
+  //   let birthDate = await this.datePicker.openDatePicker('');
+  //   this.cowForm.controls['birthdate'].setValue(birthDate);    
+  // }
+
+  async openDatePicker(field){
+    let date = await this.datePicker.openDatePicker('');
+    this.cowForm.controls[field].setValue(date);    
+  }  
+
+  // cowStatusSelected(event){
+  //   this.showLactatingSinceDate = event.detail.value == 'Lactating';
+
+  //   if(!this.showLactatingSinceDate){
+  //     this.cowForm.controls['lactatingsincedate'].setValue(null);
+  //   }
+  // }
 }
