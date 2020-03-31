@@ -103,6 +103,10 @@ export class MilkService {
     return this.httpService.get2('Loading...', environment.url + '/api/milkproduction/getAll/' + farmId + "/" + date + "/" + timeOfDay);
   }
 
+  getAllMilkRecordsFromDateToDate(farmId, fromDate, toDate){
+    return this.httpService.get2('Loading...', environment.url + '/api/milkproduction/getAll2/' + farmId + "/" + fromDate + "/" + toDate);
+  }
+
   registerMilkRecords(records) {
     return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records);
   }

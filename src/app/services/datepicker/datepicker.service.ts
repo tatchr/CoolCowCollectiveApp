@@ -85,8 +85,23 @@ export class DatepickerService {
     return date != null ? moment(date).format('MMM-DD') : null;
   }
 
-  subtract(date, amount, type){
-    return moment(date).subtract(amount , type).format('YYYY-MM-DD');
+  formatDate2(date, format) {
+    return date != null ? moment(date).format(format) : null;
+  }
+
+  subtract(date, amount, type){    
+    return moment(date).subtract(amount, type).format('YYYY-MM-DD');
+  }
+
+  getDaysArray(fromDate, toDate){
+    let days = [];
+    let totalDays = moment(toDate).diff(moment(fromDate), 'days');
+
+    for(var i = 0; i < totalDays; i++){
+      days.push(moment(fromDate).add(i, 'days').format('MMM-DD'));
+    }
+
+    return days;
   }
 
   periodSelected(period){    
