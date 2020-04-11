@@ -50,11 +50,11 @@ export class ExpensesService {
   }
   
   getExpenseRecord(id){
-    return this.httpService.get(environment.url + '/api/expenses/get/' + id);
+    return this.httpService.get(null, environment.url + '/api/expenses/get/' + id);
   }
 
   getExpensesRecords(farmId, fromDate, toDate){
-    return this.httpService.get2('Loading...', environment.url + '/api/expenses/getAll/' + farmId + "/" + fromDate + "/" + toDate);
+    return this.httpService.get('Loading...', environment.url + '/api/expenses/getAll/' + farmId + "/" + fromDate + "/" + toDate);
   }
 
   registerExpensesRecord(record) {

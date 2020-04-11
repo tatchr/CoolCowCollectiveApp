@@ -20,6 +20,13 @@ export class DatepickerService {
     new PeriodDetails({value: Period.lastquarter, label: '3 months'}),
     new PeriodDetails({value: Period.lastyear, label: '1 year'}),
     new PeriodDetails({value: Period.alltime, label: 'All time'})];
+
+    public periodsShort: Array<PeriodDetails> = [
+      new PeriodDetails({value: Period.lastweek, label: '1W'}),
+      new PeriodDetails({value: Period.last2weeks, label: '2W'}),
+      new PeriodDetails({value: Period.lastmonth, label: '1M'}),
+      new PeriodDetails({value: Period.lastquarter, label: '3M'}),
+      new PeriodDetails({value: Period.lastyear, label: '1Y'})];
     
   constructor(public modalCtrl: ModalController) { }
 

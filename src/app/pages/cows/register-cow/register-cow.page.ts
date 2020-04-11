@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-register-cow',
@@ -23,6 +24,7 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   ngOnInit() {
     this.getFarmId();
     this.cowForm = this.formBuilder.group({
+      id: uuidv4(),
       name: [null, [Validators.required, Validators.maxLength(50)]],
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
@@ -30,13 +32,15 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
       cowtype: [null, [Validators.required]],
       breed: [null],
       cowstatus: [null, [Validators.required]],
-      lactatingsincedate: [null]
+      lactatingsincedate: [null],
+      registrationDate: [null]
     }); 
   }
   
   onSubmit() {
     if(this.cowForm.valid){      
       this.cowForm.controls['farmId'].setValue(this.farmId);
+      this.cowForm.controls['registrationDate'].setValue(new Date());
       // let newCow : CowDetails = {
       //   id: null,
       //   name: this.cowForm.value['name'],
@@ -59,21 +63,8 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
     }    
   }
 
-  // async openDatePicker(){    
-  //   let birthDate = await this.datePicker.openDatePicker('');
-  //   this.cowForm.controls['birthdate'].setValue(birthDate);    
-  // }
-
   async openDatePicker(field){
     let date = await this.datePicker.openDatePicker('');
     this.cowForm.controls[field].setValue(date);    
-  }  
-
-  // cowStatusSelected(event){
-  //   this.showLactatingSinceDate = event.detail.value == 'Lactating';
-
-  //   if(!this.showLactatingSinceDate){
-  //     this.cowForm.controls['lactatingsincedate'].setValue(null);
-  //   }
-  // }
+  }
 }

@@ -21,7 +21,13 @@
         </ng-template>
 
         <canvas #cowPodiumChart></canvas>
-        <canvas #milkProductionChart></canvas>        
+        <canvas #milkProductionChart></canvas> 
+        <ion-item>
+          <ion-button *ngFor='let period of this.milkService.datePicker.periodsShort;' size="small" fill="outline"
+            [color]="period.value == this.milkService.selectedPeriod ? 'success' : 'medium'"
+            (click)="this.milkService.periodSelected(period.value)">
+            {{period.label}}</ion-button>
+        </ion-item>       
       </ion-col>
     </ion-row>
   </ion-grid>

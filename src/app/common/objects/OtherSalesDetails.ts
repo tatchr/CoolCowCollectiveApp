@@ -3,7 +3,7 @@ export class OtherSalesDetails {
     farmId: number;
     date: string;
     itemSold: string;
-    cowIdSold: number;
+    cowIdSold: string;
     price: number;
     quantity: number;
     offtakerName: string;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
@@ -41,7 +41,8 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
       cowstatus: [this.cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
       lactatingsincedate: [this.cowDetails.lactatingSinceDate],
       cowstate: this.cowDetails.cowState,
-      registrationdate: this.cowDetails.registrationDate
+      registrationdate: this.cowDetails.registrationDate,
+      updateDate: [null]
     });
 
     this.setCowStatusList(this.cowDetails.cowType);
@@ -49,6 +50,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
   }
 
   updateCow() {
+    this.cowForm.controls['updateDate'].setValue(new Date());
     if (this.cowForm.valid) {
       let updatedCow: CowDetails = {
         id: this.cowForm.value['id'],
@@ -61,23 +63,19 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
         cowStatus: this.cowForm.get(['cowstatus']).value,
         cowState: this.cowForm.value['cowstate'],
         lactatingSinceDate: this.cowForm.value['lactatingsincedate'],
-        registrationDate: this.cowForm.value['registrationdate']
+        registrationDate: this.cowForm.value['registrationdate'],
+        updateDate: this.cowForm.value['updateDate']
       };
 
       this.cowService.updateCow(this.cowForm.getRawValue()).subscribe(val => {
         if (val) {
+          console.log(updatedCow);
           this.cowService.cowUpdated.next(updatedCow);
           this.router.navigateByUrl('tabs/herd');
         }
       });
     }
   }
-
-  // async openDatePicker() {
-  //   let birthDate = this.cowForm.controls['birthdate'].value;
-  //   birthDate = await this.datePicker.openDatePicker(birthDate);
-  //   this.cowForm.controls['birthdate'].setValue(birthDate);
-  // }
 
   async openDatePicker(field){
     let date = await this.datePicker.openDatePicker('');

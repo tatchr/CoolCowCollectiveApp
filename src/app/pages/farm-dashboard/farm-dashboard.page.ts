@@ -6,7 +6,6 @@ import { MilkService } from 'src/app/services/milk/milk.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 
 const FARM_ID = 'farmId';
 
@@ -26,7 +25,7 @@ export class FarmDashboardPage implements OnInit {
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
 
-  constructor(private farmService: FarmService, private storage: Storage, private milkService: MilkService, private datePicker: DatepickerService) { }
+  constructor(private farmService: FarmService, private storage: Storage, public milkService: MilkService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
     this.initiate();
@@ -39,20 +38,18 @@ export class FarmDashboardPage implements OnInit {
     });
 
     this.milkService.milkRecordsLoaded.subscribe(finishedLoading =>{
-      if(finishedLoading){    
-        console.log(this.milkService.allMilkRecordsList);    
+      if(finishedLoading){ 
         this.createMilkProductionChart();
       }
     });
 
     this.milkService.milkRecordsUpdated.subscribe(() => {
-      console.log(this.milkService.allMilkRecordsList);
       this.createMilkProductionChart();
     });
   }
 
   getAllFarms(userId) {
-    this.farmService.getAllFarms(userId).subscribe(res => {
+    this.farmService.getAllFarms(userId).then(res => {
       this.farmsList = res['farms'];
       if (this.farmsList.length > 0) {
         this.storage.set(FARM_ID, res['farms'][0]['farmId']);
@@ -62,8 +59,8 @@ export class FarmDashboardPage implements OnInit {
   }
 
   getMilkAmount(timeOfDay) {
-    let milkRecords = this.milkService.getMilkRecordsFromDateToDate(timeOfDay, this.selectedFromDate, this.selectedToDate);
-    let days: String[] = this.datePicker.getDaysArray(this.selectedFromDate, this.selectedToDate);
+    let milkRecords = this.milkService.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay);
+    let days: String[] = this.datePicker.getDaysArray(this.milkService.fromDate, this.milkService.toDate);
 
     let milkTotals = [];
     days.forEach(day => {
@@ -87,7 +84,7 @@ export class FarmDashboardPage implements OnInit {
     this.lines = new Chart(this.milkProductionChart.nativeElement, {
       type: 'line',
       data: {
-        labels: this.datePicker.getDaysArray(this.selectedFromDate, this.selectedToDate),
+        labels: this.datePicker.getDaysArray(this.milkService.fromDate, this.milkService.toDate),
         datasets: [
           {
             label: 'Morning',
@@ -119,7 +116,7 @@ export class FarmDashboardPage implements OnInit {
       options: {
         title: {
           display: true,
-          text: 'Total milk production last week'
+          text: 'Total milk production last ' + this.milkService.datePicker.periods.find(x => x.value == this.milkService.selectedPeriod).label
         },
         scales: {
           xAxes: [{

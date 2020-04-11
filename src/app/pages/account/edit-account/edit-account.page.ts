@@ -32,7 +32,7 @@ export class EditAccountPage implements OnInit {
   }  
 
   getUserDetails(){
-    this.accountService.getUserDetails(this.userId).subscribe(res => {
+    this.accountService.getUserDetails(this.userId).then(res => {
         this.populateForm(res['userDetails']);      
     });
   }

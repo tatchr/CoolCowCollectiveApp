@@ -1,5 +1,5 @@
 export class CowDetails{
-    id: number;
+    id: string;
     farmId: string;
     tagNumber: string;
     name: string;
@@ -10,6 +10,7 @@ export class CowDetails{
     cowState: string;
     lactatingSinceDate: Date;
     registrationDate: Date;
+    updateDate: Date;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

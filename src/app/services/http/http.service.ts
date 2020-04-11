@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorService } from 'src/app/services/http/httperror.service';
 import { map, catchError, tap, finalize, timeout } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { OverlayService } from 'src/app/services/overlay/overlay.service';
 
 @Injectable({
@@ -10,18 +10,25 @@ import { OverlayService } from 'src/app/services/overlay/overlay.service';
 })
 export class HttpService {
 
-  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private overlayService: OverlayService) { }
+  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private overlayService: OverlayService) { }  
 
-  get(url) {
+  public get(overlayMessage, url): Promise<Object> {
+    if(overlayMessage == null){
+      return this.getWithoutOverlay(url).toPromise();
+    }
+
+    return this.getWithOverlay(overlayMessage, url);    
+  }
+
+  private getWithoutOverlay(url): Observable<Object> {
     return this.http.get(url).pipe(
       map(res => { return res; }),
       catchError(error => throwError(this.httpErrorService.handleError(error)))
     );
   }
 
-  get2(overlayMessage, url) {
+  private getWithOverlay(overlayMessage, url){
     let id = Math.random().toString(36).substring(7);
-
     return this.overlayService.presentLoader(id, overlayMessage)
       .then(() => {
         return this.http.get(url).toPromise();

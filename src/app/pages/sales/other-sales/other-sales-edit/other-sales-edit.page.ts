@@ -52,7 +52,7 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
     this.showCowList = this.cowService.animalTypes.includes(otherSalesDetails.itemSold);
 
     if (this.showCowList) {
-      this.cowSold = this.getCow(otherSalesDetails.cowIdSold);
+      this.cowSold = this.cowService.getCow(otherSalesDetails.cowIdSold);
 
       return otherSalesDetails.itemSold
     }
@@ -65,11 +65,6 @@ export class OtherSalesEditPage extends OtherSalesBaseComponent implements OnIni
     }
 
     return otherSalesDetails.itemSold;
-  }
-
-  getCow(cowId: number): CowDetails {
-    let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
-    return this.cowService.cowsList[index];
   }
 
   onSubmit() {

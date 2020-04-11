@@ -49,11 +49,11 @@ export class OthersalesService {
   }
 
   getOtherSaleRecord(id) {
-    return this.httpService.get(environment.url + '/api/othersales/get/' + id);
+    return this.httpService.get(null, environment.url + '/api/othersales/get/' + id);
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get2('Loading...', environment.url + '/api/othersales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
+    return this.httpService.get('Loading...', environment.url + '/api/othersales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
   }
 
   registerOtherSalesRecord(record) {

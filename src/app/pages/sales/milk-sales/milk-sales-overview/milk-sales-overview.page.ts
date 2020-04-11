@@ -39,7 +39,6 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
         let saleToUpdate = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
         this.milkSalesService.milkSalesList[saleToUpdate] = sale;
         this.milkSalesService.changeCounter += 1;
-        console.log(sale);
         this.milkSalesService.computeTotals();
       }
     });

@@ -14,7 +14,7 @@ export class AccountService {
   }
 
   getUserDetails(userId){
-    return this.httpService.get(environment.url + '/api/user/getUser/' + userId);
+    return this.httpService.get(null, environment.url + '/api/user/getUser/' + userId);
   }
 
   updateUserDetails(userdetails){

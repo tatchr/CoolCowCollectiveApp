@@ -13,11 +13,11 @@ export class FarmService {
   constructor(private storage: Storage, private httpService: HttpService) { }
 
   getFarm(farmId){
-    return this.httpService.get(environment.url + '/api/farm/get/' + farmId);
+    return this.httpService.get(null, environment.url + '/api/farm/get/' + farmId);
   }
 
   getAllFarms(userId){
-    return this.httpService.get(environment.url + '/api/farm/getAll/' + userId);
+    return this.httpService.get(null, environment.url + '/api/farm/getAll/' + userId);
   }
   
   registerFarm(credentials) {

@@ -9,7 +9,6 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
-import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { CowState, CowStatus } from 'src/app/common/objects/Enums';
 
 @Component({

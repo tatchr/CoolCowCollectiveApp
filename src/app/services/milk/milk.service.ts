@@ -4,7 +4,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Storage } from '@ionic/storage';
-import { TimeOfDay, CowState, CowStatus } from 'src/app/common/objects/Enums';
+import { TimeOfDay, CowState, CowStatus, Period } from 'src/app/common/objects/Enums';
 import { BehaviorSubject } from 'rxjs';
 import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,6 +23,7 @@ export class MilkService {
   timeOfDay: string = TimeOfDay.Morning;
   fromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   toDate: string = this.datePicker.formatDate(new Date());
+  selectedPeriod: string = Period.lastweek;
 
   inputProduction: number = 0.00;
   currentlySelected: MilkProductionDetails = null;
@@ -37,6 +38,17 @@ export class MilkService {
       this.farmId = farmId;
       this.loadAllMilkRecordsList();
     });
+  }
+
+  periodSelected(period){
+    this.selectedPeriod = period;
+    let result = this.datePicker.periodSelected(period);
+    
+    this.toDate = result.toDate;
+    this.fromDate = result.fromDate;    
+    
+    //this.getAllMilkRecords(this.farmId, result.fromDate, result.toDate);  
+    this.loadAllMilkRecordsList();
   }
   
   loadAllMilkRecordsList(){
@@ -78,7 +90,7 @@ export class MilkService {
   }
 
   getMilkRecordsOnDate(farmId, date, timeOfDay){
-    return this.httpService.get2('Loading...', environment.url + '/api/milkproduction/get/' + farmId + '/' + date + '/' + timeOfDay);
+    return this.httpService.get('Loading...', environment.url + '/api/milkproduction/get/' + farmId + '/' + date + '/' + timeOfDay);
   }
 
   getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate){
@@ -88,7 +100,7 @@ export class MilkService {
   }
 
   getAllMilkRecords(farmId, fromDate, toDate){
-    return this.httpService.get2('Loading...', environment.url + '/api/milkproduction/getAll2/' + farmId + '/' + fromDate + '/' + toDate);
+    return this.httpService.get('Loading...', environment.url + '/api/milkproduction/getAll/' + farmId + '/' + fromDate + '/' + toDate);
   }  
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {

@@ -71,11 +71,11 @@ export class MilksalesService {
   }
 
   getMilkSaleRecord(id) {
-    return this.httpService.get(environment.url + '/api/milksales/get/' + id);
+    return this.httpService.get(null, environment.url + '/api/milksales/get/' + id);
   }
 
   getAllMilkSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get2('Loading...', environment.url + '/api/milksales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
+    return this.httpService.get('Loading...', environment.url + '/api/milksales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
   }
 
   registerMilkSalesRecord(record) {

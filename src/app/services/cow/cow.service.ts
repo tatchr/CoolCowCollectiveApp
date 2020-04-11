@@ -14,8 +14,8 @@ export class CowService {
   cowListState = new BehaviorSubject(null);
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);
-  cowDeleted = new BehaviorSubject<number>(null);
-  cowSold = new BehaviorSubject<number>(null);
+  cowDeleted = new BehaviorSubject<string>(null);
+  cowSold = new BehaviorSubject<string>(null);
 
   cowsList: Array<CowDetails> = [];
   filteredCowsList: Array<CowDetails> = [];  
@@ -31,37 +31,29 @@ export class CowService {
   }
 
   loadCowsList(farmId) {
-    this.getAllCows(farmId).then(res => {
+    this.getAllCows(farmId, null).then(res => {
       this.cowsList = res['cows'];
       this.filteredCowsList = res['cows'];
     });
   }
 
   getCow(cowId){
-    return this.httpService.get2('Loading...', environment.url + '/api/cow/get/' + cowId);
+    return this.cowsList.find(x => x.id == cowId);
   }
 
-  getAllCows(farmId){
-    return this.httpService.get2('Loading...', environment.url + '/api/cow/getAll/' + farmId);
+  getAllCows(farmId, overlayText){
+    return this.httpService.get(overlayText, `${environment.url}/api/cow/getAll/${farmId}`);
+  }  
+
+  updateCow(cowdetails){    
+    return this.httpService.put(`${environment.url}/api/cow/update`, cowdetails);
   }
 
-  getAllCows2(farmId){
-    return this.httpService.get(environment.url + '/api/cow/getAll/' + farmId);
+  deleteCow(cowId, keepRecords){    
+    return this.httpService.delete(`${environment.url}/api/cow/delete/${cowId}/${keepRecords}`);
   }
 
-  getAllCowsOfType(farmId, type){
-    return this.httpService.get2('Loading...', environment.url + '/api/cow/getAll/' + farmId + '/' + type);
-  }
-
-  updateCow(cowdetails){
-    return this.httpService.put(environment.url + '/api/cow/update', cowdetails);
-  }
-
-  deleteCow(cowId, keepRecords){
-    return this.httpService.delete(environment.url + '/api/cow/delete/' + cowId + '/' + keepRecords);
-  }
-
-  registerCow(cowdetails) {
-    return this.httpService.post3('Saving...', environment.url + '/api/cow/register', cowdetails);
+  registerCow(cowdetails) {    
+    return this.httpService.post3('Saving...', `${environment.url}/api/cow/register`, cowdetails);
   }  
 }
