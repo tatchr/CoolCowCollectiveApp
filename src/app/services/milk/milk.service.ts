@@ -30,7 +30,7 @@ export class MilkService {
   totalLiters: number;  
 
   milkRecordsLoaded = new BehaviorSubject<boolean>(null);
-  milkRecordsUpdated = new BehaviorSubject<Array<MilkProductionDetails>>(null);
+  public milkRecordsUpdated = new BehaviorSubject<boolean>(null);
   
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private cowService: CowService, private storage: Storage) { 
@@ -45,9 +45,8 @@ export class MilkService {
     let result = this.datePicker.periodSelected(period);
     
     this.toDate = result.toDate;
-    this.fromDate = result.fromDate;    
+    this.fromDate = result.fromDate;
     
-    //this.getAllMilkRecords(this.farmId, result.fromDate, result.toDate);  
     this.loadAllMilkRecordsList();
   }
   
@@ -104,16 +103,20 @@ export class MilkService {
   }  
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {
-    return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records).then(() => {
+    return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records)
+    .then(() => {      
       this.updateAllRecords(records);
+    })
+    .then(() => {
+      this.milkRecordsUpdated.next(true);
     });
   }
 
   updateAllRecords(records: Array<MilkProductionDetails>){
     records.forEach(record => {
       record.hasBeenUpdated = false;
-      let index = this.allMilkRecordsList.map(x => x.id).indexOf(record.id);      
-      if(index > 0){
+      let index = this.allMilkRecordsList.map(x => x.id).indexOf(record.id); 
+      if(index >= 0){        
         this.allMilkRecordsList[index] = record;
       }
       else{

@@ -12,22 +12,23 @@
 
         <ng-template #farmBlock>
             <h2 *ngFor="let farm of farmsList">{{farm.name}}</h2>
+
+            <ion-item>
+              <ion-button *ngFor='let period of this.milkService.datePicker.periodsShort;' size="small" fill="outline"
+                [color]="period.value == this.milkService.selectedPeriod ? 'success' : 'medium'"
+                (click)="this.milkService.periodSelected(period.value)">
+                {{period.label}}</ion-button>
+            </ion-item>  
+
+            <canvas #cowPodiumChart></canvas>
+            <canvas #milkProductionChart></canvas> 
         </ng-template>
 
         <ng-template #newFarmBlock>
           Welcome to the Cool Cow Collective App!
           <ion-button expand="block" type="button" color="success" routerLink="/register-farm" routerDirection="forward">Add New Farm
           </ion-button>
-        </ng-template>
-
-        <canvas #cowPodiumChart></canvas>
-        <canvas #milkProductionChart></canvas> 
-        <ion-item>
-          <ion-button *ngFor='let period of this.milkService.datePicker.periodsShort;' size="small" fill="outline"
-            [color]="period.value == this.milkService.selectedPeriod ? 'success' : 'medium'"
-            (click)="this.milkService.periodSelected(period.value)">
-            {{period.label}}</ion-button>
-        </ion-item>       
+        </ng-template>                    
       </ion-col>
     </ion-row>
   </ion-grid>

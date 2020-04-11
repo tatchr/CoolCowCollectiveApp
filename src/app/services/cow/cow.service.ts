@@ -9,8 +9,8 @@ import { Storage } from '@ionic/storage';
 @Injectable({
   providedIn: 'root'
 })
-export class CowService {  
-
+export class CowService {
+  
   cowListState = new BehaviorSubject(null);
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);

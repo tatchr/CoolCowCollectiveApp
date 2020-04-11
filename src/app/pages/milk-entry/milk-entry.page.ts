@@ -67,9 +67,7 @@ export class MilkEntryPage implements OnInit {
       }      
     });
 
-    this.milkService.registerMilkRecords(this.milkService.filteredMilkRecordsList).then(() => {
-      this.milkService.milkRecordsUpdated.next(this.milkService.filteredMilkRecordsList);
-    });
+    this.milkService.registerMilkRecords(this.milkService.filteredMilkRecordsList);
   }  
 
   inputProductionSubmitted() {
