@@ -12,6 +12,12 @@ export enum CowState {
     Deleted = 'Deleted' 
 };
 
+export enum CowStatus {
+    Lactating = 'Lactating',
+    NonLactating = 'Non-Lactating',
+    NA = 'N/A'
+};
+
 export enum ItemSold {
     Cow = 'Cow',
     Heifer = 'Heifer',

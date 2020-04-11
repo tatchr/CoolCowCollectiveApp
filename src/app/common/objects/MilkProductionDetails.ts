@@ -1,5 +1,5 @@
-class MilkProductionDetails{
-    id: number;
+export class MilkProductionDetails{
+    id: string;
     farmId: number;
     cowId: number;
     cowName: string;
@@ -8,4 +8,12 @@ class MilkProductionDetails{
     timeOfDay: string;
     amount: number;
     createdByUserId: number;
+    registrationDate: Date;
+    updateDate: Date;
+
+    hasBeenUpdated: boolean;
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }

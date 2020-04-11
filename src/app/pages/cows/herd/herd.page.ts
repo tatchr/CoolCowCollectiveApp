@@ -10,7 +10,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
-import { CowState } from 'src/app/common/objects/Enums';
+import { CowState, CowStatus } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-herd',
@@ -24,11 +24,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   searching: Boolean = false;
   filters: Array<string> = [];
 
-  cowStatuses: Array<CowStatus> = [
-    { value: 'Lactating', name: 'Lactating' },
-    { value: 'Non-Lactating', name: 'Non-Lactating' },
-    { value: 'N/A', name: 'N/A' }
-  ];
+  cowStatuses: Array<CowStatus> = [CowStatus.Lactating, CowStatus.NonLactating, CowStatus.NA];
 
   constructor(router: Router, formBuilder: FormBuilder, private filterService: FilterService,
     storage: Storage, cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {

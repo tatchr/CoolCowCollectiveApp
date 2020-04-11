@@ -6,6 +6,7 @@ import { MilkService } from 'src/app/services/milk/milk.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 
 const FARM_ID = 'farmId';
 
@@ -15,14 +16,13 @@ const FARM_ID = 'farmId';
   styleUrls: ['./farm-dashboard.page.scss'],
 })
 export class FarmDashboardPage implements OnInit {
-  @ViewChild('barChart') barChart;
+  @ViewChild('cowPodiumChart') cowPodiumChart;
 
   farmsList: Array<Object> = [];
   bars: any;
   colorArray: any;
   farmId: string;
 
-  milkRecordsList: Array<MilkProductionDetails> = [];
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
 
@@ -32,22 +32,22 @@ export class FarmDashboardPage implements OnInit {
     this.initiate();
   }
 
-  ionViewDidEnter() {
-    this.initiate();
-    this.createBarChart();
-  }
-
   initiate() {
     this.storage.get('userId').then(userId => {
-      this.getAllFarms(userId);
-      this.getAllMilk()
-        .then(res => {
-          this.milkRecordsList = res;
-        })
-        .then(res => {
-          this.createLineChart();
-          this.createBarChart();
-        });
+      this.getAllFarms(userId);      
+      //this.createBarChart();
+    });
+
+    this.milkService.milkRecordsLoaded.subscribe(finishedLoading =>{
+      if(finishedLoading){    
+        console.log(this.milkService.allMilkRecordsList);    
+        this.createMilkProductionChart();
+      }
+    });
+
+    this.milkService.milkRecordsUpdated.subscribe(() => {
+      console.log(this.milkService.allMilkRecordsList);
+      this.createMilkProductionChart();
     });
   }
 
@@ -61,14 +61,8 @@ export class FarmDashboardPage implements OnInit {
     });
   }
 
-  getAllMilk() {
-    return this.milkService.getAllMilkRecordsFromDateToDate('1', this.selectedFromDate, this.selectedToDate).then(records => {
-      return records['milkProductionDetails'];
-    });
-  }
-
   getMilkAmount(timeOfDay) {
-    let milkRecords = this.milkRecordsList.filter(x => x.timeOfDay == timeOfDay);
+    let milkRecords = this.milkService.getMilkRecordsFromDateToDate(timeOfDay, this.selectedFromDate, this.selectedToDate);
     let days: String[] = this.datePicker.getDaysArray(this.selectedFromDate, this.selectedToDate);
 
     let milkTotals = [];
@@ -87,11 +81,10 @@ export class FarmDashboardPage implements OnInit {
     return milkTotals;
   }
 
-  @ViewChild('lineChart') lineChart;
+  @ViewChild('milkProductionChart') milkProductionChart;
   lines: Chart;
-  createLineChart() {
-    this.getAllMilk();
-    this.lines = new Chart(this.lineChart.nativeElement, {
+  createMilkProductionChart() {
+    this.lines = new Chart(this.milkProductionChart.nativeElement, {
       type: 'line',
       data: {
         labels: this.datePicker.getDaysArray(this.selectedFromDate, this.selectedToDate),
@@ -110,7 +103,7 @@ export class FarmDashboardPage implements OnInit {
             borderColor: 'orange',
             fill: false,
             lineTension: 0,
-            pointRadius: 0
+            pointRadius: 1
           },
           {
             label: 'Evening',
@@ -155,7 +148,7 @@ export class FarmDashboardPage implements OnInit {
 
   getTop3Cows() {
     let totalProductionPerCow = [];
-    from(this.milkRecordsList).pipe(
+    from(this.milkService.allMilkRecordsList).pipe(
       groupBy(item => item.cowName),
       mergeMap(group => group.pipe(toArray()))
     )
@@ -167,7 +160,7 @@ export class FarmDashboardPage implements OnInit {
 
   createBarChart() {
     let top3Cows = this.getTop3Cows();
-    this.bars = new Chart(this.barChart.nativeElement, {
+    this.bars = new Chart(this.cowPodiumChart.nativeElement, {
       type: 'bar',
       data: {
         labels: [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name],

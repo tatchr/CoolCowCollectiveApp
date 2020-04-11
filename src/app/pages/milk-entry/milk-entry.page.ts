@@ -51,15 +51,25 @@ export class MilkEntryPage implements OnInit {
   }
 
   submit() {
-    if (this.milkService.filteredMilkRecordsList.length <= 0) {
+    if (!Array.isArray(this.milkService.filteredMilkRecordsList) || !this.milkService.filteredMilkRecordsList.length) {
       return;
     }
 
-    for (var i in this.milkService.filteredMilkRecordsList) {
-      this.milkService.filteredMilkRecordsList[i].timeOfDay = this.milkService.timeOfDay;
-    }
+    this.milkService.filteredMilkRecordsList.forEach(record => {
+      record.timeOfDay = this.milkService.timeOfDay;
 
-    this.milkService.registerMilkRecords(this.milkService.filteredMilkRecordsList);
+      if(record.registrationDate == null){
+        record.registrationDate = new Date();
+      }
+
+      if(record.hasBeenUpdated){
+          record.updateDate = new Date();
+      }      
+    });
+
+    this.milkService.registerMilkRecords(this.milkService.filteredMilkRecordsList).then(() => {
+      this.milkService.milkRecordsUpdated.next(this.milkService.filteredMilkRecordsList);
+    });
   }  
 
   inputProductionSubmitted() {

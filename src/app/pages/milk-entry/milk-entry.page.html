@@ -4,13 +4,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-item (click)="openDatePicker()" [hidden]="keyboard.isVisible">
+<!-- [hidden]="keyboard.isVisible" -->
+<ion-item (click)="openDatePicker()">
   <ion-label position="fixed" color="medium">Date</ion-label>
   <ion-input [(ngModel)]="this.milkService.selectedDate" readonly></ion-input>
   <ion-icon position="fixed" name="calendar"></ion-icon>
 </ion-item>
 
-<ion-item [hidden]="keyboard.isVisible">
+<!-- [hidden]="keyboard.isVisible" -->
+<ion-item>
   <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Morning' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Morning')">
     Morning</ion-button>
@@ -62,11 +64,13 @@
 <ion-footer>
   <ion-row>
 
-    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+    <!-- [hidden]="keyboard.isVisible" -->
+    <ion-col col-2 class="test" no-padding>
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOne()" fill="clear">
         -1</ion-button>
     </ion-col>
-    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+    <!-- [hidden]="keyboard.isVisible" -->
+    <ion-col col-2 class="test" no-padding>
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOneDecimal()"
         fill="clear">-0.1</ion-button>
     </ion-col>
@@ -81,17 +85,20 @@
       </form>
     </ion-col>
 
-    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+    <!-- [hidden]="keyboard.isVisible" -->
+    <ion-col col-2 class="test" no-padding>
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOneDecimal()"
         fill="clear">+0.1</ion-button>
     </ion-col>
-    <ion-col col-2 class="test" [hidden]="keyboard.isVisible" no-padding>
+    <!-- [hidden]="keyboard.isVisible" -->
+    <ion-col col-2 class="test" no-padding>
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOne()" fill="clear">+1
       </ion-button>
     </ion-col>
   </ion-row>
 
-  <ion-row [hidden]="keyboard.isVisible">
+  <!-- [hidden]="keyboard.isVisible" -->
+  <ion-row> 
     <ion-col col-2 no-padding>
       <ion-button expand="full" color="danger" size="small" (click)="toPreviousCow()">
         <ion-icon name="arrow-back"></ion-icon> Prev

@@ -56,14 +56,14 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
 
   moneyReceived(item){
     item.fullAmountPaid = true;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe(val => {
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe(() => {
       this.milkSalesService.computeTotals();   
     });
   }
 
   moneyNotReceived(item){
     item.fullAmountPaid = false;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe(val => {
+    this.milkSalesService.updateMilkSalesRecord(item).subscribe(() => {
       this.milkSalesService.computeTotals();   
     });    
   }
