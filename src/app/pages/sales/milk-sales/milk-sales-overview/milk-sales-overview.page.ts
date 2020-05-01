@@ -27,7 +27,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
 
     this.milkSalesService.milkSaleDeleted.subscribe(milkSaleId => {
       if (milkSaleId) {
-        let saleToDelete = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == milkSaleId);
+        let saleToDelete = this.milkSalesService.milkSalesList.findIndex(x => x.id == milkSaleId);
         this.milkSalesService.milkSalesList.splice(saleToDelete, 1);
         this.milkSalesService.changeCounter += 1;
         this.milkSalesService.computeTotals();
@@ -36,8 +36,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
 
     this.milkSalesService.milkSaleUpdated.subscribe(sale => {
       if (sale) {
-        let saleToUpdate = this.milkSalesService.milkSalesList.map(x => x.id).findIndex(x => x == sale.id);
-        this.milkSalesService.milkSalesList[saleToUpdate] = sale;
+        this.milkSalesService.milkSalesList = this.milkSalesService.milkSalesList.map(x => (x.id == sale.id) ? sale : x);
         this.milkSalesService.changeCounter += 1;
         this.milkSalesService.computeTotals();
       }

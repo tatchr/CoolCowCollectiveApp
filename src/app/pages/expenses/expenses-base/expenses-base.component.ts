@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-expenses-base',
@@ -16,14 +17,14 @@ export class ExpensesBaseComponent implements OnInit {
   selectedDate: string = this.expensesService.datePicker.formatDate(new Date()); 
 
   constructor(protected router: Router, protected expensesService: ExpensesService, protected formBuilder: FormBuilder, 
-    protected storage: Storage) { }
+    protected storage: Storage, protected location: Location) { }
 
   ngOnInit() {}
 
   shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
     let containsValue = group.value != null;
 
-    if(this.expensesForm && this.expensesForm.controls.isrootrecord.value){
+    if(this.expensesForm && this.expensesForm.controls.recurringisactive.value){
       return containsValue ? null : { isInvalid: true }
     }
 
@@ -31,7 +32,7 @@ export class ExpensesBaseComponent implements OnInit {
   }
 
   returnToOverview(){
-    this.router.navigateByUrl('/tabs/expenses-overview');
+    this.location.back();
   }
 
   getFarmId(){

@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col no-padding>
         <form *ngIf="expensesForm" [formGroup]="expensesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-          <ion-item>
+          <ion-item [disabled]="this.expensesForm.value['recurringId']">
             <ion-label color="medium">Item category*</ion-label>
             <ion-select formControlName="type" placeholder="Select One" (ionChange)="itemSelected($event)">
               <ion-select-option value="Feed">Feed</ion-select-option>
@@ -70,14 +70,14 @@
             <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
           </ion-item>
 
-          <ion-item *ngIf="this.expensesForm.value['isrootrecord'] && !this.expensesForm.value['recurringId']">
+          <ion-item *ngIf="this.expensesForm.value['recurringisactive'] && !this.expensesForm.value['recurringId']">
             <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
             <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
           </ion-item>
 
           <ion-item no-padding *ngIf="!this.expensesForm.value['recurringId']">
             <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
-            <ion-toggle slot="end" formControlName="isrootrecord" color="success" (ionChange)="isRecurringToggled($event)"></ion-toggle>
+            <ion-toggle slot="end" formControlName="recurringisactive" color="success" (ionChange)="isRecurringToggled($event)"></ion-toggle>
           </ion-item>
         </form>
       </ion-col>

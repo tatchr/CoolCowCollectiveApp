@@ -13,6 +13,15 @@
         <ng-template #farmBlock>
             <h2 *ngFor="let farm of farmsList">{{farm.name}}</h2>
 
+            <ion-list>
+              <ion-item>
+                <ion-label>Total herd size: </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Latest milk price: </ion-label>
+              </ion-item>              
+            </ion-list>
+
             <ion-item>
               <ion-button *ngFor='let period of this.milkService.datePicker.periodsShort;' size="small" fill="outline"
                 [color]="period.value == this.milkService.selectedPeriod ? 'success' : 'medium'"
@@ -20,8 +29,15 @@
                 {{period.label}}</ion-button>
             </ion-item>  
 
-            <canvas #cowPodiumChart></canvas>
-            <canvas #milkProductionChart></canvas> 
+            <ion-item>
+              <canvas #cowPodiumChart></canvas>
+            </ion-item>
+
+            <ion-item>
+              <canvas #milkProductionChart></canvas>
+            </ion-item>            
+            
+            <canvas #expensesChart></canvas>
         </ng-template>
 
         <ng-template #newFarmBlock>

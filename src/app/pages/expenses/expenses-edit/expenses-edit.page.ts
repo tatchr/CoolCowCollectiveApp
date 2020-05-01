@@ -1,11 +1,12 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-expenses-edit',
@@ -17,8 +18,8 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
   expenseDetails: ExpensesDetails;
 
   constructor(router: Router, expensesService: ExpensesService, formBuilder: FormBuilder,
-    storage: Storage, private activatedRoute: ActivatedRoute, private alertService: AlertService) { 
-      super(router, expensesService, formBuilder, storage);
+    storage: Storage, private activatedRoute: ActivatedRoute, private alertService: AlertService, location: Location) { 
+      super(router, expensesService, formBuilder, storage, location);
 
       this.activatedRoute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -42,7 +43,11 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
       sellername: [this.expenseDetails.sellerName],
       sellercompany: [this.expenseDetails.sellerCompany],
       isrootrecord: [this.expenseDetails.isRootRecord],
-      recurringId: [this.expenseDetails.recurringId]
+      recurringisactive: [this.expenseDetails.recurringIsActive],
+      recurringFromDate: [this.expenseDetails.recurringFromDate],
+      recurringId: [this.expenseDetails.recurringId],
+      registrationDate: [this.expenseDetails.registrationDate],
+      updateDate: [null]
     });    
 
     this.expensesForm.valueChanges.subscribe(val => {      
@@ -60,8 +65,10 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit() {    
     if(this.expensesForm.valid){
+      this.expensesForm.controls['updateDate'].setValue(new Date());
+      this.expensesForm.controls['date'].setValue(this.selectedDate);
       let updatedExpense = new ExpensesDetails({
         id: this.expensesForm.value['id'],
         farmId: this.expensesForm.value['farmId'],
@@ -75,11 +82,13 @@ export class ExpensesEditPage extends ExpensesBaseComponent implements OnInit {
         sellerName: this.expensesForm.value['sellername'],
         sellerCompany: this.expensesForm.value['sellercompany'],
         isRootRecord: this.expensesForm.value['isrootrecord'],
-        recurringPeriodInDays: this.expensesForm.value['recurringperiodindays'],
-        recurringId: this.expensesForm.value['recurringId']
+        recurringIsActive: this.expensesForm.value['recurringisactive'],
+        recurringFromDate: this.expensesForm.value['recurringFromDate'],
+        recurringId: this.expensesForm.value['recurringId'],
+        registrationDate: this.expensesForm.value['registrationDate'],
+        updateDate: this.expensesForm.value['updateDate'],
       });
-
-      this.expensesForm.controls['date'].setValue(this.selectedDate);
+      
       this.expensesService.updateExpensesRecord(this.expensesForm.getRawValue()).subscribe(val => {
         if (val) {
           this.expensesService.expenseUpdated.next(updatedExpense);

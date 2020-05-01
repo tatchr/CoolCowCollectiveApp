@@ -37,8 +37,9 @@ const routes: Routes = [
   { path: 'financial-report', loadChildren: './pages/reports/financial-report/financial-report.module#FinancialReportPageModule', canActivate: [AuthGuardService] },
   { path: 'custom-report', loadChildren: './pages/reports/custom-report/custom-report.module#CustomReportPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-recurring-edit', loadChildren: './pages/expenses/expenses-recurring-edit/expenses-recurring-edit.module#ExpensesRecurringEditPageModule', canActivate: [AuthGuardService] },
+  { path: 'expenses-menu', loadChildren: './pages/expenses/expenses-menu/expenses-menu.module#ExpensesMenuPageModule', canActivate: [AuthGuardService] },   
+  { path: 'expenses-recurring-overview', loadChildren: './pages/expenses/expenses-recurring-overview/expenses-recurring-overview.module#ExpensesRecurringOverviewPageModule', canActivate: [AuthGuardService] },
 
- 
 ];
 
 @NgModule({

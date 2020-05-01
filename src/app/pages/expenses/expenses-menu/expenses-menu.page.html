@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Expenses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+
+        <ion-button color="success" expand="full" routerLink="/expenses-input/" routerDirection="forward">New expense</ion-button>
+        <ion-button color="success" expand="full" routerLink="/expenses-overview/" routerDirection="forward">Overview</ion-button>
+        <ion-button color="success" expand="full" routerLink="/expenses-recurring-overview/" routerDirection="forward">Manage recurring</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -17,9 +17,10 @@ const FARM_ID = 'farmId';
 })
 export class FarmDashboardPage implements OnInit {
   @ViewChild('cowPodiumChart') cowPodiumChart;
+  @ViewChild('expensesChart') expensesChart;
 
   farmsList: Array<Object> = [];
-  bars: any;
+
   colorArray: any;
   farmId: string;
 
@@ -34,36 +35,31 @@ export class FarmDashboardPage implements OnInit {
 
   initiate() {
     this.storage.get('userId').then(userId => {
-      this.getAllFarms(userId);
+      this.getAllFarms(userId);      
     });
 
     this.milkService.milkRecordsUpdated.subscribe(val => {
-      if(val){
+      if (val) {
         this.updateMilkProductionChart();
         this.updateCowPodiumChart();
-      }      
+        //this.createExpensesChart();
+      }
     });
 
-    this.milkService.milkRecordsLoaded.subscribe(finishedLoading =>{
-      if(finishedLoading){
+    this.milkService.milkRecordsLoaded.subscribe(finishedLoading => {
+      if (finishedLoading) {
         this.createMilkProductionChart();
         this.createCowPodiumChart();
+        this.createExpensesChart();
       }
-    });    
+    });
   }
 
-  updateMilkProductionChart(){
-    this.lines.config.data.datasets[0].data = this.getMilkAmount('Morning'); 
-    this.lines.config.data.datasets[1].data = this.getMilkAmount('Afternoon'); 
-    this.lines.config.data.datasets[2].data = this.getMilkAmount('Evening'); 
+  updateMilkProductionChart() {
+    this.lines.config.data.datasets[0].data = this.getMilkAmount('Morning');
+    this.lines.config.data.datasets[1].data = this.getMilkAmount('Afternoon');
+    this.lines.config.data.datasets[2].data = this.getMilkAmount('Evening');
     this.lines.update();
-  }
-
-  updateCowPodiumChart(){
-    let top3Cows = this.getTop3Cows();
-    this.bars.config.data.labels = [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name];
-    this.bars.config.data.datasets[0].data = [top3Cows[1].amount, top3Cows[0].amount, top3Cows[2].amount];
-    this.bars.update();
   }
 
   getAllFarms(userId) {
@@ -136,10 +132,10 @@ export class FarmDashboardPage implements OnInit {
           display: true,
           text: 'Total milk production last ' + this.milkService.datePicker.periods.find(x => x.value == this.milkService.selectedPeriod).label
         },
-        legend:{
+        legend: {
           display: true,
           labels: {
-            boxWidth: 10          
+            boxWidth: 10
           }
         },
         scales: {
@@ -167,23 +163,32 @@ export class FarmDashboardPage implements OnInit {
   }
 
   getTop3Cows() {
-    let totalProductionPerCow = [];
+    let totalProductionPerCow = [{ name: '', amount: 0 }, { name: '', amount: 0 }, { name: '', amount: 0 }];
 
     from(this.milkService.allMilkRecordsList).pipe(
       groupBy(item => item.cowName),
       mergeMap(group => group.pipe(toArray()))
     )
-    .subscribe(x => { 
-      totalProductionPerCow.push({ name: x[0].cowName, amount: x.reduce((a, b) => this.round(a + b.amount, 1), 0) });    
-    });
+      .subscribe(x => {
+        totalProductionPerCow.push({ name: x[0].cowName, amount: x.reduce((a, b) => this.round(a + b.amount, 1), 0) });
+      });
 
     let sortedProductionPerCow = totalProductionPerCow.sort((a, b) => b.amount - a.amount);
     return sortedProductionPerCow;
   }
 
+  updateCowPodiumChart() {
+    let top3Cows = this.getTop3Cows();
+
+    this.cowPodiumBarChart.config.data.labels = [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name];
+    this.cowPodiumBarChart.config.data.datasets[0].data = [top3Cows[1].amount, top3Cows[0].amount, top3Cows[2].amount];
+    this.cowPodiumBarChart.update();
+  }
+
+  cowPodiumBarChart: Chart;
   createCowPodiumChart() {
     let top3Cows = this.getTop3Cows();
-    this.bars = new Chart(this.cowPodiumChart.nativeElement, {
+    this.cowPodiumBarChart = new Chart(this.cowPodiumChart.nativeElement, {
       type: 'bar',
       data: {
         labels: [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name],
@@ -222,6 +227,38 @@ export class FarmDashboardPage implements OnInit {
       }
     });
   }
+
+  expensesPieChart: Chart;
+  createExpensesChart() {
+    this.expensesPieChart = new Chart(this.expensesChart.nativeElement, {
+      type: 'doughnut',
+      data: {
+        labels: ['Medicine','Feed','Labor', 'Other'],
+        datasets: [{
+          data: [10, 20, 30, 40],
+          backgroundColor: [
+            "red",
+            "orange",
+            "blue",
+            "green"
+          ]
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: `Total expenses last ${this.milkService.datePicker.periods.find(x => x.value == this.milkService.selectedPeriod).label}`
+        },
+        legend: {
+          display: true,
+          labels: {
+            boxWidth: 10
+          }
+        },
+      }
+    });
+  }
+
 
   round(number, decimals) {
     return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);

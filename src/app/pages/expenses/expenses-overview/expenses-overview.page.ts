@@ -18,33 +18,24 @@ export class ExpensesOverviewPage implements OnInit {
     this.expensesService.expenseRegistered.subscribe(newExpense => {
       if (newExpense) {
         this.expensesService.loadExpensesList(); 
+        this.expensesService.loadRecurringExpensesList(); 
       }
     });
 
     this.expensesService.expenseDeleted.subscribe(expenseId => {
       if (expenseId) {
         this.expensesService.loadExpensesList();
+        this.expensesService.loadRecurringExpensesList();
       }
     });
 
     this.expensesService.expenseUpdated.subscribe(sale => {
       if (sale) {
         this.expensesService.loadExpensesList();
+        this.expensesService.loadRecurringExpensesList();
       }
     });  
-  }
-
-  automaticClose = false;
-
-  toggleSection(index) {
-    this.expensesService.recurringExpensesList[index].open = !this.expensesService.recurringExpensesList[index].open;
-
-    if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
-      this.expensesService.recurringExpensesList
-      .filter((item, itemIndex) => itemIndex != index)
-      .map(item => item.open = false);
-    }
-  }  
+  }    
 
   openExpenseRecord(expense: ExpensesDetails){
     let navigationExtras: NavigationExtras = {
@@ -53,16 +44,7 @@ export class ExpensesOverviewPage implements OnInit {
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);
-  }
-
-  openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
-    let navigationExtras: NavigationExtras = {
-      state: {
-        expenseDetails: rootExpense
-      }
-    };
-    this.router.navigate(['expenses-recurring-edit'], navigationExtras);
-  }
+  }  
   
   async openFromDatePicker(){
     this.expensesService.selectedPeriod = '';
@@ -75,5 +57,4 @@ export class ExpensesOverviewPage implements OnInit {
     this.expensesService.selectedToDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedToDate);
     this.expensesService.loadExpensesList();    
   }
-
 }

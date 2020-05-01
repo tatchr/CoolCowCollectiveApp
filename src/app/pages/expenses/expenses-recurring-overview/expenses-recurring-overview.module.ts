@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ExpensesOverviewPage } from './expenses-overview.page';
-import { PipesModule } from 'src/app/pipes/pipes.module';
+import { ExpensesRecurringOverviewPage } from './expenses-recurring-overview.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ExpensesOverviewPage
+    component: ExpensesRecurringOverviewPage
   }
 ];
 
@@ -20,9 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    PipesModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ExpensesOverviewPage]
+  declarations: [ExpensesRecurringOverviewPage]
 })
-export class ExpensesOverviewPageModule {}
+export class ExpensesRecurringOverviewPageModule {}

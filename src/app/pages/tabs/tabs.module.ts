@@ -44,8 +44,8 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
-        path: 'expenses-overview',
-        loadChildren: '../expenses/expenses-overview/expenses-overview.module#ExpensesOverviewPageModule',
+        path: 'expenses-menu',
+        loadChildren: '../expenses/expenses-menu/expenses-menu.module#ExpensesMenuPageModule',
         canActivate: [AuthGuardService]
       },
     ]

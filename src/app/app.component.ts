@@ -43,7 +43,7 @@ export class AppComponent {
               this.subscribeBackButton('/tabs/menu');
               this.subscribeBackButton('/tabs/milk-sales-overview');
               this.subscribeBackButton('/tabs/other-sales-overview');
-              this.subscribeBackButton('/tabs/expenses-overview');
+              this.subscribeBackButton('/tabs/expenses-menu');
               this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
             });
           } else {

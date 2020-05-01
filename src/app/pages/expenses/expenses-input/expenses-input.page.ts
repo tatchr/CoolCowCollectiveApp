@@ -1,9 +1,11 @@
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
+import { Location } from '@angular/common';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-expenses-input',
@@ -13,8 +15,8 @@ import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expe
 export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
 
   constructor(router: Router, expensesService: ExpensesService, formBuilder: FormBuilder,
-    storage: Storage) {
-    super(router, expensesService, formBuilder, storage);
+    storage: Storage, location: Location) {
+    super(router, expensesService, formBuilder, storage, location);
   }
 
   ngOnInit() {
@@ -24,6 +26,7 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
 
   initiateForm() {
     this.expensesForm = this.formBuilder.group({
+      id: uuidv4(),
       farmId: [this.farmId],
       date: [this.selectedDate],
       type: [null, [Validators.required]],
@@ -34,14 +37,24 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
       totalPrice: [{ value: 0.0, disabled: true }],
       sellername: [null],
       sellercompany: [null],
-      isrootrecord: [false],
-      recurringperiodindays: [null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]]
+      recurringisactive: [false],
+      recurringFromDate: [null],
+      registrationDate: [null]
     });
 
     this.expensesForm.valueChanges.subscribe(val => {
       let totalPrice = this.round(val['price'] * val['quantity'], 2);
       this.expensesForm.get('totalPrice').patchValue(totalPrice, { emitEvent: false });
     });
+  }
+
+  isRecurringToggled(event){
+    if(event.detail.checked){
+      this.expensesForm.addControl('recurringperiodindays', new FormControl(null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]));
+    }
+    else{
+      this.expensesForm.removeControl('recurringperiodindays');
+    }
   }
 
   itemSelected(event) {
@@ -57,10 +70,18 @@ export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
     if (this.expensesForm.valid) {
       this.expensesForm.controls['farmId'].setValue(this.farmId);
       this.expensesForm.controls['date'].setValue(this.selectedDate);
+      this.expensesForm.controls['registrationDate'].setValue(new Date());
       this.expensesService.registerExpensesRecord(this.expensesForm.getRawValue()).then(val => {
         if (val) {
           this.expensesService.expenseRegistered.next(val['expense']);
-          this.returnToOverview();
+
+          let isRecurring = this.expensesForm.value['recurringisactive'];
+          if(isRecurring){
+            this.router.navigateByUrl('/expenses-recurring-overview');
+          }
+          else{
+            this.router.navigateByUrl('/expenses-overview');
+          }
         }
       });
     }
