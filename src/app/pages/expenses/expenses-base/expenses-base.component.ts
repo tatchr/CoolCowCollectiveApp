@@ -12,41 +12,41 @@ import { Location } from '@angular/common';
 })
 export class ExpensesBaseComponent implements OnInit {
 
-  expensesForm: FormGroup;
-  farmId: string;
-  selectedDate: string = this.expensesService.datePicker.formatDate(new Date()); 
+  // expensesForm: FormGroup;
+  //farmId: string;
+ // selectedDate: string = this.expensesService.datePicker.formatDate(new Date()); 
 
   constructor(protected router: Router, protected expensesService: ExpensesService, protected formBuilder: FormBuilder, 
     protected storage: Storage, protected location: Location) { }
 
   ngOnInit() {}
 
-  shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
-    let containsValue = group.value != null;
+  // shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
+  //   let containsValue = group.value != null;
 
-    if(this.expensesForm && this.expensesForm.controls.recurringisactive.value){
-      return containsValue ? null : { isInvalid: true }
-    }
+  //   if(this.expensesForm && this.expensesForm.controls.recurringisactive.value){
+  //     return containsValue ? null : { isInvalid: true }
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
-  returnToOverview(){
-    this.location.back();
-  }
+  // returnToOverview(){
+  //   this.location.back();
+  // }
 
-  getFarmId(){
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;      
-    });
-  }
+  // getFarmId(){
+  //   this.storage.get('farmId').then(farmId => {
+  //     this.farmId = farmId;      
+  //   });
+  // }
 
-  round(number, decimals){
-    return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
-  }
+  // round(number, decimals){
+  //   return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
+  // }
 
-  async openDatePicker(){
-    this.selectedDate = await this.expensesService.datePicker.openDatePicker(this.selectedDate);    
-  }
+  // async openDatePicker(){
+  //   this.selectedDate = await this.expensesService.datePicker.openDatePicker(this.selectedDate);    
+  // }
 
 }

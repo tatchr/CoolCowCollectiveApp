@@ -23,6 +23,7 @@ import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sale
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -39,6 +40,8 @@ export function jwtOptionsFactory(storage) {
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
     HttpClientModule,
     Ionic4DatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicStorageModule.forRoot(),
     JwtModule.forRoot({
       jwtOptionsProvider: {

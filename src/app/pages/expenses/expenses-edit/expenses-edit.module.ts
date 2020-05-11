@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
 
 import { ExpensesEditPage } from './expenses-edit.page';
+import { ExpensesComponentsModule } from 'src/app/pages/expenses/components/expenses-components.module';
 
 const routes: Routes = [
   {
@@ -18,8 +18,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
+    IonicModule,    
+    ExpensesComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ExpensesEditPage]

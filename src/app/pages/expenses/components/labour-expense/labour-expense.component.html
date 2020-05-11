@@ -1,0 +1,34 @@
+<form *ngIf="form" [formGroup]="form">
+  <ion-item>
+    <ion-label position="floating" color="medium">Employee name*</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="itembought"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Hourly rate*
+    </ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
+  </ion-item>
+
+  <ion-item style="display: inline-block;width: 150px;vertical-align: bottom;">
+    <ion-label position="floating" color="medium">Hours*</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
+  </ion-item>  
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Total salary
+    </ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="(form.value['recurringisactive'] && !form.value['recurringId']) || form.value['isrootrecord']">
+    <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding *ngIf="!form.value['recurringId'] || form.value['isrootrecord']" [disabled]="form.value['isrootrecord']">
+    <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
+    <ion-toggle slot="end" formControlName="recurringisactive" color="success"
+      (ionChange)="this.service.isRecurringToggled($event)"></ion-toggle>
+  </ion-item>
+</form>

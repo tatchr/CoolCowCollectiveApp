@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
-
 import { ExpensesRecurringEditPage } from './expenses-recurring-edit.page';
+import { ExpensesComponentsModule } from 'src/app/pages/expenses/components/expenses-components.module';
 
 const routes: Routes = [
   {
@@ -19,7 +18,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
+    ExpensesComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ExpensesRecurringEditPage]

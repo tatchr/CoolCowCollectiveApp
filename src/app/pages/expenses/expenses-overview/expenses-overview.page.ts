@@ -15,26 +15,7 @@ export class ExpensesOverviewPage implements OnInit {
   constructor(private router: Router, public expensesService: ExpensesService) { }
 
   ngOnInit() {
-    this.expensesService.expenseRegistered.subscribe(newExpense => {
-      if (newExpense) {
-        this.expensesService.loadExpensesList(); 
-        this.expensesService.loadRecurringExpensesList(); 
-      }
-    });
-
-    this.expensesService.expenseDeleted.subscribe(expenseId => {
-      if (expenseId) {
-        this.expensesService.loadExpensesList();
-        this.expensesService.loadRecurringExpensesList();
-      }
-    });
-
-    this.expensesService.expenseUpdated.subscribe(sale => {
-      if (sale) {
-        this.expensesService.loadExpensesList();
-        this.expensesService.loadRecurringExpensesList();
-      }
-    });  
+      
   }    
 
   openExpenseRecord(expense: ExpensesDetails){

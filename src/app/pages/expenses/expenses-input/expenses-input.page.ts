@@ -1,81 +1,38 @@
-import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
-import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
-import { Location } from '@angular/common';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-expenses-input',
   templateUrl: './expenses-input.page.html',
   styleUrls: ['./expenses-input.page.scss'],
 })
-export class ExpensesInputPage extends ExpensesBaseComponent implements OnInit {
+export class ExpensesInputPage implements OnInit {
 
-  constructor(router: Router, expensesService: ExpensesService, formBuilder: FormBuilder,
-    storage: Storage, location: Location) {
-    super(router, expensesService, formBuilder, storage, location);
-  }
+  constructor(private router: Router, private service: ExpensesService) { }
 
   ngOnInit() {
-    this.getFarmId();
-    this.initiateForm();
-  }
-
-  initiateForm() {
-    this.expensesForm = this.formBuilder.group({
-      id: uuidv4(),
-      farmId: [this.farmId],
-      date: [this.selectedDate],
-      type: [null, [Validators.required]],
-      itembought: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
-      quantity: [null, [Validators.required, Validators.min(1), Validators.max(10000)]],
-      quantityUnit: [null],
-      totalPrice: [{ value: 0.0, disabled: true }],
-      sellername: [null],
-      sellercompany: [null],
-      recurringisactive: [false],
-      recurringFromDate: [null],
-      registrationDate: [null]
-    });
-
-    this.expensesForm.valueChanges.subscribe(val => {
-      let totalPrice = this.round(val['price'] * val['quantity'], 2);
-      this.expensesForm.get('totalPrice').patchValue(totalPrice, { emitEvent: false });
-    });
-  }
-
-  isRecurringToggled(event){
-    if(event.detail.checked){
-      this.expensesForm.addControl('recurringperiodindays', new FormControl(null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]));
-    }
-    else{
-      this.expensesForm.removeControl('recurringperiodindays');
-    }
-  }
-
-  itemSelected(event) {
-    // this.showOtherInput = event.detail.value == 'Other';
-    // this.showSpermInput = event.detail.value == 'Sperm';
-    // this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
-    // if (this.showCowList) {
-    //   this.loadCowsList(event.detail.value);
-    // }
+    this.service.initiateNewForm();
   }
 
   onSubmit() {
-    if (this.expensesForm.valid) {
-      this.expensesForm.controls['farmId'].setValue(this.farmId);
-      this.expensesForm.controls['date'].setValue(this.selectedDate);
-      this.expensesForm.controls['registrationDate'].setValue(new Date());
-      this.expensesService.registerExpensesRecord(this.expensesForm.getRawValue()).then(val => {
-        if (val) {
-          this.expensesService.expenseRegistered.next(val['expense']);
+    if(this.service.selectedType == 'Labour'){
+      let employeeName = this.service.expensesForm.value['itembought'];
+      this.service.expensesForm.controls['sellername'].setValue(employeeName);
+      this.service.expensesForm.controls['sellercompany'].setValue(employeeName);
+    }
 
-          let isRecurring = this.expensesForm.value['recurringisactive'];
+    if (this.service.expensesForm.valid) {
+      this.service.expensesForm.controls['type'].setValue(this.service.selectedType);
+      this.service.expensesForm.controls['farmId'].setValue(this.service.farmId);
+      this.service.expensesForm.controls['date'].setValue(this.service.selectedDate);
+      this.service.expensesForm.controls['registrationDate'].setValue(new Date());
+      this.service.registerExpensesRecord(this.service.expensesForm.getRawValue()).then(val => {
+        if (val) {
+          this.service.expenseRegistered.next(val['expense']);
+          this.service.selectedType = null;
+
+          let isRecurring = this.service.expensesForm.value['recurringisactive'];
           if(isRecurring){
             this.router.navigateByUrl('/expenses-recurring-overview');
           }

@@ -1,0 +1,27 @@
+<form *ngIf="form" [formGroup]="form">
+  <ion-item>
+    <ion-label color="medium">Animal type*</ion-label>
+    <ion-select formControlName="itembought" placeholder="Select One">
+      <ion-select-option value="Cow">Cow </ion-select-option>
+      <ion-select-option value="Heifer">Heifer</ion-select-option>
+      <ion-select-option value="Calf">Calf</ion-select-option>
+      <ion-select-option value="Bull">Bull</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label position="floating" color="medium">Price*
+    </ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Seller name</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="sellername"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Seller company</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
+  </ion-item>
+</form>

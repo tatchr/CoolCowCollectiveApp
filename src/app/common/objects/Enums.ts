@@ -41,3 +41,11 @@ export enum TimeOfDay {
     Afternoon = 'Afternoon',
     Evening = 'Evening'
 };
+
+export enum ExpenseType{
+    Feed ="Feed",
+    Medicine ="Medicine",
+    Labour ="Labour",
+    Livestock ="Livestock",
+    Other ="Other"
+}
