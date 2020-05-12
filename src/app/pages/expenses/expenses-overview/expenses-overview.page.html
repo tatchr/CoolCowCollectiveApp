@@ -36,7 +36,7 @@
   </ion-col>
 </ion-row>
 
-<ion-content padding>
+<ion-content no-padding>
   <div *ngFor="let result of this.expensesService.expensesList | groupexpensesbydate:this.expensesService.changeCounter">
     <ion-item-divider class="dateLbl" sticky="true">
       <ion-label>

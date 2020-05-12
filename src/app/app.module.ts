@@ -18,7 +18,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
-import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
 import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
 import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
 import { File } from '@ionic-native/file/ngx';
@@ -35,8 +34,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, CowBaseComponent, ExpensesBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
-  entryComponents: [CowBaseComponent, ExpensesBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
+  declarations: [AppComponent, CowBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
+  entryComponents: [CowBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
     HttpClientModule,
     Ionic4DatepickerModule,

@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import * as Chart from 'chart.js';
 import { MilkService } from 'src/app/services/milk/milk.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { CowService } from 'src/app/services/cow/cow.service';
 
 @Component({
   selector: 'app-farm-dashboard',
@@ -15,25 +13,20 @@ import { CowService } from 'src/app/services/cow/cow.service';
 })
 export class FarmDashboardPage implements OnInit {
   @ViewChild('cowPodiumChart') cowPodiumChart;
-  @ViewChild('expensesChart') expensesChart;  
+  @ViewChild('expensesChart') expensesChart;
 
   colorArray: any;
-  //farmId: string;
 
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
 
-  constructor(public farmService: FarmService, private storage: Storage, public milkService: MilkService, private datePicker: DatepickerService) { }
+  constructor(public farmService: FarmService, public milkService: MilkService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
     this.initiate();
   }
 
   initiate() {
-    // this.storage.get('userId').then(userId => {
-    //   this.farmService.loadAllFarms(userId);      
-    // });
-
     this.milkService.milkRecordsUpdated.subscribe(val => {
       if (val) {
         this.updateMilkProductionChart();
@@ -57,8 +50,6 @@ export class FarmDashboardPage implements OnInit {
     this.lines.config.data.datasets[2].data = this.getMilkAmount('Evening');
     this.lines.update();
   }
-
-  
 
   getMilkAmount(timeOfDay) {
     let milkRecords = this.milkService.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay);
@@ -221,7 +212,7 @@ export class FarmDashboardPage implements OnInit {
     this.expensesPieChart = new Chart(this.expensesChart.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Medicine','Feed','Labor', 'Other'],
+        labels: ['Medicine', 'Feed', 'Labor', 'Other'],
         datasets: [{
           data: [10, 20, 30, 40],
           backgroundColor: [
