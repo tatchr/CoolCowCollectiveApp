@@ -14,7 +14,7 @@ export class ExpensesEditPage implements OnInit {
 
   expenseDetails: ExpensesDetails;
 
-  constructor(private router: Router, private service: ExpensesService, private formBuilder: FormBuilder,
+  constructor(private router: Router, public service: ExpensesService, private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute, private alertService: AlertService) { 
       this.activatedRoute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {

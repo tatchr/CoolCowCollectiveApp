@@ -10,7 +10,18 @@ const FARM_ID = 'farmId';
 })
 export class FarmService { 
 
+  farmsList: Array<Object> = [];
+
   constructor(private storage: Storage, private httpService: HttpService) { }
+
+  loadAllFarms(userId) {
+    return this.getAllFarms(userId).then(res => {
+      this.farmsList = res['farms'];
+      if (this.farmsList.length > 0) {
+        this.storage.set(FARM_ID, res['farms'][0]['farmId']);
+      }
+    });
+  }
 
   getFarm(farmId){
     return this.httpService.get(null, environment.url + '/api/farm/get/' + farmId);

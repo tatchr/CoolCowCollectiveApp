@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../../services/authService/auth.service';
-import { LoadingController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +8,9 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {    
-  loginForm: FormGroup;
+  loginForm: FormGroup; 
 
-  showSpinner: boolean = false;
-  loading;
-
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private loadingCtrl: LoadingController) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -24,25 +20,11 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    this.authService.login(this.loginForm.value).subscribe(res => {
-      //this.loading.dismiss();
-    });
-
-    // this.loadingCtrl.create({
-    //   message: 'Authenticating...'
-    // }).then((overlay) => {
-    //   this.loading = overlay;
-    //   this.loading.present();
-    // }).then(() => {
-      
-    // });
-
-        
+    this.authService.login(this.loginForm.value).subscribe();
   }
 
   register() {
-    this.authService.registerUser(this.loginForm.value).subscribe(res => {
-      // Call Login to automatically login the new user
+    this.authService.registerUser(this.loginForm.value).subscribe(() => {      
       this.authService.login(this.loginForm.value).subscribe();
     });
   }  

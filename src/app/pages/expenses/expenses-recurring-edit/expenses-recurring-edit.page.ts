@@ -1,12 +1,9 @@
-import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
-import { ExpensesBaseComponent } from 'src/app/pages/expenses/expenses-base/expenses-base.component';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
-import { Location } from '@angular/common';
 
 
 @Component({
@@ -18,7 +15,7 @@ export class ExpensesRecurringEditPage implements OnInit {
 
   expenseDetails: ExpensesDetails;
   
-  constructor(private router: Router, private service: ExpensesService, private formBuilder: FormBuilder,
+  constructor(private router: Router, public service: ExpensesService, private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute, private alertService: AlertService) {
       this.activatedRoute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {

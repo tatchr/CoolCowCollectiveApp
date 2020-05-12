@@ -8,8 +8,6 @@ import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { CowService } from 'src/app/services/cow/cow.service';
 
-const FARM_ID = 'farmId';
-
 @Component({
   selector: 'app-farm-dashboard',
   templateUrl: './farm-dashboard.page.html',
@@ -17,26 +15,24 @@ const FARM_ID = 'farmId';
 })
 export class FarmDashboardPage implements OnInit {
   @ViewChild('cowPodiumChart') cowPodiumChart;
-  @ViewChild('expensesChart') expensesChart;
-
-  farmsList: Array<Object> = [];
+  @ViewChild('expensesChart') expensesChart;  
 
   colorArray: any;
-  farmId: string;
+  //farmId: string;
 
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
 
-  constructor(private farmService: FarmService, private storage: Storage, public milkService: MilkService, private datePicker: DatepickerService) { }
+  constructor(public farmService: FarmService, private storage: Storage, public milkService: MilkService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
     this.initiate();
   }
 
   initiate() {
-    this.storage.get('userId').then(userId => {
-      this.getAllFarms(userId);      
-    });
+    // this.storage.get('userId').then(userId => {
+    //   this.farmService.loadAllFarms(userId);      
+    // });
 
     this.milkService.milkRecordsUpdated.subscribe(val => {
       if (val) {
@@ -62,15 +58,7 @@ export class FarmDashboardPage implements OnInit {
     this.lines.update();
   }
 
-  getAllFarms(userId) {
-    this.farmService.getAllFarms(userId).then(res => {
-      this.farmsList = res['farms'];
-      if (this.farmsList.length > 0) {
-        this.storage.set(FARM_ID, res['farms'][0]['farmId']);
-        this.farmId = res['farms'][0]['farmId'];
-      }
-    });
-  }
+  
 
   getMilkAmount(timeOfDay) {
     let milkRecords = this.milkService.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay);

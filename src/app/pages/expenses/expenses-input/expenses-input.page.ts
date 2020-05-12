@@ -9,7 +9,7 @@ import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 })
 export class ExpensesInputPage implements OnInit {
 
-  constructor(private router: Router, private service: ExpensesService) { }
+  constructor(private router: Router, public service: ExpensesService) { }
 
   ngOnInit() {
     this.service.initiateNewForm();
