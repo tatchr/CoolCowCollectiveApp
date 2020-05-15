@@ -1,0 +1,14 @@
+.scroll-container {
+    width: 100%;
+    padding-left: 10px;
+    
+    overflow: hidden; 
+    white-space: nowrap;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+}
+    
+.scroll {
+    overflow: auto;
+}

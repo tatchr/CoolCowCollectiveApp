@@ -7,14 +7,57 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-grid>
+<ion-row>
+  <ion-col>
+    <ion-item (click)="this.service.openFromDatePicker()">
+      <ion-label position="floating" color="medium">From</ion-label>
+      <ion-input [(ngModel)]="this.service.selectedFromDate" readonly></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item (click)="this.service.openToDatePicker()">
+      <ion-label position="floating" color="medium">To</ion-label>
+      <ion-input [(ngModel)]="this.service.selectedToDate" readonly item-center></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item class="ion-no-padding">
+      <div class="scroll-container">
+        <div class="scroll" scrollX="true">
+          <ion-button *ngFor='let period of this.service.datePicker.periods;' size="default" fill="outline"
+            [color]="period.value == this.service.selectedPeriod ? 'success' : 'medium'"
+            (click)="this.service.periodSelected(period.value)">
+            {{period.label}}</ion-button>
+        </div>
+      </div>
+    </ion-item>
+  </ion-col>
+</ion-row>
+
+<ion-content no-padding>
+  <ion-grid no-padding>
     <ion-row>
       <ion-col>
-        <ion-button expand="full" routerLink="/herd-report">Herd performance</ion-button>
-        <ion-button expand="full" routerLink="/financial-report" routerDirection="forward">Financial performance</ion-button>
-        <ion-button expand="full" routerLink="/custom-report" routerDirection="forward">Custom</ion-button>
+        <ion-list>
+          <ion-list-header>Report content</ion-list-header>
+          <ion-item *ngFor="let entry of this.service.reportContent">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-checkbox slot="start" color="success" [(ngModel)]="entry.isChecked"></ion-checkbox>
+          </ion-item>
+        </ion-list>
       </ion-col>
-    </ion-row>
+    </ion-row>   
   </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button expand="full" (click)="downloadReport('Excel')" color="success">
+        <ion-icon name="download"></ion-icon> Excel
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

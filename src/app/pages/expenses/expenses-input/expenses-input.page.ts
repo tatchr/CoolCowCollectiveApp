@@ -12,6 +12,7 @@ export class ExpensesInputPage implements OnInit {
   constructor(private router: Router, public service: ExpensesService) { }
 
   ngOnInit() {
+    this.service.selectedDate = this.service.datePicker.formatDate(new Date()); 
     this.service.initiateNewForm();
   }
 

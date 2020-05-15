@@ -15,6 +15,14 @@ import { Period } from 'src/app/common/objects/Enums';
 })
 export class ReportService {
 
+  reportContent = [
+    { val: 'Farm information', isChecked: true },
+    { val: 'Herd information', isChecked: true },
+    { val: 'Milk sales', isChecked: true },
+    { val: 'Other sales', isChecked: true },
+    { val: 'Expenses', isChecked: true }
+  ];
+
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.formatDate(new Date());
   selectedPeriod: string = Period.lastweek;
@@ -30,8 +38,9 @@ export class ReportService {
     this.selectedFromDate = result.fromDate;
   }
 
-  getReport(userId, farmId, type, fileType, fromDate, toDate) {
-    let url = environment.url + '/api/report/' + userId + '/' + farmId + '/' + type + '/' + fileType + '/' + fromDate + '/' + toDate;
+  getReport(userId, farmId, reportContent, fileType, fromDate, toDate) {
+    //let url = environment.url + '/api/report/' +  userId + '/' + farmId + '/' + reportContent + '/' + fileType + '/' + fromDate + '/' + toDate;
+    let url = `${environment.url}/api/report?userId=${userId}&farmId=${farmId}&reportContent=${reportContent}&fileType=${fileType}&fromDate=${fromDate}&toDate=${toDate}`;
 
     return this.http.get(url, { responseType: 'blob' })
       .subscribe((res: Blob) => {
@@ -69,5 +78,15 @@ export class ReportService {
       ]
     });
     toast.present();
+  }
+
+  async openFromDatePicker(){
+    this.selectedPeriod = '';
+    this.selectedFromDate = await this.datePicker.openDatePicker(this.selectedFromDate);    
+  }
+
+  async openToDatePicker(){
+    this.selectedPeriod = '';
+    this.selectedToDate = await this.datePicker.openDatePicker(this.selectedToDate);
   }
 }

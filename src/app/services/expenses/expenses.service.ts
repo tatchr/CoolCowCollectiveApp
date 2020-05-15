@@ -124,7 +124,6 @@ export class ExpensesService {
   }
 
   initiateNewForm() {
-    this.selectedDate = this.datePicker.formatDate(new Date()); 
     this.expensesForm = this.formBuilder.group({
       id: uuidv4(),
       farmId: [this.farmId],
