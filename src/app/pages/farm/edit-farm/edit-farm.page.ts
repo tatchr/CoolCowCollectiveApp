@@ -32,7 +32,7 @@ export class EditFarmPage implements OnInit {
   
     getFarmDetails(){
       this.farmService.getFarm(this.farmId).then(res => {
-          this.populateForm(res['farms']);      
+          this.populateForm(res['farm']);      
       });
     }
   

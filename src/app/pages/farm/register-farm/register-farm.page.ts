@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { Storage } from '@ionic/storage';
+import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Component({
   selector: 'app-register-farm',
@@ -18,9 +19,9 @@ export class RegisterFarmPage implements OnInit {
     private storage: Storage, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.storage.get('userId').then(userId => {
+    this.storage.get('userDetails').then((user: UserDetails) => {
       this.newFarmForm = this.formBuilder.group({
-        userId: userId,
+        userId: user.id,
         name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
         email: ['', [Validators.email, Validators.maxLength(255)]],
         phonenumber: ['', Validators.maxLength(50)],
@@ -33,10 +34,8 @@ export class RegisterFarmPage implements OnInit {
   }
 
   onSubmit() {
-    this.farmService.registerFarm(this.newFarmForm.value).subscribe(val => {
-      if (val) {
-        this.router.navigateByUrl('/tabs');
-      }
+    this.farmService.registerFarm(this.newFarmForm.value).then(() => { 
+      this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true }) 
     });
   }
 }

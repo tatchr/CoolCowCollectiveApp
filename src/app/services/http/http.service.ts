@@ -48,14 +48,6 @@ export class HttpService {
       .finally(() => this.overlayService.dismissLoader(id));
   }
 
-  post2(url, body, next?: (x: Object) => void, final?: () => void) {
-    return this.http.post(url, body).pipe(
-      tap(res => next(res)),
-      catchError(error => throwError(this.httpErrorService.handleError(error))),
-      finalize(() => final())
-    );
-  }
-
   post(url, body) {
     return this.http.post(url, body).pipe(
       catchError(error => throwError(this.httpErrorService.handleError(error)))

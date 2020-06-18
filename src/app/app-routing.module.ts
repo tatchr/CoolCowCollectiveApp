@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'verify-recovery-email/:email', loadChildren: './pages/verify-recovery-email/verify-recovery-email.module#VerifyRecoveryEmailPageModule' },
   { path: 'reset-password/:email/:passwordResetCode', loadChildren: './pages/reset-password/reset-password.module#ResetPasswordPageModule' },
   { path: 'farm-dashboard', loadChildren: './pages/farm-dashboard/farm-dashboard.module#FarmDashboardPageModule', canActivate: [AuthGuardService] },
+  { path: 'new-farm', loadChildren: './pages/farm-dashboard/new-farm/new-farm.module#NewFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'register-farm', loadChildren: './pages/farm/register-farm/register-farm.module#RegisterFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },   
@@ -38,7 +39,7 @@ const routes: Routes = [
   { path: 'custom-report', loadChildren: './pages/reports/custom-report/custom-report.module#CustomReportPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-recurring-edit', loadChildren: './pages/expenses/expenses-recurring-edit/expenses-recurring-edit.module#ExpensesRecurringEditPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-menu', loadChildren: './pages/expenses/expenses-menu/expenses-menu.module#ExpensesMenuPageModule', canActivate: [AuthGuardService] },   
-  { path: 'expenses-recurring-overview', loadChildren: './pages/expenses/expenses-recurring-overview/expenses-recurring-overview.module#ExpensesRecurringOverviewPageModule', canActivate: [AuthGuardService] },
+
 
 ];
 

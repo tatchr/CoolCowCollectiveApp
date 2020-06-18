@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Storage } from '@ionic/storage';
+import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,16 +11,14 @@ import { Storage } from '@ionic/storage';
 })
 export class MenuPage implements OnInit {
 
-  disableTab: boolean;
+  disableItem: boolean;
 
-  constructor(private authService: AuthService, private storage: Storage, private toastController: ToastController) { }
+  constructor(private accountService: AccountService, private authService: AuthService, private storage: Storage, private toastController: ToastController) { }
 
   ngOnInit() {  }
 
   ionViewDidEnter(){
-    this.storage.get('farmId').then(farmId => {
-      this.disableTab = farmId == null;
-    });
+    this.disableItem = !this.accountService.userHasFarm;
   }
 
   logout() {

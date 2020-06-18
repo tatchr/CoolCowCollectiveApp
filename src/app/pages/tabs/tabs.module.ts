@@ -19,6 +19,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'new-farm',
+        loadChildren: '../farm-dashboard/new-farm/new-farm.module#NewFarmPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'milk-entry',
         loadChildren: '../milk-entry/milk-entry.module#MilkEntryPageModule',
         canActivate: [AuthGuardService]

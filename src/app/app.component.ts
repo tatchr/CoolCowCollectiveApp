@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { FarmService } from 'src/app/services/farm/farm.service';
+import { UserDetails } from './common/objects/UserDetails';
 
 @Component({
   selector: 'app-root',
@@ -33,11 +34,11 @@ export class AppComponent {
       this.statusBar.backgroundColorByHexString('#63b65b');
       this.splashScreen.hide();
 
-      timer(3000).subscribe(() => this.showSplash = false);
+      timer(1000).subscribe(() => this.showSplash = false);
 
       this.authService.authenticationState.subscribe(state => {
         if (state) {
-          this.storage.get('userId').then(userId => {
+          this.storage.get('userDetails').then((user: UserDetails) => {
             this.subscribeBackButton('/tabs/farm-dashboard');
             this.subscribeBackButton('/tabs/milk-entry');
             this.subscribeBackButton('/tabs/herd');
@@ -46,9 +47,15 @@ export class AppComponent {
             this.subscribeBackButton('/tabs/other-sales-overview');
             this.subscribeBackButton('/tabs/expenses-menu');
 
-            this.farmService.loadAllFarms(userId).then(() =>{
-              this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
-            }); 
+            if(user.hasFarm){
+              this.farmService.loadAllFarms(user.id).then(() =>{
+                this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
+              });
+            }
+            else{              
+              this.router.navigate(['tabs/new-farm'], { replaceUrl: true });
+            }
+             
             
           });
         } else {

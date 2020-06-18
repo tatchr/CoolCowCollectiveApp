@@ -9,7 +9,7 @@ import { HttpErrorService } from 'src/app/services/http/httperror.service';
 import { OverlayService } from 'src/app/services/overlay/overlay.service';
 
 const TOKEN_KEY = 'access_token';
-const USER_ID = 'userId';
+const USER = 'userDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,10 @@ const USER_ID = 'userId';
 export class AuthService {
 
   url = environment.url;
-  user = null;
+  decodedToken = null;
   authenticationState = new BehaviorSubject(null);
 
-  constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService, 
+  constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService,
     private httpErrorService: HttpErrorService, private overlayService: OverlayService) {
     this.plt.ready().then(() => {
       this.checkToken();
@@ -34,11 +34,11 @@ export class AuthService {
         let isExpired = this.helper.isTokenExpired(token);
 
         if (!isExpired) {
-          this.user = decoded;
+          this.decodedToken = decoded;
           this.authenticationState.next(true);
         } else {
           this.storage.remove(TOKEN_KEY);
-          this.storage.remove(USER_ID);
+          this.storage.remove(USER);
           this.authenticationState.next(false);
         }
       } else {
@@ -52,21 +52,16 @@ export class AuthService {
   }
 
   confirmEmail(credentials) {
-    return this.httpService.postWithTap(this.url + '/api/user/confirmEmail', credentials, (res) => this.setUserIdAndJwtToken(res));
-  }  
+    return this.httpService.postWithTap(this.url + '/api/user/confirmEmail', credentials, (res) => this.setUserAndJwtToken(res));
+  }
 
   resendConfirmationCode(credentials) {
     return this.httpService.post(this.url + '/api/user/resendConfirmationCode', credentials);
   }
 
   login(credentials) {
-    let id = Math.random().toString(36).substring(7);
-
-    this.overlayService.presentLoader(id, 'Authenticating...');
-
-    return this.httpService.post2(this.url + '/api/user/login', credentials, 
-      res => this.setUserIdAndJwtToken(res), 
-      () => this.overlayService.dismissLoader(id));  
+    this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials)
+      .then(res => this.setUserAndJwtToken(res));
   }
 
   forgotPassword(credentials) {
@@ -86,16 +81,16 @@ export class AuthService {
   }
 
   logout() {
-    this.storage.remove(USER_ID);
+    this.storage.remove(USER);
     this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
     });
   }
 
-  setUserIdAndJwtToken(source){
-    this.storage.set(USER_ID, source['userId']).then(() => {
+  setUserAndJwtToken(source) {
+    this.storage.set(USER, source['userDetails']).then(() => {
       this.storage.set(TOKEN_KEY, source['token']);
-      this.user = this.helper.decodeToken(source['token']);
+      this.decodedToken = this.helper.decodeToken(source['token']);
       this.authenticationState.next(true);
     });
   }

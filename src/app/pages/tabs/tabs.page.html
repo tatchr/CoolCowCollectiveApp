@@ -2,22 +2,22 @@
 
   <ion-tab-bar slot="bottom">
 
-    <ion-tab-button tab="farm-dashboard">
+    <ion-tab-button (click)="goToDashboard()">
       <ion-icon name="speedometer"></ion-icon>
       <ion-label>Dashboard</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="milk-entry" [disabled]="disableTab">
+    <ion-tab-button tab="milk-entry" [disabled]="!this.accountService.userHasFarm">
       <ion-icon name="clipboard"></ion-icon>
       <ion-label>Milk entry</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="herd" [disabled]="disableTab">
+    <ion-tab-button tab="herd" [disabled]="!this.accountService.userHasFarm">
         <ion-icon name="paw"></ion-icon>
         <ion-label>Herd</ion-label>
       </ion-tab-button>
 
-    <ion-tab-button tab="milk-sales-overview" [disabled]="disableTab">
+    <ion-tab-button tab="milk-sales-overview" [disabled]="!this.accountService.userHasFarm">
       <ion-icon name="logo-euro"></ion-icon>
       <ion-label>Sales</ion-label>
     </ion-tab-button>
