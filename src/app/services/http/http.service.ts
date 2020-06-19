@@ -67,6 +67,17 @@ export class HttpService {
     );
   }
 
+  put1(overlayMessage, url, body){
+    let overlayId = Math.random().toString(36).substring(7);
+
+    return this.overlayService.presentLoader(overlayId, overlayMessage)
+      .then(() => {
+        return this.http.put(url, body).toPromise();
+      })
+      .catch(error => throwError(this.httpErrorService.handleError(error)))
+      .finally(() => this.overlayService.dismissLoader(overlayId));
+  }
+
   delete(url) {
     return this.http.delete(url).pipe(
       map(res => { return res; }),

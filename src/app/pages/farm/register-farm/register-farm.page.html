@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form *ngIf="newFarmForm" [formGroup]="newFarmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <form *ngIf="farmForm" [formGroup]="farmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <ion-item>
             <ion-label position="floating" color="medium">Farm Name*</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>
@@ -47,7 +47,7 @@
             <ion-input autocapitalize="on" type="text" formControlName="description"></ion-input>
           </ion-item>
 
-          <ion-button color="success" expand="block" type="submit" [disabled]="!newFarmForm.valid">Save Farm
+          <ion-button color="success" expand="block" type="submit" [disabled]="!farmForm.valid">Save Farm
           </ion-button>
         </form>
       </ion-col>

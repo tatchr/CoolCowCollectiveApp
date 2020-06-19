@@ -1,8 +1,10 @@
 export class FarmDetails{
-    id: string;
+    farmId: string;
+    userId: number;
+    userRole: string;
     name: string;
     email: string;
-    phone: string;
+    phoneNumber: string;
     address: string;
     county: string;
     country: string;

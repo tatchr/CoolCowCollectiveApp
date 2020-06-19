@@ -5,6 +5,7 @@ import { MilkService } from 'src/app/services/milk/milk.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-farm-dashboard',
@@ -15,18 +16,15 @@ export class FarmDashboardPage implements OnInit {
   @ViewChild('cowPodiumChart') cowPodiumChart;
   @ViewChild('expensesChart') expensesChart;
 
-  colorArray: any;
-
-  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: string = this.datePicker.formatDate(new Date());
-
+  protected farm: FarmDetails;
+  
   constructor(public farmService: FarmService, public milkService: MilkService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
-    this.initiate();
-  }
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farm = farm;
+    });
 
-  initiate() {
     this.milkService.milkRecordsUpdated.subscribe(val => {
       if (val) {
         this.updateMilkProductionChart();

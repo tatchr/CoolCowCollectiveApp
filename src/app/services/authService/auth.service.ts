@@ -6,10 +6,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { HttpErrorService } from 'src/app/services/http/httperror.service';
-import { OverlayService } from 'src/app/services/overlay/overlay.service';
-
-const TOKEN_KEY = 'access_token';
-const USER = 'userDetails';
+import { USER, TOKEN_KEY, FARM } from 'src/app/common/objects/Constants';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +18,7 @@ export class AuthService {
   authenticationState = new BehaviorSubject(null);
 
   constructor(private helper: JwtHelperService, private storage: Storage, private plt: Platform, private httpService: HttpService,
-    private httpErrorService: HttpErrorService, private overlayService: OverlayService) {
+    private httpErrorService: HttpErrorService) {
     this.plt.ready().then(() => {
       this.checkToken();
     });
@@ -82,6 +79,7 @@ export class AuthService {
 
   logout() {
     this.storage.remove(USER);
+    this.storage.remove(FARM);
     this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
     });

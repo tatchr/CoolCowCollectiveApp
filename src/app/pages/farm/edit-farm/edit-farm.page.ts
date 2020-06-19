@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { FarmService } from 'src/app/services/farm/farm.service';
+import { AccountService } from 'src/app/services/account/account.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Component({
   selector: 'app-edit-farm',
@@ -12,57 +13,64 @@ import { FarmService } from 'src/app/services/farm/farm.service';
 })
 export class EditFarmPage implements OnInit {
 
-  userId: number;
-  farmId: number;
-  farmForm: FormGroup;
+  protected farmForm: FormGroup;
 
-  constructor(private farmService: FarmService, private formBuilder: FormBuilder,
-    private storage: Storage, private router: Router, private toastController: ToastController) { }
+  constructor(private accountService: AccountService, private farmService: FarmService, 
+    private formBuilder: FormBuilder, private toastController: ToastController) { }
 
-    ngOnInit() {    
-      this.initiate();
-    }
+    protected user: UserDetails;
+    protected farm: FarmDetails;
+
+    ngOnInit() {
+      this.accountService.getUser().then((user: UserDetails) => {
+        this.farmService.getFarm().then((farm: FarmDetails) => {
+          this.user = user;
+          this.farm = farm;
+          this.populateForm(user.id, farm);          
+        });
+      });      
+    }    
   
-    initiate() {
-      this.storage.get('farmId').then(farmId => {
-        this.farmId = farmId;
-        this.getFarmDetails();
-      });    
-    }  
-  
-    getFarmDetails(){
-      this.farmService.getFarm(this.farmId).then(res => {
-          this.populateForm(res['farm']);      
-      });
-    }
-  
-    populateForm(farmDetails){
+    private populateForm(userId: number, farm: FarmDetails){
       this.farmForm = this.formBuilder.group({
-        userId: this.userId,
-        farmId: this.farmId,
-        name: [farmDetails.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-        email: [farmDetails.email, [Validators.email, Validators.maxLength(255)]],
-        phonenumber: [farmDetails.phoneNumber, Validators.maxLength(50)],
-        address: [farmDetails.address, [Validators.minLength(1), Validators.maxLength(255)]],
-        county: [farmDetails.county, [Validators.minLength(1), Validators.maxLength(100)]],
-        country: [farmDetails.country, [Validators.minLength(1), Validators.maxLength(100)]],
-        description: [farmDetails.description, [Validators.minLength(1), Validators.maxLength(300)]]
+        userId: userId,
+        farmId: farm.farmId,
+        name: [farm.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+        email: [farm.email, [Validators.email, Validators.maxLength(255)]],
+        phonenumber: [farm.phoneNumber, Validators.maxLength(50)],
+        address: [farm.address, [Validators.minLength(1), Validators.maxLength(255)]],
+        county: [farm.county, [Validators.minLength(1), Validators.maxLength(100)]],
+        country: [farm.country, [Validators.minLength(1), Validators.maxLength(100)]],
+        description: [farm.description, [Validators.minLength(1), Validators.maxLength(300)]],
+        registrationDate: [farm.registrationDate],
+        updateDate: [farm.updateDate]
       });
     }
   
-    onSubmit() {
+    protected updateFarm() {
       if (this.farmForm.valid) {
-        this.farmForm.controls['userId'].setValue(this.userId);
-        this.farmForm.controls['farmId'].setValue(this.farmId);
-        this.farmService.updateFarm(this.farmForm.value).subscribe(val => {
-          if (val) {
-            this.toast('Farm details updated!');
-          }
+        let updatedFarm: FarmDetails = {
+          farmId: this.farmForm.value['farmId'],
+          name: this.farmForm.value['name'],
+          email: this.farmForm.value['email'],
+          userId: this.farmForm.value['userId'],
+          phoneNumber: this.farmForm.value['phonenumber'],
+          address: this.farmForm.value['address'],
+          county: this.farmForm.value['county'],
+          country: this.farmForm.value['country'],
+          description: this.farmForm.value['description'],
+          registrationDate: this.farmForm.value['registrationDate'],
+          updateDate: this.farmForm.value['updateDate'],
+          userRole: null
+        };
+
+        this.farmService.updateFarm(updatedFarm).then(() => {          
+            this.toast('Farm details updated!');          
         });
       }    
     }
   
-    toast(message){
+    private toast(message){
       let toast = this.toastController.create({
         message: message,
         duration: 2000,

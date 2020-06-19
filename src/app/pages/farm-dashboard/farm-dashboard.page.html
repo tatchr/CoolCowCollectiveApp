@@ -9,13 +9,12 @@
     <ion-row>
       <ion-col>
 
-        <h2 style="text-align: center; margin: 0;">{{this.farmService.farm.name}}</h2>
+        <h2 style="text-align: center; margin: 0;" *ngIf="this.farm">{{this.farm.name}}</h2>
 
         <ion-button *ngFor='let period of this.milkService.datePicker.periodsShort;' size="small" fill="outline"
           [color]="period.value == this.milkService.selectedPeriod ? 'success' : 'medium'"
           (click)="this.milkService.periodSelected(period.value)">
           {{period.label}}</ion-button>
-
 
         <ion-row style="padding-left: 10px;">
           <ion-col size="3" class="ion-text-center" no-padding style="background-color: wheat;">

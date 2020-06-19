@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form *ngIf="farmForm" [formGroup]="farmForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <form *ngIf="farmForm" [formGroup]="farmForm" (ngSubmit)="updateFarm()" (keyup.enter)="updateFarm()">
           <p style="font-size: 14px;margin:0 auto;">
             Edit your farm details details here.
           </p>

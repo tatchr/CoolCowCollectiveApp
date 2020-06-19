@@ -48,14 +48,13 @@ export class AppComponent {
             this.subscribeBackButton('/tabs/expenses-menu');
 
             if(user.hasFarm){
-              this.farmService.loadAllFarms(user.id).then(() =>{
+              this.farmService.loadFarm(user.id).then(() =>{
                 this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
               });
             }
             else{              
               this.router.navigate(['tabs/new-farm'], { replaceUrl: true });
-            }
-             
+            }             
             
           });
         } else {

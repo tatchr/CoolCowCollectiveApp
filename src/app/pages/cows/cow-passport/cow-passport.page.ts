@@ -69,7 +69,6 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
 
       this.cowService.updateCow(this.cowForm.getRawValue()).subscribe(val => {
         if (val) {
-          console.log(updatedCow);
           this.cowService.cowUpdated.next(updatedCow);
           this.router.navigateByUrl('tabs/herd');
         }
