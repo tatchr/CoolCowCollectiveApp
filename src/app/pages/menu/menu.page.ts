@@ -11,19 +11,10 @@ import { AccountService } from 'src/app/services/account/account.service';
 })
 export class MenuPage implements OnInit {
 
-  disableItem: boolean;
-
-  constructor(private accountService: AccountService, private authService: AuthService, private storage: Storage, private toastController: ToastController) { }
+  constructor(private accountService: AccountService, private authService: AuthService,
+     private storage: Storage, private toastController: ToastController) { }
 
   ngOnInit() {  }
-
-  ionViewDidEnter(){
-    this.disableItem = !this.accountService.userHasFarm;
-  }
-
-  logout() {
-    this.authService.logout();
-  }
 
   clearToken() {
     // ONLY FOR TESTING!
@@ -38,12 +29,12 @@ export class MenuPage implements OnInit {
     toast.then(toast => toast.present());
   }
 
-  clearFarmId() {
+  clearFarm() {
     // ONLY FOR TESTING!
-    this.storage.remove('farmId');
+    this.storage.remove('farmDetails');
 
     let toast = this.toastController.create({
-      message: 'farmId removed',
+      message: 'farm removed',
       showCloseButton: true,
       duration: 2000
     });

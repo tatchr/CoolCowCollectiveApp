@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ExpensesOverviewPage } from './expenses-overview.page';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    CommonComponentsModule,
     PipesModule,
     RouterModule.forChild(routes)
   ],

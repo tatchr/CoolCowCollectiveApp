@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { DeleteCowPage } from './delete-cow.page';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    CommonComponentsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],

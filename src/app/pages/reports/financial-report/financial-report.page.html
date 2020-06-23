@@ -1,12 +1,4 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Financial performance report</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Financial performance report" [backbtn]="true"></topbar>
 <ion-row>
   <ion-col>
     <ion-item (click)="openFromDatePicker()">

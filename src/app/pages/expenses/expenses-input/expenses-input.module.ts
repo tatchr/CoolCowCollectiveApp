@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ExpensesInputPage } from './expenses-input.page';
 import { ExpensesComponentsModule } from 'src/app/pages/expenses/components/expenses-components.module';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    CommonComponentsModule,
     ExpensesComponentsModule,
     RouterModule.forChild(routes)
   ],

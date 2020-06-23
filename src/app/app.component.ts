@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { UserDetails } from './common/objects/UserDetails';
+import * as key from 'src/app/common/objects/Constants';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,7 @@ export class AppComponent {
 
       this.authService.authenticationState.subscribe(state => {
         if (state) {
-          this.storage.get('userDetails').then((user: UserDetails) => {
+          this.storage.get(key.USER).then((user: UserDetails) => {
             this.subscribeBackButton('/tabs/farm-dashboard');
             this.subscribeBackButton('/tabs/milk-entry');
             this.subscribeBackButton('/tabs/herd');
@@ -53,9 +54,8 @@ export class AppComponent {
               });
             }
             else{              
-              this.router.navigate(['tabs/new-farm'], { replaceUrl: true });
-            }             
-            
+              this.router.navigate(['new-farm'], { replaceUrl: true });
+            }            
           });
         } else {
           this.subscribeBackButton('/login');

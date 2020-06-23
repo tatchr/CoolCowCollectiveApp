@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { MilkEntryPage } from './milk-entry.page';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    IonicModule,    
+    IonicModule,
+    CommonComponentsModule,    
     RouterModule.forChild(routes)
   ],
   declarations: [MilkEntryPage]

@@ -14,11 +14,15 @@ export class AccountService {
 
   public user: UserDetails;
   public farmState = new BehaviorSubject<boolean>(null);
-  public userHasFarm: boolean;
 
   constructor(private httpService: HttpService, private storage: Storage, private authService: AuthService) {
     this.farmState.subscribe(farmExists => {
-      this.userHasFarm = farmExists;
+      if(farmExists != null){
+        this.storage.get(key.USER).then((user: UserDetails) => {
+          user.hasFarm = farmExists;
+          this.storage.set(key.USER, user);
+        }); 
+      }           
     });
   }
 

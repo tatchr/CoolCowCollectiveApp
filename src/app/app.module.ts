@@ -23,6 +23,8 @@ import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-s
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { TopbarComponent } from 'src/app/common/components/topbar/topbar.component';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -41,6 +43,7 @@ export function jwtOptionsFactory(storage) {
     Ionic4DatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonComponentsModule,
     IonicStorageModule.forRoot(),
     JwtModule.forRoot({
       jwtOptionsProvider: {

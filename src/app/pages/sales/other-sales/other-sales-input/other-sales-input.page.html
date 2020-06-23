@@ -1,12 +1,4 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Other sales input</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Other sales input" [backbtn]="true"></topbar>
 <ion-item (click)="openDatePicker()">
   <ion-label position="fixed" color="medium">Date</ion-label>
   <ion-input [(ngModel)]="this.selectedDate" readonly></ion-input>

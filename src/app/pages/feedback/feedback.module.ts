@@ -8,6 +8,7 @@ import { StarRatingModule } from 'ionic4-star-rating';
 import { IonicModule } from '@ionic/angular';
 
 import { FeedbackPage } from './feedback.page';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
+    CommonComponentsModule,
     StarRatingModule,
     RouterModule.forChild(routes)
   ],

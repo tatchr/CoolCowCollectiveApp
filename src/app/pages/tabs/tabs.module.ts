@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from 'src/app/services/authService/auth-guard.service';
-
 import { IonicModule } from '@ionic/angular';
-
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -16,11 +14,6 @@ const routes: Routes = [
       {
         path: 'farm-dashboard',
         loadChildren: '../farm-dashboard/farm-dashboard.module#FarmDashboardPageModule',
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'new-farm',
-        loadChildren: '../farm-dashboard/new-farm/new-farm.module#NewFarmPageModule',
         canActivate: [AuthGuardService]
       },
       {

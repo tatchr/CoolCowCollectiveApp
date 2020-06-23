@@ -1,12 +1,4 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Recurring expense root edit</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Recurring expense root edit" [backbtn]="true"></topbar>
 <ion-item (click)="this.service.openDatePicker()" disabled>
   <ion-label position="fixed" color="medium">Start date</ion-label>
   <ion-input [(ngModel)]="this.service.selectedDate" readonly></ion-input>

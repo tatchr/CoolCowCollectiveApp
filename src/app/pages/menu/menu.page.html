@@ -1,28 +1,21 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-title>Menu</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Menu" [backbtn]="false"></topbar>
 <ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
 
-        <ion-button expand="full" [disabled]="disableItem" routerLink="/tabs/other-sales-overview"
+        <ion-button expand="full" routerLink="/tabs/other-sales-overview"
           routerDirection="forward">Other sales
         </ion-button>
-        <ion-button expand="full" [disabled]="disableItem" routerLink="/tabs/expenses-menu">Expenses</ion-button>
-        <ion-button expand="full" [disabled]="disableItem" routerLink="/report-overview" routerDirection="forward">Reports</ion-button>
-        <ion-button expand="full" routerLink="/account" routerDirection="forward">Account</ion-button>
-        <ion-button expand="full" [disabled]="disableItem" routerLink="/edit-farm" routerDirection="forward">Farm
+        <ion-button expand="full" routerLink="/tabs/expenses-menu">Expenses</ion-button>
+        <ion-button expand="full" routerLink="/report-overview" routerDirection="forward">Reports</ion-button>
+        <ion-button expand="full" routerLink="/edit-farm" routerDirection="forward">Farm
         </ion-button>
         <ion-button expand="full" routerLink="/feedback" routerDirection="forward">Feedback</ion-button>
         <ion-button expand="full">Help</ion-button>
 
         <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
-        <ion-button expand="full" (click)="clearFarmId()">Clear FarmId</ion-button>
-        <ion-button expand="full" (click)="logout()">Logout</ion-button>
+        <ion-button expand="full" (click)="clearFarm()">Clear Farm</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

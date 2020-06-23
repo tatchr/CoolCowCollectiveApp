@@ -13,18 +13,16 @@ export class TabsPage implements OnInit {
 
   constructor(private accountService: AccountService, private storage: Storage, private router: Router) { }
 
-  ngOnInit() { 
-    this.storage.get('userDetails').then((user: UserDetails) => {
-      this.accountService.farmState.next(user.hasFarm);
-    });
-  }
+  ngOnInit() { }
 
   goToDashboard(){
-    if(this.accountService.userHasFarm){
-      this.router.navigate(['tabs/farm-dashboard']);
-    }
-    else{
-      this.router.navigate(['tabs/new-farm']);
-    }
+    this.accountService.getUser().then((user: UserDetails) => {
+      if(user.hasFarm){
+        this.router.navigate(['tabs/farm-dashboard']);
+      }
+      else{
+        this.router.navigate(['new-farm']);
+      }
+    });    
   }
 }
