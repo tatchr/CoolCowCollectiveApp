@@ -14,6 +14,7 @@ export class AccountService {
 
   public user: UserDetails;
   public farmState = new BehaviorSubject<boolean>(null);
+  public userUpdated = new BehaviorSubject<UserDetails>(null);
 
   constructor(private httpService: HttpService, private storage: Storage, private authService: AuthService) {
     this.farmState.subscribe(farmExists => {
@@ -33,6 +34,10 @@ export class AccountService {
       
       this.authService.logout();
     });    
+  }
+
+  public setUser(user: UserDetails){
+    this.storage.set(key.USER, user);
   }
 
   changePassword(form) {

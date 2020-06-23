@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
 import { AccountService } from 'src/app/services/account/account.service';
 import { ToastController } from '@ionic/angular';
-
+import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Component({
   selector: 'app-edit-account',
@@ -13,50 +11,41 @@ import { ToastController } from '@ionic/angular';
 })
 export class EditAccountPage implements OnInit {
 
-  userId: number;
   userForm: FormGroup;
   gen: string;
 
-  constructor(private accountService: AccountService, private formBuilder: FormBuilder,
-    private storage: Storage, private router: Router, private toastController: ToastController) { }
+  constructor(private accountService: AccountService, private formBuilder: FormBuilder, private toastController: ToastController) { }
 
   ngOnInit() {    
-    this.initiate();
-  }
-
-  initiate() {
-    this.storage.get('userId').then(userId => {
-      this.userId = userId;
-      this.getUserDetails();
-    });    
-  }  
-
-  getUserDetails(){
-    this.accountService.getUserDetails(this.userId).then(res => {
-        this.populateForm(res['userDetails']);      
-    });
-  }
-
-  populateForm(userDetails){
-    this.gen = userDetails.gender;
-    this.userForm = this.formBuilder.group({
-      id: this.userId,
-      firstname: [userDetails.firstName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      lastname: [userDetails.lastName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      email: [userDetails.email, [Validators.required, Validators.email, Validators.maxLength(255)]],
-      gender: [userDetails.gender, [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      phonenumber: [userDetails.phoneNumber, Validators.maxLength(50)]
+    this.accountService.getUser().then((user: UserDetails) => {
+      this.gen = user.gender;
+      this.userForm = this.formBuilder.group({
+        id: user.id,
+        firstname: [user.firstName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+        lastname: [user.lastName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+        email: [user.email, [Validators.required, Validators.email, Validators.maxLength(255)]],
+        gender: [user.gender, [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+        phonenumber: [user.phoneNumber, Validators.maxLength(50)]
+      });
     });
   }
 
   onSubmit() {
     if (this.userForm.valid) {
-      this.userForm.controls['id'].setValue(this.userId);
-      this.accountService.updateUserDetails(this.userForm.value).subscribe(val => {
-        if (val) {
-          this.toast('Account details updated!');
-        }
-      });
+      this.accountService.getUser().then((user: UserDetails) => {
+        user.firstName = this.userForm.value['firstname'];
+        user.lastName = this.userForm.value['lastname'];
+        user.email = this.userForm.value['email'];
+        user.gender = this.userForm.value['gender'];
+        user.phoneNumber = this.userForm.value['phonenumber'];
+
+        this.accountService.updateUserDetails(user).subscribe(val => {
+          if (val) {
+            this.accountService.setUser(user);
+            this.toast('Account details updated!');
+          }
+        });
+      });      
     }    
   }
 
@@ -69,5 +58,4 @@ export class EditAccountPage implements OnInit {
     });
     toast.then(toast => toast.present());
   }
-
 }
