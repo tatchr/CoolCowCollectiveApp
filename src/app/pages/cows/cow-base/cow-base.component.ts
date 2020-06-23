@@ -5,6 +5,8 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Router } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-cow-base',
@@ -22,13 +24,14 @@ export class CowBaseComponent implements OnInit {
   toDate = this.datePicker.formatDate(new Date());
 
   constructor(protected router: Router, protected formBuilder: FormBuilder, 
-    protected storage: Storage, public cowService: CowService, protected datePicker: DatepickerService, public keyboard: Keyboard) { }
+    protected storage: Storage, public cowService: CowService, protected datePicker: DatepickerService, 
+    public keyboard: Keyboard, public farmService: FarmService) { }
 
   ngOnInit() {}
 
   getFarmId(){
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId; 
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId; 
     });
   }
 

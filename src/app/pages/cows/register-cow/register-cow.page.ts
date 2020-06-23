@@ -7,6 +7,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { v4 as uuidv4 } from 'uuid';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-register-cow',
@@ -17,8 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class RegisterCowPage extends CowBaseComponent implements OnInit {   
 
   constructor(router: Router, formBuilder: FormBuilder, storage: Storage, cowService: CowService, 
-    datePicker: DatepickerService, keyboard: Keyboard) { 
-      super(router, formBuilder, storage, cowService, datePicker, keyboard);
+    datePicker: DatepickerService, keyboard: Keyboard, farmService: FarmService) { 
+      super(router, formBuilder, storage, cowService, datePicker, keyboard, farmService);
     }
 
   ngOnInit() {

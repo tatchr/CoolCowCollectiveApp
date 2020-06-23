@@ -7,6 +7,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-cow-passport',
@@ -19,8 +20,8 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
   cowDetails: CowDetails;
 
   constructor(router: Router, private activatedRoute: ActivatedRoute, formBuilder: FormBuilder, storage: Storage,
-    cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard) {
-    super(router, formBuilder, storage, cowService, datePicker, keyboard);
+    cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard, farmService: FarmService) {
+    super(router, formBuilder, storage, cowService, datePicker, keyboard, farmService);
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
