@@ -23,28 +23,22 @@ export class EditFarmPage implements OnInit {
 
     ngOnInit() {
       this.accountService.getUser().then((user: UserDetails) => {
-        this.farmService.getFarm().then((farm: FarmDetails) => {
-          this.user = user;
-          this.farm = farm;
-          this.populateForm(user.id, farm);          
+        this.farmService.getFarm().then((farm: FarmDetails) => {         
+          this.farmForm = this.formBuilder.group({
+            userId: user.id,
+            farmId: farm.farmId,
+            name: [farm.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+            email: [farm.email, [Validators.email, Validators.maxLength(255)]],
+            phonenumber: [farm.phoneNumber, Validators.maxLength(50)],
+            address: [farm.address, [Validators.minLength(1), Validators.maxLength(255)]],
+            county: [farm.county, [Validators.minLength(1), Validators.maxLength(100)]],
+            country: [farm.country, [Validators.minLength(1), Validators.maxLength(100)]],
+            description: [farm.description, [Validators.minLength(1), Validators.maxLength(300)]],
+            registrationDate: [farm.registrationDate],
+            updateDate: [farm.updateDate]
+          });     
         });
       });      
-    }    
-  
-    private populateForm(userId: number, farm: FarmDetails){
-      this.farmForm = this.formBuilder.group({
-        userId: userId,
-        farmId: farm.farmId,
-        name: [farm.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-        email: [farm.email, [Validators.email, Validators.maxLength(255)]],
-        phonenumber: [farm.phoneNumber, Validators.maxLength(50)],
-        address: [farm.address, [Validators.minLength(1), Validators.maxLength(255)]],
-        county: [farm.county, [Validators.minLength(1), Validators.maxLength(100)]],
-        country: [farm.country, [Validators.minLength(1), Validators.maxLength(100)]],
-        description: [farm.description, [Validators.minLength(1), Validators.maxLength(300)]],
-        registrationDate: [farm.registrationDate],
-        updateDate: [farm.updateDate]
-      });
     }
   
     protected updateFarm() {

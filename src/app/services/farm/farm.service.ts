@@ -17,7 +17,7 @@ export class FarmService {
 
   public farm: FarmDetails;
 
-  public loadFarm(userId: number) {
+  public loadFarm(userId: string) {
     return this.httpService.get(null, `${environment.url}/api/farm/getUserFarm/${userId}`)
       .then(res => {
         this.setFarm(res['farm']);
