@@ -1,5 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'verification-code-input',
@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./verification-code-input.component.scss'],
 })
 export class VerificationCodeInputComponent implements OnInit {
-
+  @ViewChildren('inputs') inputs: QueryList<any>;
   @Output() returncode = new EventEmitter<string>();
   @Output() resendcode = new EventEmitter();
 
@@ -15,58 +15,69 @@ export class VerificationCodeInputComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     this.verificationForm = this.formBuilder.group({
-      n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
+      aliases: this.formBuilder.array([])
     });
+    this.createFormControls();
+
+
+
+    // this.verificationForm = this.formBuilder.group({
+    //   n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+    //   n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+    //   n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+    //   n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+    //   n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+    //   n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
+    // });
+  }
+
+  get aliases() {
+    return this.verificationForm.get('aliases') as FormArray;
+  }
+
+  addAlias() {
+    this.aliases.push(
+      this.formBuilder.control(
+        new FormControl(['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]])
+      )
+    );
   }
 
   ngOnInit() { }
 
-  protected executeCodeResend(){
+  createFormControls() {
+    let numberOfBoxes = 6;
+    for (var i = 0; i < numberOfBoxes; i++) this.addAlias();
+  }
+
+  protected executeCodeResend() {
     this.resendcode.emit();
   }
 
-  protected emitcode(form: FormGroup) {
+  protected emitcode(aliases: FormArray) {
     let code: string = '';
-    for (const field in form.controls) { 
-      const { value: number } = form.get(field); 
-      code += number;
+    for(let control of aliases.controls){
+      code += control.value;
     }
-    
+
     this.returncode.emit(code);
-  }
+  }  
 
-  protected moveFocus(event, nextElement, previousElement) {
+  protected moveFocus(event, index) {
+    console.log(this.aliases.controls[1].valid);
+    let inputs = this.inputs.toArray();
 
-    if (event.keyCode == 8 && previousElement) {
-      //   console.log(event);
-      // console.log(nextElement);
-      // console.log(previousElement);
-      previousElement.setFocus();
-    } else if (event.keyCode >= 48 && event.keyCode <= 57) {
-      if (nextElement) {
-        nextElement.setFocus();
-      }
-    } else {
-      event.path[0].value = '';
+    if (inputs[index].value.length > 1) {
+      inputs[index].value = event.key;
     }
-  }
 
-  checkInput(element, nextElement) {
-    let input = element.value;
-    if (input != null && input != "") {
-      if (input.length > 1) {
-        element.value = null;
-      }
-      else {
-        if (nextElement != null) {
-          nextElement.setFocus();
-        }
-      }
+    if (event.keyCode == 8 && index > 0) {
+      inputs[index].value = '';
+      inputs[index - 1].setFocus();
     }
-  }
+    else if (event.keyCode >= 48 && event.keyCode <= 57 && index < inputs.length - 1) {
+      inputs[index + 1].value = '';
+      inputs[index + 1].setFocus();
+    }
+  }  
 }
