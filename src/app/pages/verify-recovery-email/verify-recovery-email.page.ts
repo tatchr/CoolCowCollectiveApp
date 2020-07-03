@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/authService/auth.service';
+import { VerificationCodeInputComponent } from 'src/app/common/components/verification-code-input/verification-code-input.component';
 
 @Component({
   selector: 'app-verify-recovery-email',
@@ -9,6 +10,8 @@ import { AuthService } from 'src/app/services/authService/auth.service';
   styleUrls: ['./verify-recovery-email.page.scss'],
 })
 export class VerifyRecoveryEmailPage implements OnInit {
+
+  @ViewChild(VerificationCodeInputComponent) vvv: VerificationCodeInputComponent;
 
   protected verifyEmailForm: FormGroup;
   protected email: string;
@@ -23,26 +26,13 @@ export class VerifyRecoveryEmailPage implements OnInit {
       });
     }
 
-  ngOnInit() {
-    this.verifyEmailForm = this.formBuilder.group({
-      n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
-    });
-  }
+  ngOnInit() {}
 
-  onSubmit() {
-    let passwordResetCode = this.verifyEmailForm.controls.n1.value + '' + this.verifyEmailForm.controls.n2.value + '' 
-      + this.verifyEmailForm.controls.n3.value + '' + this.verifyEmailForm.controls.n4.value + ''
-      + this.verifyEmailForm.controls.n5.value + '' + this.verifyEmailForm.controls.n6.value;
-
+  onSubmit(resetCode) {
     let resetData = {
       email: this.email,
-      passwordResetCode: passwordResetCode
-    };
+      passwordResetCode: resetCode
+    };    
 
     let navigationExtras: NavigationExtras = {
       state: {
@@ -58,21 +48,9 @@ export class VerifyRecoveryEmailPage implements OnInit {
   }
 
   resendPasswordResetCode() {
-    var body = { 'Email': this.email };
+    var body = { 
+      'email': this.email 
+    };
     this.authService.resendPasswordResetCode(body).subscribe();
-  }
-
-  checkInput(element, nextElement){
-    let input = element.value;
-    if(input != null && input != ""){
-      if(input.length > 1){
-        element.value = null;
-      }
-      else{        
-        if(nextElement != null){
-          nextElement.setFocus();
-        }
-      }
-    }    
   }
 }

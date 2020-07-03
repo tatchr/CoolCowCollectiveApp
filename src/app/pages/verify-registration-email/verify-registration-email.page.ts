@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/authService/auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/authService/auth.service';
   styleUrls: ['./verify-registration-email.page.scss'],
 })
 export class VerifyRegistrationEmailPage implements OnInit {
-
+  
   protected confirmEmailForm: FormGroup;
   protected email: string;
 
@@ -22,47 +22,21 @@ export class VerifyRegistrationEmailPage implements OnInit {
     });
    }
 
-  ngOnInit() {    
-    this.confirmEmailForm = this.formBuilder.group({
-      n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
-    });
-  }
+  ngOnInit() {}
 
-  onSubmit() {
-    let emailConfirmationCode = this.confirmEmailForm.controls.n1.value + '' + this.confirmEmailForm.controls.n2.value + '' 
-      + this.confirmEmailForm.controls.n3.value + '' + this.confirmEmailForm.controls.n4.value + ''
-      + this.confirmEmailForm.controls.n5.value + '' + this.confirmEmailForm.controls.n6.value;
-
+  onSubmit(verificationCode) {
     let resetData = {
       email: this.email,
-      emailConfirmationCode: emailConfirmationCode
+      emailConfirmationCode: verificationCode
     };
 
     this.authService.confirmEmail(resetData).subscribe();
   }
 
   resendConfirmationCode(){
-    var body = {'Email': this.email};
+    var body = {
+      'email': this.email
+    };
     this.authService.resendConfirmationCode(body).subscribe();
   }
-   
-  checkInput(element, nextElement){
-    let input = element.value;
-    if(input != null && input != ""){
-      if(input.length > 1){
-        element.value = null;
-      }
-      else{        
-        if(nextElement != null){
-          nextElement.setFocus();
-        }
-      }
-    }    
-  }
-
 }

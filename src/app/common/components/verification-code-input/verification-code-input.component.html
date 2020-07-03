@@ -1,0 +1,15 @@
+<form [formGroup]="verificationForm">
+  <div class="ion-text-center">            
+      <ion-input #n1 formControlName="n1" class="input-box" type="number" (keyup)="moveFocus($event, n2, '')"></ion-input>              
+      <ion-input #n2 formControlName="n2" class="input-box" type="number" (keyup)="moveFocus($event, n3, n2)"></ion-input>
+      <ion-input #n3 formControlName="n3" class="input-box" type="number" (keyup)="moveFocus($event, n4, n3)"></ion-input>
+      <ion-input #n4 formControlName="n4" class="input-box" type="number" (keyup)="moveFocus($event, n5, n4)"></ion-input>
+      <ion-input #n5 formControlName="n5" class="input-box" type="number" (keyup)="moveFocus($event, n6, n5)"></ion-input>
+      <ion-input #n6 formControlName="n6" class="input-box" type="number" (keyup)="moveFocus($event, '', n6)"></ion-input>
+  </div>
+
+  <div style="margin-top: 20px;"></div>
+
+  <ion-button color="success" expand="block" [disabled]="!verificationForm.valid" (click)="emitcode(verificationForm)">Continue</ion-button>
+  <ion-button expand="full" fill="clear" color="success" (click)="executeCodeResend()">Resend Code</ion-button>
+</form>
