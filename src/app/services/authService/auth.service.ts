@@ -57,12 +57,11 @@ export class AuthService {
   }
 
   login(credentials) {
-    this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials)
-      .then(res => this.setUserAndJwtToken(res));
+    return this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials);      
   }
 
   forgotPassword(credentials) {
-    return this.httpService.post(this.url + '/api/user/forgotPassword', credentials);
+    return this.httpService.post(`${environment.url}/api/user/forgotPassword`, credentials);
   }
 
   verifyPasswordResetCode(credentials) {
@@ -74,7 +73,7 @@ export class AuthService {
   }
 
   resetPassword(credentials) {
-    return this.httpService.post(this.url + '/api/user/resetPassword', credentials);
+    return this.httpService.post(`${environment.url}/api/user/resetPassword`, credentials);
   }
 
   logout() {

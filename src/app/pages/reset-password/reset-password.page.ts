@@ -10,19 +10,28 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class ResetPasswordPage implements OnInit {
 
-  resetPasswordForm: FormGroup;
-  email = null;
-  passwordResetCode = null;
+  protected resetPasswordForm: FormGroup;
+  private email: string;
+  private passwordResetCode: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, 
+    private authService: AuthService) { 
+      this.activatedRoute.queryParams.subscribe(() => {
+        let state = this.router.getCurrentNavigation().extras.state;
+        if (state) {
+          this.email = state.resetData.email;
+          this.passwordResetCode = state.resetData.passwordResetCode;
+        }
+      });
+    }
 
   ngOnInit() {
-    this.email = this.activatedRoute.snapshot.paramMap.get('email');
-    this.passwordResetCode = this.activatedRoute.snapshot.paramMap.get('passwordResetCode');
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-      repeatedPassword: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100), this.passwordMatcher.bind(this)]]
-    },  { validator: this.checkPasswords });
+      repeatedPassword: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
+    }, { 
+      validator: this.checkPasswords.bind(this)
+    });
   }
 
   onSubmit() {
@@ -30,28 +39,15 @@ export class ResetPasswordPage implements OnInit {
 
     this.authService.resetPassword(body).subscribe(val => {
       if(val){
-        console.log(val);
         this.router.navigateByUrl('/login');
       }
       
     });
   }
 
-  checkPasswords(group: FormGroup) {
-    var password = group.controls.password.value;
-    var repeatedPassword = group.controls.repeatedPassword.value;
-
-    return password !== repeatedPassword 
-      ? { passwordNotMatch: true }   
-      : null;   
+  checkPasswords(formGroup: FormGroup) {
+    const { value: password } = formGroup.get('password');
+    const { value: repeatedPassword } = formGroup.get('repeatedPassword');
+    return password === repeatedPassword ? null : { passwordNotMatch: true };
   }
-
-  passwordMatcher(group: FormGroup): { [s: string]: boolean }{
-    var repeatedPassword = group.value;
-
-    return this.resetPasswordForm && this.resetPasswordForm.controls.password.value !== repeatedPassword
-      ? { passwordNotMatch: true } 
-      : null;
-  }
-
 }

@@ -10,13 +10,19 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class VerifyRegistrationEmailPage implements OnInit {
 
-  confirmEmailForm: FormGroup;
-  email = null;
+  protected confirmEmailForm: FormGroup;
+  protected email: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) {
+    this.activatedRoute.queryParams.subscribe(() => {
+      let state = this.router.getCurrentNavigation().extras.state;
+      if (state) {
+        this.email = state.email;
+      }
+    });
+   }
 
-  ngOnInit() {
-    this.email = this.activatedRoute.snapshot.paramMap.get('email');
+  ngOnInit() {    
     this.confirmEmailForm = this.formBuilder.group({
       n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
       n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],

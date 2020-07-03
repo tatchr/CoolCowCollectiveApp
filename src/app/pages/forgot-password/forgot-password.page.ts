@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  forgotPasswordForm: FormGroup;
+  protected forgotPasswordForm: FormGroup;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) { }
 
@@ -23,10 +23,20 @@ export class ForgotPasswordPage implements OnInit {
   onSubmit() {
     this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe(val => {
       if(val){
-        console.log(val);
-        this.router.navigateByUrl('/verify-recovery-email/' + this.forgotPasswordForm.controls.email.value);
+        const { value: email } = this.forgotPasswordForm.get('email');
+        let navigationExtras: NavigationExtras = {
+          state: {
+            email: email
+          }
+        };      
+        
+        if(val['userNeedsToBeConfirmed']){
+          this.router.navigate(['verify-registration-email'], navigationExtras);
+        }
+        else{
+          this.router.navigate(['verify-recovery-email'], navigationExtras);
+        }
       }      
     });
   }
-
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
@@ -10,13 +10,20 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class VerifyRecoveryEmailPage implements OnInit {
 
-  verifyEmailForm: FormGroup;
-  email = null;
+  protected verifyEmailForm: FormGroup;
+  protected email: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder,
+     private authService: AuthService) { 
+      this.activatedRoute.queryParams.subscribe(() => {
+        let state = this.router.getCurrentNavigation().extras.state;
+        if (state) {
+          this.email = state.email;
+        }
+      });
+    }
 
   ngOnInit() {
-    this.email = this.activatedRoute.snapshot.paramMap.get('email');
     this.verifyEmailForm = this.formBuilder.group({
       n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
       n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
@@ -37,11 +44,16 @@ export class VerifyRecoveryEmailPage implements OnInit {
       passwordResetCode: passwordResetCode
     };
 
+    let navigationExtras: NavigationExtras = {
+      state: {
+        resetData: resetData
+      }
+    };
+
     this.authService.verifyPasswordResetCode(resetData).subscribe(val => {
       if (val) {
-        this.router.navigateByUrl('/reset-password/' + this.email + '/' + passwordResetCode);
+        this.router.navigate(['reset-password'], navigationExtras);
       }
-
     });
   }
 

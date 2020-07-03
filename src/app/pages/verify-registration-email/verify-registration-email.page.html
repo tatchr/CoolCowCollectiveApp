@@ -1,18 +1,10 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Confirm your email</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Confirm your email" [backbtn]="true" [accountBtn]="false"></topbar>
 <ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
         <p class="ion-text-start">
-          We have sent you an activation code. Please enter it below.
+          We have sent an activation code to email <b>{{email}}</b>. Please enter it below.
         </p>
 
         <div style="margin-top: 20px;"></div>
