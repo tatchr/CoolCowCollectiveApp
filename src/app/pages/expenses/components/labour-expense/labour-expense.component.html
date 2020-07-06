@@ -21,14 +21,14 @@
     <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
   </ion-item>
 
-  <ion-item *ngIf="(form.value['recurringisactive'] && !form.value['recurringId']) || form.value['isrootrecord']">
-    <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
-    <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
-  </ion-item>
-
   <ion-item no-padding *ngIf="!form.value['recurringId'] || form.value['isrootrecord']" [disabled]="form.value['isrootrecord']">
     <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
     <ion-toggle slot="end" formControlName="recurringisactive" color="success"
       (ionChange)="this.service.isRecurringToggled($event)"></ion-toggle>
   </ion-item>
+
+  <ion-item *ngIf="(form.value['recurringisactive'] && !form.value['recurringId']) || form.value['isrootrecord']">
+    <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
+  </ion-item>  
 </form>

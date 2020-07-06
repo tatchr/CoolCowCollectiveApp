@@ -11,6 +11,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Location } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +37,12 @@ export class ExpensesService {
   recurringExpensesList: Array<ExpensesRecurringGroup> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, 
-    private location: Location, public formBuilder: FormBuilder, private router: Router) { 
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      this.loadExpensesList();
-      this.loadRecurringExpensesList();
-    });
+    private location: Location, public formBuilder: FormBuilder, private farmService: FarmService) {
+      this.farmService.getFarm().then((farm: FarmDetails) => {
+        this.farmId = farm.farmId;
+        this.loadExpensesList();
+        this.loadRecurringExpensesList();
+      });
 
     this.expenseRegistered.subscribe(newExpense => {
       if (newExpense) {
