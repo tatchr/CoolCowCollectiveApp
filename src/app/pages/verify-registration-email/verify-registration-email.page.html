@@ -6,9 +6,11 @@
         <p class="ion-text-start">
           We have sent an activation code to email <b>{{email}}</b>. Please enter it below.
         </p>
-
         <div style="margin-top: 20px;"></div>
-        <verification-code-input (returncode)="onSubmit($event)" (resendcode)="resendConfirmationCode()"></verification-code-input>
+        <div class="ion-text-center">
+          <verification-code-input (returncode)="onSubmit($event)" (resendcode)="resendConfirmationCode()">
+          </verification-code-input>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

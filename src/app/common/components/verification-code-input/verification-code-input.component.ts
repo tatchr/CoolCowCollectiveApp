@@ -18,30 +18,7 @@ export class VerificationCodeInputComponent implements OnInit {
       aliases: this.formBuilder.array([])
     });
     this.createFormControls();
-
-
-
-    // this.verificationForm = this.formBuilder.group({
-    //   n1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-    //   n2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-    //   n3: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-    //   n4: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-    //   n5: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-    //   n6: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
-    // });
-  }
-
-  get aliases() {
-    return this.verificationForm.get('aliases') as FormArray;
-  }
-
-  addAlias() {
-    this.aliases.push(
-      this.formBuilder.control(
-        new FormControl(['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]])
-      )
-    );
-  }
+  }  
 
   ngOnInit() { }
 
@@ -54,6 +31,18 @@ export class VerificationCodeInputComponent implements OnInit {
     this.resendcode.emit();
   }
 
+  get aliases() {
+    return this.verificationForm.get('aliases') as FormArray;
+  }
+
+  addAlias() {
+    this.aliases.push(
+      this.formBuilder.control(
+        '', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]
+      )
+    );
+  }
+
   protected emitcode(aliases: FormArray) {
     let code: string = '';
     for(let control of aliases.controls){
@@ -64,7 +53,6 @@ export class VerificationCodeInputComponent implements OnInit {
   }  
 
   protected moveFocus(event, index) {
-    console.log(this.aliases.controls[1].valid);
     let inputs = this.inputs.toArray();
 
     if (inputs[index].value.length > 1) {

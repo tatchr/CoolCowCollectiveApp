@@ -1,13 +1,12 @@
 <form *ngIf="verificationForm" [formGroup]="verificationForm">
   <div formArrayName="aliases">
-    <div class="ion-text-center" *ngFor="let alias of aliases.controls; let i=index">  
-    
-      <ion-input #inputs [formControlName]="i" class="input-box" type="number" (keyup)="moveFocus($event, i)"></ion-input>
-    </div>
-  
+    <ion-input #inputs *ngFor="let alias of aliases.controls; let i=index" [formControlName]="i" class="input-box"
+      type="number" (keyup)="moveFocus($event, i)"></ion-input>
+
     <div style="margin-top: 20px;"></div>
-  
-    <ion-button color="success" expand="block" [disabled]="!aliases.valid" (click)="emitcode(aliases)">Continue</ion-button>
+
+    <ion-button color="success" expand="block" [disabled]="aliases.invalid" (click)="emitcode(aliases)">Continue
+    </ion-button>
     <ion-button expand="full" fill="clear" color="success" (click)="executeCodeResend()">Resend Code</ion-button>
-  </div>  
+  </div>
 </form>
