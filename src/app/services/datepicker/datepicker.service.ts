@@ -10,8 +10,8 @@ import { PeriodDetails } from 'src/app/common/objects/PeriodDetails';
 })
 export class DatepickerService {
 
-  fromDate = new Date('2016-01-01');
-  toDate = new Date();
+  private fromDate = new Date('1990-01-01');
+  private toDate = new Date();
 
   public periods: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1 week'}),
@@ -19,20 +19,43 @@ export class DatepickerService {
     new PeriodDetails({value: Period.lastmonth, label: '1 month'}),
     new PeriodDetails({value: Period.lastquarter, label: '3 months'}),
     new PeriodDetails({value: Period.lastyear, label: '1 year'}),
-    new PeriodDetails({value: Period.alltime, label: 'All time'})];
+    new PeriodDetails({value: Period.alltime, label: 'All time'})
+  ];
 
-    public periodsShort: Array<PeriodDetails> = [
-      new PeriodDetails({value: Period.lastweek, label: '1W'}),
-      new PeriodDetails({value: Period.last2weeks, label: '2W'}),
-      new PeriodDetails({value: Period.lastmonth, label: '1M'}),
-      new PeriodDetails({value: Period.lastquarter, label: '3M'}),
-      new PeriodDetails({value: Period.lastyear, label: '1Y'})];
+  public periodsShort: Array<PeriodDetails> = [
+    new PeriodDetails({value: Period.lastweek, label: '1W'}),
+    new PeriodDetails({value: Period.last2weeks, label: '2W'}),
+    new PeriodDetails({value: Period.lastmonth, label: '1M'}),
+    new PeriodDetails({value: Period.lastquarter, label: '3M'}),
+    new PeriodDetails({value: Period.lastyear, label: '1Y'})
+  ];
     
-  constructor(public modalCtrl: ModalController) { }
+  constructor(public modalCtrl: ModalController) { }  
 
-  getDatepickerObj(userInputDate){
+  public async openDatePicker(inputDate : string) : Promise<string> {
+    let datepicker = await this.datepicker(inputDate);
+    await datepicker.present();
+
+    return await datepicker.onDidDismiss().then((data) => {      
+      if (typeof data.data === 'undefined' || data.data.date === 'Invalid date') {
+        return inputDate;
+      }
+      
+      return this.formatDate(data.data.date);
+    });
+  }
+
+  private async datepicker(inputDate: string) {    
+    return await this.modalCtrl.create({
+      component: Ionic4DatepickerModalComponent,
+      cssClass: 'li-ionic4-datePicker',
+      componentProps: { 'objConfig': this.datepickerconfig(inputDate) }
+    });    
+  }
+
+  private datepickerconfig(inputDate){
     return {
-      inputDate: userInputDate,
+      inputDate: inputDate,
       fromDate: this.fromDate,
       toDate: this.toDate,
       showTodayButton: true,
@@ -62,45 +85,19 @@ export class DatepickerService {
     }
   }
 
-  async getDatePickerModal(datePickerObj) {
-    return await this.modalCtrl.create({
-      component: Ionic4DatepickerModalComponent,
-      cssClass: 'li-ionic4-datePicker',
-      componentProps: { 'objConfig': datePickerObj }
-    });    
-  }
-
-  async openDatePicker(inputDate : string) : Promise<string> {
-    let datePickerObj = this.getDatepickerObj(inputDate);
-    let datePickerModal = await this.getDatePickerModal(datePickerObj);
-    await datePickerModal.present();
-
-    return await datePickerModal.onDidDismiss().then((data) => {      
-      if (typeof data.data === 'undefined' || data.data.date === 'Invalid date') {
-        return inputDate;
-      }
-      
-      return this.formatDate(data.data.date);
-    });
-  }
-
-  formatDate(date) {
+  public formatDate(date) {
     return date != null ? moment(date).format('YYYY-MM-DD') : null;
-  }
+  }  
 
-  formatDateMMMDD(date) {
-    return date != null ? moment(date).format('MMM-DD') : null;
-  }
-
-  formatDate2(date, format) {
+  public formatDate2(date, format) {
     return date != null ? moment(date).format(format) : null;
   }
 
-  subtract(date, amount, type){    
+  public subtract(date, amount, type){    
     return moment(date).subtract(amount, type).format('YYYY-MM-DD');
   }
 
-  getDaysArray(fromDate, toDate){
+  public getDaysArray(fromDate, toDate){
     let days = [];
     let totalDays = moment(toDate).diff(moment(fromDate), 'days');
 
@@ -111,7 +108,7 @@ export class DatepickerService {
     return days;
   }
 
-  periodSelected(period){    
+  public periodSelected(period){    
     let selectedToDate = this.formatDate(new Date());
     let selectedFromDate = '';
 
@@ -131,7 +128,7 @@ export class DatepickerService {
       selectedFromDate = this.subtract(new Date(), 1, 'years');
     }
     if(period == Period.alltime){
-      selectedFromDate = this.formatDate(new Date('2016-01-01'));
+      selectedFromDate = this.formatDate(this.fromDate);
     }
 
     return {"fromDate": selectedFromDate, "toDate": selectedToDate}
