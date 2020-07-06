@@ -44,7 +44,7 @@ export class HttpService {
       .then(() => {
         return this.http.post(url, body).toPromise();
       })
-      .catch(error => throwError(this.httpErrorService.handleError(error)))
+      .catch(error => throwError(this.httpErrorService.handleError(error)).toPromise())
       .finally(() => this.overlayService.dismissLoader(id));
   }
 

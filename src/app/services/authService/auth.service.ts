@@ -49,11 +49,11 @@ export class AuthService {
   }
 
   confirmEmail(credentials) {
-    return this.httpService.postWithTap(this.url + '/api/user/confirmEmail', credentials, (res) => this.setUserAndJwtToken(res));
+    return this.httpService.post3('Checking code...', `${environment.url}/api/user/confirmEmail`, credentials);
   }
 
   resendConfirmationCode(credentials) {
-    return this.httpService.post(this.url + '/api/user/resendConfirmationCode', credentials);
+    return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendConfirmationCode`, credentials);
   }
 
   login(credentials) {
@@ -65,11 +65,11 @@ export class AuthService {
   }
 
   verifyPasswordResetCode(credentials) {
-    return this.httpService.post(this.url + '/api/user/verifyPasswordResetCode', credentials);
+    return this.httpService.post3('Checking code...', `${environment.url}/api/user/verifyPasswordResetCode`, credentials);
   }
 
   resendPasswordResetCode(credentials) {
-    return this.httpService.post(this.url + '/api/user/resendPasswordResetCode', credentials);
+    return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendPasswordResetCode`, credentials);
   }
 
   resetPassword(credentials) {

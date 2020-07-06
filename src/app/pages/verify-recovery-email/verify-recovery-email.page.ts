@@ -11,7 +11,7 @@ import { VerificationCodeInputComponent } from 'src/app/common/components/verifi
 })
 export class VerifyRecoveryEmailPage implements OnInit {
 
-  @ViewChild(VerificationCodeInputComponent) vvv: VerificationCodeInputComponent;
+  @ViewChild(VerificationCodeInputComponent) verificationCodeComponent: VerificationCodeInputComponent;
 
   protected verifyEmailForm: FormGroup;
   protected email: string;
@@ -28,7 +28,7 @@ export class VerifyRecoveryEmailPage implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit(resetCode) {
+  protected onSubmit(resetCode) {
     let resetData = {
       email: this.email,
       passwordResetCode: resetCode
@@ -40,17 +40,17 @@ export class VerifyRecoveryEmailPage implements OnInit {
       }
     };
 
-    this.authService.verifyPasswordResetCode(resetData).subscribe(val => {
-      if (val) {
-        this.router.navigate(['reset-password'], navigationExtras);
-      }
+    this.authService.verifyPasswordResetCode(resetData).then(() => {      
+        this.router.navigate(['reset-password'], navigationExtras);      
+    }).catch(() => {
+      this.verificationCodeComponent.reset();
     });
   }
 
-  resendPasswordResetCode() {
+  protected resendPasswordResetCode() {
     var body = { 
       'email': this.email 
     };
-    this.authService.resendPasswordResetCode(body).subscribe();
+    this.authService.resendPasswordResetCode(body).then();
   }
 }

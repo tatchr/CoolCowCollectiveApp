@@ -15,57 +15,67 @@ export class VerificationCodeInputComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     this.verificationForm = this.formBuilder.group({
-      aliases: this.formBuilder.array([])
+      numberBoxes: this.formBuilder.array(this.createNumberboxControls())
     });
-    this.createFormControls();
   }  
 
   ngOnInit() { }
 
-  createFormControls() {
+  public reset(){
+    this.verificationForm.reset();
+  }
+
+  private createNumberboxControls() {
+    let numberBoxes = [];
     let numberOfBoxes = 6;
-    for (var i = 0; i < numberOfBoxes; i++) this.addAlias();
+    for (var i = 0; i < numberOfBoxes; i++) {
+      numberBoxes.push(this.createNumberbox());
+    }
+
+    return numberBoxes;
+  }
+
+  private createNumberbox(){
+    return this.formBuilder.control(
+      '', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]
+    );
   }
 
   protected executeCodeResend() {
     this.resendcode.emit();
   }
 
-  get aliases() {
-    return this.verificationForm.get('aliases') as FormArray;
-  }
+  protected get numberBoxes() {
+    return this.verificationForm.get('numberBoxes') as FormArray;
+  }  
 
-  addAlias() {
-    this.aliases.push(
-      this.formBuilder.control(
-        '', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]
-      )
-    );
-  }
-
-  protected emitcode(aliases: FormArray) {
+  protected emitcode(numberBoxes: FormArray) {
     let code: string = '';
-    for(let control of aliases.controls){
+    for(let control of numberBoxes.controls){
       code += control.value;
     }
 
     this.returncode.emit(code);
-  }  
+  } 
 
-  protected moveFocus(event, index) {
+  protected moveFocusOnBackspace(index){
     let inputs = this.inputs.toArray();
+    let currentInput = inputs[index];
 
+    if(currentInput.value === '' && index > 0){
+      inputs[index - 1].setFocus();
+    }
+  }
+
+  protected moveFocus(event, index){
+    let inputs = this.inputs.toArray();
     if (inputs[index].value.length > 1) {
       inputs[index].value = event.key;
     }
 
-    if (event.keyCode == 8 && index > 0) {
-      inputs[index].value = '';
-      inputs[index - 1].setFocus();
-    }
-    else if (event.keyCode >= 48 && event.keyCode <= 57 && index < inputs.length - 1) {
-      inputs[index + 1].value = '';
+    let isNumber = event.keyCode >= 48 && event.keyCode <= 57;
+    if (isNumber && index < inputs.length - 1) {
       inputs[index + 1].setFocus();
     }
-  }  
+  }
 }
