@@ -12,8 +12,7 @@ import { USER, TOKEN_KEY, FARM } from 'src/app/common/objects/Constants';
   providedIn: 'root'
 })
 export class AuthService {
-
-  url = environment.url;
+  
   decodedToken = null;
   authenticationState = new BehaviorSubject(null);
 
@@ -24,7 +23,7 @@ export class AuthService {
     });
   }
 
-  checkToken() {
+  private checkToken() {
     this.storage.get(TOKEN_KEY).then(token => {
       if (token) {
         let decoded = this.helper.decodeToken(token);
@@ -44,39 +43,39 @@ export class AuthService {
     });
   }
 
-  registerUser(credentials) {
-    return this.httpService.post(this.url + '/api/user/register', credentials);
+  public registerUser(credentials) {
+    return this.httpService.post3('Registering...', `${environment.url}/api/user/register`, credentials);
   }
 
-  confirmEmail(credentials) {
+  public confirmEmail(credentials) {
     return this.httpService.post3('Checking code...', `${environment.url}/api/user/confirmEmail`, credentials);
   }
 
-  resendConfirmationCode(credentials) {
+  public resendConfirmationCode(credentials) {
     return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendConfirmationCode`, credentials);
   }
 
-  login(credentials) {
+  public login(credentials) {
     return this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials);      
   }
 
-  forgotPassword(credentials) {
+  public forgotPassword(credentials) {
     return this.httpService.post(`${environment.url}/api/user/forgotPassword`, credentials);
   }
 
-  verifyPasswordResetCode(credentials) {
+  public verifyPasswordResetCode(credentials) {
     return this.httpService.post3('Checking code...', `${environment.url}/api/user/verifyPasswordResetCode`, credentials);
   }
 
-  resendPasswordResetCode(credentials) {
+  public resendPasswordResetCode(credentials) {
     return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendPasswordResetCode`, credentials);
   }
 
-  resetPassword(credentials) {
+  public resetPassword(credentials) {
     return this.httpService.post(`${environment.url}/api/user/resetPassword`, credentials);
   }
 
-  logout() {
+  public logout() {
     this.storage.remove(USER);
     this.storage.remove(FARM);
     this.storage.remove(TOKEN_KEY).then(() => {
@@ -84,7 +83,7 @@ export class AuthService {
     });
   }
 
-  setUserAndJwtToken(source) {
+  public setUserAndJwtToken(source) {
     this.storage.set(USER, source['userDetails']).then(() => {
       this.storage.set(TOKEN_KEY, source['token']);
       this.decodedToken = this.helper.decodeToken(source['token']);
@@ -92,7 +91,7 @@ export class AuthService {
     });
   }
 
-  isAuthenticated() {
+  public isAuthenticated() {
     return this.authenticationState.value;
   }
 }

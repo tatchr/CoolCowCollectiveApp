@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'verification-code-input',

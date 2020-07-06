@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/authService/auth.service';
 import { Router, NavigationExtras } from '@angular/router';
 
@@ -25,7 +25,7 @@ export class RegisterUserPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       repeatedPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
     }, {
-      validator: this.checkPasswords.bind(this) 
+      validator: this.checkPasswords.bind(this)
     });
   }
 
@@ -36,16 +36,14 @@ export class RegisterUserPage implements OnInit {
   }
 
   onSubmit() {
-    this.authService.registerUser(this.newUserForm.value).subscribe(val => {
-      if(val){
-        const { value: email } = this.newUserForm.get('email');
-        let navigationExtras: NavigationExtras = {
-          state: {
-            email: email
-          }
-        };
-        this.router.navigate(['verify-registration-email'], navigationExtras);
-      }
+    this.authService.registerUser(this.newUserForm.value).then(() => {
+      const { value: email } = this.newUserForm.get('email');
+      let navigationExtras: NavigationExtras = {
+        state: {
+          email: email
+        }
+      };
+      this.router.navigate(['verify-registration-email'], navigationExtras);
     });
   }
 }
