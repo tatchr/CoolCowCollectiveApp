@@ -6,6 +6,8 @@ import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Storage } from '@ionic/storage';
 import { Period } from 'src/app/common/objects/Enums';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +29,9 @@ export class MilksalesService {
   totalMoney: number = 0;
   totalMoneyReceived: number = 0;
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
+  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, private farmService: FarmService) {
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId;
       this.loadMilkSalesList();
     });
   }
