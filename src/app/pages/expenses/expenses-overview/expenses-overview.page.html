@@ -1,12 +1,4 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button routerLink="/tabs/expenses-menu"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Expenses overview</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Expenses overview" [backbtn]="true"></topbar>
 <ion-row>
   <ion-col>
     <ion-item (click)="openFromDatePicker()">

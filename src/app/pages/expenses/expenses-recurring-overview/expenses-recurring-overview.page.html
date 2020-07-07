@@ -1,12 +1,4 @@
-<ion-header>
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button routerLink="/tabs/expenses-menu"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Recurring expenses</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<topbar title="Recurring expenses" [backbtn]="true"></topbar>
 <ion-row>
   <ion-col>
     <ion-item (click)="openFromDatePicker()">

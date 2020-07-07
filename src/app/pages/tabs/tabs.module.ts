@@ -27,13 +27,18 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
-        path: 'milk-sales-overview',
-        loadChildren: '../sales/milk-sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule',
+        path: 'sales-menu',
+        loadChildren: '../sales/sales-menu/sales-menu.module#SalesMenuPageModule',
         canActivate: [AuthGuardService]
       },
       {
         path: 'menu',
         loadChildren: '../menu/menu.module#MenuPageModule',
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'milk-sales-overview',
+        loadChildren: '../sales/milk-sales/milk-sales-overview/milk-sales-overview.module#MilkSalesOverviewPageModule',
         canActivate: [AuthGuardService]
       },
       {
