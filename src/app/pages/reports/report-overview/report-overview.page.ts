@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from 'src/app/services/report/report.service';
-import { Storage } from '@ionic/storage';
+import { AccountService } from 'src/app/services/account/account.service';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { UserDetails } from 'src/app/common/objects/UserDetails';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-report-overview',
@@ -9,22 +12,18 @@ import { Storage } from '@ionic/storage';
 })
 export class ReportOverviewPage implements OnInit {
 
-  constructor(public service: ReportService, private storage: Storage) { }
+  constructor(public service: ReportService, private accountService: AccountService, private farmService: FarmService) { }
 
   ngOnInit() {
   }
 
   downloadReport(fileType){
-    this.storage.get('farmId').then(farmId => {
-      this.storage.get('userId').then(userId => {
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.accountService.getUser().then((user: UserDetails) => {
         let reports = this.service.reportContent.filter(x => x.isChecked).map(x => x.val);
-        this.service.getReport(userId, farmId, reports, fileType, this.service.selectedFromDate, this.service.selectedToDate);
-      });
+        this.service.getReport(user.id, farm.farmId, reports, fileType, this.service.selectedFromDate, this.service.selectedToDate);
+      })
     });
-
-    
-
-    
   }
 
 }

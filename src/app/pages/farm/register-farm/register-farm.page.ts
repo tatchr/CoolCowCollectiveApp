@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { Storage } from '@ionic/storage';
+import { AccountService } from 'src/app/services/account/account.service';
 import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Component({
@@ -14,10 +15,11 @@ export class RegisterFarmPage implements OnInit {
 
   protected farmForm: FormGroup;
 
-  constructor(private farmService: FarmService, private router: Router, private storage: Storage, private formBuilder: FormBuilder) { }
+  constructor(private farmService: FarmService, private router: Router, private storage: Storage, 
+    private formBuilder: FormBuilder, private accountService: AccountService) { }
 
   ngOnInit() {
-    this.storage.get('userDetails').then((user: UserDetails) => {
+    this.accountService.getUser().then((user: UserDetails) => {
       this.farmForm = this.formBuilder.group({
         userId: user.id,
         name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
@@ -28,7 +30,7 @@ export class RegisterFarmPage implements OnInit {
         country: ['', [Validators.minLength(1), Validators.maxLength(100)]],
         description: ['', [Validators.minLength(1), Validators.maxLength(300)]]
       });
-    });    
+    });
   }
 
   onSubmit() {

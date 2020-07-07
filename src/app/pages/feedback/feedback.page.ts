@@ -4,6 +4,8 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { ToastController } from '@ionic/angular';
+import { AccountService } from 'src/app/services/account/account.service';
+import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Component({
   selector: 'app-feedback',
@@ -12,18 +14,16 @@ import { ToastController } from '@ionic/angular';
 })
 export class FeedbackPage implements OnInit {
 
-  userId: number;
   category: string = 'suggestion';
   appRating: number = null;
   feedbackForm: FormGroup;
 
   constructor(private feedbackService: FeedbackService, private router: Router, private formBuilder: FormBuilder, 
-    private storage: Storage, private toastController: ToastController) { }
+    private storage: Storage, private toastController: ToastController, private accountService: AccountService) { }
 
   ngOnInit() {
-    this.storage.get('userId').then(userId => {
-      this.userId = userId;
-      this.initiateForm();
+    this.accountService.getUser().then((user: UserDetails) => {
+      this.initiateForm(user.id);
     });
   }
 
@@ -35,9 +35,9 @@ export class FeedbackPage implements OnInit {
     this.appRating = rating;
   }
 
-  initiateForm() {
+  initiateForm(userId) {
     this.feedbackForm = this.formBuilder.group({
-      userId: [this.userId],
+      userId: [userId],
       appRating: [this.appRating, [Validators.required]],
       category: [this.category],      
       feedbackText: [null, [Validators.required,  Validators.maxLength(5000)]]

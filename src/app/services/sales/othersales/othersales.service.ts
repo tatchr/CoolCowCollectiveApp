@@ -3,9 +3,10 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
-import { Storage } from '@ionic/storage';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Period } from 'src/app/common/objects/Enums';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 
 @Injectable({
@@ -25,9 +26,9 @@ export class OthersalesService {
   changeCounter: number = 0;
   otherSalesList: Array<OtherSalesDetails> = [];
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage) {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
+  constructor(private httpService: HttpService, public datePicker: DatepickerService, private farmService: FarmService) {
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId;
       this.loadOtherSalesList();
     });
   }

@@ -3,11 +3,12 @@ import { environment } from 'src/environments/environment';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { Storage } from '@ionic/storage';
 import { TimeOfDay, CowState, CowStatus, Period } from 'src/app/common/objects/Enums';
 import { BehaviorSubject } from 'rxjs';
 import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 import { v4 as uuidv4 } from 'uuid';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -27,44 +28,45 @@ export class MilkService {
 
   inputProduction: number = 0.00;
   currentlySelected: MilkProductionDetails = null;
-  totalLiters: number;  
+  totalLiters: number;
 
   milkRecordsLoaded = new BehaviorSubject<boolean>(null);
   public milkRecordsUpdated = new BehaviorSubject<boolean>(null);
-  
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private cowService: CowService, private storage: Storage) { 
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
+
+  constructor(private httpService: HttpService, public datePicker: DatepickerService,
+    private cowService: CowService, private farmService: FarmService) {
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId;
       this.loadAllMilkRecordsList();
     });
   }
 
-  periodSelected(period){
+  periodSelected(period) {
     this.selectedPeriod = period;
     let result = this.datePicker.periodSelected(period);
-    
+
     this.toDate = result.toDate;
     this.fromDate = result.fromDate;
-    
+
     this.loadAllMilkRecordsList();
   }
-  
-  loadAllMilkRecordsList(){
+
+  loadAllMilkRecordsList() {
     this.getAllMilkRecords(this.farmId, this.fromDate, this.toDate)
-    .then(records => {       
-      this.allMilkRecordsList = records['milkProductionDetails']; 
-    })
-    .then(() => this.loadMilkRecordsList())
-    .then(() => this.milkRecordsLoaded.next(true));
-  }  
+      .then(records => {
+        this.allMilkRecordsList = records['milkProductionDetails'];
+      })
+      .then(() => this.loadMilkRecordsList())
+      .then(() => this.milkRecordsLoaded.next(true));
+  }
 
   loadMilkRecordsList() {
     this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.timeOfDay).then(records => {
       this.milkRecordsList = records['milkProductionDetails'];
 
       this.cowService.cowsList.forEach(cow => {
-        if(!this.milkRecordsList.some(x => x.cowId == cow.id) && cow.cowState == CowState.InHerd && cow.cowStatus == CowStatus.Lactating){
+        if (!this.milkRecordsList.some(x => x.cowId == cow.id) && cow.cowState == CowState.InHerd && cow.cowStatus == CowStatus.Lactating) {
           this.milkRecordsList.push(new MilkProductionDetails({
             id: uuidv4(),
             farmId: cow.farmId,
@@ -73,7 +75,7 @@ export class MilkService {
             tagNumber: cow.tagNumber,
             date: this.selectedDate,
             timeOfDay: this.timeOfDay,
-            amount: 0.0       
+            amount: 0.0
           }));
         }
       });
@@ -88,38 +90,38 @@ export class MilkService {
     });
   }
 
-  getMilkRecordsOnDate(farmId, date, timeOfDay){
+  getMilkRecordsOnDate(farmId, date, timeOfDay) {
     return this.httpService.get('Loading...', environment.url + '/api/milkproduction/get/' + farmId + '/' + date + '/' + timeOfDay);
   }
 
-  getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate){
+  getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate) {
     return this.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay
-       && this.datePicker.formatDate(x.date) >= this.datePicker.formatDate(fromDate)
-       && this.datePicker.formatDate(x.date) <= this.datePicker.formatDate(toDate));
+      && this.datePicker.formatDate(x.date) >= this.datePicker.formatDate(fromDate)
+      && this.datePicker.formatDate(x.date) <= this.datePicker.formatDate(toDate));
   }
 
-  getAllMilkRecords(farmId, fromDate, toDate){
+  getAllMilkRecords(farmId, fromDate, toDate) {
     return this.httpService.get('Loading...', environment.url + '/api/milkproduction/getAll/' + farmId + '/' + fromDate + '/' + toDate);
-  }  
+  }
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {
     return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records)
-    .then(() => {      
-      this.updateAllRecords(records);
-    })
-    .then(() => {
-      this.milkRecordsUpdated.next(true);
-    });
+      .then(() => {
+        this.updateAllRecords(records);
+      })
+      .then(() => {
+        this.milkRecordsUpdated.next(true);
+      });
   }
 
-  updateAllRecords(records: Array<MilkProductionDetails>){
+  updateAllRecords(records: Array<MilkProductionDetails>) {
     records.forEach(record => {
       record.hasBeenUpdated = false;
-      let index = this.allMilkRecordsList.map(x => x.id).indexOf(record.id); 
-      if(index >= 0){        
+      let index = this.allMilkRecordsList.map(x => x.id).indexOf(record.id);
+      if (index >= 0) {
         this.allMilkRecordsList[index] = record;
       }
-      else{
+      else {
         this.allMilkRecordsList.push(record);
       }
     });
@@ -159,7 +161,7 @@ export class MilkService {
       this.inputProduction += 0.1;
     }
     this.changeAmount(action);
-  }  
+  }
 
   changeAmount(action) {
     this.currentlySelected.amount = this.inputProduction;

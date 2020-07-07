@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { ReportService } from 'src/app/services/report/report.service';
-import { Storage } from '@ionic/storage';
+import { AccountService } from 'src/app/services/account/account.service';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { UserDetails } from 'src/app/common/objects/UserDetails';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-financial-report',
@@ -14,15 +17,16 @@ export class FinancialReportPage implements OnInit {
   userId: string;
   
 
-  constructor(private datePicker: DatepickerService, public reportService: ReportService, private storage: Storage) { }
+  constructor(private datePicker: DatepickerService, public reportService: ReportService,
+    private accountService: AccountService, private farmService: FarmService) { }
 
   ngOnInit() {
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
+    this.accountService.getUser().then((user: UserDetails) => {
+      this.userId = user.id;
     });
 
-    this.storage.get('userId').then(userId => {
-      this.userId = userId;
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId;
     });
   }
 

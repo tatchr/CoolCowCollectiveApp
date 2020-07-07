@@ -4,7 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { Animal } from 'src/app/common/objects/Enums';
-import { Storage } from '@ionic/storage';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -19,18 +20,15 @@ export class CowService {
 
   cowsList: Array<CowDetails> = [];
   filteredCowsList: Array<CowDetails> = [];  
-  animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];
+  animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];  
 
-  farmId: number;
-
-  constructor(private httpService: HttpService, private storage: Storage) { 
-    this.storage.get('farmId').then(farmId => {
-      this.farmId = farmId;
-      this.loadCowsList(farmId);
-    });    
+  constructor(private httpService: HttpService, private farmService: FarmService) {
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.loadCowsList(farm.farmId);
+    }); 
   }
 
-  loadCowsList(farmId) {
+  private loadCowsList(farmId) {
     this.getAllCows(farmId, null).then(res => {
       this.cowsList = res['cows'];
       this.filteredCowsList = res['cows'];
