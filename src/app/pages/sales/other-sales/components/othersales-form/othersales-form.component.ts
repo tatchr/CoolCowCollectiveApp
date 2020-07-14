@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 import { Animal, ItemSold } from 'src/app/common/objects/Enums';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
-import { Router, ResolveEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { CowService } from 'src/app/services/cow/cow.service';
 
 const cattleTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];
@@ -18,6 +18,7 @@ export class OthersalesFormComponent implements OnInit {
   @Input() isExistingRecord: boolean;
   @Input() othersalesDetails: OtherSalesDetails;
   @Output() returnform = new EventEmitter<FormGroup>();
+  @Output() delete = new EventEmitter<string>();
 
   protected othersalesForm: FormGroup;
   protected cattleSold: boolean;
@@ -35,6 +36,7 @@ export class OthersalesFormComponent implements OnInit {
 
   private createForm(otherSales: OtherSalesDetails){
     return this.formBuilder.group({
+      id: [otherSales.id],
       farmId: [otherSales.farmId],
       date: [this.getDate(otherSales)],
       itemsold: new FormControl({value: otherSales.itemSold, disabled: this.isExistingRecord}, [Validators.required, Validators.maxLength(150)]),
@@ -59,6 +61,12 @@ export class OthersalesFormComponent implements OnInit {
     this.returnform.emit(form);
   }
 
+  protected deleterecord(form: FormGroup){
+    let othersaleId = form.get('id').value;
+
+    this.delete.emit(othersaleId);
+  }
+
   protected get itemsold(){
     return this.othersalesForm.get('itemsold').value;
   }
@@ -73,19 +81,16 @@ export class OthersalesFormComponent implements OnInit {
 
   protected toCowRegistration(){
     this.router.navigateByUrl('/register-cow');
-  }
-
-  private getItemSold(itemSold: string): Promise<string>{
-    return new Promise((resolve) => {
-      
-      resolve(itemSold);      
-    });
-  }
+  }  
 
   private setItemSold(itemSold){
     this.spermSold = (itemSold == ItemSold.Sperm);
     this.otherSold = (itemSold == ItemSold.Other);
     this.cattleSold = cattleTypes.includes(itemSold);
+
+    if(this.cattleSold && this.isExistingRecord){
+      this.cattle = this.cowService.getCowsOfTypeSold(itemSold);
+    }
   }
 
   private onFormChanges() {

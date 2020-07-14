@@ -41,6 +41,11 @@ export class CowService {
     return this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
   }
 
+  public getCowsOfTypeSold(cowType: string): Array<CowDetails>{
+    let cowsByType = this.filterService.applyFilters(this.cowsList, [cowType], 'cowType');
+    return this.filterService.applyFilters(cowsByType, [CowState.Sold.valueOf()], 'cowState');
+  }
+
   getCow(cowId){
     return this.cowsList.find(x => x.id == cowId);
   }

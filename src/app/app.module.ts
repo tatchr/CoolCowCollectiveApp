@@ -19,7 +19,6 @@ import { environment } from '../environments/environment';
 
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
-import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,9 +35,9 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, CowBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
-  entryComponents: [CowBaseComponent, MilkSalesBaseComponent, OtherSalesBaseComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
+  declarations: [AppComponent, CowBaseComponent, MilkSalesBaseComponent],
+  entryComponents: [CowBaseComponent, MilkSalesBaseComponent],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     HttpClientModule,
     Ionic4DatepickerModule,
     FormsModule,

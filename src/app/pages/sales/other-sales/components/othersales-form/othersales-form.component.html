@@ -65,7 +65,7 @@
         <ion-icon name="save"></ion-icon>
       </ion-button>
 
-      <ion-button expand="full" size="default" color="danger" (click)="onDelete()">
+      <ion-button *ngIf="isExistingRecord" expand="full" size="default" color="danger" (click)="deleterecord(othersalesForm)">
         <ion-icon name="trash"></ion-icon>
       </ion-button>
     </div>    

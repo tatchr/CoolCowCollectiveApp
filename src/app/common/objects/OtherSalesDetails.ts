@@ -9,7 +9,8 @@ export class OtherSalesDetails {
     quantity: number;
     offtakerName: string;
     offtakerCompany: string;
-    timestamp: Date;
+    registrationDate: Date;
+    updateDate: Date;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

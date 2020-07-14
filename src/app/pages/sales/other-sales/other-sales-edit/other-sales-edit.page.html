@@ -9,59 +9,9 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <othersales-form *ngIf="othersalesDetails" [isExistingRecord]="true" [selectedDate]="selectedDate" [othersalesDetails]="othersalesDetails" (returnform)="onSubmit($event)"></othersales-form>
-        <!-- <form *ngIf="othersalesForm" [formGroup]="othersalesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-          <h3>
-            Other sale details
-          </h3>
-
-          <ion-item>
-            <ion-label color="medium">Item sold*</ion-label>
-            <ion-select formControlName="itemsold" placeholder="Select One" (ionChange)="itemSelected($event)">
-              <ion-select-option value="Cow">Cow</ion-select-option>
-              <ion-select-option value="Heifer">Heifer</ion-select-option>
-              <ion-select-option value="Calf">Calf</ion-select-option>
-              <ion-select-option value="Bull">Bull</ion-select-option>
-              <ion-select-option value="Sperm">Sperm</ion-select-option>
-              <ion-select-option value="Other">Other</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item *ngIf="showCowList">
-            <ion-label color="medium">Select from herd*</ion-label>
-            <ion-select formControlName="cowidsold" placeholder="Select One">
-              <ion-select-option *ngIf="cowSold" [value]="cowSold.id">{{cowSold.name}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item *ngIf="showOtherInput">
-            <ion-label position="floating" color="medium">Item description*</ion-label>
-            <ion-input autocapitalize="on" type="text" [(ngModel)]="otherItemDescription"
-              [ngModelOptions]="{standalone: true}"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium" *ngIf="showCowList">Price*</ion-label>
-            <ion-label position="floating" color="medium" *ngIf="showOtherInput || showSpermInput">Price per unit*
-            </ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
-          </ion-item>
-
-          <ion-item *ngIf="showOtherInput || showSpermInput">
-            <ion-label position="floating" color="medium">Quantity*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Off-taker name*</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="offtakername"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Off-taker company</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="offtakercompany"></ion-input>
-          </ion-item>
-        </form> -->
+        <othersales-form *ngIf="othersalesDetails" [isExistingRecord]="true" [selectedDate]="selectedDate" 
+          [othersalesDetails]="othersalesDetails" (returnform)="onSubmit($event)" (delete)="onDelete($event)">
+        </othersales-form>
       </ion-col>
     </ion-row>
   </ion-grid>

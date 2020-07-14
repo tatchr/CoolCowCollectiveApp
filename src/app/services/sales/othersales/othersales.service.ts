@@ -62,6 +62,7 @@ export class OthersalesService {
   }
 
   updateOtherSalesRecord(record) {
+    console.log(record);
     return this.httpService.put(environment.url + '/api/othersales/update', record);
   }
 

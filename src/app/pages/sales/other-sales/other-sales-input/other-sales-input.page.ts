@@ -34,8 +34,6 @@ export class OtherSalesInputPage implements OnInit {
   }  
 
   onSubmit(othersalesForm) {
-    console.log(othersalesForm);
-
     this.otherSalesService.registerOtherSalesRecord(othersalesForm.value).then(val => {
       if(val['otherSale']){
         this.otherSalesService.otherSaleRegistered.next(val['otherSale']);
