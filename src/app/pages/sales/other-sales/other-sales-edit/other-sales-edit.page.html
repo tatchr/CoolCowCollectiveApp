@@ -9,7 +9,8 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form *ngIf="othersalesForm" [formGroup]="othersalesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
+        <othersales-form *ngIf="othersalesDetails" [isExistingRecord]="true" [selectedDate]="selectedDate" [othersalesDetails]="othersalesDetails" (returnform)="onSubmit($event)"></othersales-form>
+        <!-- <form *ngIf="othersalesForm" [formGroup]="othersalesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <h3>
             Other sale details
           </h3>
@@ -60,13 +61,13 @@
             <ion-label position="floating" color="medium">Off-taker company</ion-label>
             <ion-input autocapitalize="on" type="text" formControlName="offtakercompany"></ion-input>
           </ion-item>
-        </form>
+        </form> -->
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-footer>
+<!-- <ion-footer>
   <ion-row>
     <ion-col col-6>
       <ion-button color="success" expand="full" type="submit" *ngIf="othersalesForm" [disabled]="!othersalesForm.valid"
@@ -81,4 +82,4 @@
       </ion-button>
     </ion-col>
   </ion-row>
-</ion-footer>
+</ion-footer> -->

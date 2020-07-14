@@ -1,91 +1,46 @@
-import { Storage } from '@ionic/storage';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { CowService } from 'src/app/services/cow/cow.service';
-import { OtherSalesBaseComponent } from 'src/app/pages/sales/other-sales/other-sales-base/other-sales-base.component';
-import { FilterService } from 'src/app/services/filter/filter.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
-import { ItemSold, CowState } from 'src/app/common/objects/Enums';
+import { OthersalesFormComponent } from '../components/othersales-form/othersales-form.component';
+import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-other-sales-input',
   templateUrl: './other-sales-input.page.html',
   styleUrls: ['./other-sales-input.page.scss'],
 })
-export class OtherSalesInputPage extends OtherSalesBaseComponent implements OnInit {
+export class OtherSalesInputPage implements OnInit {
+  @ViewChild(OthersalesFormComponent) othersalesFormComponent: OthersalesFormComponent;
 
-  disableSubmitBtn: boolean = false;
+  othersalesDetails: OtherSalesDetails;
   cowSelector: Array<CowDetails> = [];
+  selectedDate: string = this.otherSalesService.datePicker.formatDate(new Date());
 
-  constructor(router: Router, otherSalesService: OthersalesService, cowService: CowService, formBuilder: FormBuilder,
-    storage: Storage, private filterService: FilterService) {
-    super(router, otherSalesService, cowService, formBuilder, storage);
-  }
+  constructor(private router: Router, private otherSalesService: OthersalesService, private farmService: FarmService) {}
 
   ngOnInit() {
-    this.initiateForm();
-  }
-
-  initiateForm() {
-    this.othersalesForm = this.formBuilder.group({
-      farmId: [this.otherSalesService.farmId],
-      date: [this.selectedDate],
-      itemsold: [null, [Validators.required]],
-      cowidsold: [null],
-      price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.00)]],
-      quantity: [null, [Validators.max(100000.00)]],
-      offtakername: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-      offtakercompany: [null],
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.othersalesDetails = new OtherSalesDetails({
+        farmId: farm.farmId
+      });
     });
   }
 
-  onSubmit() {
-    if (this.othersalesForm.valid) {
-      this.othersalesForm.controls['farmId'].setValue(this.otherSalesService.farmId);
-      this.othersalesForm.controls['date'].setValue(this.selectedDate);
+  async openDatePicker() {
+    this.selectedDate = await this.otherSalesService.datePicker.openDatePicker(this.selectedDate);
+  }  
 
-      let itemsold = this.othersalesForm.controls['itemsold'].value;
-      if (itemsold == ItemSold.Other) {
-        this.othersalesForm.controls['itemsold'].setValue(this.otherItemDescription);
+  onSubmit(othersalesForm) {
+    console.log(othersalesForm);
+
+    this.otherSalesService.registerOtherSalesRecord(othersalesForm.value).then(val => {
+      if(val['otherSale']){
+        this.otherSalesService.otherSaleRegistered.next(val['otherSale']);
+        this.router.navigateByUrl('/tabs/other-sales-overview');
       }
-
-      this.otherSalesService.registerOtherSalesRecord(this.othersalesForm.value).then(val => {
-        if (val['otherSale']) {
-          this.otherSalesService.otherSaleRegistered.next(val['otherSale']);
-          this.returnToOverview();
-        }
-      });
-    }
-  }
-
-  itemSelected(event) {
-    this.showOtherInput = event.detail.value == ItemSold.Other;
-    this.showSpermInput = event.detail.value == ItemSold.Sperm;
-    this.showCowList = this.cowService.animalTypes.includes(event.detail.value);
-    if (this.showCowList) {
-      this.loadCowsList(event.detail.value);
-    }
-  }
-
-  loadCowsList(cowType) {
-    let cowsByType = this.filterService.applyFilters(this.cowService.cowsList, [cowType], 'cowType');
-    this.cowSelector = this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
-
-    if (this.cowSelector.length == 0) {
-      this.othersalesForm.disable();
-      this.othersalesForm.controls['itemsold'].enable();
-      this.othersalesForm.controls['cowidsold'].setValue(null);
-      this.othersalesForm.controls['price'].setValue(null);
-      this.othersalesForm.controls['offtakername'].setValue(null);
-      this.othersalesForm.controls['offtakercompany'].setValue(null);
-      this.disableSubmitBtn = true;
-    }
-    else {
-      this.othersalesForm.enable();
-      this.disableSubmitBtn = false;
-    }
+    });
   }
 }

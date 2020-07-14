@@ -3,9 +3,10 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
-import { Animal } from 'src/app/common/objects/Enums';
+import { Animal, CowState } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { FilterService } from 'src/app/services/filter/filter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class CowService {
   filteredCowsList: Array<CowDetails> = [];  
   animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];  
 
-  constructor(private httpService: HttpService, private farmService: FarmService) {
+  constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.loadCowsList(farm.farmId);
     }); 
@@ -33,6 +34,11 @@ export class CowService {
       this.cowsList = res['cows'];
       this.filteredCowsList = res['cows'];
     });
+  }
+
+  public getCowsOfTypeInHerd(cowType: string): Array<CowDetails>{
+    let cowsByType = this.filterService.applyFilters(this.cowsList, [cowType], 'cowType');
+    return this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
   }
 
   getCow(cowId){

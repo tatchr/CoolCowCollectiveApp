@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { OtherSalesInputPage } from './other-sales-input.page';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { OthersalesComponentsModule } from 'src/app/pages/sales/other-sales/components/othersales-components.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     CommonComponentsModule,
     ReactiveFormsModule,
+    OthersalesComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [OtherSalesInputPage]

@@ -45,7 +45,7 @@
 
       <ion-row *ngFor='let sale of result.otherSalesList'>
         <ion-col>
-          <ion-item button="true" (click)="openOtherSaleRecord(sale.id)"
+          <ion-item button="true" (click)="openOtherSaleRecord(sale)"
             [color]="sale.fullAmountPaid ? 'success' : ''">
             <ion-label>              
               <p>{{sale.itemSold}} - {{sale.price}} KSH</p>

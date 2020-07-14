@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OthersalesService } from 'src/app/services/sales/othersales/othersales.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { CowService } from 'src/app/services/cow/cow.service';
+import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 
 @Component({
   selector: 'app-other-sales-overview',
@@ -51,11 +52,10 @@ export class OtherSalesOverviewPage implements OnInit {
     this.router.navigate(['other-sales-input'], navigationExtras);
   }
 
-  openOtherSaleRecord(otherSaleId) {
-    let index = this.otherSalesService.otherSalesList.map(x => x.id).findIndex(x => x == otherSaleId);
+  openOtherSaleRecord(otherSale: OtherSalesDetails) {    
     let navigationExtras: NavigationExtras = {
       state: {
-        otherSaleDetails: this.otherSalesService.otherSalesList[index]
+        otherSaleDetails: otherSale
       }
     };
     this.router.navigate(['other-sales-edit'], navigationExtras);
