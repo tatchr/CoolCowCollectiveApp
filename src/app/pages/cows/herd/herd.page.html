@@ -9,7 +9,7 @@
     </ion-icon>
     <ion-label style="display: none;">Filters</ion-label>
     <ion-select multiple="true" style="width: 0px;" [(ngModel)]="filters" (ionChange)="applyFilters()">
-      <ion-select-option *ngFor="let cowStatus of cowStatuses" value="{{cowStatus.value}}" [selected]="true">{{cowStatus.name}}</ion-select-option>
+      <ion-select-option *ngFor="let cowStatus of cowStatuses" [selected]="true">{{cowStatus}}</ion-select-option>
     </ion-select>
   </ion-button>
 </ion-item>
@@ -32,15 +32,16 @@
         <!-- <div *ngIf="searching" class="spinner-container">
           <ion-spinner></ion-spinner>
         </div> -->
-        <ion-card button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowPassport(cow.id)">
-          <ion-item>
+        <ion-card  button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowPassport(cow.id)">
+          <ion-item no-lines>
             <ion-avatar>
-              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+              <img src="\assets\img\2358557.png">
             </ion-avatar>
 
             <ion-card-header style="max-width: 150px;" text-wrap>
               <ion-card-subtitle *ngIf="cow.tagNumber != null">#{{cow.tagNumber}}</ion-card-subtitle>
               <ion-card-title>{{cow.name}}</ion-card-title>
+              <ion-card-subtitle>{{cow.cowType}}</ion-card-subtitle>
               <ion-card-subtitle>{{cow.cowStatus}}</ion-card-subtitle>
             </ion-card-header>
 

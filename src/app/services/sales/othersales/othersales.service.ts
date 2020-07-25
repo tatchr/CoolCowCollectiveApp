@@ -54,19 +54,19 @@ export class OthersalesService {
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', environment.url + '/api/othersales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/othersales/getAll/${farmId }/${fromDate}/${toDate}`);
   }
 
   registerOtherSalesRecord(record) {
-    return this.httpService.post3('Saving...', environment.url + '/api/othersales/register', record);
+    return this.httpService.post3('Saving...', `${environment.url}/api/othersales/register`, record);
   }
 
   updateOtherSalesRecord(record) {
     console.log(record);
-    return this.httpService.put(environment.url + '/api/othersales/update', record);
+    return this.httpService.put(`${environment.url}/api/othersales/update`, record);
   }
 
   deleteOtherSalesRecord(id) {
-    return this.httpService.delete(environment.url + '/api/othersales/delete/' + id);
+    return this.httpService.delete(`${environment.url}/api/othersales/delete/${id}`);
   }
 }
