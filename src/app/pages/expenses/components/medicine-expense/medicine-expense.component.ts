@@ -13,6 +13,8 @@ export class MedicineExpenseComponent implements OnInit {
   
   constructor(public service: ExpensesService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
 }

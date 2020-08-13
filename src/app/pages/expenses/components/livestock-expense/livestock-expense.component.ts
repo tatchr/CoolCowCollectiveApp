@@ -14,7 +14,7 @@ export class LivestockExpenseComponent implements OnInit {
   constructor(private service: ExpensesService) { }
 
   ngOnInit() {
-    this.form.controls['quantity'].setValue(1);
+    //this.form.controls['quantity'].setValue(1);
   }
 
 }

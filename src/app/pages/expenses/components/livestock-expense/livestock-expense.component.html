@@ -10,9 +10,24 @@
   </ion-item>
   
   <ion-item>
-    <ion-label position="floating" color="medium">Price*
+    <ion-label position="floating" color="medium">Price (Ksh)*
     </ion-label>
     <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Cow name
+    </ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="cowname"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="medium">Cow status*</ion-label>
+    <ion-select formControlName="cowstatus" placeholder="Select One">
+      <ion-select-option value="Lactating">Lactating</ion-select-option>
+      <ion-select-option value="Non-Lactating">Non-lactating</ion-select-option>
+      <ion-select-option value="N/A">N/A</ion-select-option>
+    </ion-select>
   </ion-item>
 
   <ion-item>

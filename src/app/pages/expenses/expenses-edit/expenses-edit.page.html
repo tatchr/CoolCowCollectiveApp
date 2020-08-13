@@ -9,19 +9,6 @@
   <ion-grid>
     <ion-row>
       <ion-col no-padding>
-        <!-- <form *ngIf="this.service.expensesForm" [formGroup]="this.service.expensesForm"
-          (ngSubmit)="this.service.onSubmit()" (keyup.enter)="this.service.onSubmit()">
-          <ion-item [disabled]="this.service.expensesForm.value['recurringId']">
-            <ion-label color="medium">Item category*</ion-label>
-            <ion-select formControlName="type" placeholder="Select One" (ionChange)="this.service.typeSelected($event)">
-              <ion-select-option value="Feed">Feed</ion-select-option>
-              <ion-select-option value="Medicine">Medicine</ion-select-option>
-              <ion-select-option value="Labour">Labour</ion-select-option>
-              <ion-select-option value="Livestock">Livestock</ion-select-option>
-              <ion-select-option value="Other">Other</ion-select-option>
-            </ion-select>
-          </ion-item> -->
-
           <ion-item *ngIf="this.service.expensesForm" [disabled]="this.service.expensesForm.value['recurringId']">
             <ion-label color="medium">Item category*</ion-label>
             <ion-select placeholder="Select One" (ionChange)="this.service.typeSelected($event)" [(ngModel)]="this.service.selectedType">
@@ -37,59 +24,6 @@
           <medicine-expense-form *ngIf="this.service.selectedType == 'Medicine'" [form]="this.service.expensesForm"></medicine-expense-form>
           <labour-expense-form *ngIf="this.service.selectedType == 'Labour'" [form]="this.service.expensesForm"></labour-expense-form>
           <livestock-expense-form *ngIf="this.service.selectedType == 'Livestock'" [form]="this.service.expensesForm"></livestock-expense-form>
-
-          <!-- <ion-item>
-            <ion-label position="floating" color="medium">Item bought*</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="itembought"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Price per item*
-            </ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
-          </ion-item>
-
-          <ion-item style="display: inline-block;width: 150px;vertical-align: bottom;">
-            <ion-label position="floating" color="medium">Quantity*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
-          </ion-item>
-
-          <ion-item no-padding style="display: inline-block;width: 100px;vertical-align: bottom;margin-left: 10px;">
-            <ion-select formControlName="quantityUnit" placeholder="Unit" style="max-width: 100%;padding-left:0;">
-              <ion-select-option value="units">units</ion-select-option>
-              <ion-select-option value="kg">kg</ion-select-option>
-              <ion-select-option value="L">L</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Total price
-            </ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Seller name</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="sellername"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Seller company</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
-          </ion-item>
-
-          <ion-item
-            *ngIf="this.service.expensesForm.value['recurringisactive'] && !this.service.expensesForm.value['recurringId']">
-            <ion-label position="floating" color="medium">Recurring period (days)*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
-          </ion-item>
-
-          <ion-item no-padding *ngIf="!this.service.expensesForm.value['recurringId']">
-            <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
-            <ion-toggle slot="end" formControlName="recurringisactive" color="success"
-              (ionChange)="this.service.isRecurringToggled($event)"></ion-toggle>
-          </ion-item> 
-        </form>-->
       </ion-col>
     </ion-row>
   </ion-grid>

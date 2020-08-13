@@ -41,7 +41,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
       breed: this.cowDetails.breed,
       cowstatus: [this.cowDetails.cowStatus, [Validators.required, Validators.maxLength(100)]],
       lactatingsincedate: [this.cowDetails.lactatingSinceDate],
-      cowstate: this.cowDetails.cowState,
+      cowstate: [{ value: this.cowDetails.cowState, disabled: true }],
       registrationdate: this.cowDetails.registrationDate,
       updateDate: [null]
     });

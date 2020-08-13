@@ -36,8 +36,8 @@ export class ExpensesService {
   expensesList: Array<ExpensesDetails> = [];
   recurringExpensesList: Array<ExpensesRecurringGroup> = [];
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, 
-    private location: Location, public formBuilder: FormBuilder, private farmService: FarmService) {
+  constructor(private httpService: HttpService, public datePicker: DatepickerService, private location: Location, 
+    public formBuilder: FormBuilder, private farmService: FarmService) {
       this.farmService.getFarm().then((farm: FarmDetails) => {
         this.farmId = farm.farmId;
         this.loadExpensesList();
@@ -88,32 +88,14 @@ export class ExpensesService {
     this.loadExpensesList();
     this.loadRecurringExpensesList();  
   }
-
-  shouldContainValueIfIsRecurringToggled(group: FormGroup): { [s: string]: boolean }{
-    let containsValue = group.value != null;
-
-    if(this.expensesForm && this.expensesForm.controls.recurringisactive.value){
-      return containsValue ? null : { isInvalid: true }
-    }
-
-    return null;
-  }
-
-  isRecurringToggled(event){
-    if(event.detail.checked){
-      this.expensesForm.addControl('recurringperiodindays', new FormControl(null, [this.shouldContainValueIfIsRecurringToggled.bind(this)]));
-    }
-    else{
-      this.expensesForm.removeControl('recurringperiodindays');
-    }
-  }
+  
 
   returnToOverview(){
     this.location.back();
   }
 
   typeSelected(event){
-    this.initiateNewForm();
+    //this.initiateNewForm();
     this.selectedType = event.detail.value;
   }
 
@@ -125,29 +107,31 @@ export class ExpensesService {
     return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 
-  initiateNewForm() {
-    this.expensesForm = this.formBuilder.group({
-      id: uuidv4(),
-      farmId: [this.farmId],
-      date: [this.selectedDate],
-      type: [null],
-      itembought: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
-      quantity: [null, [Validators.required, Validators.min(1), Validators.max(10000)]],
-      quantityUnit: [null],
-      totalprice: [{ value: 0.0, disabled: true }],
-      sellername: [null],
-      sellercompany: [null],
-      recurringisactive: [false],
-      recurringFromDate: [null],
-      registrationDate: [null]
-    });    
+  // initiateNewForm() {
+  //   this.expensesForm = this.formBuilder.group({
+  //     id: uuidv4(),
+  //     farmId: [this.farmId],
+  //     date: [this.selectedDate],
+  //     type: [null],
+  //     itembought: [null, [Validators.required]],
+  //     price: [null, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
+  //     quantity: [null, [Validators.required, Validators.min(1), Validators.max(10000)]],
+  //     quantityUnit: [null],
+  //     totalprice: [{ value: 0.0, disabled: true }],
+  //     cowname: [null],
+  //     cowstatus: [null],
+  //     sellername: [null],
+  //     sellercompany: [null],
+  //     recurringisactive: [false],
+  //     recurringFromDate: [null],
+  //     registrationDate: [null]
+  //   });    
 
-    this.expensesForm.valueChanges.subscribe(val => {
-      let totalprice = this.round(val['price'] * val['quantity'], 2);
-      this.expensesForm.get('totalprice').patchValue(totalprice, { emitEvent: false });
-    });
-  }
+  //   this.expensesForm.valueChanges.subscribe(val => {
+  //     let totalprice = this.round(val['price'] * val['quantity'], 2);
+  //     this.expensesForm.get('totalprice').patchValue(totalprice, { emitEvent: false });
+  //   });
+  // }
 
   initiateExistingForm(expenseDetails: ExpensesDetails){
     this.selectedDate = this.datePicker.formatDate(expenseDetails.date);
@@ -162,6 +146,8 @@ export class ExpensesService {
       quantity: [expenseDetails.quantity, [Validators.required, Validators.min(1), Validators.max(10000)]],
       quantityUnit: [expenseDetails.quantityUnit],
       totalprice: [{ value: expenseDetails.totalPrice, disabled: true }],
+      cowname: [null],
+      cowstatus: [null],
       sellername: [expenseDetails.sellerName],
       sellercompany: [expenseDetails.sellerCompany],
       isrootrecord: [expenseDetails.isRootRecord],
@@ -212,5 +198,5 @@ export class ExpensesService {
 
   toggleRecurringRecords(recurringId: string, recurringIsActive: boolean){
     return this.httpService.put(`${environment.url}/api/expenses/stopRecurringRecords/${recurringId}/${recurringIsActive}`, null);
-  }
+  }  
 }
