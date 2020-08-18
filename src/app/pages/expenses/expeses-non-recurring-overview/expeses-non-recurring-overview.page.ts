@@ -4,44 +4,17 @@ import { Router, NavigationExtras } from '@angular/router';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 
 @Component({
-  selector: 'app-expenses-overview',
-  templateUrl: './expenses-overview.page.html',
-  styleUrls: ['./expenses-overview.page.scss'],
+  selector: 'app-expeses-non-recurring-overview',
+  templateUrl: './expeses-non-recurring-overview.page.html',
+  styleUrls: ['./expeses-non-recurring-overview.page.scss'],
 })
-export class ExpensesOverviewPage implements OnInit {  
+export class ExpesesNonRecurringOverviewPage implements OnInit {
 
   panelOpenState = false;
 
   constructor(private router: Router, public expensesService: ExpensesService) { }
 
   ngOnInit() {
-      
-  }
-  
-  automaticClose = false;
-  toggleSection(index) {
-    this.expensesService.recurringExpensesList[index].open = !this.expensesService.recurringExpensesList[index].open;
-
-    if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
-      this.expensesService.recurringExpensesList
-      .filter((item, itemIndex) => itemIndex != index)
-      .map(item => item.open = false);
-    }
-  }
-
-  toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
-      expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
-    });
-  }
-
-  openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
-    let navigationExtras: NavigationExtras = {
-      state: {
-        expenseDetails: rootExpense
-      }
-    };
-    this.router.navigate(['expenses-recurring-edit'], navigationExtras);
   }
 
   openExpenseRecord(expense: ExpensesDetails){
@@ -64,4 +37,5 @@ export class ExpensesOverviewPage implements OnInit {
     this.expensesService.selectedToDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedToDate);
     this.expensesService.loadExpensesList();    
   }
+
 }

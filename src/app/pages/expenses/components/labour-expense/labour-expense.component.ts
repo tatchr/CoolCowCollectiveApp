@@ -15,6 +15,6 @@ export class LabourExpenseComponent implements OnInit {
 
   ngOnInit() {
     this.form.controls['quantityUnit'].setValue('hours');    
-  } 
+  }
 
 }

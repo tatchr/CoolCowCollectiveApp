@@ -1,4 +1,4 @@
-<topbar title="Expenses overview" [backbtn]="true"></topbar>
+<topbar title="Expenses overview" [backbtn]="true" backUrl="/expenses-menu"></topbar>
 <ion-row>
   <ion-col>
     <ion-item (click)="openFromDatePicker()">
@@ -29,6 +29,89 @@
 </ion-row>
 
 <ion-content no-padding>
+  <ion-row>
+    <ion-col>
+      <b>Recurring expenses</b>
+    </ion-col>
+  </ion-row>
+
+  <ion-list *ngFor='let expenseGroup of this.expensesService.recurringExpensesList; let i = index;'
+  class="accordion-list" detail="false" no-padding>
+
+    <ion-item tappable [ngClass]="{'section-active': expenseGroup.open, 'section': !expenseGroup.open}" no-padding>
+      <ion-col size="2" align-self-stretch no-padding>
+        <ion-button (click)="toggleSection(i)" class="toggle-btn" fill="clear">
+          <ion-icon style="font-size: 16px;padding-right: 6px;" name="arrow-round-forward"
+            *ngIf="!expenseGroup.open">
+          </ion-icon>
+          <ion-icon style="font-size: 16px;padding-right: 6px;" name="arrow-round-down" *ngIf="expenseGroup.open">
+          </ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="7" align-self-center>
+        <ion-label>
+          {{expenseGroup.rootExpense.itemBought}}
+        </ion-label>
+        <ion-label>
+          {{expenseGroup.expensesList.length}} items
+        </ion-label>
+        <ion-label *ngIf="expenseGroup.open">
+          {{expenseGroup.totalPrice}} Ksh
+        </ion-label>
+      </ion-col>
+
+      <ion-col size="3" *ngIf="!expenseGroup.open" align-self-center class="ion-text-end">
+        <ion-note style="font-size: 16px;">{{expenseGroup.totalPrice}} Ksh </ion-note>
+      </ion-col>
+
+      <ion-col size="3" *ngIf="expenseGroup.open" align-self-stretch class="ion-text-end" no-padding
+        class="toggle-btn">
+
+        <ion-button expand="full" size="default" color="danger" *ngIf="expenseGroup.rootExpense.recurringIsActive" (click)="toggleRecurring(expenseGroup.rootExpense)">
+          Stop recurring
+        </ion-button>
+
+        <ion-button expand="full" size="default" color="success" *ngIf="!expenseGroup.rootExpense.recurringIsActive" (click)="toggleRecurring(expenseGroup.rootExpense)">
+          Start recurring
+        </ion-button>
+
+        <ion-button class="toggle-btn" color="primary" expand="full"
+          (click)="openRecurringExpenseRootRecord(expenseGroup.rootExpense)">
+          <ion-icon name="cog"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-item>
+
+
+  <div *ngIf="expenseGroup.expensesList && expenseGroup.open">
+    <ion-list class="child-list" *ngFor='let childExpense of expenseGroup.expensesList'>
+      <ion-item button="true" (click)="openExpenseRecord(childExpense)">
+        <ion-note slot="end" style="font-size: 16px;">{{childExpense.totalPrice}} Ksh </ion-note>
+        <ion-label>
+          <p>{{childExpense.date | date: 'yyyy-MM-dd'}}</p>
+          <p style="font-size: 12px;">{{childExpense.type}}</p>
+          <p>
+            <b>({{childExpense.quantity}}
+              {{childExpense.quantityUnit == null || childExpense.quantityUnit == 'units' 
+              ? 'x' 
+              : childExpense.quantityUnit}}) </b>
+            {{childExpense.itemBought}} @ {{childExpense.price}} Ksh</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-list>
+
+
+
+<!--###########################################################################################################################-->
+
+<ion-row>
+  <ion-col>
+    <b>Non-recurring expenses</b>
+  </ion-col>
+</ion-row>
   <div *ngFor="let result of this.expensesService.expensesList | groupexpensesbydate:this.expensesService.changeCounter">
     <ion-item-divider class="dateLbl" sticky="true">
       <ion-label>

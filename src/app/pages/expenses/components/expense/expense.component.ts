@@ -19,6 +19,10 @@ export class ExpenseComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    if(this.expensesForm){
+      this.expensesForm.reset();
+    }
+
     this.expensesForm = this.createForm(this.expensesDetails);
 
     this.expensesForm.valueChanges.subscribe(val => {
@@ -41,7 +45,7 @@ export class ExpenseComponent implements OnInit {
       id: [expense.id],
       farmId: [expense.farmId],
       date: [this.date],
-      type: [expense.type],
+      type: [this.type],
       itembought: [expense.itemBought, [Validators.required]],
       price: [expense.price, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
       quantity: [expense.quantity, [Validators.required, Validators.min(1), Validators.max(10000)]],
@@ -52,8 +56,7 @@ export class ExpenseComponent implements OnInit {
       sellername: [expense.sellerName],
       sellercompany: [expense.sellerCompany],
       recurringisactive: [expense.recurringIsActive],
-      recurringFromDate: [expense.recurringFromDate],
-      registrationDate: [expense.registrationDate]
+      recurringFromDate: [expense.recurringFromDate]
     });
   }
 

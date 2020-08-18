@@ -1,7 +1,7 @@
 <topbar title="Expenses input" [backbtn]="true"></topbar>
-<ion-item (click)="this.service.openDatePicker()">
+<ion-item (click)="this.expensesService.openDatePicker()">
   <ion-label position="fixed" color="medium">Date</ion-label>
-  <ion-input [(ngModel)]="this.service.selectedDate" readonly></ion-input>
+  <ion-input [(ngModel)]="this.expensesService.selectedDate" readonly></ion-input>
   <ion-icon position="fixed" name="calendar"></ion-icon>
 </ion-item>
 <ion-content padding>
@@ -20,7 +20,7 @@
         </ion-item>
 
         <expense-form *ngIf="selectedType && expensesDetails" [type]="selectedType" 
-        [date]="this.service.selectedDate" [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></expense-form>
+        [date]="this.expensesService.selectedDate" [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></expense-form>
       </ion-col>
     </ion-row>
   </ion-grid>

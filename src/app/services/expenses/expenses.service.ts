@@ -95,12 +95,13 @@ export class ExpensesService {
   }
 
   typeSelected(event){
-    //this.initiateNewForm();
     this.selectedType = event.detail.value;
   }
 
   async openDatePicker(){
-    this.selectedDate = await this.datePicker.openDatePicker(this.selectedDate);    
+    await this.datePicker.openDatePicker(this.selectedDate).then(x => {
+      return x;
+    });    
   } 
 
   round(number, decimals){
@@ -153,9 +154,7 @@ export class ExpensesService {
       isrootrecord: [expenseDetails.isRootRecord],
       recurringisactive: [expenseDetails.recurringIsActive],
       recurringFromDate: [expenseDetails.recurringFromDate],
-      recurringId: [expenseDetails.recurringId],
-      registrationDate: [expenseDetails.registrationDate],
-      updateDate: [null]
+      recurringId: [expenseDetails.recurringId]
     });    
     
     this.expensesForm.valueChanges.subscribe(val => {      

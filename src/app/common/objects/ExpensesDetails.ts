@@ -15,8 +15,8 @@ export class ExpensesDetails{
     recurringPeriodInDays: number;  
     recurringFromDate: Date;
     recurringId: string;  
-    registrationDate: Date;
-    updateDate: Date;
+    //registrationDate: Date;
+    //updateDate: Date;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

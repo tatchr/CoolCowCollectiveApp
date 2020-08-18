@@ -36,7 +36,8 @@ const routes: Routes = [
   { path: 'custom-report', loadChildren: './pages/reports/custom-report/custom-report.module#CustomReportPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-recurring-edit', loadChildren: './pages/expenses/expenses-recurring-edit/expenses-recurring-edit.module#ExpensesRecurringEditPageModule', canActivate: [AuthGuardService] },
   { path: 'expenses-menu', loadChildren: './pages/expenses/expenses-menu/expenses-menu.module#ExpensesMenuPageModule', canActivate: [AuthGuardService] },
-  { path: 'expenses-recurring-overview', loadChildren: './pages/expenses/expenses-recurring-overview/expenses-recurring-overview.module#ExpensesRecurringOverviewPageModule', canActivate: [AuthGuardService] },   { path: 'sales-menu', loadChildren: './pages/sales/sales-menu/sales-menu.module#SalesMenuPageModule' },
+  { path: 'expenses-recurring-overview', loadChildren: './pages/expenses/expenses-recurring-overview/expenses-recurring-overview.module#ExpensesRecurringOverviewPageModule', canActivate: [AuthGuardService] },   { path: 'sales-menu', loadChildren: './pages/sales/sales-menu/sales-menu.module#SalesMenuPageModule' },  { path: 'expeses-non-recurring-overview', loadChildren: './pages/expenses/expeses-non-recurring-overview/expeses-non-recurring-overview.module#ExpesesNonRecurringOverviewPageModule' },
+
  
 
 

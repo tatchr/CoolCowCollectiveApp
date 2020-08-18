@@ -10,25 +10,39 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
   templateUrl: './expenses-input.page.html',
   styleUrls: ['./expenses-input.page.scss'],
 })
-export class ExpensesInputPage implements OnInit {  
+export class ExpensesInputPage implements OnInit {
 
   protected expensesDetails: ExpensesDetails;
 
-  constructor(private router: Router, public service: ExpensesService, private farmService: FarmService) { }
+  constructor(private router: Router, public expensesService: ExpensesService, private farmService: FarmService) { }
 
   ngOnInit() {
-    this.service.selectedDate = this.service.datePicker.formatDate(new Date()); 
+    this.expensesService.selectedDate = this.expensesService.datePicker.formatDate(new Date());
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.expensesDetails = new ExpensesDetails({
-        farmId: farm.farmId
+        farmId: farm.farmId,
+        recurringIsActive: false
       });
     });
   }
 
-  onSubmit(expensesForm){
+  onSubmit(expensesForm) {
     console.log(expensesForm);
+    this.expensesService.registerExpensesRecord(expensesForm.getRawValue()).then(val => {
+      if (val['expense']) {
+        this.expensesService.expenseRegistered.next(val['expense']);
+
+        let isRecurring = expensesForm.value['recurringisactive'];
+        if (isRecurring) {
+          this.router.navigate(['/expenses-recurring-overview'], { replaceUrl: true });
+        }
+        else {
+          this.router.navigate(['/expenses-overview'], { replaceUrl: true });
+        }
+      }
+    });
   }
-  
+
   // onSubmit() {
   //   if(this.service.selectedType == 'Labour'){
   //     let employeeName = this.service.expensesForm.value['itembought'];
