@@ -10,7 +10,7 @@
       <ion-col>
         <ion-item>
           <ion-label color="medium">Item category*</ion-label>
-          <ion-select placeholder="Select One" [(ngModel)]="selectedType">
+          <ion-select placeholder="Select One" [(ngModel)]="selectedType" (ionChange)="expenseTypeSelected()">
             <ion-select-option value="Feed">Feed</ion-select-option>
             <ion-select-option value="Medicine">Medicine</ion-select-option>
             <ion-select-option value="Labour">Labour</ion-select-option>
