@@ -89,6 +89,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   applyFiltersAndSort() {
     this.applyFilters();
 
+    console.log(this.cowService.filteredCowsList);
     this.cowService.filteredCowsList.sort((a, b) => {
       return a.cowState.localeCompare('InHerd')        
     });

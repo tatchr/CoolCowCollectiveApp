@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { FarmService } from 'src/app/services/farm/farm.service';
+import { CowState } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-cow-passport',
@@ -28,6 +29,10 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
         this.cowDetails = this.router.getCurrentNavigation().extras.state.cowDetails;
       }
     });
+  }
+
+  protected get cowInHerd(){
+    return this.cowForm.get('cowstate').value == CowState.InHerd;
   }
 
   ngOnInit() {
@@ -62,7 +67,34 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
         cowType: this.cowForm.value['cowtype'],
         breed: this.cowForm.value['breed'],
         cowStatus: this.cowForm.get(['cowstatus']).value,
-        cowState: this.cowForm.value['cowstate'],
+        cowState: this.cowForm.get(['cowstate']).value,
+        lactatingSinceDate: this.cowForm.value['lactatingsincedate'],
+        registrationDate: this.cowForm.value['registrationdate'],
+        updateDate: this.cowForm.value['updateDate']
+      };
+
+      this.cowService.updateCow(this.cowForm.getRawValue()).subscribe(val => {
+        if (val) {
+          this.cowService.cowUpdated.next(updatedCow);
+          this.router.navigateByUrl('tabs/herd');
+        }
+      });
+    }
+  }
+
+  cowDeceased(){
+    this.cowForm.controls['updateDate'].setValue(new Date());
+    if (this.cowForm.valid) {
+      let updatedCow: CowDetails = {
+        id: this.cowForm.value['id'],
+        name: this.cowForm.value['name'],
+        farmId: this.cowForm.value['farmId'],
+        tagNumber: this.cowForm.value['tagnumber'],
+        birthDate: this.cowForm.value['birthdate'],
+        cowType: this.cowForm.value['cowtype'],
+        breed: this.cowForm.value['breed'],
+        cowStatus: this.cowForm.get(['cowstatus']).value,
+        cowState: 'Deceased',
         lactatingSinceDate: this.cowForm.value['lactatingsincedate'],
         registrationDate: this.cowForm.value['registrationdate'],
         updateDate: this.cowForm.value['updateDate']
