@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ExpensesRecurringOverviewPage } from './expenses-recurring-overview.page';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { ExpensesComponentsModule } from 'src/app/pages/expenses/components/expenses-components.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     CommonComponentsModule,
+    ExpensesComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ExpensesRecurringOverviewPage]

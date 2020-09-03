@@ -12,7 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class MilkSalesBaseComponent {
 
   milksalesForm: FormGroup;
-  selectedDate: string = this.milkSalesService.datePicker.formatDate(new Date());
+  selectedDate: Date = this.milkSalesService.datePicker.today;
 
   constructor(protected router: Router, public milkSalesService: MilksalesService, protected formBuilder: FormBuilder, 
     protected storage: Storage) { }   

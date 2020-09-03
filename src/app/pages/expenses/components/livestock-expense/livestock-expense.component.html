@@ -1,33 +1,35 @@
 <form *ngIf="form" [formGroup]="form">
-  <ion-item>
-    <ion-label color="medium">Animal type*</ion-label>
-    <ion-select formControlName="itembought" placeholder="Select One">
-      <ion-select-option value="Cow">Cow </ion-select-option>
-      <ion-select-option value="Heifer">Heifer</ion-select-option>
-      <ion-select-option value="Calf">Calf</ion-select-option>
-      <ion-select-option value="Bull">Bull</ion-select-option>
-    </ion-select>
-  </ion-item>
+  <div formGroupName="cowdetails">
+    <ion-item>
+      <ion-label color="medium">Animal type*</ion-label>
+      <ion-select formControlName="cowtype" placeholder="Select One">
+        <ion-select-option value="Cow">Cow </ion-select-option>
+        <ion-select-option value="Heifer">Heifer</ion-select-option>
+        <ion-select-option value="Calf">Calf</ion-select-option>
+        <ion-select-option value="Bull">Bull</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating" color="medium">Cow name*
+      </ion-label>
+      <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>
+    </ion-item>
   
+    <ion-item>
+      <ion-label color="medium">Cow status*</ion-label>
+      <ion-select formControlName="cowstatus" placeholder="Select One">
+        <ion-select-option value="Lactating">Lactating</ion-select-option>
+        <ion-select-option value="Non-Lactating">Non-lactating</ion-select-option>
+        <ion-select-option value="N/A">N/A</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>  
+
   <ion-item>
     <ion-label position="floating" color="medium">Price (Ksh)*
     </ion-label>
     <ion-input autocapitalize="on" type="number" formControlName="price"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating" color="medium">Cow name
-    </ion-label>
-    <ion-input autocapitalize="on" type="text" formControlName="cowname"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label color="medium">Cow status*</ion-label>
-    <ion-select formControlName="cowstatus" placeholder="Select One">
-      <ion-select-option value="Lactating">Lactating</ion-select-option>
-      <ion-select-option value="Non-Lactating">Non-lactating</ion-select-option>
-      <ion-select-option value="N/A">N/A</ion-select-option>
-    </ion-select>
   </ion-item>
 
   <ion-item>
@@ -40,3 +42,7 @@
     <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
   </ion-item>
 </form>
+
+<ion-button color="success" expand="full" [disabled]="form.invalid" (click)="emitform(form)">
+  <ion-icon name="save"></ion-icon>
+</ion-button>

@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { ExpesesNonRecurringOverviewPage } from './expeses-non-recurring-overview.page';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { ExpensesComponentsModule } from 'src/app/pages/expenses/components/expenses-components.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     CommonComponentsModule,
+    ExpensesComponentsModule,
     PipesModule,
     RouterModule.forChild(routes)
   ],

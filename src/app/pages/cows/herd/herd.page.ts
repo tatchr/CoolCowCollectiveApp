@@ -33,13 +33,13 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   }  
 
   ngOnInit() {  
-    this.cowService.cowRegistered.subscribe(newCow => {
-      if (newCow) {
-        this.cowService.cowsList.push(newCow);
-        this.applyFiltersAndSort();
-        this.cowService.cowListState.next(true);
-      }
-    });
+    // this.cowService.cowRegistered.subscribe(newCow => {
+    //   if (newCow) {
+    //     this.cowService.cowsList.push(newCow);
+    //     this.applyFiltersAndSort();
+    //     this.cowService.cowListState.next(true);
+    //   }
+    // });
 
     this.cowService.cowDeleted.subscribe(cowId => {
       if (cowId) {
@@ -87,9 +87,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
   }
 
   applyFiltersAndSort() {
-    this.applyFilters();
-
-    console.log(this.cowService.filteredCowsList);
+    this.applyFilters();    
     this.cowService.filteredCowsList.sort((a, b) => {
       return a.cowState.localeCompare('InHerd')        
     });

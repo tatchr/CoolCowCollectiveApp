@@ -1,12 +1,14 @@
 export class ExpensesDetails{
     id: string;
-    farmId: number;
-    date: string;
+    farmId: string;
+    date: Date;
     type: string;
     itemBought: string;
     price: number;
     quantity: number;
     quantityUnit: string;
+    cowName: string;
+    cowStatus: string;
     totalPrice: number;
     sellerName: string;
     sellerCompany: string;
@@ -14,9 +16,7 @@ export class ExpensesDetails{
     recurringIsActive: boolean;
     recurringPeriodInDays: number;  
     recurringFromDate: Date;
-    recurringId: string;  
-    //registrationDate: Date;
-    //updateDate: Date;
+    recurringId: string;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

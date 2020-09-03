@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 
 @Component({
@@ -8,7 +8,6 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
   styleUrls: ['./expense.component.scss'],
 })
 export class ExpenseComponent implements OnInit {
-
   @Input() type: string;
   @Input() date: string;
   @Input() expensesDetails: ExpensesDetails;
@@ -19,10 +18,6 @@ export class ExpenseComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    if(this.expensesForm){
-      this.expensesForm.reset();
-    }
-
     this.expensesForm = this.createForm(this.expensesDetails);
 
     this.expensesForm.valueChanges.subscribe(val => {

@@ -20,10 +20,10 @@ export class MilkService {
   milkRecordsList: Array<MilkProductionDetails> = [];
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
-  selectedDate: string = this.datePicker.formatDate(new Date());
+  selectedDate: Date = this.datePicker.today;
   timeOfDay: string = TimeOfDay.Morning;
-  fromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  toDate: string = this.datePicker.formatDate(new Date());
+  fromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
+  toDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   inputProduction: number = 0.00;
@@ -91,7 +91,7 @@ export class MilkService {
   }
 
   getMilkRecordsOnDate(farmId, date, timeOfDay) {
-    return this.httpService.get('Loading...', environment.url + '/api/milkproduction/get/' + farmId + '/' + date + '/' + timeOfDay);
+    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/get/${farmId}/${date.toISOString()}/${timeOfDay}`);
   }
 
   getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate) {
@@ -101,11 +101,11 @@ export class MilkService {
   }
 
   getAllMilkRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', environment.url + '/api/milkproduction/getAll/' + farmId + '/' + fromDate + '/' + toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
   }
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {
-    return this.httpService.post3('Saving...', environment.url + '/api/milkproduction/register', records)
+    return this.httpService.post3('Saving...', `${environment.url}/api/milkproduction/register`, records)
       .then(() => {
         this.updateAllRecords(records);
       })

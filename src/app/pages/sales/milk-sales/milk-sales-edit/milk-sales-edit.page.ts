@@ -28,7 +28,7 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
   }
 
   ngOnInit() {
-    this.selectedDate = this.milkSalesService.datePicker.formatDate(this.milkSaleDetails.date);
+    this.selectedDate = this.milkSaleDetails.date;
     let totalPrice = this.round(this.milkSaleDetails.litersSold * this.milkSaleDetails.pricePerLiter, 2);
 
     this.milksalesForm = this.formBuilder.group({

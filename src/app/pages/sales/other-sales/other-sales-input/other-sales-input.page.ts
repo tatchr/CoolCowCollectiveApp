@@ -17,7 +17,7 @@ export class OtherSalesInputPage implements OnInit {
 
   othersalesDetails: OtherSalesDetails;
   cowSelector: Array<CowDetails> = [];
-  selectedDate: string = this.otherSalesService.datePicker.formatDate(new Date());
+  selectedDate: Date = this.otherSalesService.datePicker.today;
 
   constructor(private router: Router, private otherSalesService: OthersalesService, private farmService: FarmService) {}
 

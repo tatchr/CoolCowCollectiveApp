@@ -13,6 +13,10 @@ export class DatepickerService {
   private fromDate = new Date('1990-01-01');
   private toDate = new Date();
 
+  public get today(){
+    return new Date();
+  }
+
   public periods: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1 week'}),
     new PeriodDetails({value: Period.last2weeks, label: '2 weeks'}),
@@ -32,7 +36,7 @@ export class DatepickerService {
     
   constructor(public modalCtrl: ModalController) { }  
 
-  public async openDatePicker(inputDate : string) : Promise<string> {
+  public async openDatePicker(inputDate : Date) : Promise<Date> {
     let datepicker = await this.datepicker(inputDate);
     await datepicker.present();
 
@@ -41,11 +45,12 @@ export class DatepickerService {
         return inputDate;
       }
       
-      return this.formatDate(data.data.date);
+      //return this.formatDate(data.data.date);
+      return <Date>data.data.date;
     });
   }
 
-  private async datepicker(inputDate: string) {    
+  private async datepicker(inputDate: Date) {    
     return await this.modalCtrl.create({
       component: Ionic4DatepickerModalComponent,
       cssClass: 'li-ionic4-datePicker',
@@ -85,16 +90,16 @@ export class DatepickerService {
     }
   }
 
-  public formatDate(date) {
+  public formatDate(date): string {
     return date != null ? moment(date).format('YYYY-MM-DD') : null;
-  }  
+  }
 
   public formatDate2(date, format) {
     return date != null ? moment(date).format(format) : null;
   }
 
   public subtract(date, amount, type){    
-    return moment(date).subtract(amount, type).format('YYYY-MM-DD');
+    return moment(date).subtract(amount, type).toDate();
   }
 
   public getDaysArray(fromDate, toDate){
@@ -109,8 +114,8 @@ export class DatepickerService {
   }
 
   public periodSelected(period){    
-    let selectedToDate = this.formatDate(new Date());
-    let selectedFromDate = '';
+    let selectedToDate = new Date();
+    let selectedFromDate = null;
 
     if(period == Period.lastweek){
       selectedFromDate = this.subtract(new Date(), 7, 'days');
@@ -128,7 +133,7 @@ export class DatepickerService {
       selectedFromDate = this.subtract(new Date(), 1, 'years');
     }
     if(period == Period.alltime){
-      selectedFromDate = this.formatDate(this.fromDate);
+      selectedFromDate = this.fromDate;
     }
 
     return {"fromDate": selectedFromDate, "toDate": selectedToDate}

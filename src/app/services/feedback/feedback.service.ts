@@ -10,6 +10,6 @@ export class FeedbackService {
   constructor(private httpService: HttpService) { }
 
   registerFeedback(feedbackDetails){
-    return this.httpService.post(environment.url + '/api/feedback/register', feedbackDetails);
+    return this.httpService.post(`${environment.url}/api/feedback/register`, feedbackDetails);
   }
 }

@@ -58,3 +58,7 @@
     <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
   </ion-item>  
 </form>
+
+<ion-button color="success" expand="full" [disabled]="form.invalid" (click)="emitform(form)">
+  <ion-icon name="save"></ion-icon>
+</ion-button>

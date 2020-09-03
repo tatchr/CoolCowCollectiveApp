@@ -12,13 +12,13 @@ import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 export class OtherSalesEditPage implements OnInit {
   
   othersalesDetails: OtherSalesDetails;
-  selectedDate: string = null;
+  selectedDate: Date = null;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private otherSalesService: OthersalesService, private alertService: AlertService) {
     this.activatedRoute.queryParams.subscribe(() => {
       if (this.router.getCurrentNavigation().extras.state) {
         let sale = this.router.getCurrentNavigation().extras.state.otherSaleDetails;
-        this.selectedDate = this.otherSalesService.datePicker.formatDate(sale.date);
+        this.selectedDate = sale.date;
         this.othersalesDetails = sale;
       }
     });

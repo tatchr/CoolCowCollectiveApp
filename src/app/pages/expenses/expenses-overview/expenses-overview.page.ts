@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
 @Component({
   selector: 'app-expenses-overview',
@@ -10,30 +11,37 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 })
 export class ExpensesOverviewPage implements OnInit {  
 
-  panelOpenState = false;
+  protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  protected toDate: Date = this.datePicker.today;
 
-  constructor(private router: Router, public expensesService: ExpensesService) { }
+  constructor(private router: Router, public expensesService: ExpensesService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
       
   }
+
+  dateChanged(){
+    this.expensesService.loadExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
+  }
   
-  automaticClose = false;
-  toggleSection(index) {
-    this.expensesService.recurringExpensesList[index].open = !this.expensesService.recurringExpensesList[index].open;
+  // automaticClose = false;
+  // toggleSection(index) {
+  //   this.expensesService.recurringExpensesList[index].open = !this.expensesService.recurringExpensesList[index].open;
 
-    if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
-      this.expensesService.recurringExpensesList
-      .filter((item, itemIndex) => itemIndex != index)
-      .map(item => item.open = false);
-    }
-  }
+  //   if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
+  //     this.expensesService.recurringExpensesList
+  //     .filter((item, itemIndex) => itemIndex != index)
+  //     .map(item => item.open = false);
+  //   }
+  // }
 
-  toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
-      expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
-    });
-  }
+  // toggleRecurring(expenseDetails: ExpensesDetails){    
+  //   this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
+  //     expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
+  //   });
+  // }
 
   openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
     let navigationExtras: NavigationExtras = {
@@ -52,16 +60,4 @@ export class ExpensesOverviewPage implements OnInit {
     };
     this.router.navigate(['expenses-edit'], navigationExtras);
   }  
-  
-  async openFromDatePicker(){
-    this.expensesService.selectedPeriod = '';
-    this.expensesService.selectedFromDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedFromDate);
-    this.expensesService.loadExpensesList();    
-  }
-
-  async openToDatePicker(){
-    this.expensesService.selectedPeriod = '';
-    this.expensesService.selectedToDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedToDate);
-    this.expensesService.loadExpensesList();    
-  }
 }

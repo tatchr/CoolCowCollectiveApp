@@ -65,7 +65,7 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   }
 
   async openDatePicker(field){
-    let date = await this.datePicker.openDatePicker('');
+    let date = await this.datePicker.openDatePicker(null);
     this.cowForm.controls[field].setValue(date);    
   }
 }

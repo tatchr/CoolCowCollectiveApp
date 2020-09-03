@@ -1,0 +1,5 @@
+<ion-item (click)="openDatepicker()">
+  <ion-label position="{{position}}" color="medium">{{label}}</ion-label>
+  <ion-input readonly [ngModel]="date | date: 'yyyy-MM-dd'" (ionChange)="emitDate(date)"></ion-input>
+  <ion-icon *ngIf="addIcon" position="fixed" name="calendar"></ion-icon>
+</ion-item>

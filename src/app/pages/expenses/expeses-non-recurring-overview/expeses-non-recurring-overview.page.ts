@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
 @Component({
   selector: 'app-expeses-non-recurring-overview',
@@ -10,9 +11,12 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 })
 export class ExpesesNonRecurringOverviewPage implements OnInit {
 
+  protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  protected toDate: Date = this.datePicker.today;
+
   panelOpenState = false;
 
-  constructor(private router: Router, public expensesService: ExpensesService) { }
+  constructor(private router: Router, public expensesService: ExpensesService, private datePicker: DatepickerService) { }
 
   ngOnInit() {
   }
@@ -24,18 +28,11 @@ export class ExpesesNonRecurringOverviewPage implements OnInit {
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);
-  }  
-  
-  async openFromDatePicker(){
-    this.expensesService.selectedPeriod = '';
-    this.expensesService.selectedFromDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedFromDate);
-    this.expensesService.loadExpensesList();    
   }
 
-  async openToDatePicker(){
-    this.expensesService.selectedPeriod = '';
-    this.expensesService.selectedToDate = await this.expensesService.datePicker.openDatePicker(this.expensesService.selectedToDate);
-    this.expensesService.loadExpensesList();    
+  dateChanged(){
+    this.expensesService.loadExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
   }
-
 }

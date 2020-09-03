@@ -23,8 +23,8 @@ export class ReportService {
     { val: 'Expenses', isChecked: true }
   ];
 
-  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: string = this.datePicker.formatDate(new Date());
+  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   constructor(private httpService: HttpService, private http: HttpClient, private file: File,
@@ -40,7 +40,7 @@ export class ReportService {
 
   getReport(userId, farmId, reportContent, fileType, fromDate, toDate) {
     //let url = environment.url + '/api/report/' +  userId + '/' + farmId + '/' + reportContent + '/' + fileType + '/' + fromDate + '/' + toDate;
-    let url = `${environment.url}/api/report?userId=${userId}&farmId=${farmId}&reportContent=${reportContent}&fileType=${fileType}&fromDate=${fromDate}&toDate=${toDate}`;
+    let url = `${environment.url}/api/report?userId=${userId}&farmId=${farmId}&reportContent=${reportContent}&fileType=${fileType}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`;
 
     return this.http.get(url, { responseType: 'blob' })
       .subscribe((res: Blob) => {

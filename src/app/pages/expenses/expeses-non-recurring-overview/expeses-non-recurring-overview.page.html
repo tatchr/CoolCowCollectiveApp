@@ -1,17 +1,11 @@
 <topbar title="Non-recurring expenses overview" [backbtn]="true" backUrl="/expenses-menu"></topbar>
 <ion-row>
   <ion-col>
-    <ion-item (click)="openFromDatePicker()">
-      <ion-label position="floating" color="medium">From</ion-label>
-      <ion-input [(ngModel)]="this.expensesService.selectedFromDate" readonly></ion-input>
-    </ion-item>
+    <datepicker position="floating" label="From" [(date)]="fromDate" (ionChange)="dateChanged()"></datepicker>
   </ion-col>
   <ion-col>
-    <ion-item (click)="openToDatePicker()">
-      <ion-label position="floating" color="medium">To</ion-label>
-      <ion-input [(ngModel)]="this.expensesService.selectedToDate" readonly item-center></ion-input>
-    </ion-item>
-  </ion-col>
+    <datepicker position="floating" label="To" [(date)]="toDate" (ionChange)="dateChanged()"></datepicker>
+  </ion-col>  
 </ion-row>
 <ion-row>
   <ion-col>
@@ -29,29 +23,7 @@
 </ion-row>
 
 <ion-content no-padding>
-  <div *ngFor="let result of this.expensesService.expensesList | groupexpensesbydate:this.expensesService.changeCounter">
-    <ion-item-divider class="dateLbl" sticky="true">
-      <ion-label>
-        {{result.date | date: 'yyyy-MM-dd'}}
-      </ion-label>
-    </ion-item-divider>
-
-    <ion-row *ngFor='let expense of result.expensesList' class="product-list">
-      <ion-col [size]="12" no-padding>
-        <ion-item button="true" (click)="openExpenseRecord(expense)">
-          <ion-note slot="end" style="font-size: 16px;">{{expense.totalPrice}} Ksh </ion-note>
-          <ion-label>
-            <p style="font-size: 12px;">{{expense.type}}</p>
-            <p>
-              <b>({{expense.quantity}}
-                {{expense.quantityUnit == null || expense.quantityUnit == 'units' 
-                ? 'x' 
-                : expense.quantityUnit}}) </b>
-              {{expense.itemBought}} @ {{expense.price}} Ksh
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </div>
+  <non-recurring-overview *ngIf="this.expensesService.expensesList && this.expensesService.livestockExpensesList"
+ [expensesList]="this.expensesService.expensesList" 
+ [livestockExpensesList]="this.expensesService.livestockExpensesList" [fromDate]="fromDate" [toDate]="toDate"></non-recurring-overview>
 </ion-content>

@@ -26,7 +26,17 @@ export class CowService {
   constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.loadCowsList(farm.farmId);
-    }); 
+    });
+
+    this.cowRegistered.subscribe(newCow => {
+      if (newCow) {
+        console.log('Cow registered');
+        console.log(newCow);
+        this.cowsList.push(newCow);
+        //this.applyFiltersAndSort();
+        this.cowListState.next(true);
+      }
+    });
   }
 
   private loadCowsList(farmId) {

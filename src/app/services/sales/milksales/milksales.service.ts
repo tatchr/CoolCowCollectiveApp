@@ -16,8 +16,8 @@ export class MilksalesService {
 
   changeCounter: number = 0;
   farmId: string;
-  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: string = this.datePicker.formatDate(new Date());
+  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   milkSaleRegistered = new BehaviorSubject<MilkSalesDetails>(null);
@@ -59,7 +59,7 @@ export class MilksalesService {
     this.totalMoneyReceived = 0;    
 
     this.milkSalesList.forEach(item => {
-      item.date = this.datePicker.formatDate(item.date);
+      item.date = item.date;
       this.totalLiters += item.litersSold;
       this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
       if(item.fullAmountPaid){
@@ -73,23 +73,23 @@ export class MilksalesService {
   }
 
   getMilkSaleRecord(id) {
-    return this.httpService.get(null, environment.url + '/api/milksales/get/' + id);
+    return this.httpService.get(null, `${environment.url}/api/milksales/get/${id}`);
   }
 
   getAllMilkSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', environment.url + '/api/milksales/getAll/' + farmId + "/" + fromDate + "/" + toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/milksales/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
   }
 
   registerMilkSalesRecord(record) {
-    return this.httpService.post3('Saving...', environment.url + '/api/milksales/register', record);
+    return this.httpService.post3('Saving...', `${environment.url}/api/milksales/register`, record);
   }
 
   updateMilkSalesRecord(record) {
-    return this.httpService.put(environment.url + '/api/milksales/update', record);
+    return this.httpService.put(`${environment.url}/api/milksales/update`, record);
   }
 
   deleteMilkSalesRecord(id) {
-    return this.httpService.delete(environment.url + '/api/milksales/delete/' + id);
+    return this.httpService.delete(`${environment.url}/api/milksales/delete/${id}`);
   }
 
 }

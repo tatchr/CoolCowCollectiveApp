@@ -15,8 +15,8 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 export class OthersalesService {
 
   farmId: string;
-  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: string = this.datePicker.formatDate(new Date());
+  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   otherSaleRegistered = new BehaviorSubject<OtherSalesDetails>(null);
@@ -50,11 +50,11 @@ export class OthersalesService {
   }
 
   getOtherSaleRecord(id) {
-    return this.httpService.get(null, environment.url + '/api/othersales/get/' + id);
+    return this.httpService.get(null, `${environment.url}/api/othersales/get/${id}`);
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', `${environment.url}/api/othersales/getAll/${farmId }/${fromDate}/${toDate}`);
+    return this.httpService.get('Loading...', `${environment.url}/api/othersales/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
   }
 
   registerOtherSalesRecord(record) {

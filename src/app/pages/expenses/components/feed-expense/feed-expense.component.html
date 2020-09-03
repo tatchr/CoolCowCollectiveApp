@@ -1,3 +1,6 @@
+<p>
+  expense works! {{type}} {{date}} {{expensesDetails.farmId}} {{expensesDetails.date}}
+</p>
 <form *ngIf="form" [formGroup]="form">
   <ion-item>
     <ion-label position="floating" color="medium">Item*</ion-label>
@@ -48,3 +51,7 @@
     <ion-input autocapitalize="on" type="number" formControlName="recurringperiodindays"></ion-input>
   </ion-item>
 </form>
+
+<ion-button color="success" expand="full" [disabled]="form.invalid" (click)="emitform(form)">
+  <ion-icon name="save"></ion-icon>
+</ion-button>
