@@ -1,0 +1,9 @@
+<ion-item>
+  <div class="scroll-container">
+    <div class="scroll" scrollX="true">
+      <ion-button *ngFor='let period of periods;' size="default" fill="outline"
+        [color]="period.value == selectedPeriod ? 'success' : 'medium'" (click)="this.periodSelected(period.value)">
+        {{period.label}}</ion-button>
+    </div>
+  </div>
+</ion-item>

@@ -7,19 +7,9 @@
     <datepicker position="floating" label="To" [(date)]="toDate" (ionChange)="dateChanged()"></datepicker>
   </ion-col>
 </ion-row>
-
 <ion-row>
   <ion-col>
-    <ion-item>
-      <div class="scroll-container">
-        <div class="scroll" scrollX="true">
-          <ion-button *ngFor='let period of this.expensesService.datePicker.periods;' size="default" fill="outline"
-            [color]="period.value == this.expensesService.selectedPeriod ? 'success' : 'medium'"
-            (click)="this.expensesService.periodSelected(period.value)">
-            {{period.label}}</ion-button>
-        </div>
-      </div>
-    </ion-item>
+    <period-selector (fromDateChange)="fromDate = $event;"></period-selector>
   </ion-col>
 </ion-row>
 

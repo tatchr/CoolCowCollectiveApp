@@ -17,6 +17,10 @@ export class DatepickerService {
     return new Date();
   }
 
+  public get minDate(){
+    return new Date('1990-01-01');
+  }
+
   public periods: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1 week'}),
     new PeriodDetails({value: Period.last2weeks, label: '2 weeks'}),

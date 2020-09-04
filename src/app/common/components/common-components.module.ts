@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { VerificationCodeInputComponent } from 'src/app/common/components/verification-code-input/verification-code-input.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DatepickerComponent } from 'src/app/common/components/datepicker/datepicker.component';
+import { PeriodSelectorComponent } from 'src/app/common/components/period-selector/period-selector.component';
   
 @NgModule({
     imports: [
@@ -15,7 +16,7 @@ import { DatepickerComponent } from 'src/app/common/components/datepicker/datepi
         RouterModule,
         ReactiveFormsModule
     ],
-    declarations: [TopbarComponent, VerificationCodeInputComponent, DatepickerComponent],
-    exports: [TopbarComponent, VerificationCodeInputComponent, DatepickerComponent]
+    declarations: [TopbarComponent, VerificationCodeInputComponent, DatepickerComponent, PeriodSelectorComponent],
+    exports: [TopbarComponent, VerificationCodeInputComponent, DatepickerComponent, PeriodSelectorComponent]
 })
 export class CommonComponentsModule{}
