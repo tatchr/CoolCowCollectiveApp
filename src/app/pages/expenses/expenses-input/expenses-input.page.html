@@ -1,38 +1,36 @@
 <topbar title="Expenses input" [backbtn]="true"></topbar>
-  <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
-  <ion-content padding *ngIf="expensesDetails && selectedDate">
-    <ion-grid>      
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label color="medium">Item category*</ion-label>
-            <ion-select placeholder="Select One" [(ngModel)]="expensesDetails.type">
-              <ion-select-option value="Feed">Feed</ion-select-option>
-              <ion-select-option value="Medicine">Medicine</ion-select-option>
-              <ion-select-option value="Labour">Labour</ion-select-option>
-              <ion-select-option value="Livestock">Livestock</ion-select-option>
-              <ion-select-option value="Other">Other</ion-select-option>
-            </ion-select>
-          </ion-item>
-  
-          <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [date]="selectedDate" [expensesDetails]="expensesDetails" 
-          (returnform)="onSubmit($event)"></feed-expense-form>
-  
-          <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [date]="selectedDate" [expensesDetails]="expensesDetails" 
-          (returnform)="onSubmit($event)"></medicine-expense-form>
+<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
+<ion-content padding *ngIf="expensesDetails && selectedDate">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label color="medium">Item category*</ion-label>
+          <ion-select placeholder="Select One" [(ngModel)]="expensesDetails.type">
+            <ion-select-option value="Feed">Feed</ion-select-option>
+            <ion-select-option value="Medicine">Medicine</ion-select-option>
+            <ion-select-option value="Labour">Labour</ion-select-option>
+            <ion-select-option value="Livestock">Livestock</ion-select-option>
+            <ion-select-option value="Other">Other</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-          <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [date]="selectedDate" [expensesDetails]="expensesDetails"
-          (returnform)="onSubmit($event)"></labour-expense-form>
+        <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [date]="selectedDate"
+          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></feed-expense-form>
 
-          <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [date]="selectedDate" [livestockExpensesDetails]="livestockExpensesDetails"
-          (returnform)="onSubmitLivestock($event)"></livestock-expense-form>
+        <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [date]="selectedDate"
+          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></medicine-expense-form>
 
-          <other-expense-form *ngIf="expensesDetails.type == 'Other'" [date]="selectedDate" [expensesDetails]="expensesDetails"
-          (returnform)="onSubmit($event)"></other-expense-form>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+        <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [date]="selectedDate"
+          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></labour-expense-form>
 
+        <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [date]="selectedDate"
+          [livestockExpensesDetails]="livestockExpensesDetails" (returnform)="onSubmitLivestock($event)">
+        </livestock-expense-form>
 
-
+        <other-expense-form *ngIf="expensesDetails.type == 'Other'" [date]="selectedDate"
+          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></other-expense-form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

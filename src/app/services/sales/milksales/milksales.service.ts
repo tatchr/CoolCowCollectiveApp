@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { Period } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { MathService } from '../../math/math.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class MilksalesService {
   totalMoney: number = 0;
   totalMoneyReceived: number = 0;
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, private farmService: FarmService) {
+  constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, 
+    private farmService: FarmService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.farmId;
       this.loadMilkSalesList();
@@ -43,16 +45,6 @@ export class MilksalesService {
     });
   }
 
-  periodSelected(period){
-    this.selectedPeriod = period;
-    let result = this.datePicker.periodSelected(period);
-    
-    this.selectedToDate = result.toDate;
-    this.selectedFromDate = result.fromDate;    
-    
-    this.loadMilkSalesList();  
-  }
-
   computeTotals(){
     this.totalLiters = 0;
     this.totalMoney = 0;    
@@ -61,15 +53,11 @@ export class MilksalesService {
     this.milkSalesList.forEach(item => {
       item.date = item.date;
       this.totalLiters += item.litersSold;
-      this.totalMoney += this.round(item.litersSold * item.pricePerLiter, 2);
+      this.totalMoney += this.math.round(item.litersSold * item.pricePerLiter, 2);
       if(item.fullAmountPaid){
-        this.totalMoneyReceived += this.round(item.litersSold * item.pricePerLiter, 2);
+        this.totalMoneyReceived += this.math.round(item.litersSold * item.pricePerLiter, 2);
       }
     });
-  }
-
-  round(number, decimals){
-    return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 
   getMilkSaleRecord(id) {
@@ -77,7 +65,9 @@ export class MilksalesService {
   }
 
   getAllMilkSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', `${environment.url}/api/milksales/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
+    let from = this.datePicker.formatDate(fromDate);
+    let to = this.datePicker.formatDate(toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/milksales/getAll/${farmId}/${from}/${to}`);
   }
 
   registerMilkSalesRecord(record) {

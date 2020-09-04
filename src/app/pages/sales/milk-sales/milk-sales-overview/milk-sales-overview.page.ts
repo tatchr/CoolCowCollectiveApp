@@ -66,20 +66,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     });    
   }
 
-  periodSelected(period){
-    this.milkSalesService.selectedPeriod = period;
-    this.milkSalesService.periodSelected(period);
+  protected dateChanged(){
+    this.milkSalesService.loadMilkSalesList();
   }
-
-  async openFromDatePicker(){
-    this.milkSalesService.selectedPeriod = '';
-    this.milkSalesService.selectedFromDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedFromDate);
-    this.milkSalesService.loadMilkSalesList();    
-  }
-
-  async openToDatePicker(){
-    this.milkSalesService.selectedPeriod = '';
-    this.milkSalesService.selectedToDate = await this.milkSalesService.datePicker.openDatePicker(this.milkSalesService.selectedToDate);
-    this.milkSalesService.loadMilkSalesList();    
-  }  
 }
