@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'non-recurring-overview',
@@ -15,12 +16,17 @@ export class NonRecurringOverviewComponent implements OnInit {
   @Input() expensesList: Array<ExpensesDetails>;
   @Input() livestockExpensesList: Array<LivestockExpensesDetails>;
 
-  constructor(protected expensesService: ExpensesService) { }  
+  constructor(private router: Router, protected expensesService: ExpensesService) { }  
 
   ngOnInit() {}
 
-  openExpenseRecord(test){
-
+  protected openExpenseRecord(expense: ExpensesDetails){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        expenseDetails: expense
+      }
+    };
+    this.router.navigate(['expenses-edit'], navigationExtras);
   }
 
 }

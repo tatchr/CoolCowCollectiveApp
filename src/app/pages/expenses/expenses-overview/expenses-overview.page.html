@@ -23,13 +23,13 @@
   <recurring-overview *ngIf="this.expensesService.recurringExpensesList" [fromDate]="fromDate" [toDate]="toDate"
    [expensesList]="this.expensesService.recurringExpensesList"></recurring-overview>
 
-<ion-row>
-  <ion-col>
-    <b>Non-recurring expenses</b>
-  </ion-col>
-</ion-row>
-<non-recurring-overview *ngIf="this.expensesService.expensesList && this.expensesService.livestockExpensesList"
- [expensesList]="this.expensesService.expensesList" 
- [livestockExpensesList]="this.expensesService.livestockExpensesList"></non-recurring-overview>
+  <ion-row>
+    <ion-col>
+      <b>Non-recurring expenses</b>
+    </ion-col>
+  </ion-row>
+  <non-recurring-overview *ngIf="this.expensesService.expensesList && this.expensesService.livestockExpensesList"
+    [expensesList]="this.expensesService.expensesList" 
+    [livestockExpensesList]="this.expensesService.livestockExpensesList"></non-recurring-overview>
   
 </ion-content>

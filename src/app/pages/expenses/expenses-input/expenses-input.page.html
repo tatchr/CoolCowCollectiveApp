@@ -1,5 +1,5 @@
 <topbar title="Expenses input" [backbtn]="true"></topbar>
-  <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="this.selectedDate"></datepicker>
+  <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
   <ion-content padding *ngIf="expensesDetails && selectedDate">
     <ion-grid>      
       <ion-row>
@@ -15,19 +15,19 @@
             </ion-select>
           </ion-item>
   
-          <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [date]="this.selectedDate" [expensesDetails]="expensesDetails" 
+          <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [date]="selectedDate" [expensesDetails]="expensesDetails" 
           (returnform)="onSubmit($event)"></feed-expense-form>
   
-          <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [date]="this.selectedDate" [expensesDetails]="expensesDetails" 
+          <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [date]="selectedDate" [expensesDetails]="expensesDetails" 
           (returnform)="onSubmit($event)"></medicine-expense-form>
 
-          <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [date]="this.selectedDate" [expensesDetails]="expensesDetails"
+          <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [date]="selectedDate" [expensesDetails]="expensesDetails"
           (returnform)="onSubmit($event)"></labour-expense-form>
 
-          <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [date]="this.selectedDate" [livestockExpensesDetails]="livestockExpensesDetails"
+          <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [date]="selectedDate" [livestockExpensesDetails]="livestockExpensesDetails"
           (returnform)="onSubmitLivestock($event)"></livestock-expense-form>
 
-          <other-expense-form *ngIf="expensesDetails.type == 'Other'" [date]="this.selectedDate" [expensesDetails]="expensesDetails"
+          <other-expense-form *ngIf="expensesDetails.type == 'Other'" [date]="selectedDate" [expensesDetails]="expensesDetails"
           (returnform)="onSubmit($event)"></other-expense-form>
         </ion-col>
       </ion-row>

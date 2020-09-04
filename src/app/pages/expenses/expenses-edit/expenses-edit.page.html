@@ -1,15 +1,18 @@
 <topbar title="Expense edit" [backbtn]="true"></topbar>
-<ion-item (click)="this.service.openDatePicker()" [disabled]="this.service.expensesForm.value['recurringId']">
+<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
+
+<!-- <ion-item (click)="this.service.openDatePicker()" [disabled]="this.service.expensesForm.value['recurringId']">
   <ion-label position="fixed" color="medium">Date</ion-label>
   <ion-input [(ngModel)]="this.service.selectedDate" readonly></ion-input>
   <ion-icon position="fixed" name="calendar"></ion-icon>
-</ion-item>
+</ion-item> -->
 
 <ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col no-padding>
-          <ion-item *ngIf="this.service.expensesForm" [disabled]="this.service.expensesForm.value['recurringId']">
+        {{selectedDate}}
+          <!-- <ion-item *ngIf="this.service.expensesForm" [disabled]="this.service.expensesForm.value['recurringId']">
             <ion-label color="medium">Item category*</ion-label>
             <ion-select placeholder="Select One" (ionChange)="this.service.typeSelected($event)" [(ngModel)]="this.service.selectedType">
               <ion-select-option value="Feed">Feed</ion-select-option>
@@ -23,7 +26,7 @@
           <feed-expense-form *ngIf="this.service.selectedType == 'Feed'" [form]="this.service.expensesForm"></feed-expense-form>
           <medicine-expense-form *ngIf="this.service.selectedType == 'Medicine'" [form]="this.service.expensesForm"></medicine-expense-form>
           <labour-expense-form *ngIf="this.service.selectedType == 'Labour'" [form]="this.service.expensesForm"></labour-expense-form>
-          <livestock-expense-form *ngIf="this.service.selectedType == 'Livestock'" [form]="this.service.expensesForm"></livestock-expense-form>
+          <livestock-expense-form *ngIf="this.service.selectedType == 'Livestock'" [form]="this.service.expensesForm"></livestock-expense-form> -->
       </ion-col>
     </ion-row>
   </ion-grid>
