@@ -29,4 +29,13 @@ export class NonRecurringOverviewComponent implements OnInit {
     this.router.navigate(['expenses-edit'], navigationExtras);
   }
 
+  protected openLivestockExpenseRecord(livestockExpense: LivestockExpensesDetails){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        livestockExpenseDetails: livestockExpense
+      }
+    };
+    this.router.navigate(['expenses-edit'], navigationExtras);
+  }
+
 }

@@ -12,6 +12,7 @@ export class DatepickerComponent implements OnInit {
   @Input() addIcon: boolean;
   @Input() label: string;
   @Input() date: Date;
+  @Input() disabled: Boolean;
   @Output() dateChange = new EventEmitter<Date>();
 
   constructor(public datePickerService: DatepickerService) { }

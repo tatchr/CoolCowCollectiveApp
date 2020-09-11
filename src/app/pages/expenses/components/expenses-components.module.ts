@@ -7,7 +7,6 @@ import { MedicineExpenseComponent } from 'src/app/pages/expenses/components/medi
 import { LabourExpenseComponent } from 'src/app/pages/expenses/components/labour-expense/labour-expense.component';
 import { LivestockExpenseComponent } from 'src/app/pages/expenses/components/livestock-expense/livestock-expense.component';
 import { IonicModule } from '@ionic/angular';
-import { ExpenseComponent } from 'src/app/pages/expenses/components/expense/expense.component';
 import { OtherExpenseComponent } from './other-expense/other-expense.component';
 import { NonRecurringOverviewComponent } from 'src/app/pages/expenses/components/non-recurring-overview/non-recurring-overview.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
@@ -21,9 +20,9 @@ import { RecurringOverviewComponent } from 'src/app/pages/expenses/components/re
         IonicModule,
         PipesModule,
         ReactiveFormsModule],
-    declarations: [ExpenseComponent, FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
+    declarations: [FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
         NonRecurringOverviewComponent, RecurringOverviewComponent],
-    exports: [ExpenseComponent, FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
+    exports: [FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
         NonRecurringOverviewComponent, RecurringOverviewComponent]
 })
 export class ExpensesComponentsModule{}

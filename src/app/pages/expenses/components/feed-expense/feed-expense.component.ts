@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
-import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
   selector: 'feed-expense-form',
@@ -12,33 +11,41 @@ import { MathService } from 'src/app/services/math/math.service';
 export class FeedExpenseComponent implements OnInit {
 
   @Input() date: string;
+  @Input() isExistingRecord: Boolean;
   @Input() expensesDetails: ExpensesDetails;
-  @Output() returnform = new EventEmitter<FormGroup>();
+  @Output() returnForm = new EventEmitter<FormGroup>();
+  @Output() deleteRecord = new EventEmitter<string>();
 
   protected form: FormGroup;
 
-  constructor(public expensesService: ExpensesService, private math: MathService) { }
+  constructor(public expensesService: ExpensesService) { }
 
   ngOnInit() {
-    this.form = this.expensesService.newForm(this.expensesDetails); 
-
-    this.form.valueChanges.subscribe(val => {
-      let totalprice = this.math.round(val['price'] * val['quantity'], 2);
-      this.form.get('totalprice').patchValue(totalprice, { emitEvent: false });
-    });
-
-    this.form.get('recurringisactive').valueChanges.subscribe((isActive: boolean) => {
-      if(isActive){
-        this.form.addControl('recurringperiodindays', new FormControl(null, [Validators.required]));
-      }
-      else{
-        this.form.removeControl('recurringperiodindays');
-      }
-    });
+    this.form = this.expensesService.newForm(this.expensesDetails);
   }  
 
-  protected emitform(form: FormGroup){
+  protected emitForm(form: FormGroup){
     form.get('date').setValue(this.date);
-    this.returnform.emit(form);
+    this.returnForm.emit(form);
+  }
+
+  protected delete(id: string){
+    this.deleteRecord.emit(id);
+  }
+
+  protected get isExistingRootRecord(){
+    return this.isExistingRecord && this.recurringId && this.recurringId;
+  }
+
+  protected get isRootRecord(){
+    return this.form.get('isrootrecord').value;
+  }
+
+  protected get recurringId(){
+    return this.form.get('recurringid').value;
+  }
+
+  protected get recurringIsActive(){    
+    return this.form.get('recurringisactive').value;
   }
 }

@@ -42,21 +42,21 @@ export class ExpensesRecurringOverviewPage implements OnInit {
     });
   }
 
-  openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
-    let navigationExtras: NavigationExtras = {
-      state: {
-        expenseDetails: rootExpense
-      }
-    };
-    this.router.navigate(['expenses-recurring-edit'], navigationExtras);
-  }
+  // openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
+  //   let navigationExtras: NavigationExtras = {
+  //     state: {
+  //       expenseDetails: rootExpense
+  //     }
+  //   };
+  //   this.router.navigate(['expenses-recurring-edit'], navigationExtras);
+  // }
 
-  openExpenseRecord(expense: ExpensesDetails){
-    let navigationExtras: NavigationExtras = {
-      state: {
-        expenseDetails: expense
-      }
-    };
-    this.router.navigate(['expenses-edit'], navigationExtras);
-  }
+  // openExpenseRecord(expense: ExpensesDetails){
+  //   let navigationExtras: NavigationExtras = {
+  //     state: {
+  //       expenseDetails: expense
+  //     }
+  //   };
+  //   this.router.navigate(['expenses-edit'], navigationExtras);
+  // }
 }

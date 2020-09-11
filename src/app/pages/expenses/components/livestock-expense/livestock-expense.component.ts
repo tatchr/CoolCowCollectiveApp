@@ -11,8 +11,10 @@ import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpens
 export class LivestockExpenseComponent implements OnInit {
 
   @Input() date: string;
+  @Input() isExistingRecord: Boolean;
   @Input() livestockExpensesDetails: LivestockExpensesDetails;
-  @Output() returnform = new EventEmitter<FormGroup>();
+  @Output() returnForm = new EventEmitter<FormGroup>();
+  @Output() deleteRecord = new EventEmitter<string>();
 
   protected form: FormGroup;
 
@@ -22,10 +24,14 @@ export class LivestockExpenseComponent implements OnInit {
     this.form = this.newForm(this.livestockExpensesDetails);
   }  
 
-  protected emitform(form: FormGroup){
+  protected emitForm(form: FormGroup){
     form.get('date').setValue(this.date);
     
-    this.returnform.emit(form);
+    this.returnForm.emit(form);
+  }
+
+  protected delete(id: string){
+    this.deleteRecord.emit(id);
   }
 
   private newForm(livestockExpense: LivestockExpensesDetails){

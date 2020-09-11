@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesRecurringGroup } from 'src/app/common/objects/ExpensesRecurringGroup';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'recurring-overview',
@@ -14,7 +15,7 @@ export class RecurringOverviewComponent implements OnInit {
   @Input() toDate: string;
   @Input() expensesList: Array<ExpensesRecurringGroup>;
   
-  constructor(protected expensesService: ExpensesService) { }
+  constructor(private router: Router, protected expensesService: ExpensesService) { }
 
   ngOnInit() {}
 
@@ -33,6 +34,24 @@ export class RecurringOverviewComponent implements OnInit {
     this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
       expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
     });
+  }
+
+  protected openExpenseRecord(expense: ExpensesDetails){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        expenseDetails: expense
+      }
+    };
+    this.router.navigate(['expenses-edit'], navigationExtras);
+  }
+
+  protected openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
+    let navigationExtras: NavigationExtras = {
+      state: {
+        expenseDetails: rootExpense
+      }
+    };
+    this.router.navigate(['expenses-edit'], navigationExtras);
   }
 
 }

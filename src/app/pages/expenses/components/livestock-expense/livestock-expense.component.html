@@ -43,6 +43,10 @@
   </ion-item>
 </form>
 
-<ion-button color="success" expand="full" [disabled]="form.invalid" (click)="emitform(form)">
+<ion-button color="success" expand="full" [disabled]="form.invalid" (click)="emitForm(form)">
   <ion-icon name="save"></ion-icon>
+</ion-button>
+
+<ion-button *ngIf="isExistingRecord" color="danger" expand="full" (click)="delete(expensesDetails.id)">
+  <ion-icon name="trash"></ion-icon>
 </ion-button>

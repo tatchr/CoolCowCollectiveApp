@@ -6,7 +6,7 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Period } from 'src/app/common/objects/Enums';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { ExpensesRecurringGroup } from 'src/app/common/objects/ExpensesRecurringGroup';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Location } from '@angular/common';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
@@ -80,7 +80,7 @@ export class ExpensesService {
   }
 
   public newForm(expense: ExpensesDetails) {
-    return this.formBuilder.group({
+    let form = this.formBuilder.group({
       id: [expense.id],
       farmId: [expense.farmId],
       date: [expense.date],
@@ -94,9 +94,28 @@ export class ExpensesService {
       cowstatus: [expense.cowStatus],
       sellername: [expense.sellerName],
       sellercompany: [expense.sellerCompany],
+      isrootrecord: [expense.isRootRecord],
       recurringisactive: [expense.recurringIsActive],
-      recurringFromDate: [expense.recurringFromDate]
+      recurringFromDate: [expense.recurringFromDate],
+      recurringid: [expense.recurringId],
+      recurringperiodindays: [expense.recurringPeriodInDays]
     });
+
+    form.valueChanges.subscribe(val => {
+      let totalprice = this.math.round(val['price'] * val['quantity'], 2);
+      form.get('totalprice').patchValue(totalprice, { emitEvent: false });
+    });
+
+    form.get('recurringisactive').valueChanges.subscribe((isActive: boolean) => {
+      if(isActive){
+        form.addControl('recurringperiodindays', new FormControl(null, [Validators.required]));
+      }
+      else{
+        form.removeControl('recurringperiodindays');
+      }
+    });
+
+    return form;
   }
 
   loadExpensesList(fromDate: Date, toDate: Date) {

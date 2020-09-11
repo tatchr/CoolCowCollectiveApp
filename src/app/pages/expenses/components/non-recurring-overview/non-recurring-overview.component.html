@@ -26,7 +26,7 @@
 
     <ion-row *ngFor='let expense of result.livestockExpensesList' class="product-list">
       <ion-col [size]="12" no-padding>
-        <ion-item button="true">
+        <ion-item button="true" (click)="openLivestockExpenseRecord(expense)">
           <ion-note slot="end" style="font-size: 16px;">{{expense.price}} Ksh </ion-note>
           <ion-label>
             <p style="font-size: 12px;">{{expense.cowDetails.cowType}}</p>

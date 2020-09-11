@@ -1,38 +1,43 @@
 <topbar title="Expense edit" [backbtn]="true"></topbar>
-<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
-
-<!-- <ion-item (click)="this.service.openDatePicker()" [disabled]="this.service.expensesForm.value['recurringId']">
-  <ion-label position="fixed" color="medium">Date</ion-label>
-  <ion-input [(ngModel)]="this.service.selectedDate" readonly></ion-input>
-  <ion-icon position="fixed" name="calendar"></ion-icon>
-</ion-item> -->
+<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="expensesDetails.date"
+  [disabled]="expensesDetails.recurringId"></datepicker>
 
 <ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col no-padding>
-        {{selectedDate}}
-          <!-- <ion-item *ngIf="this.service.expensesForm" [disabled]="this.service.expensesForm.value['recurringId']">
-            <ion-label color="medium">Item category*</ion-label>
-            <ion-select placeholder="Select One" (ionChange)="this.service.typeSelected($event)" [(ngModel)]="this.service.selectedType">
-              <ion-select-option value="Feed">Feed</ion-select-option>
-              <ion-select-option value="Medicine">Medicine</ion-select-option>
-              <ion-select-option value="Labour">Labour</ion-select-option>
-              <ion-select-option value="Livestock">Livestock</ion-select-option>
-              <ion-select-option value="Other">Other</ion-select-option>
-            </ion-select>
-          </ion-item>
+        <ion-item>
+          <ion-label color="medium">Item category*</ion-label>
+          <ion-select placeholder="Select One" [(ngModel)]="expensesDetails.type" disabled>
+            <ion-select-option value="Feed">Feed</ion-select-option>
+            <ion-select-option value="Medicine">Medicine</ion-select-option>
+            <ion-select-option value="Labour">Labour</ion-select-option>
+            <ion-select-option value="Livestock">Livestock</ion-select-option>
+            <ion-select-option value="Other">Other</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-          <feed-expense-form *ngIf="this.service.selectedType == 'Feed'" [form]="this.service.expensesForm"></feed-expense-form>
-          <medicine-expense-form *ngIf="this.service.selectedType == 'Medicine'" [form]="this.service.expensesForm"></medicine-expense-form>
-          <labour-expense-form *ngIf="this.service.selectedType == 'Labour'" [form]="this.service.expensesForm"></labour-expense-form>
-          <livestock-expense-form *ngIf="this.service.selectedType == 'Livestock'" [form]="this.service.expensesForm"></livestock-expense-form> -->
+        <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [isExistingRecord]="true" [date]="expensesDetails.date"
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></feed-expense-form>
+
+        <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [isExistingRecord]="true" [date]="expensesDetails.date"
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)"></medicine-expense-form>
+
+        <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [isExistingRecord]="true" [date]="expensesDetails.date"
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></labour-expense-form>
+
+        <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [isExistingRecord]="true" [date]="expensesDetails.date"
+          [livestockExpensesDetails]="livestockExpensesDetails" (returnForm)="onSubmitLivestock($event)">
+        </livestock-expense-form>
+
+        <other-expense-form *ngIf="expensesDetails.type == 'Other'" [isExistingRecord]="true" [date]="expensesDetails.date"
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></other-expense-form>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-footer>
+<!-- <ion-footer>
   <ion-row>
     <ion-col col-6>
       <ion-button color="success" expand="full" type="submit" *ngIf="this.service.expensesForm"
@@ -47,4 +52,4 @@
       </ion-button>
     </ion-col>
   </ion-row>
-</ion-footer>
+</ion-footer> -->

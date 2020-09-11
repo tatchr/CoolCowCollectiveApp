@@ -16,20 +16,20 @@
         </ion-item>
 
         <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [date]="selectedDate"
-          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></feed-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></feed-expense-form>
 
         <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [date]="selectedDate"
-          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></medicine-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></medicine-expense-form>
 
         <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [date]="selectedDate"
-          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></labour-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></labour-expense-form>
 
         <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [date]="selectedDate"
-          [livestockExpensesDetails]="livestockExpensesDetails" (returnform)="onSubmitLivestock($event)">
+          [livestockExpensesDetails]="livestockExpensesDetails" (returnForm)="onSubmitLivestock($event)">
         </livestock-expense-form>
 
         <other-expense-form *ngIf="expensesDetails.type == 'Other'" [date]="selectedDate"
-          [expensesDetails]="expensesDetails" (returnform)="onSubmit($event)"></other-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></other-expense-form>
       </ion-col>
     </ion-row>
   </ion-grid>

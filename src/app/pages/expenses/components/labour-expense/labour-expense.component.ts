@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
-import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
   selector: 'labour-expense-form',
@@ -12,39 +11,46 @@ import { MathService } from 'src/app/services/math/math.service';
 export class LabourExpenseComponent implements OnInit {
 
   @Input() date: string;
+  @Input() isExistingRecord: Boolean;
   @Input() expensesDetails: ExpensesDetails;
-  @Output() returnform = new EventEmitter<FormGroup>();
+  @Output() returnForm = new EventEmitter<FormGroup>();
+  @Output() deleteRecord = new EventEmitter<string>();
 
   protected form: FormGroup;
 
-  constructor(public expensesService: ExpensesService, private math: MathService) { }
+  constructor(public expensesService: ExpensesService) { }
 
   ngOnInit() {
     this.form = this.expensesService.newForm(this.expensesDetails); 
     this.form.get('quantityUnit').setValue('hours');
-
-    this.form.valueChanges.subscribe(val => {
-      let totalprice = this.math.round(val['price'] * val['quantity'], 2);
-      this.form.get('totalprice').patchValue(totalprice, { emitEvent: false });
-    });
-
-    this.form.get('recurringisactive').valueChanges.subscribe((isActive: boolean) => {
-      if(isActive){
-        this.form.addControl('recurringperiodindays', new FormControl(null, [Validators.required]));
-      }
-      else{
-        this.form.removeControl('recurringperiodindays');
-      }
-    });    
   }
 
-  protected emitform(form: FormGroup){
+  protected emitForm(form: FormGroup){
     form.get('date').setValue(this.date);
     let employeeName = this.form.get('itembought').value;
     form.get('sellername').setValue(employeeName);
     form.get('sellercompany').setValue(employeeName);
 
-    this.returnform.emit(form);
+    this.returnForm.emit(form);
   }
 
+  protected delete(id: string){
+    this.deleteRecord.emit(id);
+  }
+
+  protected get isExistingRootRecord(){
+    return this.isExistingRecord && this.recurringId && this.recurringId;
+  }
+
+  protected get isRootRecord(){
+    return this.form.get('isrootrecord').value;
+  }
+
+  protected get recurringId(){
+    return this.form.get('recurringid').value;
+  }
+
+  protected get recurringIsActive(){    
+    return this.form.get('recurringisactive').value;
+  }
 }

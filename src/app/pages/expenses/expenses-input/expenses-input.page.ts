@@ -25,6 +25,7 @@ export class ExpensesInputPage implements OnInit {
       this.expensesDetails = new ExpensesDetails({
         farmId: farm.farmId,
         date: this.expensesService.datePicker.today,
+        isRootRecord: false,
         recurringIsActive: false
       });
 
@@ -37,6 +38,7 @@ export class ExpensesInputPage implements OnInit {
   }
 
   onSubmit(expensesForm) {
+    console.log(expensesForm);
     this.expensesService.registerExpensesRecord(expensesForm.getRawValue()).then(val => {
       if (val['expense']) {
         this.expensesService.expenseRegistered.next(val['expense']);
