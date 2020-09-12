@@ -21,9 +21,9 @@ export class ExpensesOverviewPage implements OnInit {
   }
 
   dateChanged(){
-    this.expensesService.loadExpensesList(this.fromDate, this.toDate);
-    this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
-    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
+    //this.expensesService.loadExpensesList(this.fromDate, this.toDate);
+   // this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
+    //this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
   }
   
   // automaticClose = false;

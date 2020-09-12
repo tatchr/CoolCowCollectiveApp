@@ -30,9 +30,16 @@ export class CowService {
 
     this.cowRegistered.subscribe(newCow => {
       if (newCow) {
-        console.log('Cow registered');
-        console.log(newCow);
         this.cowsList.push(newCow);
+        //this.applyFiltersAndSort();
+        this.cowListState.next(true);
+      }
+    });
+
+    this.cowDeleted.subscribe(cowId => {
+      if (cowId) {
+        let cowToDelete = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
+        this.cowsList.splice(cowToDelete, 1);
         //this.applyFiltersAndSort();
         this.cowListState.next(true);
       }

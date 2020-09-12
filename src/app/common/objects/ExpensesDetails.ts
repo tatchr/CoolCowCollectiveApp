@@ -1,4 +1,6 @@
-export class ExpensesDetails{
+import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
+
+export class ExpensesDetails implements IExpensesDetails{
     id: string;
     farmId: string;
     date: Date;

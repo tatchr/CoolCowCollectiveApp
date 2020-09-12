@@ -18,20 +18,20 @@
         </ion-item>
 
         <feed-expense-form *ngIf="expensesDetails.type == 'Feed'" [isExistingRecord]="true" [date]="expensesDetails.date"
-          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></feed-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)"></feed-expense-form>
 
         <medicine-expense-form *ngIf="expensesDetails.type == 'Medicine'" [isExistingRecord]="true" [date]="expensesDetails.date"
           [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)"></medicine-expense-form>
 
         <labour-expense-form *ngIf="expensesDetails.type == 'Labour'" [isExistingRecord]="true" [date]="expensesDetails.date"
-          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></labour-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)"></labour-expense-form>
 
         <livestock-expense-form *ngIf="expensesDetails.type == 'Livestock'" [isExistingRecord]="true" [date]="expensesDetails.date"
-          [livestockExpensesDetails]="livestockExpensesDetails" (returnForm)="onSubmitLivestock($event)">
+          [livestockExpensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)">
         </livestock-expense-form>
 
         <other-expense-form *ngIf="expensesDetails.type == 'Other'" [isExistingRecord]="true" [date]="expensesDetails.date"
-          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)"></other-expense-form>
+          [expensesDetails]="expensesDetails" (returnForm)="onSubmit($event)" (deleteRecord)="onDelete($event)"></other-expense-form>
       </ion-col>
     </ion-row>
   </ion-grid>

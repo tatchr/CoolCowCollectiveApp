@@ -6,30 +6,24 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 import { Period } from 'src/app/common/objects/Enums';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { ExpensesRecurringGroup } from 'src/app/common/objects/ExpensesRecurringGroup';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Location } from '@angular/common';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { CowService } from '../cow/cow.service';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 import { MathService } from '../math/math.service';
-
-import * as moment from 'moment';
+import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
-
-  expensesForm: FormGroup;
-  selectedType: string;
-
-  changeCounter: number = 0;
-  expenseRegistered = new BehaviorSubject<ExpensesDetails>(null);
-  public expenseUpdated = new BehaviorSubject<ExpensesDetails>(null);
+  expenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
+  expenseUpdated = new BehaviorSubject<IExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<string>(null);
 
-  livestockExpenseRegistered = new BehaviorSubject<LivestockExpensesDetails>(null);
+  livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
   farmId: string;
   selectedDate: Date = this.datePicker.today;
@@ -37,8 +31,7 @@ export class ExpensesService {
   selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
-  expensesList: Array<ExpensesDetails> = [];
-  livestockExpensesList: Array<LivestockExpensesDetails> = [];
+  expensesList: Array<IExpensesDetails> = [];
   recurringExpensesList: Array<ExpensesRecurringGroup> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private location: Location,
@@ -46,37 +39,36 @@ export class ExpensesService {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.farmId;
       this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-      this.loadLivestockExpensesList(this.selectedFromDate, this.selectedToDate);
       this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
-    });
 
-    this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
-      if(newLivestockExpense){
-        this.livestockExpensesList.push(newLivestockExpense);
-        this.cowService.cowRegistered.next(newLivestockExpense.cowDetails);
-      }
-    });
+      this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
+        if(newLivestockExpense){
+          this.expensesList.push(newLivestockExpense);
+          this.cowService.cowRegistered.next(newLivestockExpense.cowDetails);
+        }
+      });
 
-    this.expenseRegistered.subscribe(newExpense => {
-      if (newExpense) {
-        this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-        this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
-      }
-    });
-
-    this.expenseDeleted.subscribe(expenseId => {
-      if (expenseId) {
-        this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-        this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
-      }
-    });
-
-    this.expenseUpdated.subscribe(sale => {
-      if (sale) {
-        this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-        this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
-      }
-    });
+      this.expenseRegistered.subscribe(newExpense => {
+        if (newExpense) {
+          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+        }
+      });
+  
+      this.expenseDeleted.subscribe(expenseId => {
+        if (expenseId) {
+          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+        }
+      });
+  
+      this.expenseUpdated.subscribe(sale => {
+        if (sale) {
+          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+        }
+      });
+    });    
   }
 
   public newForm(expense: ExpensesDetails) {
@@ -118,71 +110,21 @@ export class ExpensesService {
     return form;
   }
 
-  loadExpensesList(fromDate: Date, toDate: Date) {
-    this.getExpensesRecords(this.farmId, fromDate, toDate).then(res => {
-      this.expensesList = res['expensesList'];
+
+  public loadExpensesList(fromDate: Date, toDate: Date){
+    this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
+      this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
+        let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
+        let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
+
+        this.expensesList = expensesList.concat(livestockExpensesList);
+      });
     });
   }
 
   loadRecurringExpensesList(fromDate: Date, toDate: Date) {
     this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
       this.recurringExpensesList = res['recurringExpensesList'];
-    });
-  }
-
-  loadLivestockExpensesList(fromDate: Date, toDate: Date) {
-    this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(res => {
-      this.livestockExpensesList = res['livestockExpensesList'];
-    });
-  }
-
-  periodSelected(period) {
-    this.selectedPeriod = period;
-    let result = this.datePicker.periodSelected(period);
-
-    this.loadExpensesList(result.fromDate, result.toDate);
-    this.loadRecurringExpensesList(result.fromDate, result.toDate);
-  }
-
-
-  returnToOverview() {
-    this.location.back();
-  }
-
-  typeSelected(event) {
-    this.selectedType = event.detail.value;
-  }
-
-  async openDatePicker() {
-    this.selectedDate = await this.datePicker.openDatePicker(this.selectedDate);
-  }
-
-  initiateExistingForm(expenseDetails: ExpensesDetails) {
-    this.selectedDate = expenseDetails.date;
-    this.selectedType = expenseDetails.type;
-    this.expensesForm = this.formBuilder.group({
-      id: expenseDetails.id,
-      farmId: expenseDetails.farmId,
-      date: this.selectedDate,
-      type: [this.selectedType, [Validators.required]],
-      itembought: [expenseDetails.itemBought, [Validators.required]],
-      price: [expenseDetails.price, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],
-      quantity: [expenseDetails.quantity, [Validators.required, Validators.min(1), Validators.max(10000)]],
-      quantityUnit: [expenseDetails.quantityUnit],
-      totalprice: [{ value: expenseDetails.totalPrice, disabled: true }],
-      cowname: [null],
-      cowstatus: [null],
-      sellername: [expenseDetails.sellerName],
-      sellercompany: [expenseDetails.sellerCompany],
-      isrootrecord: [expenseDetails.isRootRecord],
-      recurringisactive: [expenseDetails.recurringIsActive],
-      recurringFromDate: [expenseDetails.recurringFromDate],
-      recurringId: [expenseDetails.recurringId]
-    });
-
-    this.expensesForm.valueChanges.subscribe(val => {
-      let totalPrice = this.math.round(val['price'] * val['quantity'], 2);
-      this.expensesForm.get('totalprice').patchValue(totalPrice, { emitEvent: false });
     });
   }
 
@@ -226,7 +168,7 @@ export class ExpensesService {
     return this.httpService.put(`${environment.url}/api/expenses/stopRecurringRecords/${recurringId}/${recurringIsActive}`, null);
   }
 
-  registerLivestockExpensesRecord(record: LivestockExpensesDetails) {
+  registerLivestockExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/livestockExpenses/register`, record);
   }
 
@@ -238,5 +180,13 @@ export class ExpensesService {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${from}/${to}`);
+  }
+
+  public updateLivestockExpensesRecord(record) {
+    return this.httpService.put(`${environment.url}/api/livestockExpenses/update`, record);
+  }
+
+  public deleteLivestockExpensesRecord(id) {
+    return this.httpService.delete(`${environment.url}/api/livestockExpenses/delete/${id}`);
   }
 }

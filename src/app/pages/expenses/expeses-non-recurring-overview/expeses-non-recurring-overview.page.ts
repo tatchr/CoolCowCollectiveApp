@@ -21,18 +21,8 @@ export class ExpesesNonRecurringOverviewPage implements OnInit {
   ngOnInit() {
   }
 
-  openExpenseRecord(expense: ExpensesDetails){
-    let navigationExtras: NavigationExtras = {
-      state: {
-        expenseDetails: expense
-      }
-    };
-    this.router.navigate(['expenses-edit'], navigationExtras);
-  }
-
   dateChanged(){
     this.expensesService.loadExpensesList(this.fromDate, this.toDate);
-    this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
     this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
   }
 }

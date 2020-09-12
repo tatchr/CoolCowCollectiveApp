@@ -14,7 +14,7 @@ export class LivestockExpenseComponent implements OnInit {
   @Input() isExistingRecord: Boolean;
   @Input() livestockExpensesDetails: LivestockExpensesDetails;
   @Output() returnForm = new EventEmitter<FormGroup>();
-  @Output() deleteRecord = new EventEmitter<string>();
+  @Output() deleteRecord = new EventEmitter<LivestockExpensesDetails>();
 
   protected form: FormGroup;
 
@@ -30,8 +30,8 @@ export class LivestockExpenseComponent implements OnInit {
     this.returnForm.emit(form);
   }
 
-  protected delete(id: string){
-    this.deleteRecord.emit(id);
+  protected delete(livestockExpensesDetails: LivestockExpensesDetails){
+    this.deleteRecord.emit(livestockExpensesDetails);
   }
 
   private newForm(livestockExpense: LivestockExpensesDetails){

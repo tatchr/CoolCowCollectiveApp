@@ -14,7 +14,6 @@
 </ion-row>
 
 <ion-content no-padding>
-  <non-recurring-overview *ngIf="this.expensesService.expensesList && this.expensesService.livestockExpensesList"
- [expensesList]="this.expensesService.expensesList" 
- [livestockExpensesList]="this.expensesService.livestockExpensesList" [fromDate]="fromDate" [toDate]="toDate"></non-recurring-overview>
+  <non-recurring-overview *ngIf="this.expensesService.expensesList"
+    [expensesList]="this.expensesService.expensesList" [fromDate]="fromDate" [toDate]="toDate"></non-recurring-overview>
 </ion-content>

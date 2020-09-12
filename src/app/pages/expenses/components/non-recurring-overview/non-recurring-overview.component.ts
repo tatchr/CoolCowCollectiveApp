@@ -3,6 +3,7 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 
 @Component({
   selector: 'non-recurring-overview',
@@ -13,29 +14,22 @@ export class NonRecurringOverviewComponent implements OnInit {
 
   @Input() fromDate: string;
   @Input() toDate: string;
-  @Input() expensesList: Array<ExpensesDetails>;
-  @Input() livestockExpensesList: Array<LivestockExpensesDetails>;
+  @Input() expensesList: Array<IExpensesDetails>;
 
   constructor(private router: Router, protected expensesService: ExpensesService) { }  
 
   ngOnInit() {}
 
-  protected openExpenseRecord(expense: ExpensesDetails){
+  protected openExpenseRecord(expense: IExpensesDetails){
     let navigationExtras: NavigationExtras = {
       state: {
         expenseDetails: expense
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);
-  }
+  }  
 
-  protected openLivestockExpenseRecord(livestockExpense: LivestockExpensesDetails){
-    let navigationExtras: NavigationExtras = {
-      state: {
-        livestockExpenseDetails: livestockExpense
-      }
-    };
-    this.router.navigate(['expenses-edit'], navigationExtras);
+  protected isLivestock(expense: IExpensesDetails){
+    return expense instanceof LivestockExpensesDetails;
   }
-
 }

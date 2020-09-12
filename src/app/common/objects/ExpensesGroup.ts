@@ -1,11 +1,9 @@
-import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
-import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
+import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 
 export class ExpensesGroup{
     date: Date;
     totalPrice: number;
-    expensesList: Array<ExpensesDetails>;
-    livestockExpensesList: Array<LivestockExpensesDetails>;
+    expensesList: Array<IExpensesDetails>;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

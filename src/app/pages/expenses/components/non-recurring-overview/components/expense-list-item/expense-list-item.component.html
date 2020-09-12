@@ -1,0 +1,13 @@
+<ion-item button="true">
+  <ion-note slot="end" style="font-size: 16px;">{{expense.totalPrice}} Ksh </ion-note>
+  <ion-label>
+    <p style="font-size: 12px;">{{expense.type}}</p>
+    <p>
+      <b>({{expense.quantity}}
+        {{expense.quantityUnit == null || expense.quantityUnit == 'units' 
+                ? 'x' 
+                : expense.quantityUnit}}) </b>
+      {{expense.itemBought}} @ {{expense.price}} Ksh
+    </p>
+  </ion-label>
+</ion-item>

@@ -14,7 +14,7 @@ export class LabourExpenseComponent implements OnInit {
   @Input() isExistingRecord: Boolean;
   @Input() expensesDetails: ExpensesDetails;
   @Output() returnForm = new EventEmitter<FormGroup>();
-  @Output() deleteRecord = new EventEmitter<string>();
+  @Output() deleteRecord = new EventEmitter<ExpensesDetails>();
 
   protected form: FormGroup;
 
@@ -34,8 +34,8 @@ export class LabourExpenseComponent implements OnInit {
     this.returnForm.emit(form);
   }
 
-  protected delete(id: string){
-    this.deleteRecord.emit(id);
+  protected delete(expensesDetails: ExpensesDetails){
+    this.deleteRecord.emit(expensesDetails);
   }
 
   protected get isExistingRootRecord(){

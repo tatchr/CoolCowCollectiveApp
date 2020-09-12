@@ -38,7 +38,6 @@ export class ExpensesInputPage implements OnInit {
   }
 
   onSubmit(expensesForm) {
-    console.log(expensesForm);
     this.expensesService.registerExpensesRecord(expensesForm.getRawValue()).then(val => {
       if (val['expense']) {
         this.expensesService.expenseRegistered.next(val['expense']);
@@ -57,7 +56,8 @@ export class ExpensesInputPage implements OnInit {
   onSubmitLivestock(livestockExpensesForm) {
     this.expensesService.registerLivestockExpensesRecord(livestockExpensesForm.value).then(val => {
       if (val['livestockExpense']) {
-        this.expensesService.livestockExpenseRegistered.next(val['livestockExpense']);
+        let registeredRecord = new LivestockExpensesDetails(val['livestockExpense']);        
+        this.expensesService.livestockExpenseRegistered.next(registeredRecord);
 
         this.router.navigate(['/expenses-overview'], { replaceUrl: true });
       }

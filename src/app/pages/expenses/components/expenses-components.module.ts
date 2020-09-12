@@ -11,6 +11,8 @@ import { OtherExpenseComponent } from './other-expense/other-expense.component';
 import { NonRecurringOverviewComponent } from 'src/app/pages/expenses/components/non-recurring-overview/non-recurring-overview.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { RecurringOverviewComponent } from 'src/app/pages/expenses/components/recurring-overview/recurring-overview.component';
+import { LivestockExpenseListItemComponent } from './non-recurring-overview/components/livestock-expense-list-item/livestock-expense-list-item.component';
+import { ExpenseListItemComponent } from './non-recurring-overview/components/expense-list-item/expense-list-item.component';
 
 
 @NgModule({
@@ -21,8 +23,8 @@ import { RecurringOverviewComponent } from 'src/app/pages/expenses/components/re
         PipesModule,
         ReactiveFormsModule],
     declarations: [FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
-        NonRecurringOverviewComponent, RecurringOverviewComponent],
+        NonRecurringOverviewComponent, RecurringOverviewComponent, ExpenseListItemComponent, LivestockExpenseListItemComponent],
     exports: [FeedExpenseComponent, MedicineExpenseComponent, LabourExpenseComponent, LivestockExpenseComponent, OtherExpenseComponent,
-        NonRecurringOverviewComponent, RecurringOverviewComponent]
+        NonRecurringOverviewComponent, RecurringOverviewComponent, ExpenseListItemComponent, LivestockExpenseListItemComponent]
 })
 export class ExpensesComponentsModule{}

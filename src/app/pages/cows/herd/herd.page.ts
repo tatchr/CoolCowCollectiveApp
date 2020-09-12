@@ -41,14 +41,14 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     //   }
     // });
 
-    this.cowService.cowDeleted.subscribe(cowId => {
-      if (cowId) {
-        let cowToDelete = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
-        this.cowService.cowsList.splice(cowToDelete, 1);
-        this.applyFiltersAndSort();
-        this.cowService.cowListState.next(true);
-      }
-    });
+    // this.cowService.cowDeleted.subscribe(cowId => {
+    //   if (cowId) {
+    //     let cowToDelete = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
+    //     this.cowService.cowsList.splice(cowToDelete, 1);
+    //     this.applyFiltersAndSort();
+    //     this.cowService.cowListState.next(true);
+    //   }
+    // });
 
     this.cowService.cowUpdated.subscribe(cow => {
       if (cow) {

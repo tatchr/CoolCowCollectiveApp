@@ -25,42 +25,42 @@ export class ExpensesRecurringEditPage implements OnInit {
     }
 
     ngOnInit() {
-      this.service.initiateExistingForm(this.expenseDetails);
-      this.service.expensesForm.addControl('recurringperiodindays', new FormControl(this.expenseDetails.recurringPeriodInDays, [Validators.required, Validators.min(1)]));
+      //this.service.initiateExistingForm(this.expenseDetails);
+      //this.service.expensesForm.addControl('recurringperiodindays', new FormControl(this.expenseDetails.recurringPeriodInDays, [Validators.required, Validators.min(1)]));
     }
   
     onSubmit() {      
-      if(this.service.expensesForm.valid){
-        this.service.expensesForm.controls['updateDate'].setValue(new Date());
-        this.service.expensesForm.controls['date'].setValue(this.service.selectedDate);
-        let updatedExpense = new ExpensesDetails({
-          id: this.service.expensesForm.value['id'],
-          farmId: this.service.expensesForm.value['farmId'],
-          date: this.service.selectedDate,
-          type: this.service.expensesForm.value['type'],
-          itemBought: this.service.expensesForm.value['itembought'],
-          price: this.service.expensesForm.value['price'],
-          quantity: this.service.expensesForm.value['quantity'],
-          quantityUnit: this.service.expensesForm.value['quantityUnit'],
-          totalPrice: this.service.expensesForm.value['price'] * this.service.expensesForm.value['quantity'],
-          sellerName: this.service.expensesForm.value['sellername'],
-          sellerCompany: this.service.expensesForm.value['sellercompany'],
-          isRootRecord: this.service.expensesForm.value['isrootrecord'],
-          recurringIsActive: this.service.expensesForm.value['recurringisactive'],
-          recurringPeriodInDays: this.expenseDetails.recurringPeriodInDays,
-          recurringFromDate: this.service.expensesForm.value['recurringFromDate'],
-          recurringId: this.service.expensesForm.value['recurringId'],
-          registrationDate: this.service.expensesForm.value['registrationDate'],
-          updateDate: this.service.expensesForm.value['updateDate'],
-        });  
+      // if(this.service.expensesForm.valid){
+      //   this.service.expensesForm.controls['updateDate'].setValue(new Date());
+      //   this.service.expensesForm.controls['date'].setValue(this.service.selectedDate);
+      //   let updatedExpense = new ExpensesDetails({
+      //     id: this.service.expensesForm.value['id'],
+      //     farmId: this.service.expensesForm.value['farmId'],
+      //     date: this.service.selectedDate,
+      //     type: this.service.expensesForm.value['type'],
+      //     itemBought: this.service.expensesForm.value['itembought'],
+      //     price: this.service.expensesForm.value['price'],
+      //     quantity: this.service.expensesForm.value['quantity'],
+      //     quantityUnit: this.service.expensesForm.value['quantityUnit'],
+      //     totalPrice: this.service.expensesForm.value['price'] * this.service.expensesForm.value['quantity'],
+      //     sellerName: this.service.expensesForm.value['sellername'],
+      //     sellerCompany: this.service.expensesForm.value['sellercompany'],
+      //     isRootRecord: this.service.expensesForm.value['isrootrecord'],
+      //     recurringIsActive: this.service.expensesForm.value['recurringisactive'],
+      //     recurringPeriodInDays: this.expenseDetails.recurringPeriodInDays,
+      //     recurringFromDate: this.service.expensesForm.value['recurringFromDate'],
+      //     recurringId: this.service.expensesForm.value['recurringId'],
+      //     registrationDate: this.service.expensesForm.value['registrationDate'],
+      //     updateDate: this.service.expensesForm.value['updateDate'],
+      //   });  
         
-        this.service.updateRootExpensesRecord(this.service.expensesForm.getRawValue()).subscribe(val => {
-          if (val) {
-            this.service.expenseUpdated.next(updatedExpense);
-            this.service.returnToOverview();
-          }
-        });
-      }    
+      //   this.service.updateRootExpensesRecord(this.service.expensesForm.getRawValue()).subscribe(val => {
+      //     if (val) {
+      //       this.service.expenseUpdated.next(updatedExpense);
+      //       //this.service.returnToOverview();
+      //     }
+      //   });
+      // }    
     }
   
     onDelete() {
@@ -70,7 +70,7 @@ export class ExpensesRecurringEditPage implements OnInit {
         this.service.deleteExpensesRecurringRecords(this.expenseDetails.recurringId).subscribe(val => {
           if (val) {
             this.service.expenseDeleted.next(this.expenseDetails.id);
-            this.service.returnToOverview();
+            //this.service.returnToOverview();
           }
         });
       };
