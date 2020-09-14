@@ -13,13 +13,13 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 })
 export class ExpensesRecurringEditPage implements OnInit {
 
-  expenseDetails: ExpensesDetails;
+  protected expensesDetails: ExpensesDetails;
   
   constructor(private router: Router, public service: ExpensesService, private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute, private alertService: AlertService) {
-      this.activatedRoute.queryParams.subscribe(params => {
+      this.activatedRoute.queryParams.subscribe(() => {
         if (this.router.getCurrentNavigation().extras.state) {
-          this.expenseDetails = this.router.getCurrentNavigation().extras.state.expenseDetails;
+          this.expensesDetails = this.router.getCurrentNavigation().extras.state.expensesDetails;
         }
       });
     }

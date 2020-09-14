@@ -48,7 +48,7 @@ export class RecurringOverviewComponent implements OnInit {
   protected openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
     let navigationExtras: NavigationExtras = {
       state: {
-        expenseDetails: rootExpense
+        expensesDetails: rootExpense
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);

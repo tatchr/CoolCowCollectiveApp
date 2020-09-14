@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
@@ -20,9 +20,7 @@ export class ExpensesRecurringOverviewPage implements OnInit {
   }
 
   dateChanged(){
-    //this.expensesService.loadExpensesList(this.fromDate, this.toDate);
-    //this.expensesService.loadLivestockExpensesList(this.fromDate, this.toDate);
-    //this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
   }
   
   automaticClose = false;
