@@ -47,9 +47,8 @@ export class DatepickerService {
     return await datepicker.onDidDismiss().then((data) => {      
       if (typeof data.data === 'undefined' || data.data.date === 'Invalid date') {
         return inputDate;
-      }
+      }      
       
-      //return this.formatDate(data.data.date);
       return <Date>data.data.date;
     });
   }

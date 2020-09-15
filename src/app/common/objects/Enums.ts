@@ -28,12 +28,12 @@ export enum ItemSold {
 };
 
 export enum Period {
-    lastweek = 'lastweek',
-    last2weeks = 'last2weeks',
-    lastmonth = 'lastmonth',
-    lastquarter = 'lastquarter',
-    lastyear = 'lastyear',
-    alltime = 'alltime'
+    lastweek = 'last week',
+    last2weeks = 'last 2 weeks',
+    lastmonth = 'last month',
+    lastquarter = 'last quarter',
+    lastyear = 'last year',
+    alltime = 'all time'
 };
 
 export enum TimeOfDay {

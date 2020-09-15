@@ -64,16 +64,16 @@ export class ExpensesRecurringEditPage implements OnInit {
     }
   
     onDelete() {
-      let header = 'Delete recurring records?';
-      let message = 'Deleting this root record will also delete all of its corresponding historical child records. Are you sure?';
-      let confirmAction = () => {
-        this.service.deleteExpensesRecurringRecords(this.expenseDetails.recurringId).subscribe(val => {
-          if (val) {
-            this.service.expenseDeleted.next(this.expenseDetails.id);
-            //this.service.returnToOverview();
-          }
-        });
-      };
-      this.alertService.presentAlertConfirm(header, message, confirmAction);
-    }    
+    //   let header = 'Delete recurring records?';
+    //   let message = 'Deleting this root record will also delete all of its corresponding historical child records. Are you sure?';
+    //   let confirmAction = () => {
+    //     this.service.deleteExpensesRecurringRecords(this.expenseDetails.recurringId).subscribe(val => {
+    //       if (val) {
+    //         this.service.expenseDeleted.next(this.expenseDetails.id);
+    //         //this.service.returnToOverview();
+    //       }
+    //     });
+    //   };
+    //   this.alertService.presentAlertConfirm(header, message, confirmAction);
+     }    
 }

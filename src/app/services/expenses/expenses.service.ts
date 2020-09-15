@@ -23,6 +23,9 @@ export class ExpensesService {
   expenseUpdated = new BehaviorSubject<IExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<string>(null);
 
+  public expensesLoaded = new BehaviorSubject<Boolean>(null);
+  public expensesUpdated = new BehaviorSubject<Boolean>(null);
+
   livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
   farmId: string;
@@ -118,6 +121,7 @@ export class ExpensesService {
         let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
 
         this.expensesList = expensesList.concat(livestockExpensesList);
+        this.expensesLoaded.next(true);
       });
     });
   }

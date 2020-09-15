@@ -11,6 +11,7 @@ import { Period } from '../../objects/Enums';
 export class PeriodSelectorComponent implements OnInit {
 
   @Output() fromDateChange = new EventEmitter<Date>();
+  @Output() returnPeriod = new EventEmitter<Period>();
   
   protected selectedPeriod: Period = Period.lastweek;
 
@@ -53,8 +54,10 @@ export class PeriodSelectorComponent implements OnInit {
       default:
         break;
     }
+    
 
     this.fromDateChange.emit(fromDate);
+    this.returnPeriod.emit(period);
   }
 
 }
