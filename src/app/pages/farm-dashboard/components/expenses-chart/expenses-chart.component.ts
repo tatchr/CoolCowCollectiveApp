@@ -16,6 +16,8 @@ export class ExpensesChartComponent implements OnInit {
   @Input() toDate: Date;
   @Input() inputData: ExpensesTypeGroup[];
   
+  private expensesPieChart: Chart;
+
   constructor() { }
 
   ngOnInit() {
@@ -28,7 +30,6 @@ export class ExpensesChartComponent implements OnInit {
     this.expensesPieChart.update();
   } 
 
-  private expensesPieChart: Chart;
   private createExpensesChart(inputData: ExpensesTypeGroup[], period: Period) {
     this.expensesPieChart = new Chart(this.expensesChart.nativeElement, {
       type: 'doughnut',

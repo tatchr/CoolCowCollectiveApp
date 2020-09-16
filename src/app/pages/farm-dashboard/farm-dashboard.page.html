@@ -7,7 +7,7 @@
         <period-selector (fromDateChange)="fromDateChanged($event)" (returnPeriod)="period = $event;"></period-selector>
 
         <expenses-chart *ngIf="expensesData" [period]="period" [fromDate]="fromDate" [toDate]="toDate" [inputData]="expensesData"></expenses-chart>     
-
+        <milk-production-chart [period]="period" [fromDate]="fromDate" [toDate]="toDate"></milk-production-chart>
 
 
         <!-- <ion-row style="padding-left: 10px;">
@@ -57,9 +57,6 @@
           <canvas #cowPodiumChart></canvas>
         </ion-item>
 
-        <ion-item>
-          <canvas #milkProductionChart></canvas>
-        </ion-item>
 
             -->
       </ion-col>

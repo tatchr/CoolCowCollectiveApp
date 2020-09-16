@@ -11,6 +11,7 @@ import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { ExpensesTypeGroup } from 'src/app/common/objects/groups/ExpensesTypeGroup';
 import { Period } from 'src/app/common/objects/Enums';
 import { ExpensesChartComponent } from './components/expenses-chart/expenses-chart.component';
+import { MilkProductionChartComponent } from './components/milk-production-chart/milk-production-chart.component';
 
 @Component({
   selector: 'app-farm-dashboard',
@@ -19,6 +20,7 @@ import { ExpensesChartComponent } from './components/expenses-chart/expenses-cha
 })
 export class FarmDashboardPage implements OnInit {
   @ViewChild(ExpensesChartComponent) expensesChart: ExpensesChartComponent;
+  @ViewChild(MilkProductionChartComponent) milkProductionChart: MilkProductionChartComponent;
 
   @ViewChild('cowPodiumChart') cowPodiumChart;
   
@@ -56,13 +58,14 @@ export class FarmDashboardPage implements OnInit {
     //   }
     // });
 
-    // this.milkService.milkRecordsLoaded.subscribe(finishedLoading => {
-    //   if (finishedLoading) {
-    //     //this.createMilkProductionChart();
-    //     //this.createCowPodiumChart();
-    //     //this.createExpensesChart();
-    //   }
-    // });
+    this.milkService.milkRecordsLoaded.subscribe(finishedLoading => {
+      if (finishedLoading) {
+        this.dataService.getMilkProductionData(this.fromDate, this.toDate);
+        //this.createMilkProductionChart();
+        //this.createCowPodiumChart();
+        //this.createExpensesChart();
+      }
+    });
   }
 
   protected fromDateChanged(fromDate: Date){
@@ -77,95 +80,8 @@ export class FarmDashboardPage implements OnInit {
   //   this.lines.update();
   // }
 
-  // getMilkAmount(timeOfDay) {
-  //   let milkRecords = this.milkService.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay);
-  //   let days: String[] = this.datePicker.getDaysArray(this.milkService.fromDate, this.milkService.toDate);
 
-  //   let milkTotals = [];
-  //   days.forEach(day => {
-  //     let milkOnDay = milkRecords.filter(x => this.datePicker.formatDate2(x.date, 'MMM-DD') == day);
 
-  //     if (milkOnDay.length == 0) {
-  //       milkTotals.push(Number.NaN);
-  //     }
-  //     else {
-  //       let milkSumOnDay = milkOnDay.reduce((a, b) => a + b.amount, 0);
-  //       milkTotals.push(milkSumOnDay);
-  //     }
-  //   });
-
-  //   return milkTotals;
-  // }
-
-  // @ViewChild('milkProductionChart') milkProductionChart;
-  // lines: Chart;
-  // createMilkProductionChart() {
-  //   this.lines = new Chart(this.milkProductionChart.nativeElement, {
-  //     type: 'line',
-  //     data: {
-  //       labels: this.datePicker.getDaysArray(this.milkService.fromDate, this.milkService.toDate),
-  //       datasets: [
-  //         {
-  //           label: 'Morning',
-  //           data: this.getMilkAmount('Morning'),
-  //           borderColor: 'blue',
-  //           fill: false,
-  //           lineTension: 0,
-  //           pointRadius: 0
-  //         },
-  //         {
-  //           label: 'Afternoon',
-  //           data: this.getMilkAmount('Afternoon'),
-  //           borderColor: 'orange',
-  //           fill: false,
-  //           lineTension: 0,
-  //           pointRadius: 1
-  //         },
-  //         {
-  //           label: 'Evening',
-  //           data: this.getMilkAmount('Evening'),
-  //           borderColor: 'gray',
-  //           fill: false,
-  //           lineTension: 0,
-  //           pointRadius: 0
-  //         }
-  //       ]
-  //     },
-
-  //     options: {
-  //       title: {
-  //         display: true,
-  //         text: 'Total milk production last ' + this.milkService.datePicker.periods.find(x => x.value == this.milkService.selectedPeriod).label
-  //       },
-  //       legend: {
-  //         display: true,
-  //         labels: {
-  //           boxWidth: 10
-  //         }
-  //       },
-  //       scales: {
-  //         xAxes: [{
-  //           gridLines: {
-  //             drawOnChartArea: false
-  //           },
-  //           ticks: {
-  //             maxTicksLimit: 4
-  //           }
-  //         }],
-  //         yAxes: [{
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Liter'
-  //           },
-  //           ticks: {
-  //             beginAtZero: true,
-  //             maxTicksLimit: 4
-  //           }
-  //         }]
-  //       }
-  //     }
-  //   });
-  // }
 
   getTop3Cows() {
     let totalProductionPerCow = [{ name: '', amount: 0 }, { name: '', amount: 0 }, { name: '', amount: 0 }];

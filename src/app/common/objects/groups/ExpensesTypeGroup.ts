@@ -1,5 +1,3 @@
-import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
-
 export class ExpensesTypeGroup{
     type: string;
     totalPrice: number;
