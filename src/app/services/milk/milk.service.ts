@@ -91,7 +91,8 @@ export class MilkService {
   }
 
   getMilkRecordsOnDate(farmId, date, timeOfDay) {
-    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/get/${farmId}/${date.toISOString()}/${timeOfDay}`);
+    let selectedDate = this.datePicker.formatDate(date);
+    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/get/${farmId}/${selectedDate}/${timeOfDay}`);
   }
 
   getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate) {

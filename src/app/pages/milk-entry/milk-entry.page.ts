@@ -56,6 +56,7 @@ export class MilkEntryPage implements OnInit {
     }
 
     this.milkService.filteredMilkRecordsList.forEach(record => {
+      record.date = this.milkService.selectedDate;
       record.timeOfDay = this.milkService.timeOfDay;
 
       if(record.registrationDate == null){
@@ -132,8 +133,7 @@ export class MilkEntryPage implements OnInit {
     this.milkService.loadMilkRecordsList();
   }
 
-  async openDatePicker() {
-    this.milkService.selectedDate = await this.datePicker.openDatePicker(this.milkService.selectedDate);
+  dateSelected(){
     this.milkService.loadMilkRecordsList();
   }
 

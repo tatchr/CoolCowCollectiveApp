@@ -1,6 +1,5 @@
 <topbar title="Milk entry" [backbtn]="false"></topbar>
-<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="this.milkService.selectedDate"></datepicker>
-<div>{{this.milkService.selectedDate}}</div>
+<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="this.milkService.selectedDate" (ionChange)="dateSelected()"></datepicker>
 <ion-item>
   <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Morning' ? 'success' : 'medium'"
     (click)="timeOfDaySelected('Morning')">
