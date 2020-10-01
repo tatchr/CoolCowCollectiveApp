@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FarmService } from 'src/app/services/farm/farm.service';
-import * as Chart from 'chart.js';
 import { MilkService } from 'src/app/services/milk/milk.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { groupBy, mergeMap, toArray } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { FarmDashboardDataService } from 'src/app/services/farm-dashboard-data/farm-dashboard-data.service';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
@@ -12,6 +9,10 @@ import { ExpensesTypeGroup } from 'src/app/common/objects/groups/ExpensesTypeGro
 import { Period } from 'src/app/common/objects/Enums';
 import { ExpensesChartComponent } from './components/expenses-chart/expenses-chart.component';
 import { MilkProductionChartComponent } from './components/milk-production-chart/milk-production-chart.component';
+import { MilkProductionChartData } from 'src/app/common/objects/charts/milk-production/MilkProductionChartData';
+import { CowPodiumChartComponent } from './components/cow-podium-chart/cow-podium-chart.component';
+import { CowChartData } from 'src/app/common/objects/charts/cows/CowChartData';
+import { CowService } from 'src/app/services/cow/cow.service';
 
 @Component({
   selector: 'app-farm-dashboard',
@@ -21,27 +22,43 @@ import { MilkProductionChartComponent } from './components/milk-production-chart
 export class FarmDashboardPage implements OnInit {
   @ViewChild(ExpensesChartComponent) expensesChart: ExpensesChartComponent;
   @ViewChild(MilkProductionChartComponent) milkProductionChart: MilkProductionChartComponent;
-
-  @ViewChild('cowPodiumChart') cowPodiumChart;
+  @ViewChild(CowPodiumChartComponent) cowPodiumChart: CowPodiumChartComponent;
   
   protected period: Period = Period.lastweek;
   protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
   protected toDate: Date = this.datePicker.today;
 
   public expensesData: ExpensesTypeGroup[];
+  public milkProductionChartData: MilkProductionChartData;
+  public cowChartData: CowChartData[];
 
   protected farm: FarmDetails;
+
+
+  // static data
+  protected herdSize: Number;
+  protected lactatingCows: Number;
+  protected averageMilk: Number;
+  protected totalMilkProduced: Number;
+  protected totalMilkSold: Number;
+  protected totalExpenses: Number;
   
   constructor(public farmService: FarmService, public milkService: MilkService, private datePicker: DatepickerService,
-    private dataService: FarmDashboardDataService, private expensesService: ExpensesService) { }
+    private dataService: FarmDashboardDataService, private expensesService: ExpensesService, private cowService: CowService) { }
 
   ngOnInit() {    
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farm = farm;
     });
 
+    this.cowService.cowListState.subscribe(x => {
+      this.herdSize = this.dataService.getHerdSize();
+      this.lactatingCows = this.dataService.getLactatingCows();
+    });
+
     this.expensesService.expensesLoaded.subscribe(finishedLoading => {
-      if(finishedLoading){
+      if(finishedLoading){        
+        this.totalExpenses = this.dataService.getTotalExpenses(this.fromDate, this.toDate);
         this.expensesData = this.dataService.getExpensesData(this.fromDate, this.toDate);
         if(this.expensesChart){
           this.expensesChart.update(this.expensesData, this.period);
@@ -50,20 +67,33 @@ export class FarmDashboardPage implements OnInit {
       }
     });
 
-    // this.milkService.milkRecordsUpdated.subscribe(val => {
-    //   if (val) {
-    //     this.updateMilkProductionChart();
-    //     this.updateCowPodiumChart();
-    //     //this.createExpensesChart();
-    //   }
-    // });
+    this.milkService.milkRecordsUpdated.subscribe(val => {
+      if (val) {
+        this.averageMilk = this.dataService.getAverageMilk(this.fromDate, this.toDate);
+        this.totalMilkProduced = this.dataService.getTotalMilkProduced(this.fromDate, this.toDate);
+        this.totalMilkSold = this.dataService.getTotalMilkSold(this.fromDate, this.toDate);
+
+        this.milkProductionChartData = this.dataService.getMilkProductionData(this.fromDate, this.toDate);
+        this.cowChartData = this.dataService.getCowData(this.fromDate, this.toDate);        
+        this.milkProductionChart.update(this.milkProductionChartData);
+        this.cowPodiumChart.update(this.cowChartData);
+      }
+    });
 
     this.milkService.milkRecordsLoaded.subscribe(finishedLoading => {
       if (finishedLoading) {
-        this.dataService.getMilkProductionData(this.fromDate, this.toDate);
-        //this.createMilkProductionChart();
-        //this.createCowPodiumChart();
-        //this.createExpensesChart();
+        this.averageMilk = this.dataService.getAverageMilk(this.fromDate, this.toDate);
+        this.totalMilkProduced = this.dataService.getTotalMilkProduced(this.fromDate, this.toDate);
+        this.totalMilkSold = this.dataService.getTotalMilkSold(this.fromDate, this.toDate);
+
+        this.milkProductionChartData = this.dataService.getMilkProductionData(this.fromDate, this.toDate);
+        this.cowChartData = this.dataService.getCowData(this.fromDate, this.toDate);
+        if(this.milkProductionChart){
+          this.milkProductionChart.update(this.milkProductionChartData);
+        }
+        if(this.cowPodiumChart){
+          this.cowPodiumChart.update(this.cowChartData);
+        }
       }
     });
   }
@@ -71,84 +101,6 @@ export class FarmDashboardPage implements OnInit {
   protected fromDateChanged(fromDate: Date){
     this.fromDate = fromDate;
     this.expensesService.loadExpensesList(fromDate, this.toDate);
-  }
-
-  // updateMilkProductionChart() {
-  //   this.lines.config.data.datasets[0].data = this.getMilkAmount('Morning');
-  //   this.lines.config.data.datasets[1].data = this.getMilkAmount('Afternoon');
-  //   this.lines.config.data.datasets[2].data = this.getMilkAmount('Evening');
-  //   this.lines.update();
-  // }
-
-
-
-
-  getTop3Cows() {
-    let totalProductionPerCow = [{ name: '', amount: 0 }, { name: '', amount: 0 }, { name: '', amount: 0 }];
-
-    from(this.milkService.allMilkRecordsList).pipe(
-      groupBy(item => item.cowName),
-      mergeMap(group => group.pipe(toArray()))
-    )
-      .subscribe(x => {
-        //totalProductionPerCow.push({ name: x[0].cowName, amount: x.reduce((a, b) => this.round(a + b.amount, 1), 0) });
-      });
-
-    let sortedProductionPerCow = totalProductionPerCow.sort((a, b) => b.amount - a.amount);
-    return sortedProductionPerCow;
-  }
-
-  updateCowPodiumChart() {
-    let top3Cows = this.getTop3Cows();
-
-    this.cowPodiumBarChart.config.data.labels = [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name];
-    this.cowPodiumBarChart.config.data.datasets[0].data = [top3Cows[1].amount, top3Cows[0].amount, top3Cows[2].amount];
-    this.cowPodiumBarChart.update();
-  }
-
-  cowPodiumBarChart: Chart;
-  createCowPodiumChart() {
-    let top3Cows = this.getTop3Cows();
-    this.cowPodiumBarChart = new Chart(this.cowPodiumChart.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: [top3Cows[1].name, top3Cows[0].name, top3Cows[2].name],
-        datasets: [{
-          label: 'Milk production podium',
-          data: [top3Cows[1].amount, top3Cows[0].amount, top3Cows[2].amount],
-          backgroundColor: 'rgba(38, 194, 129, 0.1)',
-          borderColor: 'rgb(38, 194, 129)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Milk production podium'
-        },
-        legend: {
-          display: false
-        },
-        scales: {
-          xAxes: [{
-            gridLines: {
-              drawOnChartArea: false
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              maxTicksLimit: 4
-            },
-            gridLines: {
-              drawOnChartArea: false
-            }
-          }]
-        }
-      }
-    });
-  } 
-
-
-  
+    this.milkService.loadAllMilkRecordsList(fromDate, this.toDate);
+  }  
 }

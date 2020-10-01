@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as Chart from 'chart.js';
-import { Period } from 'src/app/common/objects/Enums';
+import { MilkProductionChartData } from 'src/app/common/objects/charts/milk-production/MilkProductionChartData';
+import { Period, TimeOfDay } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'milk-production-chart',
@@ -13,84 +14,91 @@ export class MilkProductionChartComponent implements OnInit {
   @Input() period: Period;
   @Input() fromDate: Date;
   @Input() toDate: Date;
-  @Input() inputData;
+  @Input() inputData: MilkProductionChartData;
   
   private milkProductionLineChart: Chart;
 
   constructor() { }
 
-  ngOnInit() {}
-
-  getMilkAmount(timeOfDay) {
-    
+  ngOnInit() {
+    this.create(this.inputData);
   }
 
-  createMilkProductionChart() {
-    // this.milkProductionLineChart = new Chart(this.milkProductionChart.nativeElement, {
-    //   type: 'line',
-    //   data: {
-    //     labels: this.datePicker.getDaysArray(this.fromDate, this.toDate),
-    //     datasets: [
-    //       {
-    //         label: 'Morning',
-    //         data: this.getMilkAmount('Morning'),
-    //         borderColor: 'blue',
-    //         fill: false,
-    //         lineTension: 0,
-    //         pointRadius: 0
-    //       },
-    //       {
-    //         label: 'Afternoon',
-    //         data: this.getMilkAmount('Afternoon'),
-    //         borderColor: 'orange',
-    //         fill: false,
-    //         lineTension: 0,
-    //         pointRadius: 1
-    //       },
-    //       {
-    //         label: 'Evening',
-    //         data: this.getMilkAmount('Evening'),
-    //         borderColor: 'gray',
-    //         fill: false,
-    //         lineTension: 0,
-    //         pointRadius: 0
-    //       }
-    //     ]
-    //   },
-
-    //   options: {
-    //     title: {
-    //       display: true,
-    //       text: `Total milk production last ${this.period}`
-    //     },
-    //     legend: {
-    //       display: true,
-    //       labels: {
-    //         boxWidth: 10
-    //       }
-    //     },
-    //     scales: {
-    //       xAxes: [{
-    //         gridLines: {
-    //           drawOnChartArea: false
-    //         },
-    //         ticks: {
-    //           maxTicksLimit: 4
-    //         }
-    //       }],
-    //       yAxes: [{
-    //         scaleLabel: {
-    //           display: true,
-    //           labelString: 'Liter'
-    //         },
-    //         ticks: {
-    //           beginAtZero: true,
-    //           maxTicksLimit: 4
-    //         }
-    //       }]
-    //     }
-    //   }
-    // });
+  public create(inputData: MilkProductionChartData){
+    this.milkProductionLineChart = new Chart(this.milkProductionChart.nativeElement, {
+      type: 'line',
+      data: this.chartData(inputData),
+      options: this.chartOptions()
+    });
   }
 
+  public update(inputData: MilkProductionChartData){
+    this.milkProductionLineChart.data = this.chartData(inputData);
+    this.milkProductionLineChart.options = this.chartOptions();
+    this.milkProductionLineChart.update();
+  }
+
+  private chartData(inputData: MilkProductionChartData){
+    return {
+      labels: inputData.days,
+      datasets: inputData.milkTimeOfDayGroups.map(milkGroup => {
+        return {
+          "label": milkGroup.timeOfDay,
+          "data": milkGroup.milkTotals.map(x => x.totalMilk),
+          "borderColor": this.getLineColor(milkGroup.timeOfDay),
+          "fill": false,
+          "lineTension": 0,
+          "pointRadius": 0
+        };
+      })
+    };
+  }
+
+  private chartOptions(){
+    return {
+      title: {
+        display: true,
+         text: `Total milk production last ${this.period}`
+      },
+      legend: {
+        display: true,
+        labels: {
+          boxWidth: 10
+        }
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            drawOnChartArea: false
+          },
+          ticks: {
+            maxTicksLimit: 4
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Liter'
+          },
+          ticks: {
+            beginAtZero: true,
+            maxTicksLimit: 4
+          }
+        }]
+      }
+    }
+  }
+
+  private getLineColor(timeOfDay: TimeOfDay): string{
+    switch (timeOfDay) {
+      case TimeOfDay.Morning:
+        return 'blue';
+      case TimeOfDay.Afternoon:
+        return 'orange'
+      case TimeOfDay.Evening:
+        return 'gray';
+      default:
+        break;
+    }  
+  }
 }

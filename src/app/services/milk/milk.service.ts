@@ -38,7 +38,7 @@ export class MilkService {
     private cowService: CowService, private farmService: FarmService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.farmId;
-      this.loadAllMilkRecordsList();
+      this.loadAllMilkRecordsList(this.fromDate, this.toDate);
     });
   }
 
@@ -49,11 +49,11 @@ export class MilkService {
     this.toDate = result.toDate;
     this.fromDate = result.fromDate;
 
-    this.loadAllMilkRecordsList();
+    this.loadAllMilkRecordsList(this.fromDate, this.toDate);
   }
 
-  loadAllMilkRecordsList() {
-    this.getAllMilkRecords(this.farmId, this.fromDate, this.toDate)
+  loadAllMilkRecordsList(fromDate, toDate) {
+    this.getAllMilkRecords(this.farmId, fromDate, toDate)
       .then(records => {
         this.allMilkRecordsList = records['milkProductionDetails'];
       })

@@ -50,6 +50,8 @@ export class CowService {
     this.getAllCows(farmId, null).then(res => {
       this.cowsList = res['cows'];
       this.filteredCowsList = res['cows'];
+
+      this.cowListState.next(true);
     });
   }
 
