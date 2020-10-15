@@ -23,7 +23,7 @@ export class ExpensesEditPage implements OnInit {
     private cowService: CowService) {
     this.activatedRoute.queryParams.subscribe(() => {
       if (this.router.getCurrentNavigation().extras.state) {
-        this.expensesDetails = this.router.getCurrentNavigation().extras.state.expenseDetails;
+        this.expensesDetails = this.router.getCurrentNavigation().extras.state.expensesDetails;
       }
     });
   }
@@ -41,7 +41,6 @@ export class ExpensesEditPage implements OnInit {
       this.expensesService.updateLivestockExpensesRecord(expensesForm.value).subscribe(val => {
         if (val) {
           this.expensesService.livestockExpenseRegistered.next(new LivestockExpensesDetails(expensesForm.value));
-          //this.router.navigate(['/expenses-overview'], { replaceUrl: true });  
           this.location.back();        
         }
       });
@@ -50,8 +49,6 @@ export class ExpensesEditPage implements OnInit {
       this.expensesService.updateExpensesRecord(expensesForm.getRawValue()).subscribe(val => {
         if (val) {
           this.expensesService.expenseUpdated.next(new ExpensesDetails(expensesForm.value));
-          //this.router.navigate(['/expenses-overview'], { replaceUrl: true });
-
           this.location.back();
         }
       });
@@ -59,7 +56,6 @@ export class ExpensesEditPage implements OnInit {
   }
 
   protected onDelete(expense: IExpensesDetails) {
-    console.log(expense);
     this.isLivestock ? this.deleteLivestockExpense(expense) : this.deleteExpensesRecord(expense.id);
   }
 
@@ -87,13 +83,11 @@ export class ExpensesEditPage implements OnInit {
           let livestockExpense = new LivestockExpensesDetails(expense);
           this.expensesService.expenseDeleted.next(livestockExpense.id);
           this.cowService.cowDeleted.next(livestockExpense.cowDetails.id);
-          //this.router.navigate(['/expenses-overview'], { replaceUrl: true });
           this.location.back();
         }
       });
     };
     this.alertService.presentAlertConfirm(header, message, confirmAction);
-
   }
 
 }
