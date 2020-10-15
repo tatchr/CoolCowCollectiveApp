@@ -1,6 +1,6 @@
 <topbar title="Expenses input" [backbtn]="true"></topbar>
 <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
-<ion-content padding *ngIf="expensesDetails && selectedDate">
+<ion-content class="ion-padding" *ngIf="expensesDetails && selectedDate">
   <ion-grid>
     <ion-row>
       <ion-col>

@@ -2,10 +2,10 @@
 <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="expensesDetails.date"
   [disabled]="expensesDetails.recurringId"></datepicker>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <ion-grid>
     <ion-row>
-      <ion-col no-padding>
+      <ion-col class="ion-no-padding">
         <ion-item>
           <ion-label color="medium">Item category*</ion-label>
           <ion-select placeholder="Select One" [(ngModel)]="expensesDetails.type" disabled>

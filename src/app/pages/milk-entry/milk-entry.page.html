@@ -53,17 +53,17 @@
   <ion-row>
 
     <!-- [hidden]="keyboard.isVisible" -->
-    <ion-col col-2 class="test" no-padding>
+    <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOne()" fill="clear">
         -1</ion-button>
     </ion-col>
     <!-- [hidden]="keyboard.isVisible" -->
-    <ion-col col-2 class="test" no-padding>
+    <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOneDecimal()"
         fill="clear">-0.1</ion-button>
     </ion-col>
 
-    <ion-col col-4 no-padding>
+    <ion-col col-4 class="ion-no-padding">
       <form (submit)="inputProductionSubmitted()">
         <ion-item>
           <ion-input autocapitalize="on" name="test" type="number" [(ngModel)]="this.milkService.inputProduction"
@@ -74,12 +74,12 @@
     </ion-col>
 
     <!-- [hidden]="keyboard.isVisible" -->
-    <ion-col col-2 class="test" no-padding>
+    <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOneDecimal()"
         fill="clear">+0.1</ion-button>
     </ion-col>
     <!-- [hidden]="keyboard.isVisible" -->
-    <ion-col col-2 class="test" no-padding>
+    <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOne()" fill="clear">+1
       </ion-button>
     </ion-col>
@@ -87,13 +87,13 @@
 
   <!-- [hidden]="keyboard.isVisible" -->
   <ion-row> 
-    <ion-col col-2 no-padding>
+    <ion-col col-2 class="ion-no-padding">
       <ion-button expand="full" color="danger" size="small" (click)="toPreviousCow()">
         <ion-icon name="arrow-back"></ion-icon> Prev
       </ion-button>
     </ion-col>
 
-    <ion-col col-2 no-padding>
+    <ion-col col-2 class="ion-no-padding">
       <ion-button expand="full" color="success" size="small" (click)="toNextCow()">
         Next <ion-icon name="arrow-forward"></ion-icon>
       </ion-button>

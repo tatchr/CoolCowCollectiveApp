@@ -101,6 +101,7 @@ export class FarmDashboardPage implements OnInit {
   protected fromDateChanged(fromDate: Date){
     this.fromDate = fromDate;
     this.expensesService.loadExpensesList(fromDate, this.toDate);
+    this.expensesService.loadRecurringExpensesList(fromDate, this.toDate);
     this.milkService.loadAllMilkRecordsList(fromDate, this.toDate);
   }  
 }

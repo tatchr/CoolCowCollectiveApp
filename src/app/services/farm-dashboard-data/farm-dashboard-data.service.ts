@@ -17,6 +17,7 @@ import { CowState, CowStatus } from 'src/app/common/objects/Enums';
 import { MilksalesService } from '../sales/milksales/milksales.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
+import { ExpensesRecurringGroup } from 'src/app/common/objects/ExpensesRecurringGroup';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,10 @@ export class FarmDashboardDataService {
       return this.dateIsBetween(expensesRecord.date, fromDate, toDate);
     });
 
-    return records.reduce((a,b) => a + b.price, 0);
+    let nonRecurringTotal = records.reduce((a,b) => a + b.price, 0);
+    let recurringTotal = this.expensesService.recurringExpensesList.reduce((a,b) => a + b.totalPrice, 0);
+
+    return nonRecurringTotal + recurringTotal;
   }
   
   public getHerdSize(){
