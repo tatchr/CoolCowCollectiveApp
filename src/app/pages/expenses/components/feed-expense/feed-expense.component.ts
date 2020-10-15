@@ -34,7 +34,11 @@ export class FeedExpenseComponent implements OnInit {
   }
 
   protected get isExistingRootRecord(){
-    return this.isExistingRecord && this.recurringId && this.recurringId;
+    return this.isExistingRecord && this.recurringId;
+  }
+
+  protected get isRecurringRecord(){
+    return this.recurringId && !this.isRootRecord;
   }
 
   protected get isRootRecord(){

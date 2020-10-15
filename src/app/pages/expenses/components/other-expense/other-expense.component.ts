@@ -37,6 +37,10 @@ export class OtherExpenseComponent implements OnInit {
     return this.isExistingRecord && this.recurringId && this.recurringId;
   }
 
+  protected get isRecurringRecord(){
+    return this.recurringId && !this.isRootRecord;
+  }
+
   protected get isRootRecord(){
     return this.form.get('isrootrecord').value;
   }

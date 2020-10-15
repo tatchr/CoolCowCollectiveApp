@@ -14,8 +14,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
   styleUrls: ['./expenses-edit.page.scss'],
 })
 export class ExpensesEditPage implements OnInit {
-
-  protected selectedDate: Date;
+  
   protected expensesDetails: IExpensesDetails;
 
   constructor(private router: Router, public expensesService: ExpensesService,
@@ -35,8 +34,6 @@ export class ExpensesEditPage implements OnInit {
   }
 
   onSubmit(expensesForm) {
-    console.log(expensesForm);
-    console.log(this.isLivestock);
     if (this.isLivestock) {
       this.expensesService.updateLivestockExpensesRecord(expensesForm.value).subscribe(val => {
         if (val) {
@@ -56,7 +53,18 @@ export class ExpensesEditPage implements OnInit {
   }
 
   protected onDelete(expense: IExpensesDetails) {
-    this.isLivestock ? this.deleteLivestockExpense(expense) : this.deleteExpensesRecord(expense.id);
+    if(this.isLivestock){
+      this.deleteLivestockExpense(expense);
+    }
+    else{
+      let expensesDetails = new ExpensesDetails(expense);
+      if(expensesDetails.isRootRecord){
+        this.deleteRecurringRootRecord(expensesDetails);
+      }
+      else{
+      this.deleteExpensesRecord(expense.id);
+      }
+    }
   }
 
   private deleteExpensesRecord(expenseId: string){
@@ -71,7 +79,6 @@ export class ExpensesEditPage implements OnInit {
       });
     };
     this.alertService.presentAlertConfirm(header, message, confirmAction);
-
   }
 
   private deleteLivestockExpense(expense: IExpensesDetails){
@@ -90,4 +97,17 @@ export class ExpensesEditPage implements OnInit {
     this.alertService.presentAlertConfirm(header, message, confirmAction);
   }
 
+  private deleteRecurringRootRecord(expense: ExpensesDetails){
+    let header = 'Delete recurring records?';
+    let message = 'Deleting this root record will also delete all of its corresponding historical child records. Are you sure?';
+    let confirmAction = () => {
+      this.expensesService.deleteExpensesRecurringRecords(expense.recurringId).subscribe(val => {
+        if (val) {
+          this.expensesService.expenseDeleted.next(expense.id);
+          this.location.back();
+        }
+      });
+    };
+    this.alertService.presentAlertConfirm(header, message, confirmAction);
+  }
 }

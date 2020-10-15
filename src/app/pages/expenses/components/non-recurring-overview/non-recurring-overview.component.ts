@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { NavigationExtras, Router } from '@angular/router';
@@ -23,7 +22,7 @@ export class NonRecurringOverviewComponent implements OnInit {
   protected openExpenseRecord(expense: IExpensesDetails){
     let navigationExtras: NavigationExtras = {
       state: {
-        expenseDetails: expense
+        expensesDetails: expense
       }
     };
     this.router.navigate(['expenses-edit'], navigationExtras);

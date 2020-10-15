@@ -27,7 +27,6 @@ export class FarmDashboardDataService {
     public datePicker: DatepickerService, private math: MathService, private cowService: CowService,
     private milksSalesService: MilksalesService) { }
 
-
   public getTotalExpenses(fromDate: Date, toDate: Date){
     let records = this.expensesService.expensesList.filter((expensesRecord: ExpensesDetails) => {
       return this.dateIsBetween(expensesRecord.date, fromDate, toDate);

@@ -26,10 +26,9 @@ export class ExpensesService {
   public expensesLoaded = new BehaviorSubject<Boolean>(null);
   public expensesUpdated = new BehaviorSubject<Boolean>(null);
 
-  livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
+  public livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
   farmId: string;
-  selectedDate: Date = this.datePicker.today;
   selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
@@ -113,7 +112,6 @@ export class ExpensesService {
     return form;
   }
 
-
   public loadExpensesList(fromDate: Date, toDate: Date){
     this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
       this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
@@ -126,61 +124,57 @@ export class ExpensesService {
     });
   }
 
-  loadRecurringExpensesList(fromDate: Date, toDate: Date) {
+  public loadRecurringExpensesList(fromDate: Date, toDate: Date) {
     this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
       this.recurringExpensesList = res['recurringExpensesList'];
     });
   }
 
-  getExpenseRecord(id) {
-    return this.httpService.get(null, `${environment.url}/api/expenses/get/${id}`);
-  }
-
-  getExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
+  private getExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${from}/${to}`);
   }
 
-  getRecurringExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
+  private getRecurringExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${from}/${to}`);
   }
 
-  registerExpensesRecord(record) {
+  public registerExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/expenses/register`, record);
   }
 
-  updateExpensesRecord(record) {
+  public updateExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/update`, record);
   }
 
-  updateRootExpensesRecord(record) {
+  public updateRootExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/updateRootExpense`, record);
   }
 
-  deleteExpensesRecord(id) {
+  public deleteExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/expenses/delete/${id}`);
   }
 
-  deleteExpensesRecurringRecords(recurringId: string) {
+  public deleteExpensesRecurringRecords(recurringId: string) {
     return this.httpService.delete(`${environment.url}/api/expenses/deleteRecurringRecords/${recurringId}`);
   }
 
-  toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
+  public toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
     return this.httpService.put(`${environment.url}/api/expenses/stopRecurringRecords/${recurringId}/${recurringIsActive}`, null);
   }
 
-  registerLivestockExpensesRecord(record) {
+  public registerLivestockExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/livestockExpenses/register`, record);
   }
 
-  getLivestockExpenseRecord(id) {
+  public getLivestockExpenseRecord(id) {
     return this.httpService.get(null, `${environment.url}/api/livestockExpenses/get/${id}`);
   }
   
-  getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
+  public getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${from}/${to}`);

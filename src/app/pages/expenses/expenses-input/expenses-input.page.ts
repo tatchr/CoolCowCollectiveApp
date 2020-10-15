@@ -6,6 +6,7 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
 @Component({
   selector: 'app-expenses-input',
@@ -14,11 +15,12 @@ import { CowDetails } from 'src/app/common/objects/CowDetails';
 })
 export class ExpensesInputPage implements OnInit {
 
-  protected selectedDate = this.expensesService.datePicker.today;
+  protected selectedDate = this.datePicker.today;
   protected expensesDetails: ExpensesDetails;
   protected livestockExpensesDetails: LivestockExpensesDetails;
 
-  constructor(private router: Router, public expensesService: ExpensesService, private farmService: FarmService) { }
+  constructor(private router: Router, public expensesService: ExpensesService, private farmService: FarmService,
+    private datePicker: DatepickerService) { }
 
   ngOnInit() {
     this.farmService.getFarm().then((farm: FarmDetails) => {
