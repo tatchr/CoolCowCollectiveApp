@@ -41,7 +41,7 @@ export class FarmService {
     return this.httpService.post3('Registering farm...', `${environment.url}/api/farm/register`, farmForm.value)
       .then((res) => {
         this.setFarm(res['farmDetails']);
-      })
+      });
   }
 
   public updateFarm(farmDetails: FarmDetails) {

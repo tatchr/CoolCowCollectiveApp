@@ -15,7 +15,7 @@
     <ion-input autocapitalize="on" type="number" formControlName="quantity"></ion-input>
   </ion-item>
 
-  <ion-item no-padding style="display: inline-block;width: 100px;vertical-align: bottom;margin-left: 10px;">
+  <ion-item class="ion-no-padding" style="display: inline-block;width: 100px;vertical-align: bottom;margin-left: 10px;">
     <ion-select formControlName="quantityUnit" placeholder="Unit" style="max-width: 100%;padding-left:0;">
       <ion-select-option value="Units">units</ion-select-option>
       <ion-select-option value="Kg">Kg</ion-select-option>
@@ -38,7 +38,7 @@
     <ion-input autocapitalize="on" type="text" formControlName="sellercompany"></ion-input>
   </ion-item>  
 
-  <ion-item no-padding *ngIf="!recurringId || isRootRecord" [disabled]="isExistingRootRecord">
+  <ion-item class="ion-no-padding" *ngIf="!recurringId || isRootRecord" [disabled]="isExistingRootRecord">
     <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
     <ion-toggle slot="end" formControlName="recurringisactive" color="success"></ion-toggle>
   </ion-item>

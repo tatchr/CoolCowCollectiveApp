@@ -42,18 +42,6 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
     if(this.cowForm.valid){      
       this.cowForm.controls['farmId'].setValue(this.farmId);
       this.cowForm.controls['registrationDate'].setValue(new Date());
-      // let newCow : CowDetails = {
-      //   id: null,
-      //   name: this.cowForm.value['name'],
-      //   farmId: this.farmId,
-      //   tagNumber: this.cowForm.value['tagnumber'],
-      //   birthDate: this.cowForm.value['birthdate'],
-      //   cowType: this.cowForm.value['cowtype'],
-      //   breed: this.cowForm.value['breed'],
-      //   cowStatus: this.cowForm.get(['cowstatus']).value,
-      //   cowState: null,
-      //   registrationDate: new Date()        
-      // };
 
       this.cowService.registerCow(this.cowForm.getRawValue()).then(val => {
         if(val){

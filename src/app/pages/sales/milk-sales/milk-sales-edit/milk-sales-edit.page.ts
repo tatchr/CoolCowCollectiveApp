@@ -6,6 +6,7 @@ import { MilksalesService } from 'src/app/services/sales/milksales/milksales.ser
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
 import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-milk-sales-edit',
@@ -17,8 +18,8 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
   milkSaleDetails: MilkSalesDetails;
 
   constructor(router: Router, formBuilder: FormBuilder, milkSalesService: MilksalesService, 
-    storage: Storage, private activatedRoute: ActivatedRoute, private alertService: AlertService) {
-    super(router, milkSalesService, formBuilder, storage);
+    storage: Storage, private activatedRoute: ActivatedRoute, private alertService: AlertService, farmService: FarmService) {
+    super(router, milkSalesService, formBuilder, storage, farmService);
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {

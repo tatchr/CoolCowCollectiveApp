@@ -1,10 +1,5 @@
 <topbar title="Other sales input" [backbtn]="true"></topbar>
-<ion-item (click)="openDatePicker()">
-  <ion-label position="fixed" color="medium">Date</ion-label>
-  <ion-input [(ngModel)]="this.selectedDate" readonly></ion-input>
-  <ion-icon position="fixed" name="calendar"></ion-icon>
-</ion-item>
-
+<datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row>

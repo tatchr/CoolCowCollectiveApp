@@ -21,7 +21,7 @@
     <ion-input autocapitalize="on" type="number" formControlName="totalprice"></ion-input>
   </ion-item>
 
-  <ion-item no-padding *ngIf="!recurringId || isRootRecord" [disabled]="isExistingRootRecord">
+  <ion-item class="ion-no-padding" *ngIf="!recurringId || isRootRecord" [disabled]="isExistingRootRecord">
     <ion-label color="medium" style="padding-left: 16px;">Is recurring*</ion-label>
     <ion-toggle slot="end" formControlName="recurringisactive" color="success"></ion-toggle>
   </ion-item>

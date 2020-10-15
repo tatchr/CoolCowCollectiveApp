@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MilksalesService } from 'src/app/services/sales/milksales/milksales.service';
 import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-milk-sales-input',
@@ -13,13 +14,15 @@ import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sale
 export class MilkSalesInputPage extends MilkSalesBaseComponent implements OnInit {
 
   constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder,
-    storage: Storage) {
-    super(router, milkSalesService, formBuilder, storage);
+    storage: Storage, farmService: FarmService) {
+    super(router, milkSalesService, formBuilder, storage, farmService);
   }
 
   ngOnInit() {
+    this.getFarmId();
+    
     this.milksalesForm = this.formBuilder.group({
-      farmId: [this.milkSalesService.farmId],
+      farmId: [this.farmId],
       date: [this.selectedDate],
       literssold: [null, [Validators.required, Validators.min(0.0), Validators.max(1000.0)]],
       priceperliter: [null, [Validators.required, Validators.min(0.0), Validators.max(999.99)]],

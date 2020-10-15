@@ -76,15 +76,7 @@ export class OtherSalesOverviewPage implements OnInit {
     this.otherSalesService.periodSelected(period);
   }
 
-  async openFromDatePicker(){
-    this.otherSalesService.selectedPeriod = '';
-    this.otherSalesService.selectedFromDate = await this.otherSalesService.datePicker.openDatePicker(this.otherSalesService.selectedFromDate);
-    this.otherSalesService.loadOtherSalesList();    
-  }
-
-  async openToDatePicker(){
-    this.otherSalesService.selectedPeriod = '';
-    this.otherSalesService.selectedToDate = await this.otherSalesService.datePicker.openDatePicker(this.otherSalesService.selectedToDate);
-    this.otherSalesService.loadOtherSalesList();    
+  protected dateChanged(){
+    this.otherSalesService.loadOtherSalesList();
   }
 }

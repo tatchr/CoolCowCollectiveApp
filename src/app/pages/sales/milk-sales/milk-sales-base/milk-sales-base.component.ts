@@ -3,6 +3,8 @@ import { MilksalesService } from 'src/app/services/sales/milksales/milksales.ser
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 
 @Component({
   selector: 'app-milk-sales-base',
@@ -13,9 +15,16 @@ export class MilkSalesBaseComponent {
 
   milksalesForm: FormGroup;
   selectedDate: Date = this.milkSalesService.datePicker.today;
+  farmId: string;
 
   constructor(protected router: Router, public milkSalesService: MilksalesService, protected formBuilder: FormBuilder, 
-    protected storage: Storage) { }   
+    protected storage: Storage, public farmService: FarmService) { }   
+
+  getFarmId(){
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      this.farmId = farm.farmId; 
+    });
+  }
 
   returnToOverview(){
     this.router.navigateByUrl('/tabs/milk-sales-overview');

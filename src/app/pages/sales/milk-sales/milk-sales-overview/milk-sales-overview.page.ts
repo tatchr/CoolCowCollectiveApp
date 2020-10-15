@@ -4,6 +4,7 @@ import { MilksalesService } from 'src/app/services/sales/milksales/milksales.ser
 import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-milk-sales-overview',
@@ -12,8 +13,9 @@ import { FormBuilder } from '@angular/forms';
 })
 export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {  
 
-  constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder, storage: Storage) {
-    super(router, milkSalesService, formBuilder, storage);
+  constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder, 
+    storage: Storage, farmService: FarmService) {
+    super(router, milkSalesService, formBuilder, storage, farmService);
    }  
 
   ngOnInit() {    
