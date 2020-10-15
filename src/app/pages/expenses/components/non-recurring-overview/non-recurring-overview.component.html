@@ -6,7 +6,7 @@
     </ion-item-divider>
 
     <ion-row *ngFor='let expense of result.expensesList' class="product-list">
-      <ion-col [size]="12" no-padding>
+      <ion-col [size]="12" class="ion-no-padding">
         
         <div *ngIf="isLivestock(expense); then thenBlock else elseBlock"></div>
 

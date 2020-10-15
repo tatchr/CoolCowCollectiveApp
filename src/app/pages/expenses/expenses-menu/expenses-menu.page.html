@@ -8,9 +8,9 @@
         <ion-button color="success" expand="full" routerLink="/expenses-recurring-overview/" routerDirection="forward">Manage recurring</ion-button> -->
 
 
-        <ion-list class="accordion-list" detail="false" no-padding>
-          <ion-item tappable [ngClass]="{'section-active': isOpen, 'section': !isOpen}" no-padding>
-            <ion-col size="2" align-self-stretch no-padding>
+        <ion-list class="accordion-list" detail="false" class="ion-no-padding">
+          <ion-item tappable [ngClass]="{'section-active': isOpen, 'section': !isOpen}" class="ion-no-padding">
+            <ion-col size="2" class="ion-align-self-stretch ion-no-padding">
               <ion-button (click)="toggleSection()" class="toggle-btn" fill="clear">
                 <ion-icon style="font-size: 16px;padding-right: 6px;" name="arrow-round-forward"
                   *ngIf="!isOpen">
@@ -20,7 +20,7 @@
               </ion-button>
             </ion-col>
 
-            <ion-col size="10" align-self-center>
+            <ion-col size="10" class="ion-align-self-center">
               <ion-item lines="none" tappable color="default" expand="full" routerLink="/expenses-overview/" routerDirection="forward">
                 <ion-label>Overview</ion-label>
               </ion-item>              
