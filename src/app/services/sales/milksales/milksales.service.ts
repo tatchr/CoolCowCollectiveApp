@@ -23,7 +23,7 @@ export class MilksalesService {
 
   milkSaleRegistered = new BehaviorSubject<MilkSalesDetails>(null);
   milkSaleUpdated = new BehaviorSubject<MilkSalesDetails>(null);
-  milkSaleDeleted = new BehaviorSubject<number>(null);
+  milkSaleDeleted = new BehaviorSubject<string>(null);
 
   milkSalesList: Array<MilkSalesDetails> = [];
   totalLiters: number = 0;
