@@ -1,7 +1,8 @@
-<ion-list *ngFor='let expenseGroup of expensesList; let i = index;' class="accordion-list"
-  detail="false" class="ion-no-padding">
+<ion-list *ngFor='let expenseGroup of expensesList; let i = index;' class="accordion-list" detail="false"
+  class="ion-no-padding">
 
-  <ion-item tappable [ngClass]="{'section-active': expenseGroup.open, 'section': !expenseGroup.open}" class="ion-no-padding">
+  <ion-item tappable [ngClass]="{'section-active': expenseGroup.open, 'section': !expenseGroup.open}"
+    class="ion-no-padding">
     <ion-col size="2" class="ion-align-self-stretch ion-no-padding">
       <ion-button (click)="toggleSection(i)" class="toggle-btn" fill="clear">
         <ion-icon style="font-size: 16px;padding-right: 6px;" name="arrow-round-forward" *ngIf="!expenseGroup.open">
@@ -29,20 +30,26 @@
 
     <ion-col size="3" *ngIf="expenseGroup.open" class="ion-text-end ion-no-padding ion-align-self-stretch toggle-btn">
 
-      <ion-button expand="full" size="default" color="danger" *ngIf="expenseGroup.rootExpense.recurringIsActive"
-        (click)="toggleRecurring(expenseGroup.rootExpense)">
-        Stop recurring
-      </ion-button>
-
-      <ion-button expand="full" size="default" color="success" *ngIf="!expenseGroup.rootExpense.recurringIsActive"
-        (click)="toggleRecurring(expenseGroup.rootExpense)">
-        Start recurring
-      </ion-button>
-
-      <ion-button class="toggle-btn" color="primary" expand="full"
-        (click)="openExpenseRecord(expenseGroup.rootExpense)">
-        <ion-icon name="cog"></ion-icon>
-      </ion-button>
+      <ion-row>
+        <ion-col size="3" class="ion-no-padding">
+          <ion-button expand="full" size="default" color="danger" *ngIf="expenseGroup.rootExpense.recurringIsActive"
+            (click)="toggleRecurring(expenseGroup.rootExpense)">
+            <ion-icon name="square"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3" class="ion-no-padding">
+          <ion-button expand="full" size="default" color="success" *ngIf="!expenseGroup.rootExpense.recurringIsActive"
+            (click)="toggleRecurring(expenseGroup.rootExpense)">
+            <ion-icon name="play"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3" class="ion-no-padding">
+          <ion-button class="toggle-btn" color="primary" expand="full"
+            (click)="openExpenseRecord(expenseGroup.rootExpense)">
+            <ion-icon name="cog"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-col>
   </ion-item>
 

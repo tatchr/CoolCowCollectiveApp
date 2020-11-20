@@ -1,5 +1,5 @@
 <form *ngIf="form" [formGroup]="form">
-  <ion-item>
+  <ion-item [disabled]="isRecurringRecord">
     <ion-label position="floating" color="medium">Employee name*</ion-label>
     <ion-input autocapitalize="on" type="text" formControlName="itembought"></ion-input>
   </ion-item>

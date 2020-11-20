@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { ToastController } from '@ionic/angular';
@@ -19,7 +18,7 @@ export class FeedbackPage implements OnInit {
   feedbackForm: FormGroup;
 
   constructor(private feedbackService: FeedbackService, private router: Router, private formBuilder: FormBuilder, 
-    private storage: Storage, private toastController: ToastController, private accountService: AccountService) { }
+    private toastController: ToastController, private accountService: AccountService) { }
 
   ngOnInit() {
     this.accountService.getUser().then((user: UserDetails) => {
@@ -47,6 +46,8 @@ export class FeedbackPage implements OnInit {
   onSubmit(){
     if (this.feedbackForm.valid) {
       this.feedbackForm.controls['category'].setValue(this.category);
+
+      console.log(this.feedbackForm);
       
       this.feedbackService.registerFeedback(this.feedbackForm.value).subscribe(val => {
         if (val) {
