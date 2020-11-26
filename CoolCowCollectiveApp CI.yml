@@ -23,35 +23,24 @@ steps:
   displayName: 'Publishing Artifact'
 
 # Download the artifact of the build triggered above
-# - task: DownloadPipelineArtifact@2
-#   inputs:
-#     buildType: 'current'
-#     artifactName: 'www'
-#     targetPath: '$(Build.BinariesDirectory)/www'
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'current'
+    artifactName: 'www'
+    targetPath: '$(System.DefaultWorkingDirectory)'
 
 # # Moves the www folder containing bundle to the Default Working Directory path (e.g. /agent/_work/1/s)
 # - bash: |
 #       mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)
 #   displayName: 'mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)'
 
-# - bash: | # Installing cordova
-#     sudo npm i -g cordova
-#   displayName: 'npm i -g cordova@latest'
+- bash: | # Installing cordova
+    sudo npm i -g cordova
+  displayName: 'npm i -g cordova@latest'
 
-- task: CordovaBuild@1
-  inputs:
-    platform: 'android'
-    configuration: 'Release'
-    archs: 'x86'
-    keystoreFile: 'CoolCowCollectiveApp.keystore'
-    keystorePass: '$(password_keystore)'
-    keystoreAlias: 'CoolCowCollectiveApp'
-    keyPass: '$(password_keystore)'
-    outputPattern: 'bin'
-
-# - bash: | # Build android App using cordova
-#     npx ionic cordova build android --no-build --release
-#   displayName: 'ionic cordova build android --no-build --release'
+- bash: | # Build android App using cordova
+    npx ionic cordova build android --no-build --release --stacktrace
+  displayName: 'ionic cordova build android --no-build --release'
 
 # Needed to solve missing dependency problem, see the troubleshooting topic
 - bash: |
