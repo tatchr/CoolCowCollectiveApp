@@ -23,16 +23,16 @@ steps:
   displayName: 'Publishing Artifact'
 
 # Download the artifact of the build triggered above
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'current'
-    artifactName: 'www'
-    targetPath: '$(Build.BinariesDirectory)/www'
+# - task: DownloadPipelineArtifact@2
+#   inputs:
+#     buildType: 'current'
+#     artifactName: 'www'
+#     targetPath: '$(Build.BinariesDirectory)/www'
 
-# Moves the www folder containing bundle to the Default Working Directory path (e.g. /agent/_work/1/s)
-- bash: |
-      mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)
-  displayName: 'mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)'
+# # Moves the www folder containing bundle to the Default Working Directory path (e.g. /agent/_work/1/s)
+# - bash: |
+#       mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)
+#   displayName: 'mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)'
 
 - bash: | # Installing cordova
     sudo npm i -g cordova
