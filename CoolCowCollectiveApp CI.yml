@@ -39,7 +39,7 @@ steps:
   displayName: 'npm i -g cordova@latest'
 
 - bash: | # Build android App using cordova
-    npx ionic cordova build android --no-build --release --stacktrace
+    npx ionic cordova build android --no-build --release --debug
   displayName: 'ionic cordova build android --no-build --release'
 
 # Needed to solve missing dependency problem, see the troubleshooting topic
