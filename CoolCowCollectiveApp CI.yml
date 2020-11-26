@@ -34,13 +34,24 @@ steps:
 #       mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)
 #   displayName: 'mv $(Build.BinariesDirectory)/www $(System.DefaultWorkingDirectory)'
 
-- bash: | # Installing cordova
-    sudo npm i -g cordova
-  displayName: 'npm i -g cordova@latest'
+# - bash: | # Installing cordova
+#     sudo npm i -g cordova
+#   displayName: 'npm i -g cordova@latest'
 
-- bash: | # Build android App using cordova
-    npx ionic cordova build android --no-build --release --stacktrace
-  displayName: 'ionic cordova build android --no-build --release'
+- task: CordovaBuild@1
+  inputs:
+    platform: 'android'
+    configuration: 'Release'
+    archs: 'x86'
+    keystoreFile: 'CoolCowCollectiveApp.keystore'
+    keystorePass: '$(password_keystore)'
+    keystoreAlias: 'CoolCowCollectiveApp'
+    keyPass: '$(password_keystore)'
+    outputPattern: 'bin'
+
+# - bash: | # Build android App using cordova
+#     npx ionic cordova build android --no-build --release
+#   displayName: 'ionic cordova build android --no-build --release'
 
 # Needed to solve missing dependency problem, see the troubleshooting topic
 - bash: |
