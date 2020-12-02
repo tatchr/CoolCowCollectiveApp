@@ -23,11 +23,11 @@ export class DatepickerComponent implements OnInit {
     }
   }
 
-  protected async openDatepicker(){
+  async openDatepicker(){
     this.date = await this.datePickerService.openDatePicker(this.date);    
   }
 
-  protected emitDate(date: Date){
+  emitDate(date: Date){
     this.dateChange.emit(date)
   }
 }

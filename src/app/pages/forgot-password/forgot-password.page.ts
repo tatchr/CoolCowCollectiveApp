@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  protected forgotPasswordForm: FormGroup;
+  forgotPasswordForm: FormGroup;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) { }
 

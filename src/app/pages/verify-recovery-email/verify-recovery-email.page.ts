@@ -13,8 +13,8 @@ export class VerifyRecoveryEmailPage implements OnInit {
 
   @ViewChild(VerificationCodeInputComponent) verificationCodeComponent: VerificationCodeInputComponent;
 
-  protected verifyEmailForm: FormGroup;
-  protected email: string;
+  verifyEmailForm: FormGroup;
+  email: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder,
      private authService: AuthService) { 
@@ -28,7 +28,7 @@ export class VerifyRecoveryEmailPage implements OnInit {
 
   ngOnInit() {}
 
-  protected onSubmit(resetCode) {
+  onSubmit(resetCode) {
     let resetData = {
       email: this.email,
       passwordResetCode: resetCode
@@ -47,7 +47,7 @@ export class VerifyRecoveryEmailPage implements OnInit {
     });
   }
 
-  protected resendPasswordResetCode() {
+  resendPasswordResetCode() {
     var body = { 
       'email': this.email 
     };

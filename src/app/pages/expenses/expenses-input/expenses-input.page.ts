@@ -15,9 +15,9 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 })
 export class ExpensesInputPage implements OnInit {
 
-  protected selectedDate = this.datePicker.today;
-  protected expensesDetails: ExpensesDetails;
-  protected livestockExpensesDetails: LivestockExpensesDetails;
+  selectedDate = this.datePicker.today;
+  expensesDetails: ExpensesDetails;
+  livestockExpensesDetails: LivestockExpensesDetails;
 
   constructor(private router: Router, public expensesService: ExpensesService, private farmService: FarmService,
     private datePicker: DatepickerService) { }

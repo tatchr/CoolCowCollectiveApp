@@ -23,8 +23,8 @@ export class CowBaseComponent implements OnInit {
   fromDate = new Date('1970-01-01');
   toDate = this.datePicker.formatDate(new Date());
 
-  constructor(protected router: Router, protected formBuilder: FormBuilder, 
-    protected storage: Storage, public cowService: CowService, protected datePicker: DatepickerService, 
+  constructor(public router: Router, public formBuilder: FormBuilder, 
+    storage: Storage, public cowService: CowService, public datePicker: DatepickerService, 
     public keyboard: Keyboard, public farmService: FarmService) { }
 
   ngOnInit() {}

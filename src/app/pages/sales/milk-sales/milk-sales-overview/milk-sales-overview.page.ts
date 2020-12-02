@@ -68,7 +68,7 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     });    
   }
 
-  protected dateChanged(){
+  dateChanged(){
     this.milkSalesService.loadMilkSalesList();
   }
 }

@@ -9,8 +9,8 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 })
 export class ExpensesOverviewPage implements OnInit {  
 
-  protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
-  protected toDate: Date = this.datePicker.today;
+  fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  toDate: Date = this.datePicker.today;
 
   constructor(public expensesService: ExpensesService, private datePicker: DatepickerService) { }
 

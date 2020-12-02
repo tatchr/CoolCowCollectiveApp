@@ -11,7 +11,7 @@ import { UserDetails } from 'src/app/common/objects/UserDetails';
 })
 export class ChangePasswordPage implements OnInit {
 
-  protected changePasswordForm: FormGroup;
+  changePasswordForm: FormGroup;
 
   constructor(private accountService: AccountService, private formBuilder: FormBuilder, private router: Router) { }
 

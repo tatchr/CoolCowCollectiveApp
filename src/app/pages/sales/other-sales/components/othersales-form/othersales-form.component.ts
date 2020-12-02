@@ -20,11 +20,11 @@ export class OthersalesFormComponent implements OnInit {
   @Output() returnform = new EventEmitter<FormGroup>();
   @Output() delete = new EventEmitter<string>();
 
-  protected othersalesForm: FormGroup;
-  protected cattleSold: boolean;
-  protected spermSold: boolean;
-  protected otherSold: boolean;
-  protected cattleList: Array<CowDetails> = [];  
+  othersalesForm: FormGroup;
+  cattleSold: boolean;
+  spermSold: boolean;
+  otherSold: boolean;
+  cattleList: Array<CowDetails> = [];  
 
   constructor(private cowService: CowService, private formBuilder: FormBuilder, private router: Router) { }
 
@@ -55,31 +55,31 @@ export class OthersalesFormComponent implements OnInit {
     return this.selectedDate;
   }
 
-  protected emitform(date: string, form: FormGroup){
+  emitform(date: string, form: FormGroup){
     form.get('date').setValue(date);
 
     this.returnform.emit(form);
   }
 
-  protected deleterecord(form: FormGroup){
+  deleterecord(form: FormGroup){
     let othersaleId = form.get('id').value;
 
     this.delete.emit(othersaleId);
   }
 
-  protected get itemsold(){
+  get itemsold(){
     return this.othersalesForm.get('itemsold').value;
   }
 
-  protected get cattle(){
+  get cattle(){
     return this.cattleList;
   }
 
-  protected set cattle(cattleList: Array<CowDetails>){
+  set cattle(cattleList: Array<CowDetails>){
     this.cattleList = cattleList;
   }
 
-  protected toCowRegistration(){
+  toCowRegistration(){
     this.router.navigateByUrl('/register-cow');
   }  
 

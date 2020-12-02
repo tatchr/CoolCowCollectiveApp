@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class ResetPasswordPage implements OnInit {
 
-  protected resetPasswordForm: FormGroup;
+  resetPasswordForm: FormGroup;
   private email: string;
   private passwordResetCode: string;
 

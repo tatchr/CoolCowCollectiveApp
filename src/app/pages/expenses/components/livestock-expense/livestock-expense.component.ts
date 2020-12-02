@@ -16,21 +16,21 @@ export class LivestockExpenseComponent implements OnInit {
   @Output() returnForm = new EventEmitter<FormGroup>();
   @Output() deleteRecord = new EventEmitter<LivestockExpensesDetails>();
 
-  protected form: FormGroup;
+  form: FormGroup;
 
-  constructor(protected expensesService: ExpensesService, private formBuilder: FormBuilder) { }
+  constructor(public expensesService: ExpensesService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.form = this.newForm(this.livestockExpensesDetails);
   }  
 
-  protected emitForm(form: FormGroup){
+  emitForm(form: FormGroup){
     form.get('date').setValue(this.date);
     
     this.returnForm.emit(form);
   }
 
-  protected delete(livestockExpensesDetails: LivestockExpensesDetails){
+  delete(livestockExpensesDetails: LivestockExpensesDetails){
     this.deleteRecord.emit(livestockExpensesDetails);
   }
 

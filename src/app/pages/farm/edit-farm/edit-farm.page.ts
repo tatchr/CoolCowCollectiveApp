@@ -13,13 +13,13 @@ import { UserDetails } from 'src/app/common/objects/UserDetails';
 })
 export class EditFarmPage implements OnInit {
 
-  protected farmForm: FormGroup;
+  farmForm: FormGroup;
 
   constructor(private accountService: AccountService, private farmService: FarmService, 
     private formBuilder: FormBuilder, private toastController: ToastController) { }
 
-    protected user: UserDetails;
-    protected farm: FarmDetails;
+    user: UserDetails;
+    farm: FarmDetails;
 
     ngOnInit() {
       this.accountService.getUser().then((user: UserDetails) => {
@@ -41,7 +41,7 @@ export class EditFarmPage implements OnInit {
       });      
     }
   
-    protected updateFarm() {
+    updateFarm() {
       if (this.farmForm.valid) {
         let updatedFarm: FarmDetails = {
           farmId: this.farmForm.value['farmId'],

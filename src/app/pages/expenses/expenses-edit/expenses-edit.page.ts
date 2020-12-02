@@ -15,7 +15,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
 })
 export class ExpensesEditPage implements OnInit {
   
-  protected expensesDetails: IExpensesDetails;
+  expensesDetails: any;
 
   constructor(private router: Router, public expensesService: ExpensesService,
     private activatedRoute: ActivatedRoute, private alertService: AlertService, private location: Location,
@@ -52,7 +52,7 @@ export class ExpensesEditPage implements OnInit {
     }
   }
 
-  protected onDelete(expense: IExpensesDetails) {
+  onDelete(expense: IExpensesDetails) {
     if(this.isLivestock){
       this.deleteLivestockExpense(expense);
     }

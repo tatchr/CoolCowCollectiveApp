@@ -11,8 +11,8 @@ import { VerificationCodeInputComponent } from 'src/app/common/components/verifi
 })
 export class VerifyRegistrationEmailPage implements OnInit {
   @ViewChild(VerificationCodeInputComponent) verificationCodeComponent: VerificationCodeInputComponent;
-  protected confirmEmailForm: FormGroup;
-  protected email: string;
+  confirmEmailForm: FormGroup;
+  email: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) {
     this.activatedRoute.queryParams.subscribe(() => {
@@ -25,7 +25,7 @@ export class VerifyRegistrationEmailPage implements OnInit {
 
   ngOnInit() { }
 
-  protected onSubmit(verificationCode) {
+  onSubmit(verificationCode) {
     let resetData = {
       email: this.email,
       emailConfirmationCode: verificationCode
@@ -38,7 +38,7 @@ export class VerifyRegistrationEmailPage implements OnInit {
     });
   }
 
-  protected resendConfirmationCode() {
+  resendConfirmationCode() {
     var body = {
       'email': this.email
     };

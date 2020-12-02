@@ -23,11 +23,12 @@ export class ExpensesService {
   expenseUpdated = new BehaviorSubject<IExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<string>(null);
 
-  public expensesLoaded = new BehaviorSubject<Boolean>(null);
-  public expensesUpdated = new BehaviorSubject<Boolean>(null);
+  expensesLoaded = new BehaviorSubject<Boolean>(null);
+  expensesUpdated = new BehaviorSubject<Boolean>(null);
 
-  public livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
+  livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
+  changeCounter: number = 0;
   farmId: string;
   selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: Date = this.datePicker.today;
@@ -73,7 +74,7 @@ export class ExpensesService {
     });    
   }
 
-  public newForm(expense: ExpensesDetails) {
+  newForm(expense: ExpensesDetails) {
     let form = this.formBuilder.group({
       id: [expense.id],
       farmId: [expense.farmId],
@@ -112,7 +113,7 @@ export class ExpensesService {
     return form;
   }
 
-  public loadExpensesList(fromDate: Date, toDate: Date){
+  loadExpensesList(fromDate: Date, toDate: Date){
     this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
       this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
         let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
@@ -124,7 +125,7 @@ export class ExpensesService {
     });
   }
 
-  public loadRecurringExpensesList(fromDate: Date, toDate: Date) {
+  loadRecurringExpensesList(fromDate: Date, toDate: Date) {
     this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
       this.recurringExpensesList = res['recurringExpensesList'];
     });
@@ -142,49 +143,49 @@ export class ExpensesService {
     return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${from}/${to}`);
   }
 
-  public registerExpensesRecord(record) {
+  registerExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/expenses/register`, record);
   }
 
-  public updateExpensesRecord(record) {
+  updateExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/update`, record);
   }
 
-  public updateRootExpensesRecord(record) {
+  updateRootExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/updateRootExpense`, record);
   }
 
-  public deleteExpensesRecord(id) {
+  deleteExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/expenses/delete/${id}`);
   }
 
-  public deleteExpensesRecurringRecords(recurringId: string) {
+  deleteExpensesRecurringRecords(recurringId: string) {
     return this.httpService.delete(`${environment.url}/api/expenses/deleteRecurringRecords/${recurringId}`);
   }
 
-  public toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
+  toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
     return this.httpService.put(`${environment.url}/api/expenses/stopRecurringRecords/${recurringId}/${recurringIsActive}`, null);
   }
 
-  public registerLivestockExpensesRecord(record) {
+  registerLivestockExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/livestockExpenses/register`, record);
   }
 
-  public getLivestockExpenseRecord(id) {
+  getLivestockExpenseRecord(id) {
     return this.httpService.get(null, `${environment.url}/api/livestockExpenses/get/${id}`);
   }
   
-  public getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
+  getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${from}/${to}`);
   }
 
-  public updateLivestockExpensesRecord(record) {
+  updateLivestockExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/livestockExpenses/update`, record);
   }
 
-  public deleteLivestockExpensesRecord(id) {
+  deleteLivestockExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/livestockExpenses/delete/${id}`);
   }
 }

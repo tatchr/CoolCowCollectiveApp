@@ -13,9 +13,9 @@ export class PeriodSelectorComponent implements OnInit {
   @Output() fromDateChange = new EventEmitter<Date>();
   @Output() returnPeriod = new EventEmitter<Period>();
   
-  protected selectedPeriod: Period = Period.lastweek;
+  selectedPeriod: Period = Period.lastweek;
 
-  protected periods: Array<PeriodDetails> = [
+  periods: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1 week'}),
     new PeriodDetails({value: Period.last2weeks, label: '2 weeks'}),
     new PeriodDetails({value: Period.lastmonth, label: '1 month'}),
@@ -24,7 +24,7 @@ export class PeriodSelectorComponent implements OnInit {
     new PeriodDetails({value: Period.alltime, label: 'All time'})
   ];
 
-  constructor(protected datePickerService: DatepickerService) { }
+  constructor(public datePickerService: DatepickerService) { }
 
   ngOnInit() {}
 

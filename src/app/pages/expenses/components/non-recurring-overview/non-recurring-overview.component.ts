@@ -15,11 +15,11 @@ export class NonRecurringOverviewComponent implements OnInit {
   @Input() toDate: string;
   @Input() expensesList: Array<IExpensesDetails>;
 
-  constructor(private router: Router, protected expensesService: ExpensesService) { }  
+  constructor(private router: Router, public expensesService: ExpensesService) { }  
 
   ngOnInit() {}
 
-  protected openExpenseRecord(expense: IExpensesDetails){
+  openExpenseRecord(expense: IExpensesDetails){
     let navigationExtras: NavigationExtras = {
       state: {
         expensesDetails: expense
@@ -28,7 +28,7 @@ export class NonRecurringOverviewComponent implements OnInit {
     this.router.navigate(['expenses-edit'], navigationExtras);
   }  
 
-  protected isLivestock(expense: IExpensesDetails){
+  isLivestock(expense: IExpensesDetails){
     return expense instanceof LivestockExpensesDetails;
   }
 }

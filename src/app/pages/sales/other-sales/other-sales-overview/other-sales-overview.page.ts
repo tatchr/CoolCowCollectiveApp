@@ -76,7 +76,7 @@ export class OtherSalesOverviewPage implements OnInit {
     this.otherSalesService.periodSelected(period);
   }
 
-  protected dateChanged(){
+  dateChanged(){
     this.otherSalesService.loadOtherSalesList();
   }
 }

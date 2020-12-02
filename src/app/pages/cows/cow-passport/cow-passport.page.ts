@@ -31,7 +31,7 @@ export class CowPassportPage extends CowBaseComponent implements OnInit {
     });
   }
 
-  protected get cowInHerd(){
+  get cowInHerd(){
     return this.cowForm.get('cowstate').value == CowState.InHerd;
   }
 
