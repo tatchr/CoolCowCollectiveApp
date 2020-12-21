@@ -20,8 +20,8 @@ export class RegisterUserPage implements OnInit {
       firstname: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       lastname: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
-      gender: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
-      phonenumber: ['', Validators.maxLength(50)],
+      gender: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
+      phone: ['', [Validators.required, Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       repeatedPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
     }, {

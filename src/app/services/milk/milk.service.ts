@@ -90,9 +90,9 @@ export class MilkService {
     });
   }
 
-  getMilkRecordsOnDate(farmId, date, timeOfDay) {
+  getMilkRecordsOnDate(farmId, date, partOfDay) {
     let selectedDate = this.datePicker.formatDate(date);
-    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/get/${farmId}/${selectedDate}/${timeOfDay}`);
+    return this.httpService.get('Loading...', `${environment.url}/farms/${farmId}/milk-production-records?from_date=${selectedDate}&to_date=${selectedDate}&part_of_day=${partOfDay}`);
   }
 
   getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate) {
@@ -102,17 +102,23 @@ export class MilkService {
   }
 
   getAllMilkRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
+    return this.httpService.get(
+      'Loading...', 
+      `${environment.url}/farms/${farmId}/milk-production-records?from_date=${fromDate.toISOString()}&to_date=${toDate.toISOString()}`);
   }
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {
-    return this.httpService.post3('Saving...', `${environment.url}/api/milkproduction/register`, records)
+    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/milk-production-records`, records)
       .then(() => {
         this.updateAllRecords(records);
       })
       .then(() => {
         this.milkRecordsUpdated.next(true);
       });
+  }
+
+  delete(cowId: string){
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}/milk-production-records`);
   }
 
   updateAllRecords(records: Array<MilkProductionDetails>) {

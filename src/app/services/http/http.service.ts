@@ -49,8 +49,8 @@ export class HttpService {
   }
 
   post(url, body) {
-    return this.http.post(url, body).pipe(
-      catchError(error => throwError(this.httpErrorService.handleError(error)))
+    return this.http.post(url, body, { observe: 'response' }).pipe(
+      catchError(error => throwError(error))
     );
   }
 

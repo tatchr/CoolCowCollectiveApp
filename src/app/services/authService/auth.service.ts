@@ -43,39 +43,43 @@ export class AuthService {
     });
   }
 
-  public registerUser(credentials) {
+  registerUser(credentials) {
     return this.httpService.post3('Registering...', `${environment.url}/api/user/register`, credentials);
   }
 
-  public confirmEmail(credentials) {
+  confirmEmail(credentials) {
     return this.httpService.post3('Checking code...', `${environment.url}/api/user/confirmEmail`, credentials);
   }
 
-  public resendConfirmationCode(credentials) {
+  resendConfirmationCode(credentials) {
     return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendConfirmationCode`, credentials);
   }
 
-  public login(credentials) {
+  login(credentials) {
     return this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials);      
   }
 
-  public forgotPassword(credentials) {
+  // forgotPassword(credentials) {
+  //   return this.httpService.post2(`${environment.url}/api/user/forgotPassword`, credentials);
+  // }
+
+  forgotPassword(credentials) {
     return this.httpService.post(`${environment.url}/api/user/forgotPassword`, credentials);
   }
 
-  public verifyPasswordResetCode(credentials) {
+  verifyPasswordResetCode(credentials) {
     return this.httpService.post3('Checking code...', `${environment.url}/api/user/verifyPasswordResetCode`, credentials);
   }
 
-  public resendPasswordResetCode(credentials) {
+  resendPasswordResetCode(credentials) {
     return this.httpService.post3('Sending code...', `${environment.url}/api/user/resendPasswordResetCode`, credentials);
   }
 
-  public resetPassword(credentials) {
+  resetPassword(credentials) {
     return this.httpService.post(`${environment.url}/api/user/resetPassword`, credentials);
   }
 
-  public logout() {
+  logout() {
     this.storage.remove(USER);
     this.storage.remove(FARM);
     this.storage.remove(TOKEN_KEY).then(() => {
@@ -83,15 +87,17 @@ export class AuthService {
     });
   }
 
-  public setUserAndJwtToken(source) {
-    this.storage.set(USER, source['userDetails']).then(() => {
+  setUserAndJwtToken(source) {
+    return this.storage.set(USER, source['user']).then(() => {
       this.storage.set(TOKEN_KEY, source['token']);
       this.decodedToken = this.helper.decodeToken(source['token']);
       this.authenticationState.next(true);
     });
   }
 
-  public isAuthenticated() {
+
+
+  isAuthenticated() {
     return this.authenticationState.value;
   }
 }

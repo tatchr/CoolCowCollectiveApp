@@ -31,8 +31,10 @@ export class VerifyRegistrationEmailPage implements OnInit {
       emailConfirmationCode: verificationCode
     };
 
-    this.authService.confirmEmail(resetData).then((val) => {
-      this.authService.setUserAndJwtToken(val);
+    this.authService.confirmEmail(resetData).then(val => {
+      this.authService.setUserAndJwtToken(val).then(() =>{
+        this.router.navigate(['new-farm'], { replaceUrl: true });
+      });
     }).catch(() => {
       this.verificationCodeComponent.reset();
     });

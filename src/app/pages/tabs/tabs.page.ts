@@ -15,14 +15,14 @@ export class TabsPage implements OnInit {
 
   ngOnInit() { }
 
-  goToDashboard(){
-    this.accountService.getUser().then((user: UserDetails) => {
-      if(user.hasFarm){
-        this.router.navigate(['tabs/farm-dashboard']);
-      }
-      else{
-        this.router.navigate(['new-farm']);
-      }
-    });    
-  }
+  // goToDashboard(){
+  //   this.accountService.getUser().then((user: UserDetails) => {
+  //     if(user.hasFarm){
+  //       this.router.navigate(['tabs/farm-dashboard']);
+  //     }
+  //     else{
+  //       this.router.navigate(['new-farm']);
+  //     }
+  //   });    
+  // }
 }

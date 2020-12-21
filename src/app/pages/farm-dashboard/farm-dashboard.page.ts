@@ -34,7 +34,6 @@ export class FarmDashboardPage implements OnInit {
 
   farm: FarmDetails;
 
-
   // static data
   herdSize: Number;
   lactatingCows: Number;

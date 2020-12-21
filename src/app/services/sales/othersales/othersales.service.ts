@@ -50,23 +50,25 @@ export class OthersalesService {
   }
 
   getOtherSaleRecord(id) {
-    return this.httpService.get(null, `${environment.url}/api/othersales/get/${id}`);
+    return this.httpService.get(null, `${environment.url}/farms/${this.farmId}/other-sales/${id}`);
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', `${environment.url}/api/othersales/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
+    let from = this.datePicker.formatDate(fromDate);
+    let to = this.datePicker.formatDate(toDate);
+
+    return this.httpService.get('Loading...', `${environment.url}/farms/${farmId}/other-sales?from_date=${from}&to_date=${to}`);
   }
 
   registerOtherSalesRecord(record) {
-    return this.httpService.post3('Saving...', `${environment.url}/api/othersales/register`, record);
+    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/other-sales`, record);
   }
 
   updateOtherSalesRecord(record) {
-    console.log(record);
-    return this.httpService.put(`${environment.url}/api/othersales/update`, record);
+    return this.httpService.put(`${environment.url}/farms/${this.farmId}/other-sales`, record);
   }
 
   deleteOtherSalesRecord(id) {
-    return this.httpService.delete(`${environment.url}/api/othersales/delete/${id}`);
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/other-sales/${id}`);
   }
 }
