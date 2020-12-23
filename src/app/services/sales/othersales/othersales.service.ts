@@ -14,7 +14,7 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 })
 export class OthersalesService {
 
-  farmId: string;
+  //farmId: string;
   selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: Date = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
@@ -27,15 +27,19 @@ export class OthersalesService {
   otherSalesList: Array<OtherSalesDetails> = [];
 
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private farmService: FarmService) {
-    this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
-      this.loadOtherSalesList();
-    });
+    // this.farmService.getFarm().then((farm: FarmDetails) => {
+    //   this.farmId = farm.id;
+    //   this.loadOtherSalesList();
+    // });
   }
 
   loadOtherSalesList() {
-    this.getAllOtherSalesRecords(this.farmId, this.selectedFromDate, this.selectedToDate).then(res => {
-      this.otherSalesList = res['otherSalesDetails'];      
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      console.log('tesst11');
+      console.log(farm.id);
+      this.getAllOtherSalesRecords(farm.id, this.selectedFromDate, this.selectedToDate).then(res => {
+        this.otherSalesList = res['otherSalesDetails'];      
+      });
     });
   }
 
@@ -50,7 +54,9 @@ export class OthersalesService {
   }
 
   getOtherSaleRecord(id) {
-    return this.httpService.get(null, `${environment.url}/farms/${this.farmId}/other-sales/${id}`);
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      return this.httpService.get(null, `${environment.url}/farms/${farm.id}/other-sales/${id}`);
+    });
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
@@ -61,14 +67,21 @@ export class OthersalesService {
   }
 
   registerOtherSalesRecord(record) {
-    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/other-sales`, record);
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      console.log(record);
+      return this.httpService.post3('Saving...', `${environment.url}/farms/${farm.id}/other-sales`, record);
+    });
   }
 
   updateOtherSalesRecord(record) {
-    return this.httpService.put(`${environment.url}/farms/${this.farmId}/other-sales`, record);
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      return this.httpService.put(`${environment.url}/farms/${farm.id}/other-sales`, record);
+    });
   }
 
   deleteOtherSalesRecord(id) {
-    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/other-sales/${id}`);
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      return this.httpService.delete(`${environment.url}/farms/${farm.id}/other-sales/${id}`);
+    });
   }
 }

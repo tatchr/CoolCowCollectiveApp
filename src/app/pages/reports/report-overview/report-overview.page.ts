@@ -21,7 +21,7 @@ export class ReportOverviewPage implements OnInit {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.accountService.getUser().then((user: UserDetails) => {
         let reports = this.service.reportContent.filter(x => x.isChecked).map(x => x.val);
-        this.service.getReport(user.id, farm.farmId, reports, fileType, this.service.selectedFromDate, this.service.selectedToDate);
+        this.service.getReport(user.id, farm.id, reports, fileType, this.service.selectedFromDate, this.service.selectedToDate);
       })
     });
   }

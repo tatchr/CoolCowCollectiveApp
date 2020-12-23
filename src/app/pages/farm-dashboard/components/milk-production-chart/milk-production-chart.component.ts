@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as Chart from 'chart.js';
 import { MilkProductionChartData } from 'src/app/common/objects/charts/milk-production/MilkProductionChartData';
-import { Period, TimeOfDay } from 'src/app/common/objects/Enums';
+import { Period, PartOfDay } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'milk-production-chart',
@@ -41,11 +41,11 @@ export class MilkProductionChartComponent implements OnInit {
   private chartData(inputData: MilkProductionChartData){
     return {
       labels: inputData.days,
-      datasets: inputData.milkTimeOfDayGroups.map(milkGroup => {
+      datasets: inputData.milkPartOfDayGroups.map(milkGroup => {
         return {
-          "label": milkGroup.timeOfDay,
+          "label": milkGroup.partOfDay,
           "data": milkGroup.milkTotals.map(x => x.totalMilk),
-          "borderColor": this.getLineColor(milkGroup.timeOfDay),
+          "borderColor": this.getLineColor(milkGroup.partOfDay),
           "fill": false,
           "lineTension": 0,
           "pointRadius": 0
@@ -89,13 +89,13 @@ export class MilkProductionChartComponent implements OnInit {
     }
   }
 
-  private getLineColor(timeOfDay: TimeOfDay): string{
-    switch (timeOfDay) {
-      case TimeOfDay.Morning:
+  private getLineColor(partOfDay: PartOfDay): string{
+    switch (partOfDay) {
+      case PartOfDay.Morning:
         return 'blue';
-      case TimeOfDay.Afternoon:
+      case PartOfDay.Afternoon:
         return 'orange'
-      case TimeOfDay.Evening:
+      case PartOfDay.Evening:
         return 'gray';
       default:
         break;

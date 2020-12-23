@@ -27,8 +27,8 @@ export class CowService {
 
   constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
-      this.loadCowsList(farm.farmId);
+      this.farmId = farm.id;
+      this.loadCowsList(farm.id);
     });
 
     this.cowRegistered.subscribe(newCow => {
@@ -80,8 +80,8 @@ export class CowService {
     return this.httpService.put(`${environment.url}/farms/${this.farmId}/cows`, cowdetails);
   }
 
-  deleteCow(cowId){
-    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}`);
+  deleteCow(cowId, keepRecords){
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}?keep_records=${keepRecords}`);
   }
 
   registerCow(cowdetails) {

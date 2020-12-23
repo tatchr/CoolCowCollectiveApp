@@ -35,8 +35,7 @@ export class OthersalesFormComponent implements OnInit {
   }  
 
   private createForm(otherSales: OtherSalesDetails){
-    return this.formBuilder.group({
-      id: [otherSales.id],
+    let form = this.formBuilder.group({
       farmId: [otherSales.farmId],
       date: [this.getDate(otherSales)],
       itemsold: new FormControl({value: otherSales.itemSold, disabled: this.isExistingRecord}, [Validators.required, Validators.maxLength(150)]),
@@ -47,6 +46,12 @@ export class OthersalesFormComponent implements OnInit {
       offtakername: [otherSales.offtakerName, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
       offtakercompany: [otherSales.offtakerCompany],
     });
+
+    if(otherSales.id){
+      form.addControl('id', new FormControl(otherSales.id));
+    }
+
+    return form;
   }
 
   private getDate(otherSales: OtherSalesDetails): string{

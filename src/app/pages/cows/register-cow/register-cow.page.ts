@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
-import { v4 as uuidv4 } from 'uuid';
 import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
@@ -25,7 +24,6 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   ngOnInit() {
     this.getFarmId();
     this.cowForm = this.formBuilder.group({
-      id: uuidv4(),
       name: [null, [Validators.required, Validators.maxLength(50)]],
       farmId: this.farmId,
       tagnumber: [null, [Validators.maxLength(50)]],
@@ -39,7 +37,7 @@ export class RegisterCowPage extends CowBaseComponent implements OnInit {
   }
   
   onSubmit() {
-    if(this.cowForm.valid){      
+    if(this.cowForm.valid){
       this.cowForm.controls['farmId'].setValue(this.farmId);
       this.cowForm.controls['registrationDate'].setValue(new Date());
 

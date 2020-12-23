@@ -6,7 +6,7 @@ export class LivestockExpensesDetails implements IExpensesDetails{
     farmId: string;
     date: Date;
     type: string = 'Livestock';
-    cowDetails: CowDetails;
+    cow: CowDetails;
     price: number;
     sellerName: string;
     sellerCompany: string;

@@ -24,7 +24,7 @@ export class OtherSalesInputPage implements OnInit {
   ngOnInit() {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.othersalesDetails = new OtherSalesDetails({
-        farmId: farm.farmId
+        farmId: farm.id
       });
     });
   }

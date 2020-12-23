@@ -62,7 +62,7 @@ export class HttpService {
   }
 
   put(url, body) {
-    return this.http.put(url, body).pipe(
+    return this.http.put(url, body, { observe: 'response' }).pipe(
       catchError(error => throwError(this.httpErrorService.handleError(error)))
     );
   }
@@ -79,7 +79,7 @@ export class HttpService {
   }
 
   delete(url) {
-    return this.http.delete(url).pipe(
+    return this.http.delete(url, { observe: 'response' }).pipe(
       map(res => { return res; }),
       catchError(error => throwError(this.httpErrorService.handleError(error)))
     );

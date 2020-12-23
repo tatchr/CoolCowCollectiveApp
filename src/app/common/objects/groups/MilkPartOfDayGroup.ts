@@ -1,8 +1,8 @@
-import { TimeOfDay } from '../Enums';
+import { PartOfDay } from '../Enums';
 import { MilkTotals } from '../MilkTotals';
 
-export class MilkTimeOfDayGroup{
-    timeOfDay: TimeOfDay;    
+export class MilkPartOfDayGroup{
+    partOfDay: PartOfDay;    
     milkTotals: MilkTotals[];
 
     constructor(values: Object = {}) {

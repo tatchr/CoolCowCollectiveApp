@@ -24,22 +24,17 @@ export class ExpensesInputPage implements OnInit {
 
   ngOnInit() {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-
-      console.log('farm: ');
-
-      console.log(farm);
-
       this.expensesDetails = new ExpensesDetails({
-        farmId: farm.farmId,
+        farmId: farm.id,
         date: this.expensesService.datePicker.today,
         isRootRecord: false,
         recurringIsActive: false
       });
 
       this.livestockExpensesDetails = new LivestockExpensesDetails({
-        farmId: farm.farmId,
+        farmId: farm.id,
         date: this.expensesService.datePicker.today,
-        cowDetails: new CowDetails()
+        cow: new CowDetails()
       });
     });
   }

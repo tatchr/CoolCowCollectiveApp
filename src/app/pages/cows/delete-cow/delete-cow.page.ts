@@ -25,11 +25,7 @@ export class DeleteCowPage implements OnInit {
   }
 
   deleteCow() {
-    this.cowService.deleteCow(this.cowId).subscribe(val => {
-      if(!this.keepRecords){
-        this.deleteMilkRecords();
-      }
-
+    this.cowService.deleteCow(this.cowId, this.keepRecords).subscribe(val => {
       if(val){
         this.cowService.cowDeleted.next(this.cowId);
         this.router.navigateByUrl('/tabs/herd');

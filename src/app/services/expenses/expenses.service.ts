@@ -40,16 +40,16 @@ export class ExpensesService {
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private location: Location,
     public formBuilder: FormBuilder, private farmService: FarmService, private cowService: CowService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
+      this.farmId = farm.id;
       this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
       this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
 
-      this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
-        if(newLivestockExpense){
-          this.expensesList.push(newLivestockExpense);
-          this.cowService.cowRegistered.next(newLivestockExpense.cowDetails);
-        }
-      });
+      // this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
+      //   if(newLivestockExpense){
+      //     this.expensesList.push(newLivestockExpense);
+      //     this.cowService.cowRegistered.next(newLivestockExpense.cow);
+      //   }
+      // });
 
       this.expenseRegistered.subscribe(newExpense => {
         if (newExpense) {
@@ -76,7 +76,6 @@ export class ExpensesService {
 
   newForm(expense: ExpensesDetails) {
     let form = this.formBuilder.group({
-      id: [expense.id],
       farmId: [expense.farmId],
       date: [expense.date],
       type: [expense.type],
@@ -96,6 +95,10 @@ export class ExpensesService {
       recurringperiodindays: [expense.recurringPeriodInDays]
     });
 
+    if(expense.id){
+      form.addControl('id', new FormControl(expense.id));
+    }
+
     form.valueChanges.subscribe(val => {
       let totalprice = this.math.round(val['price'] * val['quantity'], 2);
       form.get('totalprice').patchValue(totalprice, { emitEvent: false });
@@ -113,15 +116,22 @@ export class ExpensesService {
     return form;
   }
 
+  // loadExpensesList(fromDate: Date, toDate: Date){
+  //   this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
+  //     this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
+  //       let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
+  //       let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
+
+  //       this.expensesList = expensesList.concat(livestockExpensesList);
+  //       this.expensesLoaded.next(true);
+  //     });
+  //   });
+  // }
+
   loadExpensesList(fromDate: Date, toDate: Date){
     this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
-      this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
-        let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
-        let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
-
-        this.expensesList = expensesList.concat(livestockExpensesList);
+        this.expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
         this.expensesLoaded.next(true);
-      });
     });
   }
 

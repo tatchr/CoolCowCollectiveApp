@@ -1,11 +1,11 @@
-import { MilkTimeOfDayGroup } from '../../groups/MilkTimeOfDayGroup';
+import { MilkPartOfDayGroup } from '../../groups/MilkPartOfDayGroup';
 
 export class MilkProductionChartData{
     days: string[];
-    milkTimeOfDayGroups: MilkTimeOfDayGroup[];
+    milkPartOfDayGroups: MilkPartOfDayGroup[];
 
-    constructor(days: string[], milkTimeOfDayGroups: MilkTimeOfDayGroup[]){
+    constructor(days: string[], milkPartOfDayGroups: MilkPartOfDayGroup[]){
         this.days = days;
-        this.milkTimeOfDayGroups = milkTimeOfDayGroups;
+        this.milkPartOfDayGroups = milkPartOfDayGroups;
     }
 }

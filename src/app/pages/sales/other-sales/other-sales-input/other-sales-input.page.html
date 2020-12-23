@@ -4,7 +4,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <othersales-form *ngIf="othersalesDetails" [selectedDate]="selectedDate" [othersalesDetails]="othersalesDetails" (returnform)="onSubmit($event)"></othersales-form>          
+        <othersales-form *ngIf="othersalesDetails" [selectedDate]="selectedDate.toDateString()" [othersalesDetails]="othersalesDetails" (returnform)="onSubmit($event)"></othersales-form>          
       </ion-col>
     </ion-row>
   </ion-grid>

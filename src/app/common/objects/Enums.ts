@@ -14,8 +14,8 @@ export enum CowState {
 
 export enum CowStatus {
     Lactating = 'Lactating',
-    NonLactating = 'Non-Lactating',
-    NA = 'N/A'
+    NonLactating = 'NonLactating',
+    NA = 'NA'
 };
 
 export enum ItemSold {
@@ -36,7 +36,7 @@ export enum Period {
     alltime = 'all time'
 };
 
-export enum TimeOfDay {
+export enum PartOfDay {
     Morning = 'Morning',
     Afternoon = 'Afternoon',
     Evening = 'Evening'

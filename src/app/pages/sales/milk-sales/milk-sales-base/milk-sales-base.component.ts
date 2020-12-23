@@ -22,7 +22,7 @@ export class MilkSalesBaseComponent {
 
   getFarmId(){
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId; 
+      this.farmId = farm.id; 
     });
   }
 

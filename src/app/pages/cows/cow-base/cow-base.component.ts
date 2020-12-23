@@ -7,6 +7,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Storage } from '@ionic/storage';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { CowStatus } from 'src/app/common/objects/Enums';
 
 @Component({
   selector: 'app-cow-base',
@@ -23,6 +24,8 @@ export class CowBaseComponent implements OnInit {
   fromDate = new Date('1970-01-01');
   toDate = this.datePicker.formatDate(new Date());
 
+  cowSatuses: CowStatus[] = [ CowStatus.Lactating, CowStatus.NonLactating, CowStatus.NA ]
+
   constructor(public router: Router, public formBuilder: FormBuilder, 
     storage: Storage, public cowService: CowService, public datePicker: DatepickerService, 
     public keyboard: Keyboard, public farmService: FarmService) { }
@@ -31,7 +34,7 @@ export class CowBaseComponent implements OnInit {
 
   getFarmId(){
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId; 
+      this.farmId = farm.id; 
     });
   }
 
@@ -43,7 +46,7 @@ export class CowBaseComponent implements OnInit {
     this.showFullStatusList = cowType == 'Cow';
 
     if(!this.showFullStatusList){
-      this.cowForm.controls['cowstatus'].setValue('N/A');
+      this.cowForm.controls['cowstatus'].setValue(CowStatus.NA);
       this.cowForm.controls['cowstatus'].disable();
     }
     else{

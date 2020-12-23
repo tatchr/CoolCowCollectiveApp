@@ -1,5 +1,5 @@
 <form *ngIf="form" [formGroup]="form">
-  <div formGroupName="cowdetails">
+  <div formGroupName="cow">
     <ion-item [disabled]="isExistingRecord">
       <ion-label color="medium">Animal type*</ion-label>
       <ion-select formControlName="cowtype" placeholder="Select One">
@@ -20,8 +20,8 @@
       <ion-label color="medium">Cow status*</ion-label>
       <ion-select formControlName="cowstatus" placeholder="Select One">
         <ion-select-option value="Lactating">Lactating</ion-select-option>
-        <ion-select-option value="Non-Lactating">Non-lactating</ion-select-option>
-        <ion-select-option value="N/A">N/A</ion-select-option>
+        <ion-select-option value="NonLactating">NonLactating</ion-select-option>
+        <ion-select-option value="NA">NA</ion-select-option>
       </ion-select>
     </ion-item>
   </div>  

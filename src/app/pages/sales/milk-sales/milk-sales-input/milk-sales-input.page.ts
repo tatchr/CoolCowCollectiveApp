@@ -40,7 +40,7 @@ export class MilkSalesInputPage extends MilkSalesBaseComponent implements OnInit
 
   onSubmit() {
     if(this.milksalesForm.valid){
-      this.milksalesForm.controls['date'].setValue(this.selectedDate);
+      this.milksalesForm.controls['date'].setValue(this.selectedDate.toDateString());
       this.milksalesForm.controls['farmId'].setValue(this.milkSalesService.farmId);
       this.milkSalesService.registerMilkSalesRecord(this.milksalesForm.value).then(val => {
         if (val) {

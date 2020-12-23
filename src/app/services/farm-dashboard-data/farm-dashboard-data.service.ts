@@ -7,7 +7,7 @@ import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 import { ExpensesTypeGroup } from 'src/app/common/objects/groups/ExpensesTypeGroup';
 import { MilkService } from '../milk/milk.service';
 import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
-import { MilkTimeOfDayGroup } from 'src/app/common/objects/groups/MilkTimeOfDayGroup';
+import { MilkPartOfDayGroup } from 'src/app/common/objects/groups/MilkPartOfDayGroup';
 import { MilkTotals } from 'src/app/common/objects/MilkTotals';
 import { MilkProductionChartData } from 'src/app/common/objects/charts/milk-production/MilkProductionChartData';
 import { CowChartData } from 'src/app/common/objects/charts/cows/CowChartData';
@@ -121,15 +121,15 @@ export class FarmDashboardDataService {
       filter((milkRecord: MilkProductionDetails) => 
         this.dateIsBetween(milkRecord.date, fromDate, toDate)
       ),
-      groupBy((milkRecord: MilkProductionDetails) => milkRecord.timeOfDay),
+      groupBy((milkRecord: MilkProductionDetails) => milkRecord.partOfDay),
       mergeMap(group => zip(
         of(group.key), 
         group.pipe(toArray()) 
         )
         .pipe(
           map(
-            ([key, value]) => new MilkTimeOfDayGroup({
-              timeOfDay: key,
+            ([key, value]) => new MilkPartOfDayGroup({
+              partOfDay: key,
               days: days,
               milkTotals: this.getMilkTotals(fromDate, toDate, value)})
           )

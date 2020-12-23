@@ -33,7 +33,7 @@ export class MilksalesService {
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, 
     private farmService: FarmService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
+      this.farmId = farm.id;
       this.loadMilkSalesList();
     });
   }

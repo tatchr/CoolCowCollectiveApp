@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { ExpensesService } from 'src/app/services/expenses/expenses.service';
 import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 
@@ -35,19 +35,24 @@ export class LivestockExpenseComponent implements OnInit {
   }
 
   private newForm(livestockExpense: LivestockExpensesDetails){
-    return this.formBuilder.group({
-      id: [livestockExpense.id],
+    let form = this.formBuilder.group({
       farmId: [livestockExpense.farmId],
       date: [this.date],
-      cowdetails: this.formBuilder.group({
+      cow: this.formBuilder.group({
         farmId: livestockExpense.farmId,
-        cowtype: [livestockExpense.cowDetails.cowType, [Validators.required]],
-        name: [livestockExpense.cowDetails.name, [Validators.required, Validators.maxLength(50)]],
-        cowstatus: [livestockExpense.cowDetails.cowStatus, [Validators.required]],
+        cowtype: [livestockExpense.cow.cowType, [Validators.required]],
+        name: [livestockExpense.cow.name, [Validators.required, Validators.maxLength(50)]],
+        cowstatus: [livestockExpense.cow.cowStatus, [Validators.required]],
       }),      
       price: [livestockExpense.price, [Validators.required, Validators.min(0.0), Validators.max(100000.0)]],      
       sellername: [livestockExpense.sellerName],
       sellercompany: [livestockExpense.sellerCompany]
     });
+
+    if(livestockExpense.id){
+      form.addControl('id', new FormControl(livestockExpense.id));
+    }
+
+    return form;
   }
 }

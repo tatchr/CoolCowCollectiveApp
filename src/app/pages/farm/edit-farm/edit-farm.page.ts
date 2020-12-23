@@ -26,7 +26,7 @@ export class EditFarmPage implements OnInit {
         this.farmService.getFarm().then((farm: FarmDetails) => {         
           this.farmForm = this.formBuilder.group({
             userId: user.id,
-            farmId: farm.farmId,
+            id: farm.id,
             name: [farm.name, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
             email: [farm.email, [Validators.email, Validators.maxLength(255)]],
             phonenumber: [farm.phoneNumber, Validators.maxLength(50)],
@@ -44,7 +44,7 @@ export class EditFarmPage implements OnInit {
     updateFarm() {
       if (this.farmForm.valid) {
         let updatedFarm: FarmDetails = {
-          farmId: this.farmForm.value['farmId'],
+          id: this.farmForm.value['id'],
           name: this.farmForm.value['name'],
           email: this.farmForm.value['email'],
           userId: this.farmForm.value['userId'],
