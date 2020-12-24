@@ -31,7 +31,7 @@ export class RecurringOverviewComponent implements OnInit {
   }
 
   toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
+    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, !expenseDetails.recurringIsActive).subscribe(val => {
       expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
     });
   }

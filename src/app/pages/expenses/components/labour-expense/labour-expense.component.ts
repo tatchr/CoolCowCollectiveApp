@@ -10,7 +10,7 @@ import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 })
 export class LabourExpenseComponent implements OnInit {
 
-  @Input() date: string;
+  @Input() date: Date;
   @Input() isExistingRecord: Boolean;
   @Input() expensesDetails: ExpensesDetails;
   @Output() returnForm = new EventEmitter<FormGroup>();
@@ -26,6 +26,7 @@ export class LabourExpenseComponent implements OnInit {
   }
 
   emitForm(form: FormGroup){
+    console.log(this.date);
     form.get('date').setValue(this.date);
     let employeeName = this.form.get('itembought').value;
     form.get('sellername').setValue(employeeName);

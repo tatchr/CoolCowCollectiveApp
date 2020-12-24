@@ -19,6 +19,8 @@ export class ExpensesDetails implements IExpensesDetails{
     recurringPeriodInDays: number;  
     recurringFromDate: Date;
     recurringId: string;
+    registrationDate: Date;
+    updateDate: Date;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

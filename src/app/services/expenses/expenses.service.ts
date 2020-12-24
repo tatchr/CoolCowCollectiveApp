@@ -99,6 +99,10 @@ export class ExpensesService {
       form.addControl('id', new FormControl(expense.id));
     }
 
+    if(expense.registrationDate){
+      form.addControl('registrationDate', new FormControl(expense.registrationDate));
+    }
+
     form.valueChanges.subscribe(val => {
       let totalprice = this.math.round(val['price'] * val['quantity'], 2);
       form.get('totalprice').patchValue(totalprice, { emitEvent: false });
@@ -159,11 +163,7 @@ export class ExpensesService {
 
   updateExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/update`, record);
-  }
-
-  updateRootExpensesRecord(record) {
-    return this.httpService.put(`${environment.url}/api/expenses/updateRootExpense`, record);
-  }
+  }  
 
   deleteExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/expenses/delete/${id}`);
