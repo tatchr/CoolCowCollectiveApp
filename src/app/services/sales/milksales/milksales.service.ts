@@ -17,8 +17,8 @@ export class MilksalesService {
 
   changeCounter: number = 0;
   farmId: string;
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   milkSaleRegistered = new BehaviorSubject<MilkSalesDetails>(null);

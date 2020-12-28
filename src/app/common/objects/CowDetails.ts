@@ -3,12 +3,12 @@ export class CowDetails{
     farmId: string;
     tagNumber: string;
     name: string;
-    birthDate: Date;
+    birthDate: string;
     breed: string;
     cowType: string;
     cowStatus: string;
     cowState: string;
-    lactatingSinceDate: Date;
+    lactatingSinceDate: string;
     registrationDate: Date;
     updateDate: Date;
 

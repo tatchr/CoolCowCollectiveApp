@@ -11,9 +11,9 @@ export class DatepickerComponent implements OnInit {
   @Input() position: string;
   @Input() addIcon: boolean;
   @Input() label: string;
-  @Input() date: Date;
+  @Input() date: string;
   @Input() disabled: Boolean;
-  @Output() dateChange = new EventEmitter<Date>();
+  @Output() dateChange = new EventEmitter<string>();
 
   constructor(public datePickerService: DatepickerService) { }
 
@@ -27,7 +27,7 @@ export class DatepickerComponent implements OnInit {
     this.date = await this.datePickerService.openDatePicker(this.date);    
   }
 
-  emitDate(date: Date){
+  emitDate(date: string){
     this.dateChange.emit(date)
   }
 }

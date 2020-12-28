@@ -15,8 +15,8 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 export class OthersalesService {
 
   //farmId: string;
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   otherSaleRegistered = new BehaviorSubject<OtherSalesDetails>(null);

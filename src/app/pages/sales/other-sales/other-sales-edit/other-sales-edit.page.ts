@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class OtherSalesEditPage implements OnInit {
   
   othersalesDetails: OtherSalesDetails;
-  selectedDate: Date = null;
+  selectedDate: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private otherSalesService: OthersalesService, private alertService: AlertService) {
     this.activatedRoute.queryParams.subscribe(() => {

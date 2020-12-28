@@ -28,9 +28,9 @@ export class FarmDashboardDataService {
     public datePicker: DatepickerService, private math: MathService, private cowService: CowService,
     private milksSalesService: MilksalesService) { }
 
-  public getTotalExpenses(fromDate: Date, toDate: Date){
+  public getTotalExpenses(fromDate: string, toDate: string){
     let records = this.expensesService.expensesList.filter((expensesRecord: ExpensesDetails) => {
-      return this.dateIsBetween(expensesRecord.date, fromDate, toDate);
+      return this.datePicker.isBetween(expensesRecord.date, fromDate, toDate);
     });
 
     let nonRecurringTotal = records.reduce((a,b) => a + b.price, 0);
@@ -39,21 +39,21 @@ export class FarmDashboardDataService {
     return nonRecurringTotal + recurringTotal;
   }
   
-  public getHerdSize(){
+  getHerdSize(){
     return this.cowService.cowsList
       .filter(cow => cow.cowState == CowState.InHerd)
       .length;
   }
 
-  public getLactatingCows(){
+  getLactatingCows(){
     return this.cowService.cowsList
       .filter(cow => cow.cowStatus == CowStatus.Lactating)
       .length;
   }
 
-  public getAverageMilk(fromDate: Date, toDate: Date){
+  getAverageMilk(fromDate: string, toDate: string){
     let records = this.milkService.allMilkRecordsList.filter((milkRecord: MilkProductionDetails) => {
-      return this.dateIsBetween(milkRecord.date, fromDate, toDate);
+      return this.datePicker.isBetween(milkRecord.date, fromDate, toDate);
     });
 
     if(records.length < 1) return 0;
@@ -61,9 +61,9 @@ export class FarmDashboardDataService {
     return records.reduce((a,b) => a + b.amount, 0) / records.length;
   }
 
-  public getTotalMilkProduced(fromDate: Date, toDate: Date){
+  getTotalMilkProduced(fromDate: string, toDate: string){
     let records = this.milkService.allMilkRecordsList.filter((milkRecord: MilkProductionDetails) => {
-      return this.dateIsBetween(milkRecord.date, fromDate, toDate);
+      return this.datePicker.isBetween(milkRecord.date, fromDate, toDate);
     });
 
     if(records.length < 1) return 0;
@@ -71,9 +71,9 @@ export class FarmDashboardDataService {
     return records.reduce((a,b) => a + b.amount, 0);
   }
 
-  public getTotalMilkSold(fromDate: Date, toDate: Date){
+  getTotalMilkSold(fromDate: string, toDate: string){
     let records = this.milksSalesService.milkSalesList.filter((milkSale: MilkSalesDetails) => {
-      return this.dateIsBetween(milkSale.date, fromDate, toDate);
+      return this.datePicker.isBetween(milkSale.date, fromDate, toDate);
     });
 
     if(records.length < 1) return 0;
@@ -81,12 +81,12 @@ export class FarmDashboardDataService {
     return records.reduce((a,b) => a + (b.litersSold * b.pricePerLiter), 0);
   }
   
-  public getCowData(fromDate: Date, toDate: Date): CowChartData[]{
+  getCowData(fromDate: string, toDate: string): CowChartData[]{
     let result: CowChartData[] = [];
 
     from(this.milkService.allMilkRecordsList).pipe(
       filter((milkRecord: MilkProductionDetails) => 
-        this.dateIsBetween(milkRecord.date, fromDate, toDate)
+        this.datePicker.isBetween(milkRecord.date, fromDate, toDate)
       ),
       groupBy(milkRecord => milkRecord.cowName),
       mergeMap(group => zip(
@@ -113,13 +113,13 @@ export class FarmDashboardDataService {
     return result;
   }
   
-  public getMilkProductionData(fromDate: Date, toDate: Date): MilkProductionChartData{
+  getMilkProductionData(fromDate: string, toDate: string): MilkProductionChartData{
     let days = this.datePicker.getDaysArray(fromDate, toDate);
     let result: MilkProductionChartData; 
 
     from(this.milkService.allMilkRecordsList).pipe(
       filter((milkRecord: MilkProductionDetails) => 
-        this.dateIsBetween(milkRecord.date, fromDate, toDate)
+        this.datePicker.isBetween(milkRecord.date, fromDate, toDate)
       ),
       groupBy((milkRecord: MilkProductionDetails) => milkRecord.partOfDay),
       mergeMap(group => zip(
@@ -163,12 +163,12 @@ export class FarmDashboardDataService {
     return milkTotals;
   }
 
-  public getExpensesData(fromDate: Date, toDate: Date){
+  getExpensesData(fromDate: string, toDate: string){
     let result: ExpensesTypeGroup[] = [];
 
     from(this.expensesService.expensesList).pipe(
       filter((expense: IExpensesDetails) =>
-        this.dateIsBetween(expense.date, fromDate, toDate)
+        this.datePicker.isBetween(expense.date, fromDate, toDate)
       ),
       groupBy((expense: IExpensesDetails) => expense.type),
       mergeMap(group => zip(
@@ -188,11 +188,6 @@ export class FarmDashboardDataService {
     })
 
     return result;
-  }
-
-  private dateIsBetween(date: Date, fromDate: Date, toDate: Date){
-    return this.datePicker.formatDate(date) >= this.datePicker.formatDate(fromDate) && 
-    this.datePicker.formatDate(date) <= this.datePicker.formatDate(toDate)
   }
 }
 

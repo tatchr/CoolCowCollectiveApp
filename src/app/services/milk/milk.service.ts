@@ -20,10 +20,10 @@ export class MilkService {
   milkRecordsList: Array<MilkProductionDetails> = [];
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
-  selectedDate: Date = this.datePicker.today;
+  selectedDate: string = this.datePicker.today;
   partOfDay: string = PartOfDay.Morning;
-  fromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  toDate: Date = this.datePicker.today;
+  fromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  toDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   inputProduction: number = 0.00;
@@ -66,8 +66,6 @@ export class MilkService {
     let to = this.datePicker.formatDate(toDate);
 
     return this.farmService.getFarm().then((farm: FarmDetails) => {
-      console.log('farmmmm');
-      console.log(farm);
       return this.httpService.get(
         'Loading...', 
         `${environment.url}/farms/${farm.id}/milk-production-records?from_date=${from}&to_date=${to}`);

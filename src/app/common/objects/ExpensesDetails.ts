@@ -3,7 +3,7 @@ import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 export class ExpensesDetails implements IExpensesDetails{
     id: string;
     farmId: string;
-    date: Date;
+    date: string;
     type: string;
     itemBought: string;
     price: number;
@@ -17,7 +17,7 @@ export class ExpensesDetails implements IExpensesDetails{
     isRootRecord: boolean;
     recurringIsActive: boolean;
     recurringPeriodInDays: number;  
-    recurringFromDate: Date;
+    recurringFromDate: string;
     recurringId: string;
     registrationDate: Date;
     updateDate: Date;

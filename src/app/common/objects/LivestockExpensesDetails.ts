@@ -4,7 +4,7 @@ import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 export class LivestockExpensesDetails implements IExpensesDetails{
     id: string;
     farmId: string;
-    date: Date;
+    date: string;
     type: string = 'Livestock';
     cow: CowDetails;
     price: number;

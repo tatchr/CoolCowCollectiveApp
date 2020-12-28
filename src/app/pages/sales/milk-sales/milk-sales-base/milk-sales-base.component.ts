@@ -14,7 +14,7 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 export class MilkSalesBaseComponent {
 
   milksalesForm: FormGroup;
-  selectedDate: Date = this.milkSalesService.datePicker.today;
+  selectedDate: string = this.milkSalesService.datePicker.today;
   farmId: string;
 
   constructor(public router: Router, public milkSalesService: MilksalesService, public formBuilder: FormBuilder, 

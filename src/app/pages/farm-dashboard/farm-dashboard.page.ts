@@ -25,8 +25,8 @@ export class FarmDashboardPage implements OnInit {
   @ViewChild(CowPodiumChartComponent) cowPodiumChart: CowPodiumChartComponent;
   
   period: Period = Period.lastweek;
-  fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
-  toDate: Date = this.datePicker.today;
+  fromDate: string = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  toDate: string = this.datePicker.today;
 
   expensesData: ExpensesTypeGroup[];
   milkProductionChartData: MilkProductionChartData;
@@ -97,7 +97,7 @@ export class FarmDashboardPage implements OnInit {
     });
   }
 
-  fromDateChanged(fromDate: Date){
+  fromDateChanged(fromDate: string){
     this.fromDate = fromDate;
     this.expensesService.loadExpensesList(fromDate, this.toDate);
     this.expensesService.loadRecurringExpensesList(fromDate, this.toDate);

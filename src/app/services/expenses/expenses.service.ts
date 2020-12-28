@@ -30,8 +30,8 @@ export class ExpensesService {
 
   changeCounter: number = 0;
   farmId: string;
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   expensesList: Array<IExpensesDetails> = [];
@@ -132,29 +132,29 @@ export class ExpensesService {
   //   });
   // }
 
-  loadExpensesList(fromDate: Date, toDate: Date){
+  loadExpensesList(fromDate: string, toDate: string){
     this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
         this.expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
         this.expensesLoaded.next(true);
     });
   }
 
-  loadRecurringExpensesList(fromDate: Date, toDate: Date) {
+  loadRecurringExpensesList(fromDate: string, toDate: string) {
     this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
       this.recurringExpensesList = res['recurringExpensesList'];
     });
   }
 
-  private getExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${from}/${to}`);
+  private getExpensesRecords(farmId: string, fromDate: string, toDate: string) {
+    //let from = this.datePicker.formatDate(fromDate);
+    //let to = this.datePicker.formatDate(toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 
-  private getRecurringExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${from}/${to}`);
+  private getRecurringExpensesRecords(farmId: string, fromDate: string, toDate: string) {
+    //let from = this.datePicker.formatDate(fromDate);
+    //let to = this.datePicker.formatDate(toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${fromDate}/${toDate}`);
   }
 
   registerExpensesRecord(record) {
@@ -186,9 +186,9 @@ export class ExpensesService {
   }
   
   getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${from}/${to}`);
+    //let from = this.datePicker.formatDate(fromDate);
+    //let to = this.datePicker.formatDate(toDate);
+    return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 
   updateLivestockExpensesRecord(record) {

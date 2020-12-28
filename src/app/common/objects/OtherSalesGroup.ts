@@ -1,7 +1,7 @@
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 
 export class OtherSalesGroup{
-    date: Date;
+    date: string;
     otherSalesList: Array<OtherSalesDetails>
     open: boolean;
 

@@ -1,7 +1,7 @@
 import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
 
 export class MilkSalesGroup{
-    date: Date;
+    date: string;
     milkSalesList: Array<MilkSalesDetails>
     open: boolean;
 

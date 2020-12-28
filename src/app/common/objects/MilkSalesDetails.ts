@@ -1,7 +1,7 @@
 export class MilkSalesDetails {
     id: number;
     farmId: string;
-    date: Date;
+    date: string;
     litersSold: number;
     pricePerLiter: number;
     offtaker: string;

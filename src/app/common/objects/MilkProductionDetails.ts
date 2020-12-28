@@ -4,7 +4,7 @@ export class MilkProductionDetails{
     cowId: string;
     cowName: string;
     tagNumber: string;
-    date: Date;
+    date: string;
     partOfDay: string;
     amount: number;
     createdByUserId: number;
