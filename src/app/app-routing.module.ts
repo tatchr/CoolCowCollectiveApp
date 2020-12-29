@@ -16,8 +16,6 @@ const routes: Routes = [
   { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },   
   { path: 'milk-entry', loadChildren: './pages/milk-entry/milk-entry.module#MilkEntryPageModule', canActivate: [AuthGuardService] },
-  { path: 'register-cow', loadChildren: './pages/cows/register-cow/register-cow.module#RegisterCowPageModule', canActivate: [AuthGuardService] },
-  { path: 'cow-passport', loadChildren: './pages/cows/cow-passport/cow-passport.module#CowPassportPageModule', canActivate: [AuthGuardService] },
   { path: 'delete-cow/:cowId', loadChildren: './pages/cows/delete-cow/delete-cow.module#DeleteCowPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-input', loadChildren: './pages/sales/milk-sales/milk-sales-input/milk-sales-input.module#MilkSalesInputPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-edit', loadChildren: './pages/sales/milk-sales/milk-sales-edit/milk-sales-edit.module#MilkSalesEditPageModule', canActivate: [AuthGuardService] },
@@ -38,6 +36,10 @@ const routes: Routes = [
   { path: 'expenses-recurring-overview', loadChildren: './pages/expenses/expenses-recurring-overview/expenses-recurring-overview.module#ExpensesRecurringOverviewPageModule', canActivate: [AuthGuardService] },   
   { path: 'sales-menu', loadChildren: './pages/sales/sales-menu/sales-menu.module#SalesMenuPageModule', canActivate: [AuthGuardService] },
   { path: 'expeses-non-recurring-overview', loadChildren: './pages/expenses/expeses-non-recurring-overview/expeses-non-recurring-overview.module#ExpesesNonRecurringOverviewPageModule', canActivate: [AuthGuardService] },
+  { path: 'cow-input', loadChildren: './pages/cows/cow-input/cow-input.module#CowInputPageModule', canActivate: [AuthGuardService] },
+  { path: 'cow-edit', loadChildren: './pages/cows/cow-edit/cow-edit.module#CowEditPageModule', canActivate: [AuthGuardService] },
+
+
 ];
 
 @NgModule({

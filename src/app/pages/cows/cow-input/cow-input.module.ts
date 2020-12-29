@@ -5,13 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CowPassportPage } from './cow-passport.page';
+import { CowInputPage } from './cow-input.page';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { CowComponentsModule } from '../components/cow-components.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: CowPassportPage
+    component: CowInputPage
   }
 ];
 
@@ -20,10 +21,11 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
     CommonComponentsModule,
+    ReactiveFormsModule,
+    CowComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CowPassportPage]
+  declarations: [CowInputPage]
 })
-export class CowPassportPageModule {}
+export class CowInputPageModule {}

@@ -9,8 +9,6 @@ export class CowDetails{
     cowStatus: string;
     cowState: string;
     lactatingSinceDate: string;
-    registrationDate: Date;
-    updateDate: Date;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

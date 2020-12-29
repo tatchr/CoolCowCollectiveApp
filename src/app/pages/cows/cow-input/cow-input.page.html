@@ -1,0 +1,10 @@
+<topbar title="Add new cow" [backbtn]="true"></topbar>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <cow-form *ngIf="cowDetails" [cowDetails]="cowDetails" (returnform)="onSubmit($event)"></cow-form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
