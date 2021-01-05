@@ -49,16 +49,12 @@ export class ForgotPasswordPage implements OnInit {
     }; 
 
     this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe(response => {
-      console.log(response);
-
       if(response.status == 204){
         this.router.navigate(['verify-recovery-email'], navigationExtras);
       }
       
     },
     errorResponse => {
-      console.log(errorResponse); 
-
       if(errorResponse.status == 409){
         this.router.navigate(['verify-registration-email'], navigationExtras);
       }

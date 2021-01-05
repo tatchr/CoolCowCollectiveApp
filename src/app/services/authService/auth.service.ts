@@ -59,10 +59,6 @@ export class AuthService {
     return this.httpService.post3('Authenticating...', `${environment.url}/api/user/login`, credentials);      
   }
 
-  // forgotPassword(credentials) {
-  //   return this.httpService.post2(`${environment.url}/api/user/forgotPassword`, credentials);
-  // }
-
   forgotPassword(credentials) {
     return this.httpService.post(`${environment.url}/api/user/forgotPassword`, credentials);
   }

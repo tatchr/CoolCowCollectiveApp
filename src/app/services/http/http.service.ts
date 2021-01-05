@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorService } from 'src/app/services/http/httperror.service';
-import { map, catchError, tap, finalize, timeout } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { OverlayService } from 'src/app/services/overlay/overlay.service';
 
@@ -51,13 +51,6 @@ export class HttpService {
   post(url, body) {
     return this.http.post(url, body, { observe: 'response' }).pipe(
       catchError(error => throwError(error))
-    );
-  }
-
-  postWithTap(url, body, next?: (x: Object) => void) {
-    return this.http.post(url, body).pipe(
-      tap(res => next(res)),
-      catchError(error => throwError(this.httpErrorService.handleError(error)))
     );
   }
 

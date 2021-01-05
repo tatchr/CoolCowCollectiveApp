@@ -14,7 +14,6 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 })
 export class OthersalesService {
 
-  //farmId: string;
   selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
   selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
@@ -53,15 +52,11 @@ export class OthersalesService {
   }
 
   getAllOtherSalesRecords(farmId, fromDate, toDate) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-
-    return this.httpService.get('Loading...', `${environment.url}/farms/${farmId}/other-sales?from_date=${from}&to_date=${to}`);
+    return this.httpService.get('Loading...', `${environment.url}/farms/${farmId}/other-sales?from_date=${fromDate}&to_date=${toDate}`);
   }
 
   registerOtherSalesRecord(record) {
     return this.farmService.getFarm().then((farm: FarmDetails) => {
-      console.log(record);
       return this.httpService.post3('Saving...', `${environment.url}/farms/${farm.id}/other-sales`, record);
     });
   }

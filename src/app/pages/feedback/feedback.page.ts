@@ -39,18 +39,16 @@ export class FeedbackPage implements OnInit {
       userId: [userId],
       appRating: [this.appRating, [Validators.required]],
       category: [this.category],      
-      feedbackText: [null, [Validators.required,  Validators.maxLength(5000)]]
+      comment: [null, [Validators.required,  Validators.maxLength(5000)]]
     });
   }
 
   onSubmit(){
     if (this.feedbackForm.valid) {
       this.feedbackForm.controls['category'].setValue(this.category);
-
-      console.log(this.feedbackForm);
       
-      this.feedbackService.registerFeedback(this.feedbackForm.value).subscribe(val => {
-        if (val) {
+      this.feedbackService.registerFeedback(this.feedbackForm.value).subscribe(response => {
+        if (response.status == 200) {
           this.toast('Thank you for your feedback!');
           this.returnToOverview();
         }

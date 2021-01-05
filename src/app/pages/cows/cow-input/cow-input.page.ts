@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
-import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { CowService } from 'src/app/services/cow/cow.service';
-import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-cow-input',
