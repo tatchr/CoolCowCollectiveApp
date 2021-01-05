@@ -34,16 +34,25 @@ export class RegisterUserPage implements OnInit {
     const { value: repeatedPassword } = formGroup.get('repeatedPassword');
     return password === repeatedPassword ? null : { passwordNotMatch: true };
   }
+  
+  // onSubmit() {
+  //   this.authService.registerUser(this.newUserForm.value).then(() => {
+  //     const { value: email } = this.newUserForm.get('email');
+  //     let navigationExtras: NavigationExtras = {
+  //       state: {
+  //         email: email
+  //       }
+  //     };
+  //     this.router.navigate(['verify-registration-email'], navigationExtras);
+  //   });
+  // }
 
+  //TODO: Remove this when email registraion is activated
   onSubmit() {
-    this.authService.registerUser(this.newUserForm.value).then(() => {
-      const { value: email } = this.newUserForm.get('email');
-      let navigationExtras: NavigationExtras = {
-        state: {
-          email: email
-        }
-      };
-      this.router.navigate(['verify-registration-email'], navigationExtras);
+    this.authService.registerUser(this.newUserForm.value).then(response => {
+      this.authService.setUserAndJwtToken(response).then(() =>{
+        this.router.navigate(['new-farm'], { replaceUrl: true });
+      });
     });
   }
 }
