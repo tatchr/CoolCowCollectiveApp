@@ -17,7 +17,7 @@ export class ReportService {
 
   reportContent = [
     { val: 'Farm information', isChecked: true },
-    { val: 'Herd information', isChecked: true },
+    //{ val: 'Herd information', isChecked: true },
     { val: 'Milk sales', isChecked: true },
     { val: 'Other sales', isChecked: true },
     { val: 'Expenses', isChecked: true }

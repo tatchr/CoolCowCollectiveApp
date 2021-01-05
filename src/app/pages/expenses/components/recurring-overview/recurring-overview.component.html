@@ -12,7 +12,7 @@
       </ion-button>
     </ion-col>
 
-    <ion-col size="7" class="ion-align-self-center">
+    <ion-col size="6" class="ion-align-self-center">
       <ion-label>
         {{expenseGroup.rootExpense.itemBought}}
       </ion-label>
@@ -28,27 +28,19 @@
       <ion-note style="font-size: 16px;">{{expenseGroup.totalPrice}} Ksh </ion-note>
     </ion-col>
 
-    <ion-col size="3" *ngIf="expenseGroup.open" class="ion-text-end ion-no-padding ion-align-self-stretch toggle-btn">
-
+    <ion-col size="4" *ngIf="expenseGroup.open" class="ion-text-end ion-no-padding ion-align-self-stretch toggle-btn">
       <ion-row>
-        <ion-col size="3" class="ion-no-padding">
-          <ion-button expand="full" size="default" color="danger" *ngIf="expenseGroup.rootExpense.recurringIsActive"
-            (click)="toggleRecurring(expenseGroup.rootExpense)">
-            <ion-icon name="square"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="3" class="ion-no-padding">
-          <ion-button expand="full" size="default" color="success" *ngIf="!expenseGroup.rootExpense.recurringIsActive"
-            (click)="toggleRecurring(expenseGroup.rootExpense)">
-            <ion-icon name="play"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="3" class="ion-no-padding">
-          <ion-button class="toggle-btn" color="primary" expand="full"
-            (click)="openExpenseRecord(expenseGroup.rootExpense)">
-            <ion-icon name="cog"></ion-icon>
-          </ion-button>
-        </ion-col>
+        <ion-button size="default" color="success" *ngIf="expenseGroup.rootExpense.recurringIsActive"
+          (click)="toggleRecurring(expenseGroup.rootExpense)">
+          Active
+        </ion-button>
+        <ion-button size="default" color="danger" *ngIf="!expenseGroup.rootExpense.recurringIsActive"
+          (click)="toggleRecurring(expenseGroup.rootExpense)">
+          Not Active
+        </ion-button>
+        <ion-button size="default" color="primary" (click)="openExpenseRecord(expenseGroup.rootExpense)">
+          <ion-icon name="cog"></ion-icon>
+        </ion-button>
       </ion-row>
     </ion-col>
   </ion-item>
@@ -63,10 +55,11 @@
           <p style="font-size: 12px;">{{childExpense.type}}</p>
           <p>
             <b>({{childExpense.quantity}}
-              {{childExpense.quantityUnit == null || childExpense.quantityUnit == 'units' 
-            ? 'x' 
-            : childExpense.quantityUnit}}) </b>
-            {{childExpense.itemBought}} @ {{childExpense.price}} Ksh</p>
+              {{childExpense.quantityUnit == null || childExpense.quantityUnit == 'units'
+              ? 'x'
+              : childExpense.quantityUnit}}) </b>
+            {{childExpense.itemBought}} @ {{childExpense.price}} Ksh
+          </p>
         </ion-label>
       </ion-item>
     </ion-list>
