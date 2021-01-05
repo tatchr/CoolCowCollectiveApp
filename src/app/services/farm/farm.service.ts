@@ -14,7 +14,7 @@ export class FarmService {
 
   constructor(private accountService: AccountService, private storage: Storage, private httpService: HttpService) { }
 
-  public farm: FarmDetails;
+  farm: FarmDetails;
 
   loadFarm(userId: string){
     return this.httpService.get(null, `${environment.url}/users/${userId}/farms`).then(response => {
@@ -39,20 +39,18 @@ export class FarmService {
     });
   }
 
-  public registerFarm(farmForm: FormGroup) {
+  registerFarm(farmForm: FormGroup) {
     return this.httpService.post3('Registering farm...', `${environment.url}/farms`, farmForm.value)
       .then((res) => {
         this.setFarm(res['farm']);
       });
   }
 
-  public updateFarm(farmDetails: FarmDetails) {
-    return this.httpService.put1('Updating...', `${environment.url}/farms`, farmDetails).then(response => {
-      this.setFarm(response['farm']);
-    });
+  updateFarm(farmDetails: FarmDetails) {
+    return this.httpService.put(`${environment.url}/farms`, farmDetails);
   }
 
-  private setFarm(farmDetails: FarmDetails) {
+  setFarm(farmDetails: FarmDetails) {
     this.storage.set(key.FARM, farmDetails).then(() => {
       this.farm = farmDetails;
     });

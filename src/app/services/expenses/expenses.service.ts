@@ -146,14 +146,10 @@ export class ExpensesService {
   }
 
   private getExpensesRecords(farmId: string, fromDate: string, toDate: string) {
-    //let from = this.datePicker.formatDate(fromDate);
-    //let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 
   private getRecurringExpensesRecords(farmId: string, fromDate: string, toDate: string) {
-    //let from = this.datePicker.formatDate(fromDate);
-    //let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${fromDate}/${toDate}`);
   }
 
@@ -186,8 +182,6 @@ export class ExpensesService {
   }
   
   getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    //let from = this.datePicker.formatDate(fromDate);
-    //let to = this.datePicker.formatDate(toDate);
     return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 

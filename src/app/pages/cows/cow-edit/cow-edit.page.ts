@@ -23,11 +23,9 @@ export class CowEditPage implements OnInit {
   ngOnInit() { }
 
   onSubmit(cowForm) {
-    console.log(cowForm);
-    this.cowService.updateCow(cowForm.getRawValue()).subscribe(val => {
-      if (val) {
-        console.log(val);
-        this.cowService.cowUpdated.next(val['cow']);
+    this.cowService.updateCow(cowForm.getRawValue()).subscribe(response => {
+      if (response.status == 200) {
+        this.cowService.cowUpdated.next(response.body['cow']);
         this.router.navigateByUrl('tabs/herd');
       }
     });

@@ -36,7 +36,6 @@ export class OtherSalesEditPage implements OnInit {
     this.otherSalesService.updateOtherSalesRecord(othersalesForm.getRawValue()).then(response => {
       response.subscribe(result => {
         if (result.status == 200) {
-          console.log(result.body);
           this.otherSalesService.otherSaleUpdated.next(result.body['otherSale']);
           this.router.navigateByUrl('/tabs/other-sales-overview');
         }

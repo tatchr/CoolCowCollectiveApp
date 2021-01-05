@@ -65,9 +65,9 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
       });
 
       this.milksalesForm.controls['date'].setValue(this.selectedDate);
-      this.milkSalesService.updateMilkSalesRecord(this.milksalesForm.value).subscribe(val => {
-        if (val) {
-          this.milkSalesService.milkSaleUpdated.next(updatedSale);
+      this.milkSalesService.updateMilkSalesRecord(this.milksalesForm.value).subscribe(response => {
+        if (response.status == 200) {
+          this.milkSalesService.milkSaleUpdated.next(response.body['milkSale']);
           this.returnToOverview();
         }
       });

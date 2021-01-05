@@ -18,9 +18,6 @@ export class EditFarmPage implements OnInit {
   constructor(private accountService: AccountService, private farmService: FarmService, 
     private formBuilder: FormBuilder, private toastController: ToastController) { }
 
-    user: UserDetails;
-    farm: FarmDetails;
-
     ngOnInit() {
       this.accountService.getUser().then((user: UserDetails) => {
         this.farmService.getFarm().then((farm: FarmDetails) => {         
@@ -33,35 +30,19 @@ export class EditFarmPage implements OnInit {
             address: [farm.address, [Validators.minLength(1), Validators.maxLength(255)]],
             county: [farm.county, [Validators.minLength(1), Validators.maxLength(100)]],
             country: [farm.country, [Validators.minLength(1), Validators.maxLength(100)]],
-            description: [farm.description, [Validators.minLength(1), Validators.maxLength(300)]],
-            registrationDate: [farm.registrationDate],
-            updateDate: [farm.updateDate]
+            description: [farm.description, [Validators.minLength(1), Validators.maxLength(300)]]
           });     
         });
       });      
     }
   
     updateFarm() {
-      if (this.farmForm.valid) {
-        let updatedFarm: FarmDetails = {
-          id: this.farmForm.value['id'],
-          name: this.farmForm.value['name'],
-          email: this.farmForm.value['email'],
-          userId: this.farmForm.value['userId'],
-          phoneNumber: this.farmForm.value['phonenumber'],
-          address: this.farmForm.value['address'],
-          county: this.farmForm.value['county'],
-          country: this.farmForm.value['country'],
-          description: this.farmForm.value['description'],
-          registrationDate: this.farmForm.value['registrationDate'],
-          updateDate: this.farmForm.value['updateDate'],
-          userRole: null
-        };
-
-        this.farmService.updateFarm(updatedFarm).then(() => {          
-            this.toast('Farm details updated!');          
-        });
-      }    
+      this.farmService.updateFarm(this.farmForm.value).subscribe(response => {
+        if(response.status == 200){
+          this.farmService.setFarm(response['farm']);
+          this.toast('Farm details updated!');
+        }
+      });
     }
   
     private toast(message){

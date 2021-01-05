@@ -35,8 +35,10 @@ export class ExpensesRecurringOverviewPage implements OnInit {
   }
 
   toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
-      expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
+    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(response => {
+      if(response.status == 204){
+        expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
+      }
     });
   }
 }
