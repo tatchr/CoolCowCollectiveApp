@@ -46,14 +46,14 @@ export class HerdPage implements OnInit {
     //   }
     // });
 
-    this.cowService.cowUpdated.subscribe(cow => {
-      if (cow) {
-        let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
-        this.cowService.cowsList[cowToUpdate] = cow;
-        this.applyFiltersAndSort();
-        this.cowService.cowListState.next(true);
-      }
-    });
+    // this.cowService.cowUpdated.subscribe(cow => {
+    //   if (cow) {
+    //     let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+    //     this.cowService.cowsList[cowToUpdate] = cow;
+    //     this.applyFiltersAndSort();
+    //     this.cowService.cowListState.next(true);
+    //   }
+    // });
 
     this.cowService.cowSold.subscribe(cowId => {
       if (cowId) {

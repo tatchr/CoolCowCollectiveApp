@@ -26,17 +26,10 @@ export class OthersalesService {
   changeCounter: number = 0;
   otherSalesList: Array<OtherSalesDetails> = [];
 
-  constructor(private httpService: HttpService, public datePicker: DatepickerService, private farmService: FarmService) {
-    // this.farmService.getFarm().then((farm: FarmDetails) => {
-    //   this.farmId = farm.id;
-    //   this.loadOtherSalesList();
-    // });
-  }
+  constructor(private httpService: HttpService, public datePicker: DatepickerService, private farmService: FarmService) { }
 
   loadOtherSalesList() {
     return this.farmService.getFarm().then((farm: FarmDetails) => {
-      console.log('tesst11');
-      console.log(farm.id);
       this.getAllOtherSalesRecords(farm.id, this.selectedFromDate, this.selectedToDate).then(res => {
         this.otherSalesList = res['otherSalesDetails'];      
       });

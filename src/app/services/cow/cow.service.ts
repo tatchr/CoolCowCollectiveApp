@@ -47,6 +47,15 @@ export class CowService {
         this.cowListState.next(true);
       }
     });
+
+    this.cowUpdated.subscribe(cow => {
+      if (cow) {
+        console.log(cow);
+        let cowToUpdate = this.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+        this.cowsList[cowToUpdate] = cow;
+        this.cowListState.next(true);
+      }
+    });
   }
 
   private loadCowsList(farmId) {

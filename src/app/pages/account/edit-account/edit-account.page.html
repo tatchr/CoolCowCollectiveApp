@@ -26,8 +26,8 @@
           <ion-item>
             <ion-label color="medium">Gender*</ion-label>
             <ion-button style="margin-left: 5px;" size="default" fill="outline"
-              [color]="gen == 'M' ? 'success' : 'medium'" (click)="gen='M'">Male</ion-button>
-            <ion-button size="default" fill="outline" [color]="gen == 'F' ? 'success' : 'medium'" (click)="gen='F'">
+              [color]="gen == 'Male' ? 'success' : 'medium'" (click)="gen='Male'">Male</ion-button>
+            <ion-button size="default" fill="outline" [color]="gen == 'Female' ? 'success' : 'medium'" (click)="gen='Female'">
               Female</ion-button>
             <ion-input type="hidden" formControlName="gender" [value]="gen"></ion-input>
           </ion-item>

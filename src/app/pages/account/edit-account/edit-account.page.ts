@@ -24,7 +24,7 @@ export class EditAccountPage implements OnInit {
         firstname: [user.firstName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
         lastname: [user.lastName, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
         email: [user.email, [Validators.required, Validators.email, Validators.maxLength(255)]],
-        gender: [user.gender, [Validators.required, Validators.minLength(1), Validators.maxLength(1)]],
+        gender: [user.gender, [Validators.required]],
         phonenumber: [user.phoneNumber, Validators.maxLength(50)]
       });
     });

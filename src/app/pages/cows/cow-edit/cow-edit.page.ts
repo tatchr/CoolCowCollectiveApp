@@ -26,6 +26,7 @@ export class CowEditPage implements OnInit {
     console.log(cowForm);
     this.cowService.updateCow(cowForm.getRawValue()).subscribe(val => {
       if (val) {
+        console.log(val);
         this.cowService.cowUpdated.next(val['cow']);
         this.router.navigateByUrl('tabs/herd');
       }
