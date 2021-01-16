@@ -6,7 +6,6 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { AccountService } from 'src/app/services/account/account.service';
 import { FormGroup } from '@angular/forms';
 import * as key from 'src/app/common/objects/Constants';
-import { UserDetails } from 'src/app/common/objects/UserDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -15,45 +14,45 @@ export class FarmService {
 
   constructor(private accountService: AccountService, private storage: Storage, private httpService: HttpService) { }
 
-  public farm: FarmDetails;
+  farm: FarmDetails;
 
-  public loadFarm(userId: string) {
-    return this.httpService.get(null, `${environment.url}/api/farm/getUserFarm/${userId}`)
-      .then(res => {
+  loadFarm(userId: string){
+    return this.httpService.get(null, `${environment.url}/users/${userId}/farms`).then(response => {
+      return this.storage.set(key.FARM, response['farm']).then(farm => {
+        return farm;
+      });
+    });
+  }
+
+  getFarm(){
+    return this.accountService.getUser().then(user => {
+      return this.storage.get(key.FARM).then(storedFarm => {
+        if(storedFarm == null){
+          return this.loadFarm(user.id).then(farm => {
+            return farm;
+          });
+        }
+        else{
+          return storedFarm;
+        }
+      });
+    });
+  }
+
+  registerFarm(farmForm: FormGroup) {
+    return this.httpService.post3('Registering farm...', `${environment.url}/farms`, farmForm.value)
+      .then((res) => {
         this.setFarm(res['farm']);
       });
   }
 
-  public getFarm() {
-    return this.storage.get(key.FARM).then((farm: FarmDetails) => {
-      if (farm)
-        return farm;
-
-      this.accountService.getUser().then((user: UserDetails) => {
-        this.loadFarm(user.id).then(() => {
-          return this.farm;
-        });
-      });
-    });
+  updateFarm(farmDetails: FarmDetails) {
+    return this.httpService.put(`${environment.url}/farms`, farmDetails);
   }
 
-  public registerFarm(farmForm: FormGroup) {
-    return this.httpService.post3('Registering farm...', `${environment.url}/api/farm/register`, farmForm.value)
-      .then((res) => {
-        this.setFarm(res['farmDetails']);
-      });
-  }
-
-  public updateFarm(farmDetails: FarmDetails) {
-    return this.httpService.put1('Updating...', `${environment.url}/api/farm/update`, farmDetails).then(() => {
-      this.setFarm(farmDetails);
-    });
-  }
-
-  private setFarm(farmDetails: FarmDetails) {
+  setFarm(farmDetails: FarmDetails) {
     this.storage.set(key.FARM, farmDetails).then(() => {
       this.farm = farmDetails;
-      this.accountService.farmState.next(true);
     });
   }
 }

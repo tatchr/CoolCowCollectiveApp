@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   //url: 'https://coolcowcollective.azurewebsites.net'
+  //url: 'https://coolcowcollective-dev.azurewebsites.net'
   url: 'https://localhost:44395'
 };
 

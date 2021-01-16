@@ -13,19 +13,9 @@ import * as key from 'src/app/common/objects/Constants';
 export class AccountService {
 
   public user: UserDetails;
-  public farmState = new BehaviorSubject<boolean>(null);
   public userUpdated = new BehaviorSubject<UserDetails>(null);
 
-  constructor(private httpService: HttpService, private storage: Storage, private authService: AuthService) {
-    this.farmState.subscribe(farmExists => {
-      if(farmExists != null){
-        this.storage.get(key.USER).then((user: UserDetails) => {
-          user.hasFarm = farmExists;
-          this.storage.set(key.USER, user);
-        }); 
-      }           
-    });
-  }
+  constructor(private httpService: HttpService, private storage: Storage, private authService: AuthService) { }
 
   public getUser(){
     return this.storage.get(key.USER).then((user: UserDetails) => {

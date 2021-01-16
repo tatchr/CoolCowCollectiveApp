@@ -15,12 +15,12 @@ export class RecurringOverviewComponent implements OnInit {
   @Input() toDate: string;
   @Input() expensesList: Array<ExpensesRecurringGroup>;
   
-  constructor(private router: Router, protected expensesService: ExpensesService) { }
+  constructor(private router: Router, public expensesService: ExpensesService) { }
 
   ngOnInit() {}
 
   private automaticClose = false;
-  protected toggleSection(index: number) {
+  toggleSection(index: number) {
     this.expensesList[index].open = !this.expensesList[index].open;
 
     if (this.automaticClose && this.expensesService.recurringExpensesList[index].open) {
@@ -30,13 +30,13 @@ export class RecurringOverviewComponent implements OnInit {
     }
   }
 
-  protected toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
+  toggleRecurring(expenseDetails: ExpensesDetails){    
+    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, !expenseDetails.recurringIsActive).subscribe(val => {
       expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
     });
   }
 
-  protected openExpenseRecord(expense: ExpensesDetails){
+  openExpenseRecord(expense: ExpensesDetails){
     let navigationExtras: NavigationExtras = {
       state: {
         expensesDetails: expense

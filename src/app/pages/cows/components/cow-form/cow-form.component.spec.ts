@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CowPassportPage } from './cow-passport.page';
+import { CowFormComponent } from './cow-form.component';
 
-describe('CowPassportPage', () => {
-  let component: CowPassportPage;
-  let fixture: ComponentFixture<CowPassportPage>;
+describe('CowFormComponent', () => {
+  let component: CowFormComponent;
+  let fixture: ComponentFixture<CowFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CowPassportPage ],
+      declarations: [ CowFormComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CowPassportPage);
+    fixture = TestBed.createComponent(CowFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

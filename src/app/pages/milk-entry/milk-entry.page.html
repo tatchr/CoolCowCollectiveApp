@@ -1,18 +1,18 @@
 <topbar title="Milk entry" [backbtn]="false"></topbar>
 <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="this.milkService.selectedDate" (ionChange)="dateSelected()"></datepicker>
 <ion-item>
-  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Morning' ? 'success' : 'medium'"
-    (click)="timeOfDaySelected('Morning')">
+  <ion-button size="default" fill="outline" [color]="this.milkService.partOfDay == 'Morning' ? 'success' : 'medium'"
+    (click)="partOfDaySelected('Morning')">
     Morning</ion-button>
 
-  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Afternoon' ? 'success' : 'medium'"
-    (click)="timeOfDaySelected('Afternoon')">
+  <ion-button size="default" fill="outline" [color]="this.milkService.partOfDay == 'Afternoon' ? 'success' : 'medium'"
+    (click)="partOfDaySelected('Afternoon')">
     Afternoon</ion-button>
 
-  <ion-button size="default" fill="outline" [color]="this.milkService.timeOfDay == 'Evening' ? 'success' : 'medium'"
-    (click)="timeOfDaySelected('Evening')">
+  <ion-button size="default" fill="outline" [color]="this.milkService.partOfDay == 'Evening' ? 'success' : 'medium'"
+    (click)="partOfDaySelected('Evening')">
     Evening</ion-button>
-  <ion-input type="hidden" [value]="this.milkService.timeOfDay"></ion-input>
+  <ion-input type="hidden" [value]="this.milkService.partOfDay"></ion-input>
 </ion-item>
 
 <ion-item>

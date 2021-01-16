@@ -63,12 +63,12 @@ export class OtherSalesOverviewPage implements OnInit {
 
   moneyReceived(item) {
     item.fullAmountPaid = true;
-    this.otherSalesService.updateOtherSalesRecord(item).subscribe();
+    this.otherSalesService.updateOtherSalesRecord(item).then();
   }
 
   moneyNotReceived(item) {
     item.fullAmountPaid = false;
-    this.otherSalesService.updateOtherSalesRecord(item).subscribe();
+    this.otherSalesService.updateOtherSalesRecord(item).then();
   }
 
   periodSelected(period){
@@ -76,7 +76,7 @@ export class OtherSalesOverviewPage implements OnInit {
     this.otherSalesService.periodSelected(period);
   }
 
-  protected dateChanged(){
+  dateChanged(){
     this.otherSalesService.loadOtherSalesList();
   }
 }

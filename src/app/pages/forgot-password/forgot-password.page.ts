@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  protected forgotPasswordForm: FormGroup;
+  forgotPasswordForm: FormGroup;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) { }
 
@@ -20,23 +20,44 @@ export class ForgotPasswordPage implements OnInit {
     });
   }
 
+  // onSubmit() {
+  //   this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe(response => {
+  //     const { value: email } = this.forgotPasswordForm.get('email');
+  //     let navigationExtras: NavigationExtras = {
+  //       state: {
+  //         email: email
+  //       }
+  //     };      
+      
+  //     console.log(response);
+
+  //     if(response.status == 204){
+  //       this.router.navigate(['verify-recovery-email'], navigationExtras);
+  //     }
+  //     else if(response.status == 200 && response.body['userNeedsToBeConfirmed']){
+  //       this.router.navigate(['verify-registration-email'], navigationExtras);
+  //     }
+  //   });
+  // }
+
   onSubmit() {
-    this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe(val => {
-      if(val){
-        const { value: email } = this.forgotPasswordForm.get('email');
-        let navigationExtras: NavigationExtras = {
-          state: {
-            email: email
-          }
-        };      
-        
-        if(val['userNeedsToBeConfirmed']){
-          this.router.navigate(['verify-registration-email'], navigationExtras);
-        }
-        else{
-          this.router.navigate(['verify-recovery-email'], navigationExtras);
-        }
-      }      
+    const { value: email } = this.forgotPasswordForm.get('email');
+    let navigationExtras: NavigationExtras = {
+      state: {
+        email: email
+      }
+    }; 
+
+    this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe(response => {
+      if(response.status == 204){
+        this.router.navigate(['verify-recovery-email'], navigationExtras);
+      }
+      
+    },
+    errorResponse => {
+      if(errorResponse.status == 409){
+        this.router.navigate(['verify-registration-email'], navigationExtras);
+      }
     });
   }
 }

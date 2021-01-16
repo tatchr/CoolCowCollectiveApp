@@ -17,8 +17,8 @@ export class MilksalesService {
 
   changeCounter: number = 0;
   farmId: string;
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   milkSaleRegistered = new BehaviorSubject<MilkSalesDetails>(null);
@@ -33,7 +33,7 @@ export class MilksalesService {
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private storage: Storage, 
     private farmService: FarmService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
+      this.farmId = farm.id;
       this.loadMilkSalesList();
     });
   }
@@ -61,25 +61,26 @@ export class MilksalesService {
   }
 
   getMilkSaleRecord(id) {
-    return this.httpService.get(null, `${environment.url}/api/milksales/get/${id}`);
+    return this.httpService.get(null, `${environment.url}/farms/${this.farmId}/milk-sales/${id}`);
   }
 
   getAllMilkSalesRecords(farmId, fromDate, toDate) {
     let from = this.datePicker.formatDate(fromDate);
     let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/milksales/getAll/${farmId}/${from}/${to}`);
+    return this.httpService.get('Loading...', 
+      `${environment.url}/farms/${farmId}/milk-sales?from_date=${from}&to_date=${to}`);
   }
 
   registerMilkSalesRecord(record) {
-    return this.httpService.post3('Saving...', `${environment.url}/api/milksales/register`, record);
+    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/milk-sales`, record);
   }
 
   updateMilkSalesRecord(record) {
-    return this.httpService.put(`${environment.url}/api/milksales/update`, record);
+    return this.httpService.put(`${environment.url}/farms/${this.farmId}/milk-sales`, record);
   }
 
   deleteMilkSalesRecord(id) {
-    return this.httpService.delete(`${environment.url}/api/milksales/delete/${id}`);
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/milk-sales/${id}`);
   }
 
 }

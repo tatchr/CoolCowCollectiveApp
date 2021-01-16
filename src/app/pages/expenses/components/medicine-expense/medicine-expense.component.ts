@@ -16,7 +16,7 @@ export class MedicineExpenseComponent implements OnInit {
   @Output() returnForm = new EventEmitter<FormGroup>();
   @Output() deleteRecord = new EventEmitter<ExpensesDetails>();
 
-  protected form: FormGroup;
+  form: FormGroup;
   
   constructor(public expensesService: ExpensesService) { }
 
@@ -24,32 +24,32 @@ export class MedicineExpenseComponent implements OnInit {
     this.form = this.expensesService.newForm(this.expensesDetails);
   }
 
-  protected emitForm(form: FormGroup){
+  emitForm(form: FormGroup){
     form.get('date').setValue(this.date);
     this.returnForm.emit(form);
   }
 
-  protected delete(expensesDetails: ExpensesDetails){
+  delete(expensesDetails: ExpensesDetails){
     this.deleteRecord.emit(expensesDetails);
   }
 
-  protected get isExistingRootRecord(){
+  get isExistingRootRecord(){
     return this.isExistingRecord && this.recurringId && this.recurringId;
   }
 
-  protected get isRecurringRecord(){
+  get isRecurringRecord(){
     return this.recurringId && !this.isRootRecord;
   }
 
-  protected get isRootRecord(){
+  get isRootRecord(){
     return this.form.get('isrootrecord').value;
   }
 
-  protected get recurringId(){
+  get recurringId(){
     return this.form.get('recurringid').value;
   }
 
-  protected get recurringIsActive(){    
+  get recurringIsActive(){    
     return this.form.get('recurringisactive').value;
   }
 }

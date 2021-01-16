@@ -17,14 +17,14 @@ export class ReportService {
 
   reportContent = [
     { val: 'Farm information', isChecked: true },
-    { val: 'Herd information', isChecked: true },
+    //{ val: 'Herd information', isChecked: true },
     { val: 'Milk sales', isChecked: true },
     { val: 'Other sales', isChecked: true },
     { val: 'Expenses', isChecked: true }
   ];
 
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   constructor(private httpService: HttpService, private http: HttpClient, private file: File,
@@ -39,22 +39,22 @@ export class ReportService {
   }
 
   getReport(userId, farmId, reportContent, fileType, fromDate, toDate) {
-    //let url = environment.url + '/api/report/' +  userId + '/' + farmId + '/' + reportContent + '/' + fileType + '/' + fromDate + '/' + toDate;
-    let url = `${environment.url}/api/report?userId=${userId}&farmId=${farmId}&reportContent=${reportContent}&fileType=${fileType}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`;
 
-    return this.http.get(url, { responseType: 'blob' })
+    let url = `${environment.url}/farms/${farmId}/reports?from_date=${fromDate}&to_date=${toDate}`;
+
+    return this.http.post(url, reportContent, { responseType: 'blob' })
       .subscribe((res: Blob) => {
-        this.file.writeFile(this.file.externalRootDirectory + '/Download', "test.xlsx", res, { replace: true })
+        this.file.writeFile(this.file.externalRootDirectory + '/Download', "report.xlsx", res, { replace: true })
           .then(() => {
             this.presentToastWithOptions();
           }
           );
-      })
+      });
   }
 
   async presentToastWithOptions() {
     const toast = await this.toastController.create({
-      header: 'Report test.xlsx downloaded',
+      header: 'Report report.xlsx downloaded',
       //message: 'Open report now?' ,
       duration: 6000,
       position: 'bottom',
@@ -63,7 +63,7 @@ export class ReportService {
           side: 'end',
           text: 'Open file',
           handler: () => {
-            this.fileOpener.open(this.file.externalRootDirectory + '/Download/test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            this.fileOpener.open(this.file.externalRootDirectory + '/Download/report.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           }
         }
         ,

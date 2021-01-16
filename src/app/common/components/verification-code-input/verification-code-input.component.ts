@@ -11,7 +11,7 @@ export class VerificationCodeInputComponent implements OnInit {
   @Output() returncode = new EventEmitter<string>();
   @Output() resendcode = new EventEmitter();
 
-  protected verificationForm: FormGroup;
+  verificationForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
     this.verificationForm = this.formBuilder.group({
@@ -21,7 +21,7 @@ export class VerificationCodeInputComponent implements OnInit {
 
   ngOnInit() { }
 
-  public reset(){
+  reset(){
     this.verificationForm.reset();
   }
 
@@ -41,15 +41,15 @@ export class VerificationCodeInputComponent implements OnInit {
     );
   }
 
-  protected executeCodeResend() {
+  executeCodeResend() {
     this.resendcode.emit();
   }
 
-  protected get numberBoxes() {
+  get numberBoxes() {
     return this.verificationForm.get('numberBoxes') as FormArray;
   }  
 
-  protected emitcode(numberBoxes: FormArray) {
+  emitcode(numberBoxes: FormArray) {
     let code: string = '';
     for(let control of numberBoxes.controls){
       code += control.value;
@@ -58,7 +58,7 @@ export class VerificationCodeInputComponent implements OnInit {
     this.returncode.emit(code);
   } 
 
-  protected moveFocusOnBackspace(index){
+  moveFocusOnBackspace(index){
     let inputs = this.inputs.toArray();
     let currentInput = inputs[index];
 
@@ -67,7 +67,7 @@ export class VerificationCodeInputComponent implements OnInit {
     }
   }
 
-  protected moveFocus(event, index){
+  moveFocus(event, index){
     let inputs = this.inputs.toArray();
     if (inputs[index].value.length > 1) {
       inputs[index].value = event.key;

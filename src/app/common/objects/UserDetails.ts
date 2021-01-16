@@ -5,7 +5,7 @@ export class UserDetails {
     firstName: string;
     lastName: string;
     gender: string;
-    birthDate: Date;
+    birthDate: string;
     phoneNumber: string;
     hasFarm: boolean;
 

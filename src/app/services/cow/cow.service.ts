@@ -13,6 +13,8 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 })
 export class CowService {
   
+  farmId: string;
+
   cowListState = new BehaviorSubject(null);
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);
@@ -25,7 +27,8 @@ export class CowService {
 
   constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.loadCowsList(farm.farmId);
+      this.farmId = farm.id;
+      this.loadCowsList(farm.id);
     });
 
     this.cowRegistered.subscribe(newCow => {
@@ -41,6 +44,15 @@ export class CowService {
         let cowToDelete = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
         this.cowsList.splice(cowToDelete, 1);
         //this.applyFiltersAndSort();
+        this.cowListState.next(true);
+      }
+    });
+
+    this.cowUpdated.subscribe(cow => {
+      if (cow) {
+        console.log(cow);
+        let cowToUpdate = this.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+        this.cowsList[cowToUpdate] = cow;
         this.cowListState.next(true);
       }
     });
@@ -70,18 +82,18 @@ export class CowService {
   }
 
   getAllCows(farmId, overlayText){
-    return this.httpService.get(overlayText, `${environment.url}/api/cow/getAll/${farmId}`);
+    return this.httpService.get(overlayText, `${environment.url}/farms/${farmId}/cows`);
   }  
 
-  updateCow(cowdetails){    
-    return this.httpService.put(`${environment.url}/api/cow/update`, cowdetails);
+  updateCow(cowdetails){
+    return this.httpService.put(`${environment.url}/farms/${this.farmId}/cows`, cowdetails);
   }
 
-  deleteCow(cowId, keepRecords){    
-    return this.httpService.delete(`${environment.url}/api/cow/delete/${cowId}/${keepRecords}`);
+  deleteCow(cowId, keepRecords){
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}?keep_records=${keepRecords}`);
   }
 
-  registerCow(cowdetails) {    
-    return this.httpService.post3('Saving...', `${environment.url}/api/cow/register`, cowdetails);
+  registerCow(cowdetails) {
+    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/cows`, cowdetails);
   }  
 }

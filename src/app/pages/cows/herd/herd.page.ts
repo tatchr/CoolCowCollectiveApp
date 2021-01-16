@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { FormBuilder } from '@angular/forms';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { CowBaseComponent } from 'src/app/pages/cows/cow-base/cow-base.component';
 import { CowState, CowStatus } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
+import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { CowDetails } from 'src/app/common/objects/CowDetails';
 
 @Component({
   selector: 'app-herd',
@@ -18,7 +16,7 @@ import { FarmService } from 'src/app/services/farm/farm.service';
   styleUrls: ['./herd.page.scss'],
   providers: [Keyboard]
 })
-export class HerdPage extends CowBaseComponent implements OnInit {
+export class HerdPage implements OnInit {
 
   searchControl: FormControl;
   searching: Boolean = false;
@@ -26,9 +24,7 @@ export class HerdPage extends CowBaseComponent implements OnInit {
 
   cowStatuses: Array<CowStatus> = [CowStatus.Lactating, CowStatus.NonLactating, CowStatus.NA];
 
-  constructor(router: Router, formBuilder: FormBuilder, private filterService: FilterService,
-    storage: Storage, cowService: CowService, datePicker: DatepickerService, keyboard: Keyboard, farmService: FarmService) {
-    super(router, formBuilder, storage, cowService, datePicker, keyboard, farmService);
+  constructor(private router: Router, private filterService: FilterService, public cowService: CowService, private farmService: FarmService) {
     this.searchControl = new FormControl();
   }  
 
@@ -50,14 +46,14 @@ export class HerdPage extends CowBaseComponent implements OnInit {
     //   }
     // });
 
-    this.cowService.cowUpdated.subscribe(cow => {
-      if (cow) {
-        let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
-        this.cowService.cowsList[cowToUpdate] = cow;
-        this.applyFiltersAndSort();
-        this.cowService.cowListState.next(true);
-      }
-    });
+    // this.cowService.cowUpdated.subscribe(cow => {
+    //   if (cow) {
+    //     let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+    //     this.cowService.cowsList[cowToUpdate] = cow;
+    //     this.applyFiltersAndSort();
+    //     this.cowService.cowListState.next(true);
+    //   }
+    // });
 
     this.cowService.cowSold.subscribe(cowId => {
       if (cowId) {
@@ -76,14 +72,27 @@ export class HerdPage extends CowBaseComponent implements OnInit {
       });
   }
 
-  openCowPassport(cowId) {
-    let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
+  openNewCowRecord(){
+    this.farmService.getFarm().then((farm: FarmDetails) => {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          cowDetails: new CowDetails({
+            farmId: farm.id
+          })
+        }
+      };
+
+      this.router.navigate(['cow-input'], navigationExtras);
+    });
+  }
+
+  openCowRecord(cow) {
     let navigationExtras: NavigationExtras = {
       state: {
-        cowDetails: this.cowService.cowsList[index]
+        cowDetails: cow
       }
     };
-    this.router.navigate(['cow-passport'], navigationExtras);
+    this.router.navigate(['cow-edit'], navigationExtras);
   }
 
   applyFiltersAndSort() {

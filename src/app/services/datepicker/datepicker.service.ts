@@ -10,18 +10,18 @@ import { PeriodDetails } from 'src/app/common/objects/PeriodDetails';
 })
 export class DatepickerService {
 
-  private fromDate = new Date('1990-01-01');
-  private toDate = new Date();
+  private fromDate = this.minDate;
+  private toDate = this.today;
 
-  public get today(){
-    return new Date();
+  get today(){
+    return this.formatDate(new Date());
   }
 
-  public get minDate(){
-    return new Date('1990-01-01');
+  get minDate(){
+    return this.formatDate(new Date('1990-01-01'));
   }
 
-  public periods: Array<PeriodDetails> = [
+  periods: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1 week'}),
     new PeriodDetails({value: Period.last2weeks, label: '2 weeks'}),
     new PeriodDetails({value: Period.lastmonth, label: '1 month'}),
@@ -30,7 +30,7 @@ export class DatepickerService {
     new PeriodDetails({value: Period.alltime, label: 'All time'})
   ];
 
-  public periodsShort: Array<PeriodDetails> = [
+  periodsShort: Array<PeriodDetails> = [
     new PeriodDetails({value: Period.lastweek, label: '1W'}),
     new PeriodDetails({value: Period.last2weeks, label: '2W'}),
     new PeriodDetails({value: Period.lastmonth, label: '1M'}),
@@ -40,20 +40,20 @@ export class DatepickerService {
     
   constructor(public modalCtrl: ModalController) { }  
 
-  public async openDatePicker(inputDate : Date) : Promise<Date> {
+  async openDatePicker(inputDate: string) : Promise<string> {
     let datepicker = await this.datepicker(inputDate);
     await datepicker.present();
 
     return await datepicker.onDidDismiss().then((data) => {      
       if (typeof data.data === 'undefined' || data.data.date === 'Invalid date') {
         return inputDate;
-      }      
+      }
       
-      return <Date>data.data.date;
+      return data.data.date;
     });
   }
 
-  private async datepicker(inputDate: Date) {    
+  private async datepicker(inputDate: string) {    
     return await this.modalCtrl.create({
       component: Ionic4DatepickerModalComponent,
       cssClass: 'li-ionic4-datePicker',
@@ -61,7 +61,7 @@ export class DatepickerService {
     });    
   }
 
-  private datepickerconfig(inputDate){
+  private datepickerconfig(inputDate: string){
     return {
       inputDate: inputDate,
       fromDate: this.fromDate,
@@ -93,19 +93,23 @@ export class DatepickerService {
     }
   }
 
-  public formatDate(date): string {
+  isBetween(date, fromDate, toDate){
+    return moment(date).isBetween(fromDate, toDate, undefined, '[]');
+  }
+
+  formatDate(date): string {
     return date != null ? moment(date).format('YYYY-MM-DD') : null;
   }
 
-  public formatDate2(date, format) {
+  formatDate2(date, format) {
     return date != null ? moment(date).format(format) : null;
   }
 
-  public subtract(date, amount, type){    
-    return moment(date).subtract(amount, type).toDate();
+  subtract(date, amount, type): string{    
+    return moment(date).subtract(amount, type).format('YYYY-MM-DD');
   }
 
-  public getDaysArray(fromDate, toDate){
+  getDaysArray(fromDate, toDate){
     let days = [];
     let totalDays = moment(toDate).diff(moment(fromDate), 'days');
 
@@ -116,8 +120,8 @@ export class DatepickerService {
     return days;
   }
 
-  public periodSelected(period){    
-    let selectedToDate = new Date();
+  periodSelected(period){    
+    let selectedToDate = this.today;
     let selectedFromDate = null;
 
     if(period == Period.lastweek){

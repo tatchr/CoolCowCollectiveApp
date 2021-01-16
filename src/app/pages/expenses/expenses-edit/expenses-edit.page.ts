@@ -15,7 +15,7 @@ import { CowService } from 'src/app/services/cow/cow.service';
 })
 export class ExpensesEditPage implements OnInit {
   
-  protected expensesDetails: IExpensesDetails;
+  expensesDetails: any;
 
   constructor(private router: Router, public expensesService: ExpensesService,
     private activatedRoute: ActivatedRoute, private alertService: AlertService, private location: Location,
@@ -35,24 +35,24 @@ export class ExpensesEditPage implements OnInit {
 
   onSubmit(expensesForm) {
     if (this.isLivestock) {
-      this.expensesService.updateLivestockExpensesRecord(expensesForm.value).subscribe(val => {
-        if (val) {
-          this.expensesService.livestockExpenseRegistered.next(new LivestockExpensesDetails(expensesForm.value));
+      this.expensesService.updateLivestockExpensesRecord(expensesForm.value).subscribe(response => {
+        if (response.status == 200) {
+          this.expensesService.livestockExpenseRegistered.next(response.body['livestockExpense']);
           this.location.back();        
         }
       });
     }
     else {
-      this.expensesService.updateExpensesRecord(expensesForm.getRawValue()).subscribe(val => {
-        if (val) {
-          this.expensesService.expenseUpdated.next(new ExpensesDetails(expensesForm.value));
+      this.expensesService.updateExpensesRecord(expensesForm.getRawValue()).subscribe(response => {
+        if (response.status == 200) {
+          this.expensesService.expenseUpdated.next(response.body['expense']);
           this.location.back();
         }
       });
     }
   }
 
-  protected onDelete(expense: IExpensesDetails) {
+  onDelete(expense: IExpensesDetails) {
     if(this.isLivestock){
       this.deleteLivestockExpense(expense);
     }
@@ -89,7 +89,7 @@ export class ExpensesEditPage implements OnInit {
         if (val) {
           let livestockExpense = new LivestockExpensesDetails(expense);
           this.expensesService.expenseDeleted.next(livestockExpense.id);
-          this.cowService.cowDeleted.next(livestockExpense.cowDetails.id);
+          this.cowService.cowDeleted.next(livestockExpense.cow.id);
           this.location.back();
         }
       });

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
+import { LivestockExpensesDetails } from 'src/app/common/objects/LivestockExpensesDetails';
 
 @Component({
   selector: 'livestock-expense-list-item',
@@ -8,7 +8,7 @@ import { IExpensesDetails } from 'src/app/common/interfaces/IExpensesDetails';
 })
 export class LivestockExpenseListItemComponent implements OnInit {
 
-  @Input() expense: IExpensesDetails;
+  @Input() expense: LivestockExpensesDetails;
   
   constructor() { }
 

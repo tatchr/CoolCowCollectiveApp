@@ -20,11 +20,11 @@ export class OthersalesFormComponent implements OnInit {
   @Output() returnform = new EventEmitter<FormGroup>();
   @Output() delete = new EventEmitter<string>();
 
-  protected othersalesForm: FormGroup;
-  protected cattleSold: boolean;
-  protected spermSold: boolean;
-  protected otherSold: boolean;
-  protected cattleList: Array<CowDetails> = [];  
+  othersalesForm: FormGroup;
+  cattleSold: boolean;
+  spermSold: boolean;
+  otherSold: boolean;
+  cattleList: Array<CowDetails> = [];  
 
   constructor(private cowService: CowService, private formBuilder: FormBuilder, private router: Router) { }
 
@@ -35,8 +35,7 @@ export class OthersalesFormComponent implements OnInit {
   }  
 
   private createForm(otherSales: OtherSalesDetails){
-    return this.formBuilder.group({
-      id: [otherSales.id],
+    let form = this.formBuilder.group({
       farmId: [otherSales.farmId],
       date: [this.getDate(otherSales)],
       itemsold: new FormControl({value: otherSales.itemSold, disabled: this.isExistingRecord}, [Validators.required, Validators.maxLength(150)]),
@@ -47,6 +46,12 @@ export class OthersalesFormComponent implements OnInit {
       offtakername: [otherSales.offtakerName, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
       offtakercompany: [otherSales.offtakerCompany],
     });
+
+    if(otherSales.id){
+      form.addControl('id', new FormControl(otherSales.id));
+    }
+
+    return form;
   }
 
   private getDate(otherSales: OtherSalesDetails): string{
@@ -55,31 +60,31 @@ export class OthersalesFormComponent implements OnInit {
     return this.selectedDate;
   }
 
-  protected emitform(date: string, form: FormGroup){
+  emitform(date: string, form: FormGroup){
     form.get('date').setValue(date);
 
     this.returnform.emit(form);
   }
 
-  protected deleterecord(form: FormGroup){
+  deleterecord(form: FormGroup){
     let othersaleId = form.get('id').value;
 
     this.delete.emit(othersaleId);
   }
 
-  protected get itemsold(){
+  get itemsold(){
     return this.othersalesForm.get('itemsold').value;
   }
 
-  protected get cattle(){
+  get cattle(){
     return this.cattleList;
   }
 
-  protected set cattle(cattleList: Array<CowDetails>){
+  set cattle(cattleList: Array<CowDetails>){
     this.cattleList = cattleList;
   }
 
-  protected toCowRegistration(){
+  toCowRegistration(){
     this.router.navigateByUrl('/register-cow');
   }  
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorService } from 'src/app/services/http/httperror.service';
-import { map, catchError, tap, finalize, timeout } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { OverlayService } from 'src/app/services/overlay/overlay.service';
 
@@ -49,37 +49,19 @@ export class HttpService {
   }
 
   post(url, body) {
-    return this.http.post(url, body).pipe(
-      catchError(error => throwError(this.httpErrorService.handleError(error)))
-    );
-  }
-
-  postWithTap(url, body, next?: (x: Object) => void) {
-    return this.http.post(url, body).pipe(
-      tap(res => next(res)),
-      catchError(error => throwError(this.httpErrorService.handleError(error)))
+    return this.http.post(url, body, { observe: 'response' }).pipe(
+      catchError(error => throwError(error))
     );
   }
 
   put(url, body) {
-    return this.http.put(url, body).pipe(
+    return this.http.put(url, body, { observe: 'response' }).pipe(
       catchError(error => throwError(this.httpErrorService.handleError(error)))
     );
   }
 
-  put1(overlayMessage, url, body){
-    let overlayId = Math.random().toString(36).substring(7);
-
-    return this.overlayService.presentLoader(overlayId, overlayMessage)
-      .then(() => {
-        return this.http.put(url, body).toPromise();
-      })
-      .catch(error => throwError(this.httpErrorService.handleError(error)))
-      .finally(() => this.overlayService.dismissLoader(overlayId));
-  }
-
   delete(url) {
-    return this.http.delete(url).pipe(
+    return this.http.delete(url, { observe: 'response' }).pipe(
       map(res => { return res; }),
       catchError(error => throwError(this.httpErrorService.handleError(error)))
     );

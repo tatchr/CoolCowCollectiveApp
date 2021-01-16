@@ -1,0 +1,11 @@
+<topbar title="Cow passport" [backbtn]="true"></topbar>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <cow-form *ngIf="cowDetails" [cowDetails]="cowDetails" [isExistingRecord]="true" 
+          (returnform)="onSubmit($event)" (delete)="onDelete($event)"></cow-form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

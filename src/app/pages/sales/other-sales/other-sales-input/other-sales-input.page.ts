@@ -6,6 +6,7 @@ import { OthersalesFormComponent } from '../components/othersales-form/othersale
 import { OtherSalesDetails } from 'src/app/common/objects/OtherSalesDetails';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
+import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 
 @Component({
   selector: 'app-other-sales-input',
@@ -17,20 +18,21 @@ export class OtherSalesInputPage implements OnInit {
 
   othersalesDetails: OtherSalesDetails;
   cowSelector: Array<CowDetails> = [];
-  selectedDate: Date = this.otherSalesService.datePicker.today;
+  selectedDate: string = this.datePicker.today;
 
-  constructor(private router: Router, private otherSalesService: OthersalesService, private farmService: FarmService) {}
+  constructor(private router: Router, private otherSalesService: OthersalesService, private farmService: FarmService,
+    private datePicker: DatepickerService) {}
 
   ngOnInit() {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.othersalesDetails = new OtherSalesDetails({
-        farmId: farm.farmId
+        farmId: farm.id
       });
     });
   }
 
   async openDatePicker() {
-    this.selectedDate = await this.otherSalesService.datePicker.openDatePicker(this.selectedDate);
+    this.selectedDate = await this.datePicker.openDatePicker(this.selectedDate);
   }  
 
   onSubmit(othersalesForm) {

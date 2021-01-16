@@ -43,7 +43,9 @@
             <ion-input autocapitalize="on" type="text" formControlName="description"></ion-input>
           </ion-item>
 
-          <ion-button color="success" expand="block" type="submit" [disabled]="!farmForm.valid">Save Farm</ion-button>
+          <ion-button color="success" expand="block" type="submit" [disabled]="!farmForm.valid">
+            <ion-icon name="save"></ion-icon>
+          </ion-button>
         </form>
       </ion-col>
     </ion-row>

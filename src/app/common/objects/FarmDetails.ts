@@ -1,5 +1,5 @@
 export class FarmDetails{
-    farmId: string;
+    id: string;
     userId: number;
     userRole: string;
     name: string;

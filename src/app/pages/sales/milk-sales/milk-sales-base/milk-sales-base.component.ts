@@ -14,15 +14,15 @@ import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 export class MilkSalesBaseComponent {
 
   milksalesForm: FormGroup;
-  selectedDate: Date = this.milkSalesService.datePicker.today;
+  selectedDate: string = this.milkSalesService.datePicker.today;
   farmId: string;
 
-  constructor(protected router: Router, public milkSalesService: MilksalesService, protected formBuilder: FormBuilder, 
-    protected storage: Storage, public farmService: FarmService) { }   
+  constructor(public router: Router, public milkSalesService: MilksalesService, public formBuilder: FormBuilder, 
+    public storage: Storage, public farmService: FarmService) { }   
 
   getFarmId(){
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId; 
+      this.farmId = farm.id; 
     });
   }
 

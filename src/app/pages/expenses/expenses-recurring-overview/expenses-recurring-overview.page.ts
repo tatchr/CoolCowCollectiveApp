@@ -11,8 +11,8 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 })
 export class ExpensesRecurringOverviewPage implements OnInit {
 
-  protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
-  protected toDate: Date = this.datePicker.today;
+  fromDate: string = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  toDate: string = this.datePicker.today;
 
   constructor(private router: Router, public expensesService: ExpensesService, private datePicker: DatepickerService) { }
 
@@ -35,26 +35,10 @@ export class ExpensesRecurringOverviewPage implements OnInit {
   }
 
   toggleRecurring(expenseDetails: ExpensesDetails){    
-    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(val => {
-      expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
+    this.expensesService.toggleRecurringRecords(expenseDetails.recurringId, expenseDetails.recurringIsActive).subscribe(response => {
+      if(response.status == 204){
+        expenseDetails.recurringIsActive = !expenseDetails.recurringIsActive;
+      }
     });
   }
-
-  // openRecurringExpenseRootRecord(rootExpense: ExpensesDetails){    
-  //   let navigationExtras: NavigationExtras = {
-  //     state: {
-  //       expenseDetails: rootExpense
-  //     }
-  //   };
-  //   this.router.navigate(['expenses-recurring-edit'], navigationExtras);
-  // }
-
-  // openExpenseRecord(expense: ExpensesDetails){
-  //   let navigationExtras: NavigationExtras = {
-  //     state: {
-  //       expenseDetails: expense
-  //     }
-  //   };
-  //   this.router.navigate(['expenses-edit'], navigationExtras);
-  // }
 }

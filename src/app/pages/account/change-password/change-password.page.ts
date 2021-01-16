@@ -11,7 +11,7 @@ import { UserDetails } from 'src/app/common/objects/UserDetails';
 })
 export class ChangePasswordPage implements OnInit {
 
-  protected changePasswordForm: FormGroup;
+  changePasswordForm: FormGroup;
 
   constructor(private accountService: AccountService, private formBuilder: FormBuilder, private router: Router) { }
 
@@ -28,8 +28,8 @@ export class ChangePasswordPage implements OnInit {
 
   onSubmit() {    
     if(this.changePasswordForm.valid){
-      this.accountService.changePassword(this.changePasswordForm.value).subscribe(val => {
-        if(val){
+      this.accountService.changePassword(this.changePasswordForm.value).subscribe(response => {
+        if(response.status == 200){
           this.router.navigateByUrl('/account');
         }
       });

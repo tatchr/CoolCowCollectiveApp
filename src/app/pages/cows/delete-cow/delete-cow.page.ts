@@ -12,15 +12,12 @@ export class DeleteCowPage implements OnInit {
   cowId: string;
   keepRecords: boolean = true;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private cowService: CowService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, 
+    private cowService: CowService) { 
+      this.cowId = this.activatedRoute.snapshot.paramMap.get('cowId');
+    }
 
-  ngOnInit() {
-    this.initiate();
-  }
-
-  initiate(){
-    this.cowId = this.activatedRoute.snapshot.paramMap.get('cowId');    
-  }
+  ngOnInit() { }
 
   deleteCow() {
     this.cowService.deleteCow(this.cowId, this.keepRecords).subscribe(val => {

@@ -57,8 +57,9 @@ export class MilkEntryPage implements OnInit {
 
     this.milkService.filteredMilkRecordsList.forEach(record => {
       record.date = this.milkService.selectedDate;
-      record.timeOfDay = this.milkService.timeOfDay;
+      record.partOfDay = this.milkService.partOfDay;
 
+      console.log(record.partOfDay);
       if(record.registrationDate == null){
         record.registrationDate = new Date();
       }
@@ -128,8 +129,8 @@ export class MilkEntryPage implements OnInit {
     this.milkService.getTotalLiters();
   }
 
-  timeOfDaySelected(newTimeOfDay) {
-    this.milkService.timeOfDay = newTimeOfDay;
+  partOfDaySelected(newPartOfDay) {
+    this.milkService.partOfDay = newPartOfDay;
     this.milkService.loadMilkRecordsList();
   }
 

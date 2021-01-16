@@ -1,0 +1,63 @@
+<form [formGroup]="cowForm">
+
+  <ion-item [disabled]="cowNotInHerd">
+    <ion-label position="floating" color="medium">Name*</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="name"></ion-input>
+  </ion-item>
+
+  <ion-item [disabled]="cowNotInHerd">
+    <ion-label position="floating" color="medium">Ear tag number</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="tagnumber"></ion-input>
+  </ion-item>
+
+  <ion-item (click)="openDatePicker('birthdate')" [disabled]="cowNotInHerd">
+    <ion-label position="fixed" color="medium">Birth date</ion-label>
+    <ion-input [value]="cowForm.get('birthdate').value | date: 'yyyy-MM-dd'" formControlName="birthdate" readonly></ion-input>
+    <ion-icon position="fixed" name="calendar"></ion-icon>
+  </ion-item>
+
+  <ion-item [disabled]="cowNotInHerd">
+    <ion-label color="medium">Type*</ion-label>
+    <ion-select formControlName="cowtype" placeholder="Select One" (ionChange)="cowTypeSelected($event)">
+      <ion-select-option *ngFor="let cowType of cowTypes">{{cowType}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item [disabled]="cowNotInHerd">
+    <ion-label color="medium">Status*</ion-label>
+    <ion-select formControlName="cowstatus" placeholder="Select One" (ionChange)="cowStatusSelected($event)">
+      <ion-select-option *ngFor="let cowStatus of cowSatuses">{{cowStatus}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item (click)="openDatePicker('lactatingsincedate')" [disabled]="cowNotInHerd">
+    <ion-label position="fixed" color="medium">Lactating since</ion-label>
+    <ion-input [value]="cowForm.get('lactatingsincedate').value | date: 'yyyy-MM-dd'" formControlName="lactatingsincedate" readonly></ion-input>
+    <ion-icon position="fixed" name="calendar"></ion-icon>
+  </ion-item>
+
+  <ion-item [disabled]="cowNotInHerd">
+    <ion-label position="floating" color="medium">Breed</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="breed"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="isExistingRecord" [disabled]="cowNotInHerd">
+    <ion-label color="medium">State</ion-label>
+    <ion-select formControlName="cowstate">
+      <ion-select-option *ngFor="let cowState of cowStates">{{cowState}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- <ion-item *ngIf="cowInHerd" button="true" expand="full" size="default" color="danger" (click)="cowDeceased()">
+    <ion-label>Cow died</ion-label>
+  </ion-item> -->
+
+  <ion-button color="success" expand="full" type="submit" [disabled]="!cowForm.valid || cowNotInHerd" (click)="emitform(cowForm)">
+    <ion-icon name="save"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="isExistingRecord" color="danger" expand="full" type="submit" [disabled]="!cowForm.valid" (click)="deletecow(cowForm)">
+    <ion-icon name="trash"></ion-icon>
+  </ion-button>
+
+</form>

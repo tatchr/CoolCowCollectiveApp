@@ -24,24 +24,23 @@ export class FarmDashboardPage implements OnInit {
   @ViewChild(MilkProductionChartComponent) milkProductionChart: MilkProductionChartComponent;
   @ViewChild(CowPodiumChartComponent) cowPodiumChart: CowPodiumChartComponent;
   
-  protected period: Period = Period.lastweek;
-  protected fromDate: Date = this.datePicker.subtract(this.datePicker.today, 7, 'days');
-  protected toDate: Date = this.datePicker.today;
+  period: Period = Period.lastweek;
+  fromDate: string = this.datePicker.subtract(this.datePicker.today, 7, 'days');
+  toDate: string = this.datePicker.today;
 
-  public expensesData: ExpensesTypeGroup[];
-  public milkProductionChartData: MilkProductionChartData;
-  public cowChartData: CowChartData[];
+  expensesData: ExpensesTypeGroup[];
+  milkProductionChartData: MilkProductionChartData;
+  cowChartData: CowChartData[];
 
-  protected farm: FarmDetails;
-
+  farm: FarmDetails;
 
   // static data
-  protected herdSize: Number;
-  protected lactatingCows: Number;
-  protected averageMilk: Number;
-  protected totalMilkProduced: Number;
-  protected totalMilkSold: Number;
-  protected totalExpenses: Number;
+  herdSize: Number;
+  lactatingCows: Number;
+  averageMilk: Number;
+  totalMilkProduced: Number;
+  totalMilkSold: Number;
+  totalExpenses: Number;
   
   constructor(public farmService: FarmService, public milkService: MilkService, private datePicker: DatepickerService,
     private dataService: FarmDashboardDataService, private expensesService: ExpensesService, private cowService: CowService) { }
@@ -98,7 +97,7 @@ export class FarmDashboardPage implements OnInit {
     });
   }
 
-  protected fromDateChanged(fromDate: Date){
+  fromDateChanged(fromDate: string){
     this.fromDate = fromDate;
     this.expensesService.loadExpensesList(fromDate, this.toDate);
     this.expensesService.loadRecurringExpensesList(fromDate, this.toDate);

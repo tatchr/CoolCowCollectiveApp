@@ -15,31 +15,26 @@ import { DatepickerService } from 'src/app/services/datepicker/datepicker.servic
 })
 export class ExpensesInputPage implements OnInit {
 
-  protected selectedDate = this.datePicker.today;
-  protected expensesDetails: ExpensesDetails;
-  protected livestockExpensesDetails: LivestockExpensesDetails;
+  selectedDate = this.datePicker.today;
+  expensesDetails: ExpensesDetails;
+  livestockExpensesDetails: LivestockExpensesDetails;
 
   constructor(private router: Router, public expensesService: ExpensesService, private farmService: FarmService,
     private datePicker: DatepickerService) { }
 
   ngOnInit() {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-
-      console.log('farm: ');
-
-      console.log(farm);
-
       this.expensesDetails = new ExpensesDetails({
-        farmId: farm.farmId,
+        farmId: farm.id,
         date: this.expensesService.datePicker.today,
         isRootRecord: false,
         recurringIsActive: false
       });
 
       this.livestockExpensesDetails = new LivestockExpensesDetails({
-        farmId: farm.farmId,
+        farmId: farm.id,
         date: this.expensesService.datePicker.today,
-        cowDetails: new CowDetails()
+        cow: new CowDetails()
       });
     });
   }

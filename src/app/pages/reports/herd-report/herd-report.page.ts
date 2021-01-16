@@ -31,7 +31,7 @@ export class HerdReportPage implements OnInit {
     });
 
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
+      this.farmId = farm.id;
     });
   }
 

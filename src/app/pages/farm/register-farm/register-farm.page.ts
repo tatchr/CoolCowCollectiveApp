@@ -13,7 +13,7 @@ import { UserDetails } from 'src/app/common/objects/UserDetails';
 })
 export class RegisterFarmPage implements OnInit {
 
-  protected farmForm: FormGroup;
+  farmForm: FormGroup;
 
   constructor(private farmService: FarmService, private router: Router, private storage: Storage, 
     private formBuilder: FormBuilder, private accountService: AccountService) { }

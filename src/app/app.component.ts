@@ -37,25 +37,11 @@ export class AppComponent {
 
       timer(1000).subscribe(() => this.showSplash = false);
 
-      this.authService.authenticationState.subscribe(state => {
-        if (state) {
-          this.storage.get(key.USER).then((user: UserDetails) => {
-            this.subscribeBackButton('/tabs/farm-dashboard');
-            this.subscribeBackButton('/tabs/milk-entry');
-            this.subscribeBackButton('/tabs/herd');
-            this.subscribeBackButton('/tabs/menu');
-            this.subscribeBackButton('/tabs/milk-sales-overview');
-            this.subscribeBackButton('/tabs/other-sales-overview');
-            this.subscribeBackButton('/tabs/expenses-menu');
-
-            if(user.hasFarm){
-              this.farmService.loadFarm(user.id).then(() =>{
-                this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
-              });
-            }
-            else{              
-              this.router.navigate(['new-farm'], { replaceUrl: true });
-            }            
+      this.authService.authenticationState.subscribe(isAuthenticated => {
+        if (isAuthenticated) {
+          this.storage.get(key.USER).then(() => {
+            this.subscribeBackButtons();
+            this.enterApp();                        
           });
         } else {
           this.subscribeBackButton('/login');
@@ -63,6 +49,27 @@ export class AppComponent {
         }
       });
     });
+  }
+
+  enterApp(){
+    this.farmService.getFarm().then(farm => {
+      if(farm == null){
+        this.router.navigate(['new-farm'], { replaceUrl: true });
+      }
+      else{
+        this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
+      }
+    });
+  }
+
+  subscribeBackButtons(){
+    this.subscribeBackButton('/tabs/farm-dashboard');
+    this.subscribeBackButton('/tabs/milk-entry');
+    this.subscribeBackButton('/tabs/herd');
+    this.subscribeBackButton('/tabs/menu');
+    this.subscribeBackButton('/tabs/milk-sales-overview');
+    this.subscribeBackButton('/tabs/other-sales-overview');
+    this.subscribeBackButton('/tabs/expenses-menu');
   }
 
   subscribeBackButton(routeName) {

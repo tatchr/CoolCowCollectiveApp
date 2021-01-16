@@ -65,9 +65,9 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
       });
 
       this.milksalesForm.controls['date'].setValue(this.selectedDate);
-      this.milkSalesService.updateMilkSalesRecord(this.milksalesForm.value).subscribe(val => {
-        if (val) {
-          this.milkSalesService.milkSaleUpdated.next(updatedSale);
+      this.milkSalesService.updateMilkSalesRecord(this.milksalesForm.value).subscribe(response => {
+        if (response.status == 200) {
+          this.milkSalesService.milkSaleUpdated.next(response.body['milkSale']);
           this.returnToOverview();
         }
       });
@@ -78,8 +78,8 @@ export class MilkSalesEditPage extends MilkSalesBaseComponent implements OnInit 
     let header = 'Delete this record?';
     let message = 'Are you sure that you want to permanently delete this milk sales record?';
     let confirmAction = () => {
-      this.milkSalesService.deleteMilkSalesRecord(this.milkSaleDetails.id).subscribe(val => {
-        if (val) {
+      this.milkSalesService.deleteMilkSalesRecord(this.milkSaleDetails.id).subscribe(response => {
+        if (response.status == 204) {
           this.milkSalesService.milkSaleDeleted.next(this.milkSaleDetails.id);
           this.returnToOverview();
         }

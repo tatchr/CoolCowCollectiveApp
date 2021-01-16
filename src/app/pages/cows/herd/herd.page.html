@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<ion-button color="success" expand="full" routerLink="/register-cow" routerDirection="forward">Add cow</ion-button>
+<ion-button color="success" expand="full" (click)="openNewCowRecord()">Add cow</ion-button>
 
 <ion-content>
   <ion-grid>
@@ -32,7 +32,7 @@
         <!-- <div *ngIf="searching" class="spinner-container">
           <ion-spinner></ion-spinner>
         </div> -->
-        <ion-card  button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowPassport(cow.id)">
+        <ion-card  button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowRecord(cow)">
           <ion-item no-lines>
             <ion-avatar>
               <img src="\assets\img\2358557.png">
@@ -40,9 +40,10 @@
 
             <ion-card-header style="max-width: 150px;" class="ion-text-wrap">
               <ion-card-subtitle *ngIf="cow.tagNumber != null">#{{cow.tagNumber}}</ion-card-subtitle>
-              <ion-card-title>{{cow.name}}</ion-card-title>
+              <ion-card-title>{{cow.name}}</ion-card-title>              
               <ion-card-subtitle>{{cow.cowType}}</ion-card-subtitle>
               <ion-card-subtitle>{{cow.cowStatus}}</ion-card-subtitle>
+              <ion-card-subtitle>{{cow.cowState}}</ion-card-subtitle>
             </ion-card-header>
 
             <ion-card-content>

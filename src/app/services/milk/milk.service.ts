@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { CowService } from 'src/app/services/cow/cow.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { TimeOfDay, CowState, CowStatus, Period } from 'src/app/common/objects/Enums';
+import { PartOfDay, CowState, CowStatus, Period } from 'src/app/common/objects/Enums';
 import { BehaviorSubject } from 'rxjs';
 import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,10 +20,10 @@ export class MilkService {
   milkRecordsList: Array<MilkProductionDetails> = [];
   filteredMilkRecordsList: Array<MilkProductionDetails> = [];
 
-  selectedDate: Date = this.datePicker.today;
-  timeOfDay: string = TimeOfDay.Morning;
-  fromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  toDate: Date = this.datePicker.today;
+  selectedDate: string = this.datePicker.today;
+  partOfDay: string = PartOfDay.Morning;
+  fromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  toDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   inputProduction: number = 0.00;
@@ -37,8 +37,8 @@ export class MilkService {
   constructor(private httpService: HttpService, public datePicker: DatepickerService,
     private cowService: CowService, private farmService: FarmService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
-      this.loadAllMilkRecordsList(this.fromDate, this.toDate);
+      this.farmId = farm.id;
+      //this.loadAllMilkRecordsList(this.fromDate, this.toDate);
     });
   }
 
@@ -61,8 +61,19 @@ export class MilkService {
       .then(() => this.milkRecordsLoaded.next(true));
   }
 
+  getAllMilkRecords(farmId, fromDate, toDate) {
+    let from = this.datePicker.formatDate(fromDate);
+    let to = this.datePicker.formatDate(toDate);
+
+    return this.farmService.getFarm().then((farm: FarmDetails) => {
+      return this.httpService.get(
+        'Loading...', 
+        `${environment.url}/farms/${farm.id}/milk-production-records?from_date=${from}&to_date=${to}`);
+    });
+  }
+
   loadMilkRecordsList() {
-    this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.timeOfDay).then(records => {
+    this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.partOfDay).then(records => {
       this.milkRecordsList = records['milkProductionDetails'];
 
       this.cowService.cowsList.forEach(cow => {
@@ -74,7 +85,7 @@ export class MilkService {
             cowName: cow.name,
             tagNumber: cow.tagNumber,
             date: this.selectedDate,
-            timeOfDay: this.timeOfDay,
+            partOfDay: this.partOfDay,
             amount: 0.0
           }));
         }
@@ -90,29 +101,31 @@ export class MilkService {
     });
   }
 
-  getMilkRecordsOnDate(farmId, date, timeOfDay) {
+  getMilkRecordsOnDate(farmId, date, partOfDay) {
     let selectedDate = this.datePicker.formatDate(date);
-    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/get/${farmId}/${selectedDate}/${timeOfDay}`);
+    return this.httpService.get('Loading...', `${environment.url}/farms/${farmId}/milk-production-records?from_date=${selectedDate}&to_date=${selectedDate}&part_of_day=${partOfDay}`);
   }
 
-  getMilkRecordsFromDateToDate(timeOfDay, fromDate, toDate) {
-    return this.allMilkRecordsList.filter(x => x.timeOfDay == timeOfDay
+  getMilkRecordsFromDateToDate(partOfDay, fromDate, toDate) {
+    return this.allMilkRecordsList.filter(x => x.partOfDay == partOfDay
       && this.datePicker.formatDate(x.date) >= this.datePicker.formatDate(fromDate)
       && this.datePicker.formatDate(x.date) <= this.datePicker.formatDate(toDate));
   }
 
-  getAllMilkRecords(farmId, fromDate, toDate) {
-    return this.httpService.get('Loading...', `${environment.url}/api/milkproduction/getAll/${farmId}/${fromDate.toISOString()}/${toDate.toISOString()}`);
-  }
+
 
   registerMilkRecords(records: Array<MilkProductionDetails>) {
-    return this.httpService.post3('Saving...', `${environment.url}/api/milkproduction/register`, records)
+    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/milk-production-records`, records)
       .then(() => {
         this.updateAllRecords(records);
       })
       .then(() => {
         this.milkRecordsUpdated.next(true);
       });
+  }
+
+  delete(cowId: string){
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}/milk-production-records`);
   }
 
   updateAllRecords(records: Array<MilkProductionDetails>) {

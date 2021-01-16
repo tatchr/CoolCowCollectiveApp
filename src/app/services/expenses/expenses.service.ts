@@ -23,14 +23,15 @@ export class ExpensesService {
   expenseUpdated = new BehaviorSubject<IExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<string>(null);
 
-  public expensesLoaded = new BehaviorSubject<Boolean>(null);
-  public expensesUpdated = new BehaviorSubject<Boolean>(null);
+  expensesLoaded = new BehaviorSubject<Boolean>(null);
+  expensesUpdated = new BehaviorSubject<Boolean>(null);
 
-  public livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
+  livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
+  changeCounter: number = 0;
   farmId: string;
-  selectedFromDate: Date = this.datePicker.subtract(new Date(), 7, 'days');
-  selectedToDate: Date = this.datePicker.today;
+  selectedFromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
+  selectedToDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   expensesList: Array<IExpensesDetails> = [];
@@ -39,16 +40,16 @@ export class ExpensesService {
   constructor(private httpService: HttpService, public datePicker: DatepickerService, private location: Location,
     public formBuilder: FormBuilder, private farmService: FarmService, private cowService: CowService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
-      this.farmId = farm.farmId;
+      this.farmId = farm.id;
       this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
       this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
 
-      this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
-        if(newLivestockExpense){
-          this.expensesList.push(newLivestockExpense);
-          this.cowService.cowRegistered.next(newLivestockExpense.cowDetails);
-        }
-      });
+      // this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
+      //   if(newLivestockExpense){
+      //     this.expensesList.push(newLivestockExpense);
+      //     this.cowService.cowRegistered.next(newLivestockExpense.cow);
+      //   }
+      // });
 
       this.expenseRegistered.subscribe(newExpense => {
         if (newExpense) {
@@ -73,9 +74,8 @@ export class ExpensesService {
     });    
   }
 
-  public newForm(expense: ExpensesDetails) {
+  newForm(expense: ExpensesDetails) {
     let form = this.formBuilder.group({
-      id: [expense.id],
       farmId: [expense.farmId],
       date: [expense.date],
       type: [expense.type],
@@ -95,6 +95,14 @@ export class ExpensesService {
       recurringperiodindays: [expense.recurringPeriodInDays]
     });
 
+    if(expense.id){
+      form.addControl('id', new FormControl(expense.id));
+    }
+
+    if(expense.registrationDate){
+      form.addControl('registrationDate', new FormControl(expense.registrationDate));
+    }
+
     form.valueChanges.subscribe(val => {
       let totalprice = this.math.round(val['price'] * val['quantity'], 2);
       form.get('totalprice').patchValue(totalprice, { emitEvent: false });
@@ -112,79 +120,76 @@ export class ExpensesService {
     return form;
   }
 
-  public loadExpensesList(fromDate: Date, toDate: Date){
-    this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
-      this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
-        let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
-        let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
+  // loadExpensesList(fromDate: Date, toDate: Date){
+  //   this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
+  //     this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
+  //       let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
+  //       let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
 
-        this.expensesList = expensesList.concat(livestockExpensesList);
+  //       this.expensesList = expensesList.concat(livestockExpensesList);
+  //       this.expensesLoaded.next(true);
+  //     });
+  //   });
+  // }
+
+  loadExpensesList(fromDate: string, toDate: string){
+    this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
+        this.expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
         this.expensesLoaded.next(true);
-      });
     });
   }
 
-  public loadRecurringExpensesList(fromDate: Date, toDate: Date) {
+  loadRecurringExpensesList(fromDate: string, toDate: string) {
     this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
       this.recurringExpensesList = res['recurringExpensesList'];
     });
   }
 
-  private getExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${from}/${to}`);
+  private getExpensesRecords(farmId: string, fromDate: string, toDate: string) {
+    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 
-  private getRecurringExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${from}/${to}`);
+  private getRecurringExpensesRecords(farmId: string, fromDate: string, toDate: string) {
+    return this.httpService.get('Loading...', `${environment.url}/api/expenses/getAllRecurring/${farmId}/${fromDate}/${toDate}`);
   }
 
-  public registerExpensesRecord(record) {
+  registerExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/expenses/register`, record);
   }
 
-  public updateExpensesRecord(record) {
+  updateExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/expenses/update`, record);
-  }
+  }  
 
-  public updateRootExpensesRecord(record) {
-    return this.httpService.put(`${environment.url}/api/expenses/updateRootExpense`, record);
-  }
-
-  public deleteExpensesRecord(id) {
+  deleteExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/expenses/delete/${id}`);
   }
 
-  public deleteExpensesRecurringRecords(recurringId: string) {
+  deleteExpensesRecurringRecords(recurringId: string) {
     return this.httpService.delete(`${environment.url}/api/expenses/deleteRecurringRecords/${recurringId}`);
   }
 
-  public toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
+  toggleRecurringRecords(recurringId: string, recurringIsActive: boolean) {
     return this.httpService.put(`${environment.url}/api/expenses/stopRecurringRecords/${recurringId}/${recurringIsActive}`, null);
   }
 
-  public registerLivestockExpensesRecord(record) {
+  registerLivestockExpensesRecord(record) {
     return this.httpService.post3('Saving...', `${environment.url}/api/livestockExpenses/register`, record);
   }
 
-  public getLivestockExpenseRecord(id) {
+  getLivestockExpenseRecord(id) {
     return this.httpService.get(null, `${environment.url}/api/livestockExpenses/get/${id}`);
   }
   
-  public getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-    return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${from}/${to}`);
+  getLivestockExpensesRecords(farmId: string, fromDate: Date, toDate: Date) {
+    return this.httpService.get('Loading...', `${environment.url}/api/livestockExpenses/getAll/${farmId}/${fromDate}/${toDate}`);
   }
 
-  public updateLivestockExpensesRecord(record) {
+  updateLivestockExpensesRecord(record) {
     return this.httpService.put(`${environment.url}/api/livestockExpenses/update`, record);
   }
 
-  public deleteLivestockExpensesRecord(id) {
+  deleteLivestockExpensesRecord(id) {
     return this.httpService.delete(`${environment.url}/api/livestockExpenses/delete/${id}`);
   }
 }
