@@ -51,8 +51,6 @@ export class FarmService {
   }
 
   setFarm(farmDetails: FarmDetails) {
-    this.storage.set(key.FARM, farmDetails).then(() => {
-      this.farm = farmDetails;
-    });
+    return this.storage.set(key.FARM, farmDetails);
   }
 }

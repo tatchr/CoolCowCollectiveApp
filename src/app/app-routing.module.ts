@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'edit-farm', loadChildren: './pages/farm/edit-farm/edit-farm.module#EditFarmPageModule', canActivate: [AuthGuardService] },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },   
   { path: 'milk-entry', loadChildren: './pages/milk-entry/milk-entry.module#MilkEntryPageModule', canActivate: [AuthGuardService] },
-  { path: 'delete-cow/:cowId', loadChildren: './pages/cows/delete-cow/delete-cow.module#DeleteCowPageModule', canActivate: [AuthGuardService] },
+  { path: 'delete-cow', loadChildren: './pages/cows/delete-cow/delete-cow.module#DeleteCowPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-input', loadChildren: './pages/sales/milk-sales/milk-sales-input/milk-sales-input.module#MilkSalesInputPageModule', canActivate: [AuthGuardService] },
   { path: 'milk-sales-edit', loadChildren: './pages/sales/milk-sales/milk-sales-edit/milk-sales-edit.module#MilkSalesEditPageModule', canActivate: [AuthGuardService] },
   { path: 'other-sales-edit', loadChildren: './pages/sales/other-sales/other-sales-edit/other-sales-edit.module#OtherSalesEditPageModule', canActivate: [AuthGuardService] },

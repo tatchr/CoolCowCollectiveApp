@@ -14,7 +14,7 @@ export class CowFormComponent implements OnInit {
   @Input() cowDetails: CowDetails;
   @Input() isExistingRecord: boolean;
   @Output() returnform = new EventEmitter<FormGroup>();
-  @Output() delete = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<CowDetails>();
 
   cowForm: FormGroup;
   cowTypes: Animal[] = [Animal.Cow, Animal.Heifer, Animal.Calf, Animal.Bull ];
@@ -94,10 +94,8 @@ export class CowFormComponent implements OnInit {
     this.returnform.emit(form);
   }
 
-  deletecow(form: FormGroup){
-    let cowId = form.get('id').value;
-
-    this.delete.emit(cowId);
+  deletecow(cow: CowDetails){
+    this.delete.emit(cow);
   }
 
   async openDatePicker(key){

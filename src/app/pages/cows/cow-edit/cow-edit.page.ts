@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { CowService } from 'src/app/services/cow/cow.service';
 
@@ -31,7 +31,14 @@ export class CowEditPage implements OnInit {
     });
   }
 
-  onDelete(id) {
-    this.router.navigate([`delete-cow/${id}`]);
+  onDelete(cow: CowDetails) {
+    console.log(cow);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        cow: cow
+      }
+    };
+
+    this.router.navigate(['delete-cow'], navigationExtras);
   }
 }

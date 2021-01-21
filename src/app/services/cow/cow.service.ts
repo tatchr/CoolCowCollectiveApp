@@ -18,7 +18,7 @@ export class CowService {
   cowListState = new BehaviorSubject(null);
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);
-  cowDeleted = new BehaviorSubject<string>(null);
+  cowDeleted = new BehaviorSubject<CowDetails>(null);
   cowSold = new BehaviorSubject<string>(null);
 
   cowsList: Array<CowDetails> = [];
@@ -39,9 +39,9 @@ export class CowService {
       }
     });
 
-    this.cowDeleted.subscribe(cowId => {
-      if (cowId) {
-        let cowToDelete = this.cowsList.map(x => x.id).findIndex(x => x == cowId);
+    this.cowDeleted.subscribe(cow => {
+      if (cow) {
+        let cowToDelete = this.cowsList.indexOf(cow);
         this.cowsList.splice(cowToDelete, 1);
         //this.applyFiltersAndSort();
         this.cowListState.next(true);
@@ -51,7 +51,7 @@ export class CowService {
     this.cowUpdated.subscribe(cow => {
       if (cow) {
         console.log(cow);
-        let cowToUpdate = this.cowsList.map(x => x.id).findIndex(x => x == cow.id);
+        let cowToUpdate = this.cowsList.indexOf(cow);
         this.cowsList[cowToUpdate] = cow;
         this.cowListState.next(true);
       }
@@ -89,8 +89,8 @@ export class CowService {
     return this.httpService.put(`${environment.url}/farms/${this.farmId}/cows`, cowdetails);
   }
 
-  deleteCow(cowId, keepRecords){
-    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cowId}?keep_records=${keepRecords}`);
+  deleteCow(cow, keepRecords){
+    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cow.id}?keep_records=${keepRecords}`);
   }
 
   registerCow(cowdetails) {

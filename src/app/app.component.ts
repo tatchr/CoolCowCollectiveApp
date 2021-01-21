@@ -57,6 +57,7 @@ export class AppComponent {
         this.router.navigate(['new-farm'], { replaceUrl: true });
       }
       else{
+        this.farmService.farm = farm;
         this.router.navigate(['tabs/farm-dashboard'], { replaceUrl: true });
       }
     });

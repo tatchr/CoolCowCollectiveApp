@@ -45,11 +45,14 @@ export class FarmDashboardPage implements OnInit {
   constructor(public farmService: FarmService, public milkService: MilkService, private datePicker: DatepickerService,
     private dataService: FarmDashboardDataService, private expensesService: ExpensesService, private cowService: CowService) { }
 
-  ngOnInit() {    
+
+  ionViewWillEnter(){
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farm = farm;
     });
+  } 
 
+  ngOnInit() {
     this.cowService.cowListState.subscribe(x => {
       this.herdSize = this.dataService.getHerdSize();
       this.lactatingCows = this.dataService.getLactatingCows();

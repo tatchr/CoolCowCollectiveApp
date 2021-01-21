@@ -26,7 +26,7 @@ export class CowInputPage implements OnInit {
     this.cowService.registerCow(cowForm.value).then(val => {
       if(val){
         this.cowService.cowRegistered.next(val['cow']);
-        this.router.navigateByUrl('/tabs/herd');
+        this.router.navigate(['/tabs/herd'], { replaceUrl: true });
       }
     });
   }

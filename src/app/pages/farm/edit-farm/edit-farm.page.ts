@@ -39,8 +39,8 @@ export class EditFarmPage implements OnInit {
     updateFarm() {
       this.farmService.updateFarm(this.farmForm.value).subscribe(response => {
         if(response.status == 200){
-          this.farmService.setFarm(response['farm']);
-          this.toast('Farm details updated!');
+          this.farmService.setFarm(response.body['farm'])
+            .then(() => this.toast('Farm details updated!'));          
         }
       });
     }
