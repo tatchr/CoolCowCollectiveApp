@@ -23,7 +23,7 @@ export class CowInputPage implements OnInit {
   ngOnInit() { }
 
   onSubmit(cowForm) {
-    this.cowService.registerCow(cowForm.value).then(val => {
+    this.cowService.registerCow(cowForm.getRawValue()).then(val => {
       if(val){
         this.cowService.cowRegistered.next(val['cow']);
         this.router.navigate(['/tabs/herd'], { replaceUrl: true });
