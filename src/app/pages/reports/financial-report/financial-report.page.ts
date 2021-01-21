@@ -31,7 +31,6 @@ export class FinancialReportPage implements OnInit {
   }
 
   downloadReport(fileType){
-    console.log(fileType);
     this.reportService.getReport(this.userId, this.farmId, 'Financial', fileType, this.reportService.selectedFromDate, this.reportService.selectedToDate);
   }
 

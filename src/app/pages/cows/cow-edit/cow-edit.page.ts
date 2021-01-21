@@ -32,7 +32,6 @@ export class CowEditPage implements OnInit {
   }
 
   onDelete(cow: CowDetails) {
-    console.log(cow);
     let navigationExtras: NavigationExtras = {
       state: {
         cow: cow

@@ -18,6 +18,6 @@ export class ExpesesNonRecurringOverviewPage implements OnInit {
   }
 
   dateChanged(){
-    this.expensesService.loadExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpenses(this.fromDate, this.toDate);
   }
 }

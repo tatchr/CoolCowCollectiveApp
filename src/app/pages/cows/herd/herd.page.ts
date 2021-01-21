@@ -28,39 +28,12 @@ export class HerdPage implements OnInit {
     this.searchControl = new FormControl();
   }  
 
-  ngOnInit() {  
-    // this.cowService.cowRegistered.subscribe(newCow => {
-    //   if (newCow) {
-    //     this.cowService.cowsList.push(newCow);
-    //     this.applyFiltersAndSort();
-    //     this.cowService.cowListState.next(true);
-    //   }
-    // });
-
-    // this.cowService.cowDeleted.subscribe(cowId => {
-    //   if (cowId) {
-    //     let cowToDelete = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
-    //     this.cowService.cowsList.splice(cowToDelete, 1);
-    //     this.applyFiltersAndSort();
-    //     this.cowService.cowListState.next(true);
-    //   }
-    // });
-
-    // this.cowService.cowUpdated.subscribe(cow => {
-    //   if (cow) {
-    //     let cowToUpdate = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cow.id);
-    //     this.cowService.cowsList[cowToUpdate] = cow;
-    //     this.applyFiltersAndSort();
-    //     this.cowService.cowListState.next(true);
-    //   }
-    // });
-
+  ngOnInit() {
     this.cowService.cowSold.subscribe(cowId => {
       if (cowId) {
         let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
         this.cowService.cowsList[index].cowState = CowState.Sold;
         this.applyFiltersAndSort();
-        this.cowService.cowListState.next(true);
       }
     });
 

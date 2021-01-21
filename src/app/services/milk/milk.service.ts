@@ -22,54 +22,34 @@ export class MilkService {
 
   selectedDate: string = this.datePicker.today;
   partOfDay: string = PartOfDay.Morning;
-  fromDate: string = this.datePicker.subtract(new Date(), 7, 'days');
-  toDate: string = this.datePicker.today;
   selectedPeriod: string = Period.lastweek;
 
   inputProduction: number = 0.00;
   currentlySelected: MilkProductionDetails = null;
   totalLiters: number;
 
-  milkRecordsLoaded = new BehaviorSubject<boolean>(null);
-  public milkRecordsUpdated = new BehaviorSubject<boolean>(null);
-
-
   constructor(private httpService: HttpService, public datePicker: DatepickerService,
     private cowService: CowService, private farmService: FarmService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.id;
-      //this.loadAllMilkRecordsList(this.fromDate, this.toDate);
     });
   }
 
-  periodSelected(period) {
-    this.selectedPeriod = period;
-    let result = this.datePicker.periodSelected(period);
-
-    this.toDate = result.toDate;
-    this.fromDate = result.fromDate;
-
-    this.loadAllMilkRecordsList(this.fromDate, this.toDate);
-  }
-
-  loadAllMilkRecordsList(fromDate, toDate) {
-    this.getAllMilkRecords(this.farmId, fromDate, toDate)
-      .then(records => {
-        this.allMilkRecordsList = records['milkProductionDetails'];
-      })
-      .then(() => this.loadMilkRecordsList())
-      .then(() => this.milkRecordsLoaded.next(true));
-  }
-
-  getAllMilkRecords(farmId, fromDate, toDate) {
-    let from = this.datePicker.formatDate(fromDate);
-    let to = this.datePicker.formatDate(toDate);
-
-    return this.farmService.getFarm().then((farm: FarmDetails) => {
-      return this.httpService.get(
-        'Loading...', 
-        `${environment.url}/farms/${farm.id}/milk-production-records?from_date=${from}&to_date=${to}`);
+  loadMilkRecords(fromDate, toDate){
+    var promise = new Promise<void>((resolve) => {
+      this.getAllMilkRecords(fromDate, toDate).then(response => {
+        this.allMilkRecordsList = response['milkProductionDetails'];
+        resolve();
+      });
     });
+
+    return promise;
+  }
+
+  getAllMilkRecords(fromDate, toDate) {
+    return this.httpService.get(
+      'Loading...', 
+      `${environment.url}/farms/${this.farmId}/milk-production-records?from_date=${fromDate}&to_date=${toDate}`);
   }
 
   loadMilkRecordsList() {
@@ -112,15 +92,10 @@ export class MilkService {
       && this.datePicker.formatDate(x.date) <= this.datePicker.formatDate(toDate));
   }
 
-
-
   registerMilkRecords(records: Array<MilkProductionDetails>) {
     return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/milk-production-records`, records)
       .then(() => {
         this.updateAllRecords(records);
-      })
-      .then(() => {
-        this.milkRecordsUpdated.next(true);
       });
   }
 

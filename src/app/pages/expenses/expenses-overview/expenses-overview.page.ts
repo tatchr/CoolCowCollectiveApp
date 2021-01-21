@@ -17,7 +17,7 @@ export class ExpensesOverviewPage implements OnInit {
   ngOnInit() { }
 
   dateChanged(){
-    this.expensesService.loadExpensesList(this.fromDate, this.toDate);
-    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadExpenses(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpenses(this.fromDate, this.toDate);
   }
 }

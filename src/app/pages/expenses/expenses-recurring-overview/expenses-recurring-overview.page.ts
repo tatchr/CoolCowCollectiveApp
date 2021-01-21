@@ -20,7 +20,7 @@ export class ExpensesRecurringOverviewPage implements OnInit {
   }
 
   dateChanged(){
-    this.expensesService.loadRecurringExpensesList(this.fromDate, this.toDate);
+    this.expensesService.loadRecurringExpenses(this.fromDate, this.toDate);
   }
   
   automaticClose = false;

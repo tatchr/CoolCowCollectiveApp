@@ -32,12 +32,6 @@ export class MilkEntryPage implements OnInit {
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
 
   ngOnInit() {
-    this.cowService.cowListState.subscribe(mustUpdate => {
-      if (mustUpdate) {
-        this.milkService.loadMilkRecordsList();
-      }
-    });
-
     this.searchControl.valueChanges
       .pipe(debounceTime(500))
       .subscribe(search => {
@@ -47,7 +41,8 @@ export class MilkEntryPage implements OnInit {
   }
 
   setFilteredItems(searchTerm) {
-    this.milkService.filteredMilkRecordsList = this.filterService.doSearch(this.milkService.milkRecordsList, searchTerm, ['cowName', 'tagNumber']);
+    this.milkService.filteredMilkRecordsList = this.filterService.doSearch(this.milkService.allMilkRecordsList, searchTerm, ['cowName', 'tagNumber']);
+    console.log(this.milkService.filteredMilkRecordsList);
   }
 
   submit() {

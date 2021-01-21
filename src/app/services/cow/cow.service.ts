@@ -15,7 +15,6 @@ export class CowService {
   
   farmId: string;
 
-  cowListState = new BehaviorSubject(null);
   cowRegistered = new BehaviorSubject<CowDetails>(null);
   cowUpdated = new BehaviorSubject<CowDetails>(null);
   cowDeleted = new BehaviorSubject<CowDetails>(null);
@@ -28,14 +27,12 @@ export class CowService {
   constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.id;
-      this.loadCowsList(farm.id);
     });
 
     this.cowRegistered.subscribe(newCow => {
       if (newCow) {
         this.cowsList.push(newCow);
         //this.applyFiltersAndSort();
-        this.cowListState.next(true);
       }
     });
 
@@ -44,27 +41,28 @@ export class CowService {
         let cowToDelete = this.cowsList.indexOf(cow);
         this.cowsList.splice(cowToDelete, 1);
         //this.applyFiltersAndSort();
-        this.cowListState.next(true);
       }
     });
 
     this.cowUpdated.subscribe(cow => {
       if (cow) {
-        console.log(cow);
         let cowToUpdate = this.cowsList.indexOf(cow);
         this.cowsList[cowToUpdate] = cow;
-        this.cowListState.next(true);
       }
     });
   }
 
-  private loadCowsList(farmId) {
-    this.getAllCows(farmId, null).then(res => {
-      this.cowsList = res['cows'];
-      this.filteredCowsList = res['cows'];
-
-      this.cowListState.next(true);
+  loadCows(){
+    var promise = new Promise<void>((resolve) => {
+      this.getAllCows(this.farmId, null)
+        .then(response => {
+          this.cowsList = response['cows'];
+          this.filteredCowsList = response['cows'];
+          resolve();
+        });
     });
+
+    return promise;
   }
 
   public getCowsOfTypeInHerd(cowType: string): Array<CowDetails>{

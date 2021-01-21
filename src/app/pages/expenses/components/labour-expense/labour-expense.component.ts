@@ -26,7 +26,6 @@ export class LabourExpenseComponent implements OnInit {
   }
 
   emitForm(form: FormGroup){
-    console.log(this.date);
     form.get('date').setValue(this.date);
     let employeeName = this.form.get('itembought').value;
     form.get('sellername').setValue(employeeName);

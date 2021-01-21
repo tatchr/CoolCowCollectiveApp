@@ -23,9 +23,6 @@ export class ExpensesService {
   expenseUpdated = new BehaviorSubject<IExpensesDetails>(null);
   expenseDeleted = new BehaviorSubject<string>(null);
 
-  expensesLoaded = new BehaviorSubject<Boolean>(null);
-  expensesUpdated = new BehaviorSubject<Boolean>(null);
-
   livestockExpenseRegistered = new BehaviorSubject<IExpensesDetails>(null);
 
   changeCounter: number = 0;
@@ -41,8 +38,6 @@ export class ExpensesService {
     public formBuilder: FormBuilder, private farmService: FarmService, private cowService: CowService, private math: MathService) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.id;
-      this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-      this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
 
       // this.livestockExpenseRegistered.subscribe((newLivestockExpense: LivestockExpensesDetails) => {
       //   if(newLivestockExpense){
@@ -53,25 +48,49 @@ export class ExpensesService {
 
       this.expenseRegistered.subscribe(newExpense => {
         if (newExpense) {
-          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadExpenses(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpenses(this.selectedFromDate, this.selectedToDate);
         }
       });
   
       this.expenseDeleted.subscribe(expenseId => {
         if (expenseId) {
-          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadExpenses(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpenses(this.selectedFromDate, this.selectedToDate);
         }
       });
   
       this.expenseUpdated.subscribe(sale => {
         if (sale) {
-          this.loadExpensesList(this.selectedFromDate, this.selectedToDate);
-          this.loadRecurringExpensesList(this.selectedFromDate, this.selectedToDate);
+          this.loadExpenses(this.selectedFromDate, this.selectedToDate);
+          this.loadRecurringExpenses(this.selectedFromDate, this.selectedToDate);
         }
       });
     });    
+  }
+
+  loadExpenses(fromDate: string, toDate: string){
+    var promise = new Promise<void>((resolve) => {
+      this.getExpensesRecords(this.farmId, fromDate, toDate)
+        .then(response => {
+          this.expensesList = response['expensesList'].map(expense => new ExpensesDetails(expense));
+          resolve();
+        });
+    });
+
+    return promise;
+  }
+
+  loadRecurringExpenses(fromDate: string, toDate: string){
+    var promise = new Promise<void>((resolve) => {
+      this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(response => {
+        this.recurringExpensesList = response['recurringExpensesList'];
+        resolve();
+      });
+
+    });
+
+    return promise;
   }
 
   newForm(expense: ExpensesDetails) {
@@ -118,31 +137,6 @@ export class ExpensesService {
     });
 
     return form;
-  }
-
-  // loadExpensesList(fromDate: Date, toDate: Date){
-  //   this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
-  //     this.getLivestockExpensesRecords(this.farmId, fromDate, toDate).then(livestockExpenses => {
-  //       let expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
-  //       let livestockExpensesList = livestockExpenses['livestockExpensesList'].map(x => new LivestockExpensesDetails(x))
-
-  //       this.expensesList = expensesList.concat(livestockExpensesList);
-  //       this.expensesLoaded.next(true);
-  //     });
-  //   });
-  // }
-
-  loadExpensesList(fromDate: string, toDate: string){
-    this.getExpensesRecords(this.farmId, fromDate, toDate).then(expenses => {
-        this.expensesList = expenses['expensesList'].map(x => new ExpensesDetails(x));
-        this.expensesLoaded.next(true);
-    });
-  }
-
-  loadRecurringExpensesList(fromDate: string, toDate: string) {
-    this.getRecurringExpensesRecords(this.farmId, fromDate, toDate).then(res => {
-      this.recurringExpensesList = res['recurringExpensesList'];
-    });
   }
 
   private getExpensesRecords(farmId: string, fromDate: string, toDate: string) {
