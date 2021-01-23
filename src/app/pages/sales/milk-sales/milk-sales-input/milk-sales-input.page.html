@@ -1,61 +1,12 @@
-<topbar title="Milk sales input" [backbtn]="true"></topbar>
+<topbar title="Milk sale input" [backbtn]="true"></topbar>
 <datepicker position="fixed" label="Date" [addIcon]="true" [(date)]="selectedDate"></datepicker>
 
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row>
       <ion-col>
-        <form [formGroup]="milksalesForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
-          <h3>
-            Milk sale details
-          </h3>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Liters sold*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="literssold"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Price / Liter (Ksh)*</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="priceperliter"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Total price (Ksh)</ion-label>
-            <ion-input autocapitalize="on" type="number" formControlName="totalPrice"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label color="medium">Off-taker*</ion-label>
-            <ion-select formControlName="offtaker" placeholder="Select One">
-              <ion-select-option value="Cooperative">Cooperative</ion-select-option>
-              <ion-select-option value="Middleman">Middleman</ion-select-option>
-              <ion-select-option value="Processor">Processor</ion-select-option>
-              <ion-select-option value="Informal">Informal</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating" color="medium">Off-taker name</ion-label>
-            <ion-input autocapitalize="on" type="text" formControlName="offtakername"></ion-input>
-          </ion-item>
-
-          <ion-item class="ion-no-padding">
-            <ion-label color="medium" class="lblWidth">Money received</ion-label>
-            <ion-toggle slot="end" formControlName="fullamountpaid" color="success"></ion-toggle>
-          </ion-item>
-        </form>
+        <milksales-form *ngIf="milksalesDetails" [selectedDate]="selectedDate" [milksalesDetails]="milksalesDetails" (returnform)="onSubmit($event)"></milksales-form>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<ion-footer>
-  <ion-row>
-    <ion-col>
-      <ion-button color="success" expand="full" type="submit" [disabled]="!milksalesForm.valid" (click)="onSubmit()">
-        <ion-icon name="save"></ion-icon>
-      </ion-button>
-    </ion-col>
-  </ion-row>
-</ion-footer>

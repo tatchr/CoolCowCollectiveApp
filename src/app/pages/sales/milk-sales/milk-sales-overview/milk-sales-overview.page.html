@@ -14,8 +14,7 @@
 </ion-row>
 <ion-row>
   <ion-col>
-    <ion-button color="success" expand="full" routerLink="/milk-sales-input/" routerDirection="forward">New sale
-    </ion-button>
+    <ion-button color="success" expand="full" (click)="openNewMilkSaleRecord()">New sale</ion-button>
   </ion-col>
 </ion-row>
 
@@ -26,21 +25,20 @@
         {{result.date | date: 'yyyy-MM-dd'}}
       </ion-label>
     </ion-item-divider>
-    <ion-row *ngFor='let sale of result.milkSalesList' class="product-list">
-      <ion-col [size]="!sale.fullAmountPaid ? '9' : '12'" class="ion-no-padding">
-        <ion-item button="true" (click)="openMilkSaleRecord(sale)" 
-            [color]="sale.fullAmountPaid ? 'success' : ''">
+    <ion-row *ngFor='let milkSale of result.milkSalesList' class="product-list">
+      <ion-col [size]="!milkSale.fullAmountPaid ? '9' : '12'" class="ion-no-padding">
+        <ion-item button="true" (click)="openMilkSaleRecord(milkSale)" [color]="milkSale.fullAmountPaid ? 'success' : ''">
           <ion-label>
-            <p style="font-size: 12px;">{{sale.offtaker}}</p>
+            <p style="font-size: 12px;">{{milkSale.offtaker}}</p>
             <p>
-              <b>{{ sale.pricePerLiter * sale.litersSold}} Ksh</b> ({{sale.litersSold}}L @ {{sale.pricePerLiter}} Ksh)
+              <b>{{ milkSale.pricePerLiter * milkSale.litersSold}} Ksh</b> ({{milkSale.litersSold}}L @ {{milkSale.pricePerLiter}} Ksh)
             </p>
           </ion-label>
         </ion-item>
       </ion-col>
 
-      <ion-col *ngIf="!sale.fullAmountPaid" size="3" class="ion-no-padding ion-align-self-stretch">
-        <ion-button size="small" fill="outline" class="toggle-btn" color="success" (click)="moneyReceived(sale)">          
+      <ion-col *ngIf="!milkSale.fullAmountPaid" size="3" class="ion-no-padding ion-align-self-stretch">
+        <ion-button size="small" fill="outline" class="toggle-btn" color="success" (click)="moneyReceived(milkSale)">          
             <ion-icon name="logo-usd" style="font-size:20px;"></ion-icon>               
         </ion-button>
       </ion-col>

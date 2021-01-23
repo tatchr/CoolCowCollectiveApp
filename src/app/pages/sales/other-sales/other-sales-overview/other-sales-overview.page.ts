@@ -44,12 +44,7 @@ export class OtherSalesOverviewPage implements OnInit {
   }
 
   openNewOtherSaleRecord() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        //cowsList: this.cowService.cowsList
-      }
-    };
-    this.router.navigate(['other-sales-input'], navigationExtras);
+    this.router.navigate(['other-sales-input']);
   }
 
   openOtherSaleRecord(otherSale: OtherSalesDetails) {    

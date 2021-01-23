@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MilkSalesBaseComponent } from './milk-sales-base.component';
+import { MilksalesFormComponent } from './milksales-form.component';
 
-describe('MilkSalesBaseComponent', () => {
-  let component: MilkSalesBaseComponent;
-  let fixture: ComponentFixture<MilkSalesBaseComponent>;
+describe('MilksalesFormComponent', () => {
+  let component: MilksalesFormComponent;
+  let fixture: ComponentFixture<MilksalesFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MilkSalesBaseComponent ],
+      declarations: [ MilksalesFormComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MilkSalesBaseComponent);
+    fixture = TestBed.createComponent(MilksalesFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -17,7 +17,6 @@ import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import { MilkSalesBaseComponent } from 'src/app/pages/sales/milk-sales/milk-sales-base/milk-sales-base.component';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,8 +33,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, MilkSalesBaseComponent],
-  entryComponents: [MilkSalesBaseComponent],
+  declarations: [AppComponent],
+  entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     HttpClientModule,
     Ionic4DatepickerModule,

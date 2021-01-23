@@ -33,7 +33,7 @@ export class OtherSalesInputPage implements OnInit {
 
   async openDatePicker() {
     this.selectedDate = await this.datePicker.openDatePicker(this.selectedDate);
-  }  
+  }
 
   onSubmit(othersalesForm) {
     this.otherSalesService.registerOtherSalesRecord(othersalesForm.value).then(val => {

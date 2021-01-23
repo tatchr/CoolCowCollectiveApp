@@ -1,0 +1,44 @@
+<form *ngIf="milksalesForm" [formGroup]="milksalesForm">
+  <ion-item>
+    <ion-label position="floating" color="medium">Liters sold*</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="literssold"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Price / Liter (Ksh)*</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="priceperliter"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Total price (Ksh)</ion-label>
+    <ion-input autocapitalize="on" type="number" formControlName="totalPrice"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="medium">Off-taker*</ion-label>
+    <ion-select formControlName="offtaker" placeholder="Select One">
+      <ion-select-option value="Cooperative">Cooperative</ion-select-option>
+      <ion-select-option value="Middleman">Middleman</ion-select-option>
+      <ion-select-option value="Processor">Processor</ion-select-option>
+      <ion-select-option value="Informal">Informal</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" color="medium">Off-taker name</ion-label>
+    <ion-input autocapitalize="on" type="text" formControlName="offtakername"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="medium" class="lblWidth">Money received</ion-label>
+    <ion-toggle slot="end" formControlName="fullamountpaid" color="success"></ion-toggle>
+  </ion-item>
+
+  <ion-button color="success" expand="full" [disabled]="milksalesForm.invalid" (click)="emitform(selectedDate, milksalesForm)">
+    <ion-icon name="save"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="isExistingRecord" expand="full" size="default" color="danger" (click)="deleterecord(milksalesForm)">
+    <ion-icon name="trash"></ion-icon>
+  </ion-button>
+</form>

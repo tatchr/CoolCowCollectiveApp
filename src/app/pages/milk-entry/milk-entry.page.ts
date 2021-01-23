@@ -54,7 +54,6 @@ export class MilkEntryPage implements OnInit {
       record.date = this.milkService.selectedDate;
       record.partOfDay = this.milkService.partOfDay;
 
-      console.log(record.partOfDay);
       if(record.registrationDate == null){
         record.registrationDate = new Date();
       }

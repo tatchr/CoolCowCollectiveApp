@@ -1,22 +1,15 @@
-import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { MilksalesService } from 'src/app/services/sales/milksales/milksales.service';
-import { MilkSalesBaseComponent } from '../milk-sales-base/milk-sales-base.component';
 import { Router, NavigationExtras } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
-import { FarmService } from 'src/app/services/farm/farm.service';
 
 @Component({
   selector: 'app-milk-sales-overview',
   templateUrl: './milk-sales-overview.page.html',
   styleUrls: ['./milk-sales-overview.page.scss']
 })
-export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnInit {  
+export class MilkSalesOverviewPage implements OnInit {  
 
-  constructor(router: Router, milkSalesService: MilksalesService, formBuilder: FormBuilder, 
-    storage: Storage, farmService: FarmService) {
-    super(router, milkSalesService, formBuilder, storage, farmService);
-   }  
+  constructor(private router: Router, private milkSalesService: MilksalesService) { }  
 
   ngOnInit() {    
     this.milkSalesService.milkSaleRegistered.subscribe(newSale => {
@@ -45,6 +38,10 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     });
   }
 
+  openNewMilkSaleRecord() {
+    this.router.navigate(['milk-sales-input']);
+  }
+
   openMilkSaleRecord(milkSale){
     let navigationExtras: NavigationExtras = {
       state: {
@@ -54,18 +51,11 @@ export class MilkSalesOverviewPage extends MilkSalesBaseComponent implements OnI
     this.router.navigate(['milk-sales-edit'], navigationExtras);
   }
 
-  moneyReceived(item){
-    item.fullAmountPaid = true;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe(() => {
+  moneyReceived(milkSale){
+    milkSale.fullAmountPaid = true;
+    this.milkSalesService.updateMilkSalesRecord(milkSale).subscribe(() => {
       this.milkSalesService.computeTotals();   
     });
-  }
-
-  moneyNotReceived(item){
-    item.fullAmountPaid = false;
-    this.milkSalesService.updateMilkSalesRecord(item).subscribe(() => {
-      this.milkSalesService.computeTotals();   
-    });    
   }
 
   dateChanged(){
