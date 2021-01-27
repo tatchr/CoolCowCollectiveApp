@@ -32,7 +32,7 @@
         <!-- <div *ngIf="searching" class="spinner-container">
           <ion-spinner></ion-spinner>
         </div> -->
-        <ion-card  button="true" *ngFor='let cow of this.cowService.filteredCowsList' (click)="openCowRecord(cow)">
+        <ion-card  button="true" *ngFor='let cow of this.cowService.cows | async' (click)="openCowRecord(cow)">
           <ion-item no-lines>
             <ion-avatar>
               <img src="\assets\img\2358557.png">

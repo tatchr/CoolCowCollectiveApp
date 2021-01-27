@@ -1,97 +1,110 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/services/http/http.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { Animal, CowState } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { FilterService } from 'src/app/services/filter/filter.service';
+import { List } from 'immutable';
+import { HttpClient } from '@angular/common/http';
+import { map, catchError, share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CowService {
+
+  private _cows: BehaviorSubject<List<CowDetails>> = new BehaviorSubject(List([]));
+  public readonly cows: Observable<List<CowDetails>> = this._cows.asObservable();
   
   farmId: string;
 
-  cowRegistered = new BehaviorSubject<CowDetails>(null);
-  cowUpdated = new BehaviorSubject<CowDetails>(null);
-  cowDeleted = new BehaviorSubject<CowDetails>(null);
-  cowSold = new BehaviorSubject<string>(null);
-
-  cowsList: Array<CowDetails> = [];
   filteredCowsList: Array<CowDetails> = [];  
   animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];  
 
-  constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService) {
+  constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService, private http: HttpClient) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.id;
-    });
 
-    this.cowRegistered.subscribe(newCow => {
-      if (newCow) {
-        this.cowsList.push(newCow);
-        //this.applyFiltersAndSort();
+      this.loadInitialData(farm.id);
+    });
+  }
+
+  loadInitialData(farmId) {
+    this.http.get(`${environment.url}/farms/${farmId}/cows`)
+      .subscribe(res => {
+        let cows = res['cows'];
+        this._cows.next(List(cows));
+      });
+  }
+
+  add(cow) {
+    let obs = this.http.post(`${environment.url}/farms/${this.farmId}/cows`, cow).pipe(share());
+
+    obs.subscribe(
+      res => {
+        console.log(res);
+        this._cows.next(this._cows.getValue().push(res['cow']));
+      });
+
+    return obs;
+  }
+
+  update(updatedCow){
+    let obs = this.http.put(`${environment.url}/farms/${this.farmId}/cows`, updatedCow, { observe: 'response' }).pipe(share());
+
+    obs.subscribe(
+      res => {
+        if(res.status == 200){
+          let cows = this._cows.getValue();
+          let index = cows.findIndex(cow => cow.id === updatedCow.id);
+
+          this._cows.next(cows.set(index, res.body['cow']));
+        }
       }
-    });
+    );
 
-    this.cowDeleted.subscribe(cow => {
-      if (cow) {
-        let cowToDelete = this.cowsList.indexOf(cow);
-        this.cowsList.splice(cowToDelete, 1);
-        //this.applyFiltersAndSort();
+    return obs;
+  }
+
+  delete(deletedCow, keepRecords){
+    let obs = this.http.delete(`${environment.url}/farms/${this.farmId}/cows/${deletedCow.id}?keep_records=${keepRecords}`).pipe(share());
+
+    obs.subscribe(
+      res => {
+        let cows = this._cows.getValue();
+        let index = cows.findIndex(cow => cow.id === deletedCow.id);
+
+        this._cows.next(cows.delete(index));
       }
-    });
+    );
 
-    this.cowUpdated.subscribe(cow => {
-      if (cow) {
-        let cowToUpdate = this.cowsList.indexOf(cow);
-        this.cowsList[cowToUpdate] = cow;
-      }
-    });
+    return obs;
   }
 
-  loadCows(){
-    var promise = new Promise<void>((resolve) => {
-      this.getAllCows(this.farmId, null)
-        .then(response => {
-          this.cowsList = response['cows'];
-          this.filteredCowsList = response['cows'];
-          resolve();
-        });
-    });
+  cowSold(cowId){
+    let cows = this._cows.getValue();
+    let index = cows.findIndex(cow => cow.id === cowId);
+    let cow = cows.get(index);
 
-    return promise;
+    cow.cowState = CowState.Sold;
+
+    this._cows.next(cows.set(index, cow));
   }
 
-  public getCowsOfTypeInHerd(cowType: string): Array<CowDetails>{
-    let cowsByType = this.filterService.applyFilters(this.cowsList, [cowType], 'cowType');
-    return this.filterService.applyFilters(cowsByType, [CowState.InHerd.valueOf()], 'cowState');
+  getCowsOfTypeInHerd(cowType: string): Observable<List<CowDetails>>{
+    return this.cows.pipe(
+      map(
+        cows => cows.filter(cow => cow.cowType === cowType && cow.cowState === CowState.InHerd.valueOf())
+      ));
   }
 
-  public getCowsOfTypeSold(cowType: string): Array<CowDetails>{
-    let cowsByType = this.filterService.applyFilters(this.cowsList, [cowType], 'cowType');
-    return this.filterService.applyFilters(cowsByType, [CowState.Sold.valueOf()], 'cowState');
+  getCowsOfTypeSold(cowType: string): Observable<List<CowDetails>>{
+    return this.cows.pipe(
+      map(
+        cows => cows.filter(cow => cow.cowType === cowType && cow.cowState === CowState.Sold.valueOf())
+      ));
   }
-
-  getCow(cowId){
-    return this.cowsList.find(x => x.id == cowId);
-  }
-
-  getAllCows(farmId, overlayText){
-    return this.httpService.get(overlayText, `${environment.url}/farms/${farmId}/cows`);
-  }  
-
-  updateCow(cowdetails){
-    return this.httpService.put(`${environment.url}/farms/${this.farmId}/cows`, cowdetails);
-  }
-
-  deleteCow(cow, keepRecords){
-    return this.httpService.delete(`${environment.url}/farms/${this.farmId}/cows/${cow.id}?keep_records=${keepRecords}`);
-  }
-
-  registerCow(cowdetails) {
-    return this.httpService.post3('Saving...', `${environment.url}/farms/${this.farmId}/cows`, cowdetails);
-  }  
 }

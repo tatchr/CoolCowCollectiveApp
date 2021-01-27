@@ -60,21 +60,19 @@ export class FarmDashboardPage implements OnInit {
   }
 
   loadAllData(){
-    this.cowService.loadCows()
-      .then(() => this.milkService.loadMilkRecords(this.fromDate, this.toDate))
-      .then(() => {
-        this.computeHerdData();
-        this.computeMilkData();
-      });
-
     this.expensesService.loadExpenses(this.fromDate, this.toDate)
       .then(() => this.expensesService.loadRecurringExpenses(this.fromDate, this.toDate))
       .then(() => this.computeExpensesData());
   }
 
   computeHerdData(){
-    this.herdSize = this.dataService.getHerdSize();
-    this.lactatingCows = this.dataService.getLactatingCows();
+    this.dataService.getHerdSize().subscribe(herdSize => {
+      this.herdSize = herdSize;
+    });
+
+    this.dataService.getLactatingCows().subscribe(lactatingCows => {
+      this.lactatingCows = lactatingCows;
+    });
   }
 
   computeExpensesData(){

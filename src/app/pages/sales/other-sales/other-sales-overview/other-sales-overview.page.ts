@@ -20,7 +20,7 @@ export class OtherSalesOverviewPage implements OnInit {
 
         let isCowSold = this.cowService.animalTypes.includes(newSale.itemSold);
         if (isCowSold) {
-          this.cowService.cowSold.next(newSale.cowIdSold);
+          this.cowService.cowSold(newSale.cowIdSold);
         }
         this.otherSalesService.changeCounter += 1;
       }

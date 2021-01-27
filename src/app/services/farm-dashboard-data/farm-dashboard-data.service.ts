@@ -17,7 +17,6 @@ import { CowState, CowStatus } from 'src/app/common/objects/Enums';
 import { MilksalesService } from '../sales/milksales/milksales.service';
 import { ExpensesDetails } from 'src/app/common/objects/ExpensesDetails';
 import { MilkSalesDetails } from 'src/app/common/objects/MilkSalesDetails';
-import { ExpensesRecurringGroup } from 'src/app/common/objects/ExpensesRecurringGroup';
 
 @Injectable({
   providedIn: 'root'
@@ -40,15 +39,17 @@ export class FarmDashboardDataService {
   }
   
   getHerdSize(){
-    return this.cowService.cowsList
-      .filter(cow => cow.cowState == CowState.InHerd)
-      .length;
+    return this.cowService.cows.pipe(
+      map(
+        cows => cows.filter(cow => cow.cowState == CowState.InHerd).size
+      ));
   }
 
   getLactatingCows(){
-    return this.cowService.cowsList
-      .filter(cow => cow.cowStatus == CowStatus.Lactating)
-      .length;
+    return this.cowService.cows.pipe(
+      map(
+        cows => cows.filter(cow => cow.cowStatus == CowStatus.Lactating).size
+      ));
   }
 
   getAverageMilk(fromDate: string, toDate: string){

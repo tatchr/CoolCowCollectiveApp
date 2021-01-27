@@ -89,7 +89,6 @@ export class ExpensesEditPage implements OnInit {
         if (val) {
           let livestockExpense = new LivestockExpensesDetails(expense);
           this.expensesService.expenseDeleted.next(livestockExpense.id);
-          this.cowService.cowDeleted.next(livestockExpense.cow);
           this.location.back();
         }
       });

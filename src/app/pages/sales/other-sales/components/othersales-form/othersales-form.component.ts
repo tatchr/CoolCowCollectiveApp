@@ -5,6 +5,7 @@ import { Animal, ItemSold } from 'src/app/common/objects/Enums';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { Router } from '@angular/router';
 import { CowService } from 'src/app/services/cow/cow.service';
+import { List } from 'immutable';
 
 const cattleTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];
 
@@ -24,7 +25,7 @@ export class OthersalesFormComponent implements OnInit {
   cattleSold: boolean;
   spermSold: boolean;
   otherSold: boolean;
-  cattleList: Array<CowDetails> = [];  
+  cattleList: List<CowDetails> = List([]);  
 
   constructor(private cowService: CowService, private formBuilder: FormBuilder, private router: Router) { }
 
@@ -80,7 +81,7 @@ export class OthersalesFormComponent implements OnInit {
     return this.cattleList;
   }
 
-  set cattle(cattleList: Array<CowDetails>){
+  set cattle(cattleList: List<CowDetails>){
     this.cattleList = cattleList;
   }
 
@@ -94,7 +95,9 @@ export class OthersalesFormComponent implements OnInit {
     this.cattleSold = cattleTypes.includes(itemSold);
 
     if(this.cattleSold && this.isExistingRecord){
-      this.cattle = this.cowService.getCowsOfTypeSold(itemSold);
+      this.cowService.getCowsOfTypeSold(itemSold).subscribe(cows => {
+        this.cattle = cows;
+      });
     }
   }
 
@@ -117,13 +120,15 @@ export class OthersalesFormComponent implements OnInit {
       }
       
       if(this.cattleSold){
-        this.cattle = this.cowService.getCowsOfTypeInHerd(val);
-        if(this.cattle.length > 0){
-          this.othersalesForm.get('cowidsold').enable();
-        }
-        else{
-          this.othersalesForm.get('cowidsold').disable();
-        }
+        this.cowService.getCowsOfTypeInHerd(val).subscribe(cows => {
+          this.cattle = cows;
+          if(this.cattle.size > 0){
+            this.othersalesForm.get('cowidsold').enable();
+          }
+          else{
+            this.othersalesForm.get('cowidsold').disable();
+          }
+        });
       }
       else{
         this.othersalesForm.get('cowidsold').disable();

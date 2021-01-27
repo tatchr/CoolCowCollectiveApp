@@ -24,11 +24,8 @@ export class DeleteCowPage implements OnInit {
   ngOnInit() { }
 
   deleteCow() {
-    this.cowService.deleteCow(this.cow, this.keepRecords).subscribe(val => {
-      if(val){
-        this.cowService.cowDeleted.next(this.cow);
-        this.router.navigateByUrl('/tabs/herd');
-      }
+    this.cowService.delete(this.cow, this.keepRecords).subscribe(res => {
+      this.router.navigateByUrl('/tabs/herd');
     });
   }
 }

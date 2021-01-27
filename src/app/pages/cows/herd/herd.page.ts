@@ -5,7 +5,7 @@ import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
 import { Router, NavigationExtras } from '@angular/router';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { CowState, CowStatus } from 'src/app/common/objects/Enums';
+import { CowStatus } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
@@ -29,14 +29,6 @@ export class HerdPage implements OnInit {
   }  
 
   ngOnInit() {
-    this.cowService.cowSold.subscribe(cowId => {
-      if (cowId) {
-        let index = this.cowService.cowsList.map(x => x.id).findIndex(x => x == cowId);
-        this.cowService.cowsList[index].cowState = CowState.Sold;
-        this.applyFiltersAndSort();
-      }
-    });
-
     this.searchControl.valueChanges
       .pipe(debounceTime(500))
       .subscribe(searchTerm => {
@@ -98,10 +90,10 @@ export class HerdPage implements OnInit {
 
   applyFilters() {
     if (this.filters.length === 0) {
-      this.cowService.filteredCowsList = this.cowService.cowsList;
+      //this.cowService.filteredCowsList = this.cowService.cowsList;
     }
     else {
-      this.cowService.filteredCowsList = this.filterService.applyFilters(this.cowService.cowsList, this.filters, 'cowStatus');
+      //this.cowService.filteredCowsList = this.filterService.applyFilters(this.cowService.cowsList, this.filters, 'cowStatus');
     }
   }
 }

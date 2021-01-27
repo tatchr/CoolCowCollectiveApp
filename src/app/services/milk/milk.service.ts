@@ -4,7 +4,6 @@ import { CowService } from 'src/app/services/cow/cow.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
 import { PartOfDay, CowState, CowStatus, Period } from 'src/app/common/objects/Enums';
-import { BehaviorSubject } from 'rxjs';
 import { MilkProductionDetails } from 'src/app/common/objects/MilkProductionDetails';
 import { v4 as uuidv4 } from 'uuid';
 import { FarmService } from 'src/app/services/farm/farm.service';
@@ -53,12 +52,13 @@ export class MilkService {
   }
 
   loadMilkRecordsList() {
-    this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.partOfDay).then(records => {
-      this.milkRecordsList = records['milkProductionDetails'];
+    this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.partOfDay).then(response => {
+      this.milkRecordsList = response['milkProductionDetails'];
 
-      this.cowService.cowsList.forEach(cow => {
-        if (!this.milkRecordsList.some(x => x.cowId == cow.id) && cow.cowState == CowState.InHerd && cow.cowStatus == CowStatus.Lactating) {
-          this.milkRecordsList.push(new MilkProductionDetails({
+      this.cowService.cows.subscribe(cows => {
+        cows.forEach(cow => {
+          if(!this.milkRecordsList.some(x => x.cowId == cow.id) && cow.cowState == CowState.InHerd && cow.cowStatus == CowStatus.Lactating){
+            this.milkRecordsList.push(new MilkProductionDetails({
             id: uuidv4(),
             farmId: cow.farmId,
             cowId: cow.id,
@@ -68,7 +68,8 @@ export class MilkService {
             partOfDay: this.partOfDay,
             amount: 0.0
           }));
-        }
+          }
+        });
       });
 
       this.filteredMilkRecordsList = this.milkRecordsList;

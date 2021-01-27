@@ -14,12 +14,12 @@
   <div *ngIf="itemsold">
     <ion-item *ngIf="cattleSold">
       <ion-label color="medium">Select from herd*</ion-label>
-      <ion-select formControlName="cowidsold" [placeholder]="cattle.length == 0 ? 'None found' : 'Select One'">
+      <ion-select formControlName="cowidsold" [placeholder]="cattle.size == 0 ? 'None found' : 'Select One'">
         <ion-select-option *ngFor="let cow of cattle" [value]="cow.id">{{cow.name}}</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <div *ngIf="cattleSold && cattle.length == 0 && !isExistingRecord">
+    <div *ngIf="cattleSold && cattle.size == 0 && !isExistingRecord">
       <div style="margin-top: 20px;"></div>
       No available {{itemsold}}s found in your herd. Please use below button to register a {{itemsold}}.
       <div style="margin-top: 20px;"></div>
@@ -28,7 +28,7 @@
       </ion-button>
     </div>
   
-    <div *ngIf="!(cattleSold && cattle.length == 0)">
+    <div *ngIf="!(cattleSold && cattle.size == 0)">
       <ion-item *ngIf="otherSold">
         <ion-label position="floating" color="medium">Item description*</ion-label>
         <ion-input formControlName="itemdescription" autocapitalize="on" type="text"></ion-input>

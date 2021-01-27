@@ -23,11 +23,10 @@ export class CowInputPage implements OnInit {
   ngOnInit() { }
 
   onSubmit(cowForm) {
-    this.cowService.registerCow(cowForm.getRawValue()).then(val => {
-      if(val){
-        this.cowService.cowRegistered.next(val['cow']);
+    this.cowService.add(cowForm.getRawValue()).subscribe(
+      res => {
         this.router.navigate(['/tabs/herd'], { replaceUrl: true });
       }
-    });
+    );
   }
 }
