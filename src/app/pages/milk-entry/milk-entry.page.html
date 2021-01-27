@@ -15,12 +15,6 @@
   <ion-input type="hidden" [value]="this.milkService.partOfDay"></ion-input>
 </ion-item>
 
-<!-- <ion-item>
-  <ion-icon position="fixed" name="search"></ion-icon>
-  <ion-input placeholder="Search..." [formControl]="searchControl" (ionChange)="onSearchInput()"></ion-input>
-</ion-item> -->
-
-
 <ion-button color="success" size="small" (click)="submit()">Submit records
   ({{this.milkService.totalLiters | number : '1.1-1'}} L)</ion-button>
 
@@ -52,12 +46,10 @@
 <ion-footer>
   <ion-row>
 
-    <!-- [hidden]="keyboard.isVisible" -->
     <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOne()" fill="clear">
         -1</ion-button>
     </ion-col>
-    <!-- [hidden]="keyboard.isVisible" -->
     <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="danger" size="small" (click)="this.milkService.subtractOneDecimal()"
         fill="clear">-0.1</ion-button>
@@ -73,19 +65,16 @@
       </form>
     </ion-col>
 
-    <!-- [hidden]="keyboard.isVisible" -->
     <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOneDecimal()"
         fill="clear">+0.1</ion-button>
     </ion-col>
-    <!-- [hidden]="keyboard.isVisible" -->
     <ion-col col-2 class="test ion-no-padding">
       <ion-button class="addOrSubBtn" color="success" size="small" (click)="this.milkService.addOne()" fill="clear">+1
       </ion-button>
     </ion-col>
   </ion-row>
 
-  <!-- [hidden]="keyboard.isVisible" -->
   <ion-row> 
     <ion-col col-2 class="ion-no-padding">
       <ion-button expand="full" color="danger" size="small" (click)="toPreviousCow()">

@@ -1,49 +1,23 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { DatepickerService } from 'src/app/services/datepicker/datepicker.service';
-import { FilterService } from 'src/app/services/filter/filter.service';
 import { MilkService } from 'src/app/services/milk/milk.service';
-import { CowService } from 'src/app/services/cow/cow.service';
 import { IonList } from '@ionic/angular';
-import { FormControl } from "@angular/forms";
-import { debounceTime } from 'rxjs/operators';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-milk-entry',
   templateUrl: './milk-entry.page.html',
-  styleUrls: ['./milk-entry.page.scss'],
-  providers: [Keyboard]
+  styleUrls: ['./milk-entry.page.scss']
 })
 
 export class MilkEntryPage implements OnInit {
-
-  searchControl: FormControl;
-  searching: Boolean = false;
 
   selectedIndex: number = -1;
   showInputPanel: boolean = false;
   scrollTo: number = null;
 
-  constructor(private filterService: FilterService, public milkService: MilkService, private cowService: CowService,
-    private datePicker: DatepickerService, private storage: Storage, public keyboard: Keyboard) {
-    this.searchControl = new FormControl();
-  }
+  constructor(public milkService: MilkService) { }
   @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
 
-  ngOnInit() {
-    this.searchControl.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe(search => {
-        this.searching = false;
-        this.setFilteredItems(search);
-      });
-  }
-
-  setFilteredItems(searchTerm) {
-    this.milkService.filteredMilkRecordsList = this.filterService.doSearch(this.milkService.allMilkRecordsList, searchTerm, ['cowName', 'tagNumber']);
-    console.log(this.milkService.filteredMilkRecordsList);
-  }
+  ngOnInit() { }
 
   submit() {
     if (!Array.isArray(this.milkService.filteredMilkRecordsList) || !this.milkService.filteredMilkRecordsList.length) {
@@ -134,10 +108,6 @@ export class MilkEntryPage implements OnInit {
 
   closeInputPanel() {
     this.showInputPanel = false;
-  }
-
-  onSearchInput() {
-    this.searching = true;
   }
 
   inputProductionClicked() {

@@ -4,7 +4,6 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { FormControl } from "@angular/forms";
 import { debounceTime } from 'rxjs/operators';
 import { Router, NavigationExtras } from '@angular/router';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { CowStatus } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
@@ -13,8 +12,7 @@ import { CowDetails } from 'src/app/common/objects/CowDetails';
 @Component({
   selector: 'app-herd',
   templateUrl: './herd.page.html',
-  styleUrls: ['./herd.page.scss'],
-  providers: [Keyboard]
+  styleUrls: ['./herd.page.scss']
 })
 export class HerdPage implements OnInit {
 
@@ -58,17 +56,6 @@ export class HerdPage implements OnInit {
       }
     };
     this.router.navigate(['cow-edit'], navigationExtras);
-  }
-
-  applyFiltersAndSort() {
-    this.applyFilters();    
-    this.cowService.filteredCowsList.sort((a, b) => {
-      return a.cowState.localeCompare('InHerd')        
-    });
-
-    if (this.searchControl.value) {
-      this.searchControl.setValue(this.searchControl.value);
-    }
   }
 
   doSearch(searchTerm) {

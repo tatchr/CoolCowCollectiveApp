@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpService } from 'src/app/services/http/http.service';
 import { CowDetails } from 'src/app/common/objects/CowDetails';
 import { Animal, CowState } from 'src/app/common/objects/Enums';
 import { FarmService } from 'src/app/services/farm/farm.service';
 import { FarmDetails } from 'src/app/common/objects/FarmDetails';
-import { FilterService } from 'src/app/services/filter/filter.service';
 import { List } from 'immutable';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError, share } from 'rxjs/operators';
@@ -24,7 +22,7 @@ export class CowService {
   filteredCowsList: Array<CowDetails> = [];  
   animalTypes: Array<string> = [Animal.Calf, Animal.Cow, Animal.Bull, Animal.Heifer];  
 
-  constructor(private httpService: HttpService, private farmService: FarmService, private filterService: FilterService, private http: HttpClient) {
+  constructor(private farmService: FarmService, private http: HttpClient) {
     this.farmService.getFarm().then((farm: FarmDetails) => {
       this.farmId = farm.id;
 
