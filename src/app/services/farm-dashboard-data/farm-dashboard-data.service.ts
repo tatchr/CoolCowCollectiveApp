@@ -39,14 +39,14 @@ export class FarmDashboardDataService {
   }
   
   getHerdSize(){
-    return this.cowService.cows.pipe(
+    return this.cowService.cows$.pipe(
       map(
         cows => cows.filter(cow => cow.cowState == CowState.InHerd).size
       ));
   }
 
   getLactatingCows(){
-    return this.cowService.cows.pipe(
+    return this.cowService.cows$.pipe(
       map(
         cows => cows.filter(cow => cow.cowStatus == CowStatus.Lactating).size
       ));

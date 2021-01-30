@@ -15,7 +15,7 @@ import { map, catchError, share } from 'rxjs/operators';
 export class CowService {
 
   private _cows: BehaviorSubject<List<CowDetails>> = new BehaviorSubject(List([]));
-  public readonly cows: Observable<List<CowDetails>> = this._cows.asObservable();
+  public readonly cows$: Observable<List<CowDetails>> = this._cows.asObservable();
   
   farmId: string;
 
@@ -93,14 +93,14 @@ export class CowService {
   }
 
   getCowsOfTypeInHerd(cowType: string): Observable<List<CowDetails>>{
-    return this.cows.pipe(
+    return this.cows$.pipe(
       map(
         cows => cows.filter(cow => cow.cowType === cowType && cow.cowState === CowState.InHerd.valueOf())
       ));
   }
 
   getCowsOfTypeSold(cowType: string): Observable<List<CowDetails>>{
-    return this.cows.pipe(
+    return this.cows$.pipe(
       map(
         cows => cows.filter(cow => cow.cowType === cowType && cow.cowState === CowState.Sold.valueOf())
       ));

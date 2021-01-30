@@ -55,7 +55,7 @@ export class MilkService {
     this.getMilkRecordsOnDate(this.farmId, this.selectedDate, this.partOfDay).then(response => {
       this.milkRecordsList = response['milkProductionDetails'];
 
-      this.cowService.cows.subscribe(cows => {
+      this.cowService.cows$.subscribe(cows => {
         cows.forEach(cow => {
           if(!this.milkRecordsList.some(x => x.cowId == cow.id) && cow.cowState == CowState.InHerd && cow.cowStatus == CowStatus.Lactating){
             this.milkRecordsList.push(new MilkProductionDetails({
